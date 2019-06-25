@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "lib": ["es2017", "es2016", "dom"],
+        "allowUnreachableCode": true,
+        "allowSyntheticDefaultImports": true,
+        "pretty": true,
+        "declaration": true,
+    },
+    "exclude": [
+        "./node_modules/**/*"
+    ]
+}
