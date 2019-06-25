@@ -163,9 +163,10 @@ declare var define: {
 				"columnDefs": [
 					{"orderable": false, "targets":[0,1]}
 				],
-				"info": false 
+				"info": false,
+				select:true 
 			});
-			
+
 			// On initialisation, do we need to set a filtering value from a
 			// saved state or init option?
 			var search = column.search();

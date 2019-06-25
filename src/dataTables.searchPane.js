@@ -84,7 +84,7 @@
             if (this._variance(bins) < this.c.threshold) {
                 return;
             }
-            $(container).append(dt);
+            $("body").append(dt);
             var dtPane = $(dt).DataTable({
                 "paging": false,
                 "scrollY": "200px",
@@ -92,7 +92,8 @@
                 "columnDefs": [
                     { "orderable": false, "targets": [0, 1] }
                 ],
-                "info": false
+                "info": false,
+                select: true
             });
             // On initialisation, do we need to set a filtering value from a
             // saved state or init option?
