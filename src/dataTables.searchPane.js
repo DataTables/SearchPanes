@@ -32,6 +32,7 @@
     var DataTable = $.fn.dataTable;
     var SearchPanes = /** @class */ (function () {
         function SearchPanes(settings, opts) {
+            //console.log("constructor");
             var that = this;
             var table = new DataTable.Api(settings);
             this.classes = $.extend(true, {}, SearchPanes["class"]);
@@ -49,37 +50,9 @@
                 .each(function (idx) {
                 that._pane(idx);
             });
-            $(this.dom.container)
-                .on('click', 'li', function () {
-                that._toggle(this);
-            })
-                .on('click', 'button.' + this.classes.clear, function () {
-                that._clear($(this).closest('div.' + that.classes.pane.container));
-            });
-            table
-                .on('draw.dtsp', function () {
-                console.log("IN");
-                console.log(table.page.info().recordsTotal);
-                console.log(that.c.minRows);
-                if (table.page.info().recordsTotal < that.c.minRows) {
-                    that.dom.container.css('display', 'none');
-                }
-                else {
-                    that.dom.container.css('display', 'flex');
-                }
-            });
             this._attach();
+            $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
         }
-        SearchPanes.prototype.rebuild = function () {
-            var that = this;
-            this.dom.container.empty();
-            this.s.dt
-                .columns(this.c.columns)
-                .eq(0)
-                .each(function (idx) {
-                that._pane(idx);
-            });
-        };
         SearchPanes.prototype._attach = function () {
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;
@@ -90,40 +63,17 @@
                 $(this.dom.container).appendTo(host);
             }
         };
-        SearchPanes.prototype._binData = function (data) {
-            var out = {};
-            for (var i = 0, ien = data.length; i < ien; i++) {
-                var d = data[i];
-                if (!d) {
-                    continue;
-                }
-                if (!out[d]) {
-                    out[d] = 1;
-                }
-                else {
-                    out[d]++;
-                }
-            }
-            return out;
-        };
-        SearchPanes.prototype._clear = function (pane) {
-            var classes = this.classes;
-            var itemSelected = classes.item.selected;
-            pane.find('li.' + itemSelected).removeClass(itemSelected);
-            pane.removeClass(classes.pane.active);
-            this.s.dt
-                .column(pane.data('column'))
-                .search('')
-                .draw();
-        };
         SearchPanes.prototype._pane = function (idx) {
+            //console.log("in -pane");
             var classes = this.classes;
             var itemClasses = classes.item;
             var paneClasses = classes.pane;
             var table = this.s.dt;
             var column = table.column(idx);
             var colOpts = this._getOptions(idx);
-            var list = $('<ul/>');
+            //var list = $('<ul/>');
+            var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
+            var container = this.dom.container;
             var binData = typeof colOpts.options === 'function' ?
                 colOpts.options(table, idx) :
                 colOpts.options ?
@@ -134,6 +84,16 @@
             if (this._variance(bins) < this.c.threshold) {
                 return;
             }
+            $(container).append(dt);
+            var dtPane = $(dt).DataTable({
+                "paging": false,
+                "scrollY": "200px",
+                "order": [],
+                "columnDefs": [
+                    { "orderable": false, "targets": [0, 1] }
+                ],
+                "info": false
+            });
             // On initialisation, do we need to set a filtering value from a
             // saved state or init option?
             var search = column.search();
@@ -144,102 +104,14 @@
                 .toArray();
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
-                    var li = $('<li/>')
-                        .html('<span class="' + itemClasses.label + '">' + data[i] + '</span>')
-                        .data('filter', data[i])
-                        .append($('<span/>')
-                        .addClass(itemClasses.count)
-                        .html(bins[data[i]]));
-                    if (search.length) {
-                        var escaped = data[i].replace ? $.fn.dataTable.util.escapeRegex(data[i]) : data[i];
-                        if ($.inArray(escaped, search) !== -1) {
-                            li.addClass(itemClasses.selected);
-                        }
-                    }
-                    list.append(li);
+                    dtPane.row.add([data[i], bins[data[i]]]);
                 }
             }
-            var pane = $('<div/>')
-                .data('column', idx)
-                .addClass(paneClasses.container)
-                .addClass(search.length ? paneClasses.active : '')
-                .append($('<button type="button">&times;</button>').addClass(this.classes.clear))
-                .append($('<div/>')
-                .addClass(paneClasses.title)
-                .html($(column.header()).text()))
-                .append($('<div/>')
-                .addClass(paneClasses.scroller)
-                .append(list));
-            var container = this.dom.container;
-            var replace = container.children().map(function () {
-                if ($(this).data('column') == idx) {
-                    return this;
-                }
-            });
-            if (replace.length) {
-                replace.replaceWith(pane);
-            }
-            else {
-                $(container).append(pane);
-            }
+            dtPane.draw();
         };
         SearchPanes.prototype._getOptions = function (colIdx) {
             var table = this.s.dt;
             return table.settings()[0].aoColumns[colIdx].searchPane || {};
-        };
-        SearchPanes.prototype._toggle = function (liIn) {
-            var classes = this.classes;
-            var itemSelected = classes.item.selected;
-            var table = this.s.dt;
-            var li = $(liIn);
-            var pane = li.closest('div.' + classes.pane.container);
-            var columnIdx = pane.data('column');
-            var options = this._getOptions(columnIdx);
-            li.toggleClass(itemSelected, !li.hasClass(itemSelected));
-            var filters = pane.find('li.' + itemSelected);
-            if (filters.length === 0) {
-                pane.removeClass(classes.pane.active);
-                table
-                    .column(columnIdx)
-                    .search('')
-                    .draw();
-            }
-            else if (options.match === 'any') {
-                // Allow sub-word matching
-                pane.addClass(classes.pane.active);
-                table
-                    .column(columnIdx)
-                    .search('(' +
-                    $.map(filters, function (filter) {
-                        var d = $(filter)
-                            .data('filter')
-                            .toString();
-                        var decoded = $('<div/>')
-                            .html(d)
-                            .text();
-                        return $.fn.dataTable.util.escapeRegex(decoded);
-                    }).join('|') +
-                    ')', true, false)
-                    .draw();
-            }
-            else {
-                // Only search on the full phrase
-                pane.addClass(classes.pane.active);
-                table
-                    .column(columnIdx)
-                    .search('^(' +
-                    $.map(filters, function (filter) {
-                        var d = $(filter)
-                            .data('filter')
-                            .toString();
-                        var decoded = $('<div/>')
-                            .html(d)
-                            .text();
-                        return $.fn.dataTable.util.escapeRegex(decoded);
-                    }).join('|') +
-                    ')$', true, false)
-                    .draw();
-            }
         };
         SearchPanes.prototype._variance = function (d) {
             var data = $.map(d, function (val, key) {
@@ -256,6 +128,22 @@
                 varSum += Math.pow(mean - data[i], 2);
             }
             return varSum / (count - 1);
+        };
+        SearchPanes.prototype._binData = function (data) {
+            var out = {};
+            for (var i = 0, ien = data.length; i < ien; i++) {
+                var d = data[i];
+                if (!d) {
+                    continue;
+                }
+                if (!out[d]) {
+                    out[d] = 1;
+                }
+                else {
+                    out[d]++;
+                }
+            }
+            return out;
         };
         SearchPanes["class"] = {
             container: 'dt-searchPanes',
@@ -284,7 +172,6 @@
         SearchPanes.version = '0.0.2';
         return SearchPanes;
     }());
-    ;
     $.fn.dataTable.SearchPanes = SearchPanes;
     $.fn.DataTable.SearchPanes = SearchPanes;
     DataTable.Api.register('searchPanes.rebuild()', function () {

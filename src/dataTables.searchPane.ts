@@ -58,7 +58,7 @@ declare var define: {
 }(function( $, window, document ) {
 	var DataTable = $.fn.dataTable;
 	class SearchPanes {
-		public classes;
+        public classes;
 		public dom;
 		public c;
 		public s;
@@ -89,69 +89,39 @@ declare var define: {
 			minRows: 1 
 		};
 		
-		static version = '0.0.2'; 
+        static version = '0.0.2'; 
+        
+        constructor(settings, opts){
+			//console.log("constructor");
+            var that = this;
+            var table = new DataTable.Api(settings);
 
-		constructor(settings, opts){
-			var that = this;
-			var table = new DataTable.Api(settings);
+            this.classes = $.extend(true, {}, SearchPanes.class);
 
-			this.classes = $.extend(true, {}, SearchPanes.class);
+            this.dom = {
+                container: $('<div/>').addClass(this.classes.container)
+            }
 
-			this.dom = {
-				container: $('<div/>').addClass(this.classes.container)
-			};
+            this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 
-			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
+            this.s = {
+                dt: table
+            };
 
-			this.s = {
-				dt: table
-			};
+            table.settings()[0].searchPane = this;
 
-			table.settings()[0].searchPane = this;
+            table
+                .columns(this.c.columns)
+                .eq(0)
+                .each(function(idx) {
+                    that._pane(idx);
+                });
 
-			table
-				.columns(this.c.columns)
-				.eq(0)
-				.each(function(idx) {
-					that._pane(idx);
-				});
-
-			$(this.dom.container)
-				.on('click', 'li', function() {
-					that._toggle(this);
-				})
-				.on('click', 'button.' + this.classes.clear, function() {
-					that._clear($(this).closest('div.' + that.classes.pane.container));
-				});
-			
-			table
-				.on('draw.dtsp', function () {
-					console.log("IN");
-					console.log(table.page.info().recordsTotal);
-					console.log(that.c.minRows);
-					if(table.page.info().recordsTotal < that.c.minRows){
-						that.dom.container.css('display','none');
-					} else {
-						that.dom.container.css('display','flex');
-					}
-				});
-		
 			this._attach();
-		}
+			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+        }
 
-		public rebuild() {
-			var that = this;
-
-			this.dom.container.empty();
-			this.s.dt
-				.columns(this.c.columns)
-				.eq(0)
-				.each(function(idx) {
-					that._pane(idx);
-				});
-		}
-
-		public _attach () {
+        public _attach () {
 			var container = this.c.container;
 			var host = typeof container === 'function' ? container(this.s.dt) : container;
 
@@ -160,9 +130,88 @@ declare var define: {
 			} else {
 				$(this.dom.container).appendTo(host);
 			}
-		}
+        }
+        
+        public _pane(idx) {
+			//console.log("in -pane");
+            var classes = this.classes;
+			var itemClasses = classes.item;
+			var paneClasses = classes.pane;
+			var table = this.s.dt;
+			var column = table.column(idx);
+			var colOpts = this._getOptions(idx);
+            //var list = $('<ul/>');
+            var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
+            var container = this.dom.container;
+            
+			var binData = typeof colOpts.options === 'function' ?
+				colOpts.options( table, idx ) :
+				colOpts.options ?
+					new DataTable.Api(null, colOpts.options) :
+					column.data();
+			var bins = this._binData(binData.flatten());
 
-		public _binData (data) {
+			// Don't show the pane if there isn't enough variance in the data
+			if (this._variance(bins) < this.c.threshold) {
+				return;
+			}
+			$(container).append(dt);
+            var dtPane =  $(dt).DataTable({
+				"paging":false,
+				"scrollY":"200px",
+				"order":[],
+				"columnDefs": [
+					{"orderable": false, "targets":[0,1]}
+				],
+				"info": false 
+			});
+			
+			// On initialisation, do we need to set a filtering value from a
+			// saved state or init option?
+			var search = column.search();
+			search = search ? search.substr(1, search.length - 2).split('|') : [];
+
+			var data = binData
+				.unique()
+				.sort()
+                .toArray();
+            
+            for(var i = 0, ien = data.length; i< ien; i++){
+                if(data[i]){
+					dtPane.row.add([data[i], bins[data[i]]]);
+                }
+            }
+            dtPane.draw();
+            
+        }
+
+        public _getOptions (colIdx) {
+			var table = this.s.dt;
+
+			return table.settings()[0].aoColumns[colIdx].searchPane || {};
+        }
+        
+        public _variance (d) {
+			var data = $.map(d, function(val, key) {
+				return val;
+			});
+
+			var count = data.length;
+			var sum = 0;
+			for (var i = 0, ien = count; i < ien; i++) {
+				sum += data[i];
+			}
+
+			var mean = sum / count;
+			var varSum = 0;
+			for (var i = 0, ien = count; i < ien; i++) {
+				varSum += Math.pow(mean - data[i], 2);
+			}
+
+			return varSum / (count - 1);
+        }
+        
+        public _binData (data) {
 			var out = {};
 
 			for (var i = 0, ien = data.length; i < ien; i++) {
@@ -181,193 +230,7 @@ declare var define: {
 
 			return out;
 		}
-
-		public _clear (pane) {
-			var classes = this.classes;
-			var itemSelected = classes.item.selected;
-
-			pane.find('li.' + itemSelected).removeClass(itemSelected);
-			pane.removeClass(classes.pane.active);
-
-			this.s.dt
-				.column(pane.data('column'))
-				.search('')
-				.draw();
-		}
-
-		public _pane (idx) {
-			var classes = this.classes;
-			var itemClasses = classes.item;
-			var paneClasses = classes.pane;
-			var table = this.s.dt;
-			var column = table.column(idx);
-			var colOpts = this._getOptions(idx);
-			var list = $('<ul/>');
-			var binData = typeof colOpts.options === 'function' ?
-				colOpts.options( table, idx ) :
-				colOpts.options ?
-					new DataTable.Api(null, colOpts.options) :
-					column.data();
-			var bins = this._binData(binData.flatten());
-
-			// Don't show the pane if there isn't enough variance in the data
-			if (this._variance(bins) < this.c.threshold) {
-				return;
-			}
-
-			// On initialisation, do we need to set a filtering value from a
-			// saved state or init option?
-			var search = column.search();
-			search = search ? search.substr(1, search.length - 2).split('|') : [];
-
-			var data = binData
-				.unique()
-				.sort()
-				.toArray();
-
-			for (var i = 0, ien = data.length; i < ien; i++) {
-				if (data[i]) {
-					var li = $('<li/>')
-						.html('<span class="' + itemClasses.label + '">' + data[i] + '</span>')
-						.data('filter', data[i])
-						.append(
-							$('<span/>')
-								.addClass(itemClasses.count)
-								.html(bins[data[i]])
-						);
-
-					if (search.length) {
-						var escaped = data[i].replace ? ($.fn as any).dataTable.util.escapeRegex(data[i]) : data[i];
-
-						if ($.inArray(escaped, search) !== -1) {
-							li.addClass(itemClasses.selected);
-						}
-					}
-
-					list.append(li);
-				}
-			}
-
-			var pane = $('<div/>')
-				.data('column', idx)
-				.addClass(paneClasses.container)
-				.addClass(search.length ? paneClasses.active : '')
-				.append($('<button type="button">&times;</button>').addClass(this.classes.clear))
-				.append(
-					$('<div/>')
-						.addClass(paneClasses.title)
-						.html($(column.header()).text())
-				)
-				.append(
-					$('<div/>')
-						.addClass(paneClasses.scroller)
-						.append(list)
-				);
-
-			var container = this.dom.container;
-			var replace = container.children().map(function() {
-				if ($(this).data('column') == idx) {
-					return this;
-				}
-			});
-
-			if (replace.length) {
-				replace.replaceWith(pane);
-			} else {
-				$(container).append(pane);
-			}
-		}
-
-		public _getOptions (colIdx) {
-			var table = this.s.dt;
-
-			return table.settings()[0].aoColumns[colIdx].searchPane || {};
-		}
-
-		public _toggle (liIn) {
-			var classes = this.classes;
-			var itemSelected = classes.item.selected;
-			var table = this.s.dt;
-			var li = $(liIn);
-			var pane = li.closest('div.' + classes.pane.container);
-			var columnIdx = pane.data('column');
-			var options = this._getOptions(columnIdx);
-
-			li.toggleClass(itemSelected, !li.hasClass(itemSelected));
-
-			var filters = pane.find('li.' + itemSelected);
-
-			if (filters.length === 0) {
-				pane.removeClass(classes.pane.active);
-				table
-					.column(columnIdx)
-					.search('')
-					.draw();
-			} else if (options.match === 'any') {
-				// Allow sub-word matching
-				pane.addClass(classes.pane.active);
-				table
-					.column(columnIdx)
-					.search(
-						'(' +
-							$.map(filters, function(filter) {
-								var d = $(filter)
-									.data('filter')
-									.toString();
-								var decoded = $('<div/>')
-									.html(d)
-									.text();
-								return ($.fn as any).dataTable.util.escapeRegex(decoded);
-							}).join('|') +
-							')',
-						true,
-						false
-					)
-					.draw();
-			} else {
-				// Only search on the full phrase
-				pane.addClass(classes.pane.active);
-				table
-					.column(columnIdx)
-					.search(
-						'^(' +
-							$.map(filters, function(filter) {
-								var d = $(filter)
-									.data('filter')
-									.toString();
-								var decoded = $('<div/>')
-									.html(d)
-									.text();
-								return ($.fn as any).dataTable.util.escapeRegex(decoded);
-							}).join('|') +
-							')$',
-						true,
-						false
-					)
-					.draw();
-			}
-		}
-
-		public _variance (d) {
-			var data = $.map(d, function(val, key) {
-				return val;
-			});
-
-			var count = data.length;
-			var sum = 0;
-			for (var i = 0, ien = count; i < ien; i++) {
-				sum += data[i];
-			}
-
-			var mean = sum / count;
-			var varSum = 0;
-			for (var i = 0, ien = count; i < ien; i++) {
-				varSum += Math.pow(mean - data[i], 2);
-			}
-
-			return varSum / (count - 1);
-		}
-	};
+	}
 	($.fn as any).dataTable.SearchPanes = SearchPanes;
 	($.fn as any).DataTable.SearchPanes = SearchPanes;
 
@@ -412,4 +275,4 @@ declare var define: {
 	});
 
 	return SearchPanes;
-} ));
+}));
