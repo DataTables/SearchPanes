@@ -32,7 +32,6 @@
     var DataTable = $.fn.dataTable;
     var SearchPanes = /** @class */ (function () {
         function SearchPanes(settings, opts) {
-            console.log(opts);
             var that = this;
             var table = new DataTable.Api(settings);
             this.classes = $.extend(true, {}, SearchPanes["class"]);
@@ -56,6 +55,18 @@
             })
                 .on('click', 'button.' + this.classes.clear, function () {
                 that._clear($(this).closest('div.' + that.classes.pane.container));
+            });
+            table
+                .on('draw.dtsp', function () {
+                console.log("IN");
+                console.log(table.page.info().recordsTotal);
+                console.log(that.c.minRows);
+                if (table.page.info().recordsTotal < that.c.minRows) {
+                    that.dom.container.css('display', 'none');
+                }
+                else {
+                    that.dom.container.css('display', 'flex');
+                }
             });
             this._attach();
         }
@@ -263,12 +274,12 @@
         };
         SearchPanes.defaults = {
             container: function (dt) {
-                console.log("Called default container");
                 return dt.table().container();
             },
             columns: undefined,
             insert: 'prepend',
-            threshold: 0.5
+            threshold: 0.5,
+            minRows: 1
         };
         SearchPanes.version = '0.0.2';
         return SearchPanes;
@@ -296,16 +307,11 @@
         });
     });
     $(document).on('init.dt', function (e, settings, json) {
-        console.log("running init");
-        console.log("e.namespace:", e.namespace);
-        console.log(settings.oInit);
         if (e.namespace !== 'dt') {
             return;
         }
         var init = settings.oInit.searchPane;
         var defaults = DataTable.defaults.searchPane;
-        console.log("init:", init);
-        console.log("defaults", defaults);
         if (init || defaults) {
             var opts = $.extend({}, init, defaults);
             if (init !== false) {

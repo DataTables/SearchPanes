@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="ajax" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpane"/>
+
+<js lib="jquery datatables searchpane">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPane:true
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows that searchpane is not visible when no records are present in the table as default.
+
+]]></info>
+
+</dt-example>

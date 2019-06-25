@@ -7,6 +7,11 @@ div.dt-searchPanes {
   align-items: stretch;
   height: 200px;
 }
+/*
+div.dt-searchPanes:empty {
+  height: 0px;
+}
+*/
 div.dt-searchPanes div.pane {
   position: relative;
   flex: 1;
