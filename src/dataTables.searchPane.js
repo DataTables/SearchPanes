@@ -1,6 +1,22 @@
 /*! SearchPane 0.0.2
  * 2018 SpryMedia Ltd - datatables.net/license
  */
+/**
+ * @summary     SearchPane
+ * @description Search Panes for DataTables columns
+ * @version     0.0.2
+ * @author      SpryMedia Ltd (www.sprymedia.co.uk)
+ * @copyright   Copyright 2018 SpryMedia Ltd.
+ *
+ * This source file is free software, available under the following license:
+ *   MIT license - http://datatables.net/license/mit
+ *
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ *
+ * For details please refer to: http://www.datatables.net
+ */
 /// <reference path = "../node_modules/@types/jquery/index.d.ts"/>
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -64,6 +80,7 @@
             }
         };
         SearchPanes.prototype._pane = function (idx) {
+            var _this = this;
             //console.log("in -pane");
             var classes = this.classes;
             var itemClasses = classes.item;
@@ -84,17 +101,20 @@
             if (this._variance(bins) < this.c.threshold) {
                 return;
             }
-            $("body").append(dt);
-            var dtPane = $(dt).DataTable({
-                "paging": false,
-                "scrollY": "200px",
-                "order": [],
-                "columnDefs": [
-                    { "orderable": false, "targets": [0, 1] }
-                ],
-                "info": false,
-                select: true
-            });
+            $(container).append(dt);
+            var dtPane = {
+                table: $(dt).DataTable({
+                    "paging": false,
+                    "scrollY": "200px",
+                    "order": [],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [0, 1] }
+                    ],
+                    "info": false,
+                    select: true
+                }),
+                index: idx
+            };
             // On initialisation, do we need to set a filtering value from a
             // saved state or init option?
             var search = column.search();
@@ -105,10 +125,53 @@
                 .toArray();
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
-                    dtPane.row.add([data[i], bins[data[i]]]);
+                    dtPane.table.row.add([data[i], bins[data[i]]]);
                 }
             }
-            dtPane.draw();
+            $.fn.dataTable.select.init(dtPane.table);
+            dtPane.table.draw();
+            dtPane.table.on('select.dt deselect.dt', function () {
+                dtPane.table.rows({ selected: true }).data().toArray();
+                _this._toggle(dtPane);
+            });
+        };
+        SearchPanes.prototype._toggle = function (paneIn) {
+            var columnIdx = paneIn.index;
+            var table = this.s.dt;
+            var options = this._getOptions(columnIdx);
+            var filters = paneIn.table.rows({ selected: true }).data().pluck(0).flatten().toArray();
+            console.log(columnIdx);
+            console.log(filters);
+            console.log('(' + filters.join('|') + ')');
+            if (filters.length === 0) {
+                table
+                    .columns(columnIdx)
+                    .search('')
+                    .draw();
+            }
+            else if (options.match === 'any') {
+                table
+                    .column(columnIdx)
+                    .search('(' +
+                    $.map(filters, function (filter) {
+                        return $.fn.dataTable.util.escapeRegex(filter);
+                    })
+                        .join('|')
+                    + ')', true, false)
+                    .draw();
+            }
+            else {
+                console.log("in else");
+                table
+                    .columns(columnIdx)
+                    .search('^(' +
+                    $.map(filters, function (filter) {
+                        return $.fn.dataTable.util.escapeRegex(filter);
+                    })
+                        .join('|')
+                    + ')$', true, false)
+                    .draw();
+            }
         };
         SearchPanes.prototype._getOptions = function (colIdx) {
             var table = this.s.dt;
