@@ -9,7 +9,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPane:{
-            filterPanes: true
+            cascadePanes: true
         }
     });
 });
@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example demonstrates the cascadePanes functionality. This 
 
 ]]></info>
 

@@ -61,6 +61,7 @@ declare var define: {
 		public dom;
 		public c;
 		public s;
+		public panes;
 
 		static class = {
 			container: 'dt-searchPanes',
@@ -86,7 +87,8 @@ declare var define: {
 			insert: 'prepend',
 			threshold: 0.5,
 			minRows: 1,
-			searchBox: true 
+			searchBox: true, 
+			cascaderPanes: false
 		};
 		
         static version = '0.0.2'; 
@@ -94,7 +96,8 @@ declare var define: {
         constructor(settings, opts){
 			//console.log("constructor");
             var that = this;
-            var table = new DataTable.Api(settings);
+			var table = new DataTable.Api(settings);
+			this.panes =[];
 
             this.classes = $.extend(true, {}, SearchPanes.class);
 
@@ -105,7 +108,8 @@ declare var define: {
             this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 
             this.s = {
-                dt: table
+				dt: table,
+				updating: false
             };
 
             table.settings()[0].searchPane = this;
@@ -114,7 +118,7 @@ declare var define: {
                 .columns(this.c.columns)
                 .eq(0)
                 .each(function(idx) {
-                    that._pane(idx);
+                   that.panes.push(that._pane(idx));
                 });
 
 			this._attach();
@@ -191,15 +195,41 @@ declare var define: {
 
 			$.fn.dataTable.select.init(dtPane.table);
 
-            dtPane.table.draw();	
+			dtPane.table.draw();
 			
-			dtPane.table.on('select.dt deselect.dt', () => {
-				dtPane.table.rows({selected: true}).data().toArray();		
-				this._toggle(dtPane);		
+			var t0;
+			
+			dtPane.table.on('select.dt', () => {
+				clearTimeout(t0);
+
+				if(!this.s.updating){
+						console.log("select");
+						dtPane.table.rows({selected: true}).data().toArray();		
+						this._search(dtPane);		
+						if(this.c.filterPanes){
+							this._updatePane(dtPane.index,true);
+						}
+				}
 			});
+
+			dtPane.table.on('deselect.dt', () => {
+				t0 = setTimeout(() => {
+					
+					console.log("deselect");
+					dtPane.table.rows({selected: true}).data().toArray();		
+					this._search(dtPane);	
+					
+					if(this.c.filterPanes){
+						this._updatePane(dtPane.index, false);
+					}
+				},50);
+				
+			});
+
+			return dtPane;
         }
 
-		public _toggle (paneIn){
+		public _search (paneIn){
 			var columnIdx = paneIn.index;
 			var table = this.s.dt;
 			var options = this._getOptions(columnIdx);
@@ -238,6 +268,55 @@ declare var define: {
 						false
 					)
 					.draw();
+			}
+		}
+
+		public _updatePane(callerIndex, select){
+			for(let i = 0; i< this.panes.length; i++){
+				// Update the panes if doing a deselct. if doing a select then 
+				// update all of the panes except for the one causing the change
+				if(this.panes[i] !== undefined && (this.panes[i].index !== callerIndex || !select)){
+					var selected = this.panes[i].table.rows({selected: true}).data().pluck(0);
+					var colOpts = this._getOptions(this.panes[i].index);
+					var column = this.s.dt.column(this.panes[i].index, {search:"applied"}); 
+					this.panes[i].table.clear();
+					var binData = typeof colOpts.options === 'function' ?
+						colOpts.options( this.s.dt, this.panes[i].index ) :
+						colOpts.options ?
+							new DataTable.Api(null, colOpts.options) :
+							column.data();
+					var bins = this._binData(binData.flatten());
+					var data = binData
+					.unique()
+					.sort()
+					.toArray();
+					
+					//console.log("s",selected);
+					this.s.updating = true;
+					for(var j = 0; j < data.length; j++){
+						if(data[j]){
+							var row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
+							console.log(data[j], bins[data[j]]);
+							//console.log(selected.indexOf(data[j]))
+							var selectIndex = selected.indexOf(data[j])
+							if( selectIndex> -1){
+								row.select();
+								selected.splice(selectIndex,1);
+								console.log(row);
+							}
+						}
+					}	
+					if(selected.length > 0 ){
+						console.log("selected",selected);
+						for(var j = 0; j< selected.length; j++){
+							var row = this.panes[i].table.row.add([selected[j], 0]);
+							row.select();
+							
+						}
+					}
+					this.s.updating = false;
+					this.panes[i].table.draw();
+				}
 			}
 		}
         public _getOptions (colIdx) {
@@ -328,8 +407,6 @@ declare var define: {
 			}
 		}
 	});
-
-
 
 	return SearchPanes;
 }));
