@@ -85,7 +85,8 @@ declare var define: {
 			columns: undefined,
 			insert: 'prepend',
 			threshold: 0.5,
-			minRows: 1 
+			minRows: 1,
+			searchBox: true 
 		};
 		
         static version = '0.0.2'; 
@@ -166,7 +167,8 @@ declare var define: {
 						{"orderable": false, "targets":[0,1]}
 					],
 					"info": false,
-					select:true 
+					select:true,
+					'searching':this.c.searchBox
 				}),
 				index: idx
 			} ;

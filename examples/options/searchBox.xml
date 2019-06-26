@@ -23,7 +23,8 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example shows the deactivation of the search box by searching the searchPane property searchBox to have a 
+value of false. The default value is true.
 
 ]]></info>
 

@@ -111,7 +111,8 @@
                         { "orderable": false, "targets": [0, 1] }
                     ],
                     "info": false,
-                    select: true
+                    select: true,
+                    'searching': this.c.searchBox
                 }),
                 index: idx
             };
@@ -140,9 +141,6 @@
             var table = this.s.dt;
             var options = this._getOptions(columnIdx);
             var filters = paneIn.table.rows({ selected: true }).data().pluck(0).flatten().toArray();
-            console.log(columnIdx);
-            console.log(filters);
-            console.log('(' + filters.join('|') + ')');
             if (filters.length === 0) {
                 table
                     .columns(columnIdx)
@@ -161,7 +159,6 @@
                     .draw();
             }
             else {
-                console.log("in else");
                 table
                     .columns(columnIdx)
                     .search('^(' +
@@ -231,7 +228,8 @@
             columns: undefined,
             insert: 'prepend',
             threshold: 0.5,
-            minRows: 1
+            minRows: 1,
+            searchBox: true
         };
         SearchPanes.version = '0.0.2';
         return SearchPanes;
