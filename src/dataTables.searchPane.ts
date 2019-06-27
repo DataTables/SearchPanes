@@ -88,7 +88,8 @@ declare var define: {
 			threshold: 0.5,
 			minRows: 1,
 			searchBox: true, 
-			cascaderPanes: false
+			cascaderPanes: false,
+			emptyMessage: "<i>No Data</i>"
 		};
 		
         static version = '0.0.2'; 
@@ -180,11 +181,20 @@ declare var define: {
 				.unique()
 				.sort()
                 .toArray();
-            
+		
+			var count: number = 0;
+			binData.toArray().forEach(element => {
+				if(element === ''){
+					count++;
+				}
+			});
+
             for(var i = 0, ien = data.length; i< ien; i++){
                 if(data[i]){
 					dtPane.table.row.add([data[i], bins[data[i]]]);
-                }
+                } else {
+					dtPane.table.row.add([this.c.emptyMessage,count]);
+				}
 			}
 
 			$.fn.dataTable.select.init(dtPane.table);
@@ -226,7 +236,12 @@ declare var define: {
 			var table = this.s.dt;
 			var options = this._getOptions(columnIdx);
 			var filters = paneIn.table.rows({selected:true}).data().pluck(0).flatten().toArray();
-
+			var nullIndex = filters.indexOf(this.c.emptyMessage);
+			var poppedFilter;
+			if(nullIndex > -1){
+				filters[nullIndex] = '';
+			}
+			console.log(options.match);
 			if(filters.length === 0){
 				table
 					.columns(columnIdx)
@@ -236,9 +251,13 @@ declare var define: {
 				table
 					.column(columnIdx)
 					.search(
-						'(' + 
+						'(' +
 						$.map(filters, function(filter) {
-							return($.fn as any).dataTable.util.escapeRegex(filter);
+							if(filter !== ''){
+								return ($.fn as any).dataTable.util.escapeRegex(filter);
+							} else {
+									return '^$';
+							}
 						})
 						.join('|')
 						+ ')',
@@ -306,6 +325,7 @@ declare var define: {
 				}
 			}
 		}
+
         public _getOptions (colIdx) {
 			var table = this.s.dt;
 
@@ -351,6 +371,20 @@ declare var define: {
 
 			return out;
 		}
+		
+		public rebuild(){
+			var that = this;
+
+			this.dom.container.empty();
+			this.s.dt
+				.columns(this.c.columns)
+				.eq(0)
+				.each(function(idx) {
+					that._pane(idx);
+				});
+			//$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+		}
+
 	}
 	($.fn as any).dataTable.SearchPanes = SearchPanes;
 	($.fn as any).DataTable.SearchPanes = SearchPanes;

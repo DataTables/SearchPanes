@@ -120,9 +120,18 @@
                 .unique()
                 .sort()
                 .toArray();
+            var count = 0;
+            binData.toArray().forEach(function (element) {
+                if (element === '') {
+                    count++;
+                }
+            });
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
                     dtPane.table.row.add([data[i], bins[data[i]]]);
+                }
+                else {
+                    dtPane.table.row.add([this.c.emptyMessage, count]);
                 }
             }
             $.fn.dataTable.select.init(dtPane.table);
@@ -154,6 +163,12 @@
             var table = this.s.dt;
             var options = this._getOptions(columnIdx);
             var filters = paneIn.table.rows({ selected: true }).data().pluck(0).flatten().toArray();
+            var nullIndex = filters.indexOf(this.c.emptyMessage);
+            var poppedFilter;
+            if (nullIndex > -1) {
+                filters[nullIndex] = '';
+            }
+            console.log(options.match);
             if (filters.length === 0) {
                 table
                     .columns(columnIdx)
@@ -165,7 +180,12 @@
                     .column(columnIdx)
                     .search('(' +
                     $.map(filters, function (filter) {
-                        return $.fn.dataTable.util.escapeRegex(filter);
+                        if (filter !== '') {
+                            return $.fn.dataTable.util.escapeRegex(filter);
+                        }
+                        else {
+                            return '^$';
+                        }
                     })
                         .join('|')
                     + ')', true, false)
@@ -260,6 +280,17 @@
             }
             return out;
         };
+        SearchPanes.prototype.rebuild = function () {
+            var that = this;
+            this.dom.container.empty();
+            this.s.dt
+                .columns(this.c.columns)
+                .eq(0)
+                .each(function (idx) {
+                that._pane(idx);
+            });
+            //$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+        };
         SearchPanes["class"] = {
             container: 'dt-searchPanes',
             clear: 'clear',
@@ -284,7 +315,8 @@
             threshold: 0.5,
             minRows: 1,
             searchBox: true,
-            cascaderPanes: false
+            cascaderPanes: false,
+            emptyMessage: "<i>No Data</i>"
         };
         SearchPanes.version = '0.0.2';
         return SearchPanes;

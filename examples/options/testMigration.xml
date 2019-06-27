@@ -7,9 +7,15 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    var dt = $('#example').DataTable( {
         searchPane:true
     });
+
+    dt.cell(2,3).data('').draw();
+    dt.cell(4,3).data('').draw();
+    dt.cell(6,3).data('').draw();
+    dt.cell(2,4).data('').draw();
+    dt.searchPanes.rebuild();
 });
 
 ]]>
