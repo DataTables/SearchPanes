@@ -95,6 +95,7 @@ declare var define: {
         static version = '0.0.2'; 
         
         constructor(settings, opts){
+
             var that = this;
 			var table = new DataTable.Api(settings);
 			this.panes =[];
@@ -114,6 +115,8 @@ declare var define: {
 
             table.settings()[0].searchPane = this;
 
+			var loadedFilter = table.state.loaded().filter;
+
             table
                 .columns(this.c.columns)
                 .eq(0)
@@ -121,10 +124,36 @@ declare var define: {
                    that.panes.push(that._pane(idx));
                 });
 
+			if(loadedFilter !== undefined){
+				for( var i = 0; i< that.panes.length; i++){
+					if(loadedFilter[i] !== null && loadedFilter[i] !== undefined){
+						for(var j = 0; j < loadedFilter[i].length; j++){
+							for(var k = 0; k< that.panes[i].table.rows().count(); k++){
+								var row = that.panes[i].table.rows(k);
+								if(row.data().pluck(0)[0] === loadedFilter[i][j]){
+									row.select();
+								}	
+							}
+						}
+					}
+				}
+			}
+
 			this._attach();
 			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
 			
+			table.on('stateSaveParams.dt', function(e, settings, data) {
+				if(!data.filter){
+					data.filter = [];
+				}	
+				for(let i = 0; i< that.panes.length; i++){
+					if(that.panes[i]!==undefined){
+						data.filter[i] = that.panes[i].table.rows({selected: true}).data().pluck(0).flatten().toArray();
+					}
+				}
+			})
 
+			table.state.save()
         }
 
         public _attach () {
@@ -212,7 +241,7 @@ declare var define: {
 			
 			dtPane.table.on('select.dt', () => {
 				clearTimeout(t0);
-
+				
 				if(!this.s.updating){
 						dtPane.table.rows({selected: true}).data().toArray();		
 						this._search(dtPane);		
@@ -232,7 +261,6 @@ declare var define: {
 						this._updatePane(dtPane.index, false);
 					}
 				},50);
-				
 			});
 
 			return dtPane;
@@ -244,11 +272,15 @@ declare var define: {
 			var options = this._getOptions(columnIdx);
 			var filters = paneIn.table.rows({selected:true}).data().pluck(0).flatten().toArray();
 			var nullIndex = filters.indexOf(this.c.emptyMessage);
-			var poppedFilter;
+			var container = $(paneIn.table.table().container());
 			if(nullIndex > -1){
 				filters[nullIndex] = '';
 			}
+			if(filters.length > 0){
+				container.addClass("selected")
+			}
 			if(filters.length === 0){
+				container.removeClass("selected")
 				table
 					.columns(columnIdx)
 					.search('')

@@ -12,6 +12,10 @@ div.dt-searchPanes {
 		margin: 1em 0.5%;
 	}
 
+	div.selected {
+		border:1px solid #3276b1;
+	}
+
 	div.pane {
 		position: relative;
 		flex: 1;
@@ -49,6 +53,8 @@ div.dt-searchPanes {
 			background-color: #e8e9eb;
 			border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 		}
+
+		
 
 		div.scroller {
 			position: absolute;

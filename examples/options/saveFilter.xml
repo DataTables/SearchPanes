@@ -24,7 +24,7 @@ table = $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more 
+This example demonstrates how to keep selections in the pane consistent after reloads.
 
 ]]></info>
 
