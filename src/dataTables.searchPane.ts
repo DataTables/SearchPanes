@@ -94,7 +94,6 @@ declare var define: {
         static version = '0.0.2'; 
         
         constructor(settings, opts){
-			//console.log("constructor");
             var that = this;
 			var table = new DataTable.Api(settings);
 			this.panes =[];
@@ -139,7 +138,6 @@ declare var define: {
         }
         
         public _pane(idx) {
-			//console.log("in -pane");
             var classes = this.classes;
 			var itemClasses = classes.item;
 			var paneClasses = classes.pane;
@@ -166,10 +164,6 @@ declare var define: {
 				table: $(dt).DataTable({
 					"paging":false,
 					"scrollY":"200px",
-					"order":[],
-					"columnDefs": [
-						{"orderable": false, "targets":[0,1]}
-					],
 					"info": false,
 					select:true,
 					'searching':this.c.searchBox
@@ -203,7 +197,6 @@ declare var define: {
 				clearTimeout(t0);
 
 				if(!this.s.updating){
-						console.log("select");
 						dtPane.table.rows({selected: true}).data().toArray();		
 						this._search(dtPane);		
 						if(this.c.filterPanes){
@@ -215,7 +208,6 @@ declare var define: {
 			dtPane.table.on('deselect.dt', () => {
 				t0 = setTimeout(() => {
 					
-					console.log("deselect");
 					dtPane.table.rows({selected: true}).data().toArray();		
 					this._search(dtPane);	
 					
@@ -291,23 +283,18 @@ declare var define: {
 					.sort()
 					.toArray();
 					
-					//console.log("s",selected);
 					this.s.updating = true;
 					for(var j = 0; j < data.length; j++){
 						if(data[j]){
 							var row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
-							console.log(data[j], bins[data[j]]);
-							//console.log(selected.indexOf(data[j]))
 							var selectIndex = selected.indexOf(data[j])
 							if( selectIndex> -1){
 								row.select();
 								selected.splice(selectIndex,1);
-								console.log(row);
 							}
 						}
 					}	
 					if(selected.length > 0 ){
-						console.log("selected",selected);
 						for(var j = 0; j< selected.length; j++){
 							var row = this.panes[i].table.row.add([selected[j], 0]);
 							row.select();

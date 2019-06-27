@@ -48,7 +48,6 @@
     var DataTable = $.fn.dataTable;
     var SearchPanes = /** @class */ (function () {
         function SearchPanes(settings, opts) {
-            //console.log("constructor");
             var that = this;
             var table = new DataTable.Api(settings);
             this.panes = [];
@@ -83,7 +82,6 @@
         };
         SearchPanes.prototype._pane = function (idx) {
             var _this = this;
-            //console.log("in -pane");
             var classes = this.classes;
             var itemClasses = classes.item;
             var paneClasses = classes.pane;
@@ -108,10 +106,6 @@
                 table: $(dt).DataTable({
                     "paging": false,
                     "scrollY": "200px",
-                    "order": [],
-                    "columnDefs": [
-                        { "orderable": false, "targets": [0, 1] }
-                    ],
                     "info": false,
                     select: true,
                     'searching': this.c.searchBox
@@ -137,7 +131,6 @@
             dtPane.table.on('select.dt', function () {
                 clearTimeout(t0);
                 if (!_this.s.updating) {
-                    console.log("select");
                     dtPane.table.rows({ selected: true }).data().toArray();
                     _this._search(dtPane);
                     if (_this.c.filterPanes) {
@@ -147,7 +140,6 @@
             });
             dtPane.table.on('deselect.dt', function () {
                 t0 = setTimeout(function () {
-                    console.log("deselect");
                     dtPane.table.rows({ selected: true }).data().toArray();
                     _this._search(dtPane);
                     if (_this.c.filterPanes) {
@@ -210,23 +202,18 @@
                         .unique()
                         .sort()
                         .toArray();
-                    //console.log("s",selected);
                     this.s.updating = true;
                     for (var j = 0; j < data.length; j++) {
                         if (data[j]) {
                             var row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
-                            console.log(data[j], bins[data[j]]);
-                            //console.log(selected.indexOf(data[j]))
                             var selectIndex = selected.indexOf(data[j]);
                             if (selectIndex > -1) {
                                 row.select();
                                 selected.splice(selectIndex, 1);
-                                console.log(row);
                             }
                         }
                     }
                     if (selected.length > 0) {
-                        console.log("selected", selected);
                         for (var j = 0; j < selected.length; j++) {
                             var row = this.panes[i].table.row.add([selected[j], 0]);
                             row.select();
