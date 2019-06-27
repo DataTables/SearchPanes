@@ -26,7 +26,8 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example demonstrates how to allow the panes to sort correctly for abstract data Types. Simply include the plugin 
+for the column in the main DataTable and the pane will use the same type for its column. 
 
 ]]></info>
 
@@ -60,15 +61,15 @@ See other examples for more detail.
                 <td>172.4.12.1111</td>
             </tr>
             <tr>
-                <td>Me</td>
+                <td>Bill</td>
                 <td>172.29.0.162</td>
             </tr>
             <tr>
-                <td>Me1</td>
+                <td>Bob</td>
                 <td>172.29.0.162</td>
             </tr>
             <tr>
-                <td>Me2</td>
+                <td>Ben</td>
                 <td>172.29.0.162</td>
             </tr>
         </tbody>

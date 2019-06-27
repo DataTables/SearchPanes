@@ -137,7 +137,11 @@ declare var define: {
 				$(this.dom.container).appendTo(host);
 			}
         }
-        
+		
+		private _getColType(table,idx){
+			return table.settings()[0].aoColumns[idx].sType;
+		}
+
         public _pane(idx) {
             var classes = this.classes;
 			var itemClasses = classes.item;
@@ -145,10 +149,10 @@ declare var define: {
 			var table = this.s.dt;
 			var column = table.column(idx);
 			var colOpts = this._getOptions(idx);
-            //var list = $('<ul/>');
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
-            var container = this.dom.container;
-            
+			var container = this.dom.container;
+			var colType =  this._getColType(table,idx);
+			
 			var binData = typeof colOpts.options === 'function' ?
 				colOpts.options( table, idx ) :
 				colOpts.options ?
@@ -167,7 +171,10 @@ declare var define: {
 					"scrollY":"200px",
 					"info": false,
 					select:true,
-					'searching':this.c.searchBox
+					'searching':this.c.searchBox,
+					columnDefs: [
+						{ type: colType, targets: 0}
+					]
 				}),
 				index: idx
 			} ;
@@ -241,7 +248,6 @@ declare var define: {
 			if(nullIndex > -1){
 				filters[nullIndex] = '';
 			}
-			console.log(options.match);
 			if(filters.length === 0){
 				table
 					.columns(columnIdx)

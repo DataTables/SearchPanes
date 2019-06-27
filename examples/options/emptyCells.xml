@@ -41,7 +41,7 @@ This example shows sorting on cells with no data present. The default for empty 
 
 This example also demonstrates how empty cells will interact with substring matching. Obviously, an empty string
 would match every entry, therefore when substring matching is in place and an empty string is selected as a filter
-the panes will substring match on any other filters and match exact values for the empty string filter.
+the panes will substring match on any other filters and match exact values for the empty string.
 
 ]]></info>
 

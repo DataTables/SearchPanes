@@ -80,6 +80,9 @@
                 $(this.dom.container).appendTo(host);
             }
         };
+        SearchPanes.prototype._getColType = function (table, idx) {
+            return table.settings()[0].aoColumns[idx].sType;
+        };
         SearchPanes.prototype._pane = function (idx) {
             var _this = this;
             var classes = this.classes;
@@ -88,9 +91,9 @@
             var table = this.s.dt;
             var column = table.column(idx);
             var colOpts = this._getOptions(idx);
-            //var list = $('<ul/>');
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
             var container = this.dom.container;
+            var colType = this._getColType(table, idx);
             var binData = typeof colOpts.options === 'function' ?
                 colOpts.options(table, idx) :
                 colOpts.options ?
@@ -108,7 +111,10 @@
                     "scrollY": "200px",
                     "info": false,
                     select: true,
-                    'searching': this.c.searchBox
+                    'searching': this.c.searchBox,
+                    columnDefs: [
+                        { type: colType, targets: 0 }
+                    ]
                 }),
                 index: idx
             };
@@ -168,7 +174,6 @@
             if (nullIndex > -1) {
                 filters[nullIndex] = '';
             }
-            console.log(options.match);
             if (filters.length === 0) {
                 table
                     .columns(columnIdx)
