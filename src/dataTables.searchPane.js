@@ -61,7 +61,11 @@
                 updating: false
             };
             table.settings()[0].searchPane = this;
-            var loadedFilter = table.state.loaded().filter;
+            var loadedFilter;
+            var loadTest = table.state.loaded();
+            if (table.state.loaded()) {
+                loadedFilter = table.state.loaded().filter;
+            }
             table
                 .columns(this.c.columns)
                 .eq(0)
@@ -124,6 +128,8 @@
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
+            if (!colOpts.options) {
+            }
             var binData = typeof colOpts.options === 'function' ?
                 colOpts.options(table, idx) :
                 colOpts.options ?
@@ -131,7 +137,9 @@
                     column.data();
             var bins = this._binData(binData.flatten());
             // Don't show the pane if there isn't enough variance in the data
-            if (this._variance(bins) < this.c.threshold) {
+            // colOpts.options is checked incase the options to restrict the choices are selected
+            if (this._variance(bins) < this.c.threshold && !colOpts.options) {
+                console.log(binData);
                 return;
             }
             $(container).append(dt);

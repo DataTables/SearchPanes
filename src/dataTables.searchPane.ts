@@ -115,7 +115,12 @@ declare var define: {
 
             table.settings()[0].searchPane = this;
 
-			var loadedFilter = table.state.loaded().filter;
+			var loadedFilter;
+			var loadTest = table.state.loaded();
+			if(table.state.loaded()){
+				loadedFilter = table.state.loaded().filter;
+			}
+		
 
             table
                 .columns(this.c.columns)
@@ -187,6 +192,9 @@ declare var define: {
 			var container = this.dom.container;
 			var colType =  this._getColType(table,idx);
 			
+			if(!colOpts.options){
+
+			}
 			var binData = typeof colOpts.options === 'function' ?
 				colOpts.options( table, idx ) :
 				colOpts.options ?
@@ -194,8 +202,10 @@ declare var define: {
 					column.data();
 			var bins = this._binData(binData.flatten());
 
+			
 			// Don't show the pane if there isn't enough variance in the data
-			if (this._variance(bins) < this.c.threshold) {
+			// colOpts.options is checked incase the options to restrict the choices are selected
+			if (this._variance(bins) < this.c.threshold && !colOpts.options) {
 				return;
 			}
 			$(container).append(dt);
@@ -221,8 +231,10 @@ declare var define: {
 			var data = binData
 				.unique()
 				.sort()
-                .toArray();
-		
+				.toArray();
+
+			
+			
 			var count: number = 0;
 			binData.toArray().forEach(element => {
 				if(element === ''){
