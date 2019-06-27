@@ -68,34 +68,38 @@
                 .each(function (idx) {
                 that.panes.push(that._pane(idx));
             });
-            if (loadedFilter !== undefined) {
-                for (var i = 0; i < that.panes.length; i++) {
-                    if (loadedFilter[i] !== null && loadedFilter[i] !== undefined) {
-                        for (var j = 0; j < loadedFilter[i].length; j++) {
-                            for (var k = 0; k < that.panes[i].table.rows().count(); k++) {
-                                var row = that.panes[i].table.rows(k);
-                                if (row.data().pluck(0)[0] === loadedFilter[i][j]) {
-                                    row.select();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            this._reloadSelect(loadedFilter, that);
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
             table.on('stateSaveParams.dt', function (e, settings, data) {
                 if (!data.filter) {
                     data.filter = [];
                 }
-                for (var i_1 = 0; i_1 < that.panes.length; i_1++) {
-                    if (that.panes[i_1] !== undefined) {
-                        data.filter[i_1] = that.panes[i_1].table.rows({ selected: true }).data().pluck(0).flatten().toArray();
+                for (var i = 0; i < that.panes.length; i++) {
+                    if (that.panes[i] !== undefined) {
+                        data.filter[i] = that.panes[i].table.rows({ selected: true }).data().pluck(0).flatten().toArray();
                     }
                 }
             });
             table.state.save();
         }
+        SearchPanes.prototype._reloadSelect = function (loadedFilter, that) {
+            if (loadedFilter === undefined) {
+                return;
+            }
+            for (var i = 0; i < that.panes.length; i++) {
+                if (loadedFilter[i] !== null && loadedFilter[i] !== undefined) {
+                    var table = that.panes[i].table;
+                    var rows = table.rows({ order: "index" }).data().pluck(0);
+                    for (var j = 0; j < loadedFilter[i].length; j++) {
+                        var id = loadedFilter[i].indexOf(rows[j]);
+                        if (id > -1) {
+                            table.row(id).select();
+                        }
+                    }
+                }
+            }
+        };
         SearchPanes.prototype._attach = function () {
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;

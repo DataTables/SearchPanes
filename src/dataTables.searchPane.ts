@@ -123,22 +123,9 @@ declare var define: {
                 .each(function(idx) {
                    that.panes.push(that._pane(idx));
                 });
-
-			if(loadedFilter !== undefined){
-				for( var i = 0; i< that.panes.length; i++){
-					if(loadedFilter[i] !== null && loadedFilter[i] !== undefined){
-						for(var j = 0; j < loadedFilter[i].length; j++){
-							for(var k = 0; k< that.panes[i].table.rows().count(); k++){
-								var row = that.panes[i].table.rows(k);
-								if(row.data().pluck(0)[0] === loadedFilter[i][j]){
-									row.select();
-								}	
-							}
-						}
-					}
-				}
-			}
-
+			
+			this._reloadSelect(loadedFilter, that);
+			
 			this._attach();
 			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
 			
@@ -156,6 +143,24 @@ declare var define: {
 			table.state.save()
         }
 
+		public _reloadSelect(loadedFilter, that){
+			if(loadedFilter === undefined){
+					return;
+			}
+			for( var i = 0; i< that.panes.length; i++){
+				if(loadedFilter[i] !== null && loadedFilter[i] !== undefined){
+					var table = that.panes[i].table;
+					var rows = table.rows({order: "index"}).data().pluck(0);
+					for(var j = 0; j < loadedFilter[i].length; j++){
+						var id = loadedFilter[i].indexOf(rows[j]);
+						if(id > -1){
+							table.row(id).select();
+						}		
+					}
+				}
+			}
+
+		}
         public _attach () {
 			var container = this.c.container;
 			var host = typeof container === 'function' ? container(this.s.dt) : container;
