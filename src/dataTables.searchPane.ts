@@ -192,9 +192,7 @@ declare var define: {
 			var container = this.dom.container;
 			var colType =  this._getColType(table,idx);
 			
-			if(!colOpts.options){
-
-			}
+		
 			var binData = typeof colOpts.options === 'function' ?
 				colOpts.options( table, idx ) :
 				colOpts.options ?
