@@ -1,6 +1,9 @@
 /*! SearchPane 0.0.2
  * 2018 SpryMedia Ltd - datatables.net/license
  */
+
+import { Z_FILTERED } from "zlib";
+
 /**
  * @summary     SearchPane
  * @description Search Panes for DataTables columns
@@ -192,15 +195,11 @@ declare var define: {
 			var container = this.dom.container;
 			var colType =  this._getColType(table,idx);
 			
-		
-			var binData = typeof colOpts.options === 'function' ?
-				colOpts.options( table, idx ) :
-				colOpts.options ?
-					new DataTable.Api(null, colOpts.options) :
-					column.data();
-			var bins = this._binData(binData.flatten());
-
-			
+			var binData = typeof colOpts.options === 'function' ? colOpts.options( table, idx ) :
+					colOpts.options ? new DataTable.Api(null, colOpts.options) :
+					table.cells(null,idx).render('filter');
+					//column.data();
+			var bins = this._binData(this._flatten(binData));
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
 			if (this._variance(bins) < this.c.threshold && !colOpts.options) {
@@ -215,7 +214,8 @@ declare var define: {
 					select:true,
 					'searching':this.c.searchBox,
 					columnDefs: [
-						{ type: colType, targets: 0}
+						{ data: 'display',type: colType, targets: 0},
+						{ data: 'count', type: colType, targets:1}
 					]
 				}),
 				index: idx
@@ -225,14 +225,11 @@ declare var define: {
 			// saved state or init option?
 			var search = column.search();
 			search = search ? search.substr(1, search.length - 2).split('|') : [];
-
 			var data = binData
 				.unique()
 				.sort()
 				.toArray();
 
-			
-			
 			var count: number = 0;
 			binData.toArray().forEach(element => {
 				if(element === ''){
@@ -240,11 +237,30 @@ declare var define: {
 				}
 			});
 
-            for(var i = 0, ien = data.length; i< ien; i++){
+			var arrayFilter;
+			
+			for(var i = 0, ien = data.length; i< ien; i++){
                 if(data[i]){
-					dtPane.table.row.add([data[i], bins[data[i]]]);
+					for(var j = 0; j<binData.toArray().length; j++ ){
+
+						console.log(colOpts);
+						var filter =colOpts.orthogonal ? colOpts.orthogonal.search: ;
+						console.log(filter);
+						if(colOpts.orthogonal.search){
+							arrayFilter = arrayFilter.concat(colOpts.orthogonal.search)
+							arrayFilter = arrayFilter.unique()
+							console.log(arrayFilter);
+							if(filter.indexOf(data[i]>-1)){
+								dtPane.table.row.add({filter:data[i],count: bins[data[i]], display:table.cell(j,idx).render("display")});
+								break;
+							}
+						} else if(filter === data[i] ){
+							dtPane.table.row.add({filter:data[i],count: bins[data[i]], display:table.cell(j,idx).render("display")});
+							break;
+						}
+					}
                 } else {
-					dtPane.table.row.add([this.c.emptyMessage,count]);
+					dtPane.table.row.add({filter:this.c.emptyMessage,count:count,display:this.c.emptyMessage});
 				}
 			}
 
@@ -279,13 +295,20 @@ declare var define: {
 			});
 
 			return dtPane;
-        }
+		}
+		
+		private _flatten(arr) {
+			return arr.reduce(function flatten(res, a) { 
+				Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
+				return res;
+			}, []);
+		}
 
 		public _search (paneIn){
 			var columnIdx = paneIn.index;
 			var table = this.s.dt;
 			var options = this._getOptions(columnIdx);
-			var filters = paneIn.table.rows({selected:true}).data().pluck(0).flatten().toArray();
+			var filters = paneIn.table.rows({selected:true}).data().pluck('filter').toArray();
 			var nullIndex = filters.indexOf(this.c.emptyMessage);
 			var container = $(paneIn.table.table().container());
 			if(nullIndex > -1){
@@ -381,8 +404,13 @@ declare var define: {
 
         public _getOptions (colIdx) {
 			var table = this.s.dt;
-
-			return table.settings()[0].aoColumns[colIdx].searchPane || {};
+			var defaults = {
+				orthogonal:{
+					search: 'filter'
+				},
+				match:'exact'
+			}
+			return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane );
         }
         
         public _variance (d) {

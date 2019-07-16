@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="ajax" order="1">
+
+<css lib="datatables searchpane select" />
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        ajax: '../arrayData.json',
+        searchPane:{
+            threshold:0
+        },
+        columns: [
+			{ 
+				data: "users.first_name"
+			},
+			{ 
+				data: "users.last_name" 
+			},
+			{ 
+				data: "sites.name" 
+			},
+			{ 
+				data: "permission",
+				render: '[, ].name',
+				searchPane: {
+					orthogonal: {
+						search:'[].name'
+					}
+				}
+			},
+		]
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates searching on rendered data. The threshold is set to 0 so that the rendered columns will display their data.
+
+]]></info>
+
+<custom-table>
+	<table id="example" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Location</th>
+				<th>Permissions</th>
+			</tr>
+		</thead>
+
+		<tfoot>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Location</th>
+				<th>Permissions</th>
+			</tr>
+		</tfoot>
+	</table>
+</custom-table>
+
+</dt-example>
+

@@ -7,21 +7,35 @@
 <![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
-        searchPane:{
-            emptyMessage:"<i><b>EMPTY</b></i>",
-        },
+    $('#example').DataTable( {
+        searchPane:true,
         columnDefs:[
             {
-                searchPane: {
-                    match: "any",
-                    options:[19,20]
+                data: 'location',
+                render: function (data, type) {
+                    if (type === 'sort' ) {
+                        return data;
+                    }
+                    else if (type === 'filter') {
+                        return  (data === 'Edinburgh' || data=== 'London' ? 'UK' : 'Rest of World');
+                    }
+                    return (data === 'Edinburgh' || data=== 'London' ? 'UK' : 'Rest of World')+' ('+data+')'
                 },
-                targets: [4]
+
+                searchPane: {
+                    orthogonal: 'display',
+
+                    orthogonal: '[].display',
+                
+                    orthogonal: {
+                        display: 'vdu',
+                        filter: 'sear'
+                    }
+                },
+                targets:[3]
             }
         ]
     });
-
 });
 
 ]]>
@@ -33,11 +47,7 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows sorting on cells with no data present. The default for empty Message is "<i>No Data</i>".
-
-This example also demonstrates how empty cells will interact with substring matching. Obviously, an empty string
-would match every entry, therefore when substring matching is in place and an empty string is selected as a filter
-the panes will substring match on any other filters and match exact values for the empty string.
+See other examples for more detail.
 
 ]]></info>
 
