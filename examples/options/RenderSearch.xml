@@ -20,7 +20,10 @@ $(document).ready(function() {
 			{ data: "office" },
 			{ data: "extn" },
 			{ data: "start_date" },
-			{ data: "salary", render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) }
+			{ 
+				data: "salary", 
+				render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) 
+			}
 		]
     });
 });

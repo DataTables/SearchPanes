@@ -1,22 +1,6 @@
 /*! SearchPane 0.0.2
  * 2018 SpryMedia Ltd - datatables.net/license
  */
-/**
- * @summary     SearchPane
- * @description Search Panes for DataTables columns
- * @version     0.0.2
- * @author      SpryMedia Ltd (www.sprymedia.co.uk)
- * @copyright   Copyright 2018 SpryMedia Ltd.
- *
- * This source file is free software, available under the following license:
- *   MIT license - http://datatables.net/license/mit
- *
- * This source file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
- *
- * For details please refer to: http://www.datatables.net
- */
 /// <reference path = "../node_modules/@types/jquery/index.d.ts"/>
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -128,11 +112,42 @@
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
-            var binData = typeof colOpts.options === 'function' ? colOpts.options(table, idx) :
-                colOpts.options ? new DataTable.Api(null, colOpts.options) :
-                    table.cells(null, idx).render('filter');
-            //column.data();
-            var bins = this._binData(this._flatten(binData));
+            var arrayFilter = [];
+            var splitBin = [];
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var filter = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+                var display = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+                if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+                    if (filter instanceof DataTable.Api) {
+                        filter = filter.toArray();
+                        display = display.toArray();
+                    }
+                    else if (Array.isArray(filter)) {
+                        colOpts.match = 'any';
+                    }
+                    if (filter.length === display.length) {
+                        for (var i = 0; i < filter.length; i++) {
+                            arrayFilter.push({
+                                filter: filter[i],
+                                display: display[i]
+                            });
+                        }
+                    }
+                    else {
+                        throw new Error('display and filter not the same length');
+                    }
+                }
+                else {
+                    arrayFilter.push({
+                        filter: filter,
+                        display: display
+                    });
+                }
+                // arrayFilter = arrayFilter.filter(function(elem, index, self) {
+                // 	return index === self.indexOf(elem);
+                // })
+            });
+            var bins = this._binData(this._flatten(arrayFilter));
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
             if (this._variance(bins) < this.c.threshold && !colOpts.options) {
@@ -157,34 +172,35 @@
             // saved state or init option?
             var search = column.search();
             search = search ? search.substr(1, search.length - 2).split('|') : [];
-            var data = binData
-                .unique()
-                .sort()
-                .toArray();
+            var data = [];
+            var prev = [];
+            for (var i = 0; i < arrayFilter.length; i++) {
+                if (prev.indexOf(arrayFilter[i].filter) === -1) {
+                    data.push({
+                        filter: arrayFilter[i].filter,
+                        display: arrayFilter[i].display
+                    });
+                    prev.push(arrayFilter[i].filter);
+                }
+            }
             var count = 0;
-            binData.toArray().forEach(function (element) {
-                if (element === '') {
+            arrayFilter.forEach(function (element) {
+                if (element.filter === '') {
                     count++;
                 }
             });
-            var arrayFilter;
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //var arrBin = this._binData(this._flatten(arrayFilter));
+            /*var arrData = arrBin.toArray();
+            arrData = arrData.filter(function(elem, index, self) {
+                return index === self.indexOf(elem);
+            })
+            */
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
-                    for (var j = 0; j < binData.toArray().length; j++) {
-                        console.log(colOpts);
-                        var filter = colOpts.orthogonal.search;
-                        console.log(filter);
-                        if (colOpts.orthogonal.search) {
-                            arrayFilter = arrayFilter.concat(colOpts.orthogonal.search);
-                            arrayFilter = arrayFilter.unique();
-                            console.log(arrayFilter);
-                            if (filter.indexOf(data[i] > -1)) {
-                                dtPane.table.row.add({ filter: data[i], count: bins[data[i]], display: table.cell(j, idx).render("display") });
-                                break;
-                            }
-                        }
-                        else if (filter === data[i]) {
-                            dtPane.table.row.add({ filter: data[i], count: bins[data[i]], display: table.cell(j, idx).render("display") });
+                    for (var j = 0; j < arrayFilter.length; j++) {
+                        if (data[i].filter === arrayFilter[j].filter || data[i] === arrayFilter[j].display) {
+                            dtPane.table.row.add({ filter: arrayFilter[j].filter, count: bins[data[i].filter], display: arrayFilter[j].display });
                             break;
                         }
                     }
@@ -227,6 +243,7 @@
             var columnIdx = paneIn.index;
             var table = this.s.dt;
             var options = this._getOptions(columnIdx);
+            console.log(options);
             var filters = paneIn.table.rows({ selected: true }).data().pluck('filter').toArray();
             var nullIndex = filters.indexOf(this.c.emptyMessage);
             var container = $(paneIn.table.table().container());
@@ -314,7 +331,14 @@
         };
         SearchPanes.prototype._getOptions = function (colIdx) {
             var table = this.s.dt;
-            return table.settings()[0].aoColumns[colIdx].searchPane || {};
+            var defaults = {
+                orthogonal: {
+                    search: 'filter',
+                    display: 'display'
+                },
+                match: 'exact'
+            };
+            return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
         };
         SearchPanes.prototype._variance = function (d) {
             var data = $.map(d, function (val, key) {
@@ -334,8 +358,9 @@
         };
         SearchPanes.prototype._binData = function (data) {
             var out = {};
+            data = this._flatten(data);
             for (var i = 0, ien = data.length; i < ien; i++) {
-                var d = data[i];
+                var d = data[i].filter;
                 if (!d) {
                     continue;
                 }

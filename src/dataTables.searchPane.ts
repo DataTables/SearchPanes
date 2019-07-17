@@ -2,7 +2,6 @@
  * 2018 SpryMedia Ltd - datatables.net/license
  */
 
-import { Z_FILTERED } from "zlib";
 
 /**
  * @summary     SearchPane
@@ -169,6 +168,7 @@ declare var define: {
 			}
 
 		}
+
         public _attach () {
 			var container = this.c.container;
 			var host = typeof container === 'function' ? container(this.s.dt) : container;
@@ -194,12 +194,47 @@ declare var define: {
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
 			var container = this.dom.container;
 			var colType =  this._getColType(table,idx);
+
+
+
+			var arrayFilter = [];
+			var splitBin = [];
+			table.rows().every( function ( rowIdx, tableLoop, rowLoop){
+				
+				var filter = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+				var display = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+				if(Array.isArray(filter) || filter instanceof DataTable.Api){
+					if(filter instanceof DataTable.Api){
+						filter = filter.toArray();
+						display = display.toArray();
+					} else if(Array.isArray(filter)){
+						colOpts.match = 'any';
+					}
+					if(filter.length === display.length) {
+						for(var i = 0; i< filter.length; i++){
+							arrayFilter.push({
+								filter: filter[i],
+								display: display[i]
+							})
+						}
+					} else {
+						throw new Error('display and filter not the same length');
+
+					}
+				} else {
+					arrayFilter.push({
+						filter: filter,
+						display: display
+					})
+				}
+				
+								
+				// arrayFilter = arrayFilter.filter(function(elem, index, self) {
+				// 	return index === self.indexOf(elem);
+				// })
+			})
 			
-			var binData = typeof colOpts.options === 'function' ? colOpts.options( table, idx ) :
-					colOpts.options ? new DataTable.Api(null, colOpts.options) :
-					table.cells(null,idx).render('filter');
-					//column.data();
-			var bins = this._binData(this._flatten(binData));
+			var bins = this._binData(this._flatten(arrayFilter));
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
 			if (this._variance(bins) < this.c.threshold && !colOpts.options) {
@@ -225,37 +260,38 @@ declare var define: {
 			// saved state or init option?
 			var search = column.search();
 			search = search ? search.substr(1, search.length - 2).split('|') : [];
-			var data = binData
-				.unique()
-				.sort()
-				.toArray();
+			var data = [];
+			var prev = []
 
+			for(var i = 0; i< arrayFilter.length; i++){
+					if(prev.indexOf(arrayFilter[i].filter) === -1){
+						data.push({
+							filter: arrayFilter[i].filter,
+							display: arrayFilter[i].display
+						})
+						prev.push(arrayFilter[i].filter)
+					}
+			}
 			var count: number = 0;
-			binData.toArray().forEach(element => {
-				if(element === ''){
+			arrayFilter.forEach(element => {
+				if(element.filter === ''){
 					count++;
 				}
 			});
 
-			var arrayFilter;
-			
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//var arrBin = this._binData(this._flatten(arrayFilter));
+			/*var arrData = arrBin.toArray();
+			arrData = arrData.filter(function(elem, index, self) {
+				return index === self.indexOf(elem);
+			})
+			*/
 			for(var i = 0, ien = data.length; i< ien; i++){
                 if(data[i]){
-					for(var j = 0; j<binData.toArray().length; j++ ){
-
-						console.log(colOpts);
-						var filter =colOpts.orthogonal ? colOpts.orthogonal.search: ;
-						console.log(filter);
-						if(colOpts.orthogonal.search){
-							arrayFilter = arrayFilter.concat(colOpts.orthogonal.search)
-							arrayFilter = arrayFilter.unique()
-							console.log(arrayFilter);
-							if(filter.indexOf(data[i]>-1)){
-								dtPane.table.row.add({filter:data[i],count: bins[data[i]], display:table.cell(j,idx).render("display")});
-								break;
-							}
-						} else if(filter === data[i] ){
-							dtPane.table.row.add({filter:data[i],count: bins[data[i]], display:table.cell(j,idx).render("display")});
+					for(var j = 0; j< arrayFilter.length; j++){
+						if(data[i].filter === arrayFilter[j].filter || data[i] === arrayFilter[j].display){
+							dtPane.table.row.add({filter:arrayFilter[j].filter,count: bins[data[i].filter], display:arrayFilter[j].display});
 							break;
 						}
 					}
@@ -308,6 +344,7 @@ declare var define: {
 			var columnIdx = paneIn.index;
 			var table = this.s.dt;
 			var options = this._getOptions(columnIdx);
+			console.log(options);
 			var filters = paneIn.table.rows({selected:true}).data().pluck('filter').toArray();
 			var nullIndex = filters.indexOf(this.c.emptyMessage);
 			var container = $(paneIn.table.table().container());
@@ -406,7 +443,8 @@ declare var define: {
 			var table = this.s.dt;
 			var defaults = {
 				orthogonal:{
-					search: 'filter'
+					search: 'filter',
+					display: 'display'
 				},
 				match:'exact'
 			}
@@ -433,12 +471,12 @@ declare var define: {
 			return varSum / (count - 1);
         }
         
-        public _binData (data) {
+        public _binData (data): {} {
 			var out = {};
-
+			data = this._flatten(data);
 			for (var i = 0, ien = data.length; i < ien; i++) {
-				var d = data[i];
 
+				var d = data[i].filter;
 				if (!d) {
 					continue;
 				}

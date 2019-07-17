@@ -16,18 +16,20 @@ $(document).ready(function() {
 				data: "users.first_name"
 			},
 			{ 
-				data: "users.last_name" 
+				data: "users.last_name"
 			},
 			{ 
-				data: "sites.name" 
+				data: "sites.name"
 			},
 			{ 
 				data: "permission",
-				render: '[, ].name',
+				render: {
+					_: '[, ].name',
+					sp:'[].name'
+				},
 				searchPane: {
-					orthogonal: {
-						search:'[].name'
-					}
+					orthogonal:'sp',
+					match:'any'
 				}
 			},
 		]
