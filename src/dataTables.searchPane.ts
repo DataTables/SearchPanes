@@ -2,7 +2,6 @@
  * 2018 SpryMedia Ltd - datatables.net/license
  */
 
-
 /**
  * @summary     SearchPane
  * @description Search Panes for DataTables columns
@@ -20,355 +19,352 @@
  * For details please refer to: http://www.datatables.net
  */
 
- /// <reference path = "../node_modules/@types/jquery/index.d.ts"/>
+ /// <reference path = '../node_modules/@types/jquery/index.d.ts'
 
 // Hack to allow TypeScript to compile our UMD
 declare var define: {
-    (string, Function): any;
-    amd: string;
-}
+	(string, Function): any;
+	amd: string;
+};
 
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
 // function) or just default browser loading.
-(function( factory ){
-    if ( typeof define === 'function' && define.amd ) {
-        // AMD
-        define( ['jquery', 'datatables.net'], function ( $ ) {
-            return factory( $, window, document );
-        } );
-    }
-    else if ( typeof exports === 'object' ) {
-        // CommonJS
-        module.exports = function (root, $) {
-            if ( ! root ) {
-                root = window;
-            }
+(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['jquery', 'datatables.net'], function($) {
+			return factory($, window, document);
+		});
+	}
+	else if (typeof exports === 'object') {
+		// CommonJS
+		module.exports = function(root, $) {
+			if (! root) {
+				root = window;
+			}
 
-            if ( ! $ || ! $.fn.dataTable ) {
-                $ = require('datatables.net')(root, $).$;
-            }
+			if (! $ || ! $.fn.dataTable) {
+				$ = require('datatables.net')(root, $).$;
+			}
 
-            return factory( $, root, root.document );
-        };
-    }
-    else {
-        // Browser - assume jQuery has already been loaded
-        factory( (window as any).jQuery, window, document );
-    }
-}(function( $, window, document ) {
-	var DataTable = $.fn.dataTable;
+			return factory($, root, root.document);
+		};
+	}
+	else {
+		// Browser - assume jQuery has already been loaded
+		factory((window as any).jQuery, window, document);
+	}
+}(function($, window, document) {
+	let DataTable = $.fn.dataTable;
 	class SearchPanes {
-        public classes;
+
+		private static version = '0.0.2';
+
+		private static class = {
+			clear: 'clear',
+			container: 'dt-searchPanes',
+			item: {
+				count: 'count',
+				label: 'label',
+				selected: 'selected'
+			},
+			pane: {
+				active: 'filtering',
+				container: 'pane',
+				scroller: 'scroller',
+				title: 'title',
+			}
+		};
+
+		private static defaults = {
+			cascaderPanes: false,
+			container(dt) {
+				return dt.table().container();
+			},
+			columns: undefined,
+			emptyMessage: '<i>No Data</i>',
+			insert: 'prepend',
+			minRows: 1,
+			searchBox: true,
+			threshold: 0.5
+		};
+
+		public classes;
 		public dom;
 		public c;
 		public s;
 		public panes;
 
-		static class = {
-			container: 'dt-searchPanes',
-			clear: 'clear',
-			pane: {
-				active: 'filtering',
-				container: 'pane',
-				title: 'title',
-				scroller: 'scroller'
-			},
-			item: {
-				selected: 'selected',
-				label: 'label',
-				count: 'count'
-			}
-		};
-		
-		static defaults = {
-			container: function(dt) {
-				return dt.table().container();
-			},
-			columns: undefined,
-			insert: 'prepend',
-			threshold: 0.5,
-			minRows: 1,
-			searchBox: true, 
-			cascaderPanes: false,
-			emptyMessage: "<i>No Data</i>"
-		};
-		
-        static version = '0.0.2'; 
-        
-        constructor(settings, opts){
+		constructor(settings, opts) {
 
-            var that = this;
-			var table = new DataTable.Api(settings);
-			this.panes =[];
+			let table = new DataTable.Api(settings);
+			this.panes = [];
 
-            this.classes = $.extend(true, {}, SearchPanes.class);
+			this.classes = $.extend(true, {}, SearchPanes.class);
 
-            this.dom = {
-                container: $('<div/>').addClass(this.classes.container)
-            }
+			this.dom = {
+				container: $('<div/>').addClass(this.classes.container)
+			};
 
-            this.c = $.extend(true, {}, SearchPanes.defaults, opts);
+			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 
-            this.s = {
+			this.s = {
 				dt: table,
 				updating: false
-            };
+			};
 
-            table.settings()[0].searchPane = this;
+			table.settings()[0].searchPane = this;
 
-			var loadedFilter;
-			var loadTest = table.state.loaded();
-			if(table.state.loaded()){
+			let loadedFilter;
+			let loadTest = table.state.loaded();
+			if (table.state.loaded()) {
 				loadedFilter = table.state.loaded().filter;
 			}
-		
 
-            table
-                .columns(this.c.columns)
-                .eq(0)
-                .each(function(idx) {
-                   that.panes.push(that._pane(idx));
-                });
-			
-			this._reloadSelect(loadedFilter, that);
-			
+			table
+				.columns(this.c.columns)
+				.eq(0)
+				.each((idx) => {
+					this.panes.push(this._pane(idx));
+				});
+
+			this._reloadSelect(loadedFilter, this);
+
 			this._attach();
 			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
-			
-			table.on('stateSaveParams.dt', function(e, settings, data) {
-				if(!data.filter){
+
+			table.on('stateSaveParams.dt', function(data) {
+				if (!data.filter) {
 					data.filter = [];
-				}	
-				for(let i = 0; i< that.panes.length; i++){
-					if(that.panes[i]!==undefined){
-						data.filter[i] = that.panes[i].table.rows({selected: true}).data().pluck(0).flatten().toArray();
-					}
 				}
-			})
-
-			table.state.save()
-        }
-
-		public _reloadSelect(loadedFilter, that){
-			if(loadedFilter === undefined){
-					return;
-			}
-			for( var i = 0; i< that.panes.length; i++){
-				if(loadedFilter[i] !== null && loadedFilter[i] !== undefined){
-					var table = that.panes[i].table;
-					var rows = table.rows({order: "index"}).data().pluck(0);
-					for(var j = 0; j < loadedFilter[i].length; j++){
-						var id = loadedFilter[i].indexOf(rows[j]);
-						if(id > -1){
-							table.row(id).select();
-						}		
+				let me = () => {
+					for (let i = 0; i < this.panes.length; i++) {
+						if (this.panes[i] !== undefined) {
+							data.filter[i] = this.panes[i].table.rows({selected: true}).data().pluck(0).flatten().toArray();
+						}
 					}
-				}
-			}
+				};
+			});
 
+			table.state.save();
 		}
 
-        public _attach () {
-			var container = this.c.container;
-			var host = typeof container === 'function' ? container(this.s.dt) : container;
+		public _reloadSelect(loadedFilter, that) {
+			if (loadedFilter === undefined) {
+					return;
+			}
+			for (let i = 0; i < that.panes.length; i++) {
+				if (loadedFilter[i] !== null && loadedFilter[i] !== undefined) {
+					let table = that.panes[i].table;
+					let rows = table.rows({order: 'index'}).data().pluck(0);
+					for (let j = 0; j < loadedFilter[i].length; j++) {
+						let id = loadedFilter[i].indexOf(rows[j]);
+						if (id > -1) {
+							table.row(id).select();
+						}
+					}
+				}
+			}
+		}
+
+		public _attach() {
+			let container = this.c.container;
+			let host = typeof container === 'function' ? container(this.s.dt) : container;
 
 			if (this.c.insert === 'prepend') {
 				$(this.dom.container).prependTo(host);
-			} else {
+			}
+			else {
 				$(this.dom.container).appendTo(host);
 			}
-        }
-		
-		private _getColType(table,idx){
-			return table.settings()[0].aoColumns[idx].sType;
 		}
 
-        public _pane(idx) {
-            var classes = this.classes;
-			var itemClasses = classes.item;
-			var paneClasses = classes.pane;
-			var table = this.s.dt;
-			var column = table.column(idx);
-			var colOpts = this._getOptions(idx);
-            var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
-			var container = this.dom.container;
-			var colType =  this._getColType(table,idx);
+		public _pane(idx) {
+			let classes = this.classes;
+			let table = this.s.dt;
+			let column = table.column(idx);
+			let colOpts = this._getOptions(idx);
+			let dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
+			let container = this.dom.container;
+			let colType =  this._getColType(table, idx);
+			let arrayFilter = [];
 
+			table.rows().every(function(rowIdx, tableLoop, rowLoop) {
 
+				let filter = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
+				 table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+				let display = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
+				 table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
 
-			var arrayFilter = [];
-			var splitBin = [];
-			table.rows().every( function ( rowIdx, tableLoop, rowLoop){
-				
-				var filter = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
-				var display = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
-				if(Array.isArray(filter) || filter instanceof DataTable.Api){
-					if(filter instanceof DataTable.Api){
+				if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+
+					if (filter instanceof DataTable.Api) {
+
 						filter = filter.toArray();
 						display = display.toArray();
-					} else if(Array.isArray(filter)){
-						colOpts.match = 'any';
 					}
-					if(filter.length === display.length) {
-						for(var i = 0; i< filter.length; i++){
-							arrayFilter.push({
-								filter: filter[i],
-								display: display[i]
-							})
-						}
-					} else {
-						throw new Error('display and filter not the same length');
 
+					colOpts.match = 'any';
+
+					if (filter.length === display.length) {
+
+						for (let i = 0; i < filter.length; i++) {
+
+							arrayFilter.push({
+
+								display: display[i],
+								filter: filter[i]
+							});
+						}
 					}
-				} else {
-					arrayFilter.push({
-						filter: filter,
-						display: display
-					})
+					else {
+
+						throw new Error('display and filter not the same length');
+					}
 				}
-				
-								
-				// arrayFilter = arrayFilter.filter(function(elem, index, self) {
-				// 	return index === self.indexOf(elem);
-				// })
-			})
-			
-			var bins = this._binData(this._flatten(arrayFilter));
+				else {
+
+					arrayFilter.push({
+						display,
+						filter
+					});
+				}
+			});
+
+			let bins = this._binData(this._flatten(arrayFilter));
+
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
 			if (this._variance(bins) < this.c.threshold && !colOpts.options) {
 				return;
 			}
+
 			$(container).append(dt);
-            var dtPane = {
+			let dtPane = {
+				index: idx,
 				table: $(dt).DataTable({
-					"paging":false,
-					"scrollY":"200px",
-					"info": false,
-					select:true,
-					'searching':this.c.searchBox,
 					columnDefs: [
-						{ data: 'display',type: colType, targets: 0},
-						{ data: 'count', type: colType, targets:1}
-					]
+						{ data: 'display', type: colType, targets: 0},
+						{ data: 'count', type: colType, targets: 1}
+					],
+					info: false,
+					paging: false,
+					scrollY: '200px',
+					searching: this.c.searchBox,
+					select: true
 				}),
-				index: idx
 			} ;
 
 			// On initialisation, do we need to set a filtering value from a
 			// saved state or init option?
-			var search = column.search();
+			let search = column.search();
 			search = search ? search.substr(1, search.length - 2).split('|') : [];
-			var data = [];
-			var prev = []
+			let data = [];
+			let prev = [];
 
-			for(var i = 0; i< arrayFilter.length; i++){
-					if(prev.indexOf(arrayFilter[i].filter) === -1){
+			for (let i of arrayFilter) {
+
+					if (prev.indexOf(i.filter) === -1) {
+
 						data.push({
-							filter: arrayFilter[i].filter,
-							display: arrayFilter[i].display
-						})
-						prev.push(arrayFilter[i].filter)
+							display: i.display,
+							filter: i.filter
+						});
+						prev.push(i.filter);
 					}
 			}
-			var count: number = 0;
+
+			let count: number = 0;
 			arrayFilter.forEach(element => {
-				if(element.filter === ''){
+
+				if (element.filter === '') {
+
 					count++;
 				}
 			});
 
-
-			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//var arrBin = this._binData(this._flatten(arrayFilter));
-			/*var arrData = arrBin.toArray();
-			arrData = arrData.filter(function(elem, index, self) {
-				return index === self.indexOf(elem);
-			})
-			*/
-			for(var i = 0, ien = data.length; i< ien; i++){
-                if(data[i]){
-					for(var j = 0; j< arrayFilter.length; j++){
-						if(data[i].filter === arrayFilter[j].filter || data[i] === arrayFilter[j].display){
-							dtPane.table.row.add({filter:arrayFilter[j].filter,count: bins[data[i].filter], display:arrayFilter[j].display});
+			for (let i = 0, ien = data.length; i < ien; i++) {
+				if (data[i]) {
+					for (let j of arrayFilter) {
+						if (data[i].filter === j.filter || data[i] === j.display) {
+							dtPane.table.row.add({
+								count: bins[data[i].filter],
+								display: j.display,
+								filter: j.filter
+							});
 							break;
 						}
 					}
-                } else {
-					dtPane.table.row.add({filter:this.c.emptyMessage,count:count,display:this.c.emptyMessage});
+				}
+				else {
+					dtPane.table.row.add({filter: this.c.emptyMessage, count, display: this.c.emptyMessage});
 				}
 			}
 
 			$.fn.dataTable.select.init(dtPane.table);
 
 			dtPane.table.draw();
-			
-			var t0;
-			
+
+			let t0;
+
 			dtPane.table.on('select.dt', () => {
 				clearTimeout(t0);
-				
-				if(!this.s.updating){
-						dtPane.table.rows({selected: true}).data().toArray();		
-						this._search(dtPane);		
-						if(this.c.filterPanes){
-							this._updatePane(dtPane.index,true);
+
+				if (!this.s.updating) {
+						dtPane.table.rows({selected: true}).data().toArray();
+						this._search(dtPane);
+						if (this.c.filterPanes) {
+							this._updatePane(dtPane.index, true);
 						}
 				}
 			});
 
 			dtPane.table.on('deselect.dt', () => {
 				t0 = setTimeout(() => {
-					
-					dtPane.table.rows({selected: true}).data().toArray();		
-					this._search(dtPane);	
-					
-					if(this.c.filterPanes){
+
+					dtPane.table.rows({selected: true}).data().toArray();
+					this._search(dtPane);
+
+					if (this.c.filterPanes) {
 						this._updatePane(dtPane.index, false);
 					}
-				},50);
+				}, 50);
 			});
 
 			return dtPane;
 		}
-		
-		private _flatten(arr) {
-			return arr.reduce(function flatten(res, a) { 
-				Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
-				return res;
-			}, []);
-		}
 
-		public _search (paneIn){
-			var columnIdx = paneIn.index;
-			var table = this.s.dt;
-			var options = this._getOptions(columnIdx);
-			console.log(options);
-			var filters = paneIn.table.rows({selected:true}).data().pluck('filter').toArray();
-			var nullIndex = filters.indexOf(this.c.emptyMessage);
-			var container = $(paneIn.table.table().container());
-			if(nullIndex > -1){
+		public _search(paneIn) {
+			let columnIdx = paneIn.index;
+			let table = this.s.dt;
+			let options = this._getOptions(columnIdx);
+			let filters = paneIn.table.rows({selected: true}).data().pluck('filter').toArray();
+			let nullIndex = filters.indexOf(this.c.emptyMessage);
+			let container = $(paneIn.table.table().container());
+			if (nullIndex > -1) {
 				filters[nullIndex] = '';
 			}
-			if(filters.length > 0){
-				container.addClass("selected")
+			if (filters.length > 0) {
+				container.addClass('selected');
 			}
-			if(filters.length === 0){
-				container.removeClass("selected")
+			if (filters.length === 0) {
+				container.removeClass('selected');
 				table
 					.columns(columnIdx)
 					.search('')
 					.draw();
-			} else if (options.match === 'any'){
+			}
+			else if (options.match === 'any') {
 				table
 					.column(columnIdx)
 					.search(
 						'(' +
 						$.map(filters, function(filter) {
-							if(filter !== ''){
+							if (filter !== '') {
 								return ($.fn as any).dataTable.util.escapeRegex(filter);
-							} else {
+							}
+							else {
 									return '^$';
 							}
 						})
@@ -378,11 +374,12 @@ declare var define: {
 						false
 					)
 					.draw();
-			} else {
+			}
+			else {
 				table
 					.columns(columnIdx)
 					.search(
-						'^(' + 
+						'^(' +
 						$.map(filters, function(filter) {
 							return($.fn as any).dataTable.util.escapeRegex(filter);
 						})
@@ -395,42 +392,42 @@ declare var define: {
 			}
 		}
 
-		public _updatePane(callerIndex, select){
-			for(let i = 0; i< this.panes.length; i++){
-				// Update the panes if doing a deselct. if doing a select then 
+		public _updatePane(callerIndex, select) {
+			for (let i of this.panes) {
+				// Update the panes if doing a deselct. if doing a select then
 				// update all of the panes except for the one causing the change
-				if(this.panes[i] !== undefined && (this.panes[i].index !== callerIndex || !select)){
-					var selected = this.panes[i].table.rows({selected: true}).data().pluck(0);
-					var colOpts = this._getOptions(this.panes[i].index);
-					var column = this.s.dt.column(this.panes[i].index, {search:"applied"}); 
+				if (this.panes[i] !== undefined && (this.panes[i].index !== callerIndex || !select)) {
+					let selected = this.panes[i].table.rows({selected: true}).data().pluck(0);
+					let colOpts = this._getOptions(this.panes[i].index);
+					let column = this.s.dt.column(this.panes[i].index, {search: 'applied'});
 					this.panes[i].table.clear();
-					var binData = typeof colOpts.options === 'function' ?
-						colOpts.options( this.s.dt, this.panes[i].index ) :
+					let binData = typeof colOpts.options === 'function' ?
+						colOpts.options(this.s.dt, this.panes[i].index) :
 						colOpts.options ?
 							new DataTable.Api(null, colOpts.options) :
 							column.data();
-					var bins = this._binData(binData.flatten());
-					var data = binData
+					let bins = this._binData(binData.flatten());
+					let data = binData
 					.unique()
 					.sort()
 					.toArray();
-					
+
 					this.s.updating = true;
-					for(var j = 0; j < data.length; j++){
-						if(data[j]){
-							var row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
-							var selectIndex = selected.indexOf(data[j])
-							if( selectIndex> -1){
+					for (let j of data) {
+						if (data[j]) {
+							let row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
+							let selectIndex = selected.indexOf(data[j]);
+							if (selectIndex > -1) {
 								row.select();
-								selected.splice(selectIndex,1);
+								selected.splice(selectIndex, 1);
 							}
 						}
-					}	
-					if(selected.length > 0 ){
-						for(var j = 0; j< selected.length; j++){
-							var row = this.panes[i].table.row.add([selected[j], 0]);
+					}
+					if (selected.length > 0) {
+						for (let j of selected) {
+							let row = this.panes[i].table.row.add([selected[j], 0]);
 							row.select();
-							
+
 						}
 					}
 					this.s.updating = false;
@@ -439,69 +436,78 @@ declare var define: {
 			}
 		}
 
-        public _getOptions (colIdx) {
-			var table = this.s.dt;
-			var defaults = {
-				orthogonal:{
-					search: 'filter',
-					display: 'display'
+		public _getOptions(colIdx) {
+			let table = this.s.dt;
+			let defaults = {
+				match: 'exact',
+				orthogonal: {
+					display: 'display',
+					search: 'filter'
 				},
-				match:'exact'
-			}
-			return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane );
-        }
-        
-        public _variance (d) {
-			var data = $.map(d, function(val, key) {
+			};
+			return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
+		}
+
+		public _variance(d) {
+			let data = $.map(d, function(val, key) {
 				return val;
 			});
 
-			var count = data.length;
-			var sum = 0;
-			for (var i = 0, ien = count; i < ien; i++) {
+			let count = data.length;
+			let sum = 0;
+			for (let i = 0, ien = count; i < ien; i++) {
 				sum += data[i];
 			}
 
-			var mean = sum / count;
-			var varSum = 0;
-			for (var i = 0, ien = count; i < ien; i++) {
+			let mean = sum / count;
+			let varSum = 0;
+			for (let i = 0, ien = count; i < ien; i++) {
 				varSum += Math.pow(mean - data[i], 2);
 			}
 
 			return varSum / (count - 1);
-        }
-        
-        public _binData (data): {} {
-			var out = {};
-			data = this._flatten(data);
-			for (var i = 0, ien = data.length; i < ien; i++) {
+		}
 
-				var d = data[i].filter;
+		public _binData(data): {} {
+			let out = {};
+			data = this._flatten(data);
+			for (let i = 0, ien = data.length; i < ien; i++) {
+
+				let d = data[i].filter;
 				if (!d) {
 					continue;
 				}
 
 				if (!out[d]) {
 					out[d] = 1;
-				} else {
+				}
+				else {
 					out[d]++;
 				}
 			}
 
 			return out;
 		}
-		
-		public rebuild(){
-			var that = this;
 
+		public rebuild() {
 			this.dom.container.empty();
 			this.s.dt
 				.columns(this.c.columns)
 				.eq(0)
-				.each(function(idx) {
-					that._pane(idx);
+				.each((idx) => {
+					this._pane(idx);
 				});
-			//$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+		}
+
+		private _getColType(table, idx) {
+			return table.settings()[0].aoColumns[idx].sType;
+		}
+
+		private _flatten(arr) {
+			return arr.reduce(function flatten(res, a) {
+				Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
+				return res;
+			}, []);
 		}
 
 	}
@@ -518,7 +524,7 @@ declare var define: {
 
 	DataTable.Api.register('column().paneOptions()', function(options) {
 		return this.iterator('column', function(ctx, idx) {
-			var col = ctx.aoColumns[idx];
+			let col = ctx.aoColumns[idx];
 
 			if (!col.searchPane) {
 				col.searchPane = {};
@@ -536,14 +542,14 @@ declare var define: {
 			return;
 		}
 
-		var init = settings.oInit.searchPane;
-		var defaults = DataTable.defaults.searchPane;
+		let init = settings.oInit.searchPane;
+		let defaults = DataTable.defaults.searchPane;
 
 		if (init || defaults) {
-			var opts = $.extend({}, init, defaults);
+			let opts = $.extend({}, init, defaults);
 
 			if (init !== false) {
-				new SearchPanes(settings, opts);
+				let sep = new SearchPanes(settings, opts);
 			}
 		}
 	});
