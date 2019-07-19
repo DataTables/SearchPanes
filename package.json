@@ -21,7 +21,10 @@
     "url": "https://github.com/DataTables/SearchPane/issues"
   },
   "homepage": "https://github.com/DataTables/SearchPane#readme",
-  "dependencies": {},
+  "dependencies": {
+    "tslint": "^5.18.0",
+    "tslint-eslint-rules": "^5.4.0"
+  },
   "devDependencies": {
     "@types/jquery": "^3.3.29",
     "typescript": "^3.5.2",

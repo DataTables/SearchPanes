@@ -1,7 +1,6 @@
 /*! SearchPane 0.0.2
  * 2018 SpryMedia Ltd - datatables.net/license
  */
-/// <reference path = "../node_modules/@types/jquery/index.d.ts"/>
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
 // function) or just default browser loading.
@@ -32,9 +31,10 @@
     var DataTable = $.fn.dataTable;
     var SearchPanes = /** @class */ (function () {
         function SearchPanes(settings, opts) {
-            var that = this;
+            var _this = this;
             var table = new DataTable.Api(settings);
             this.panes = [];
+            this.arrayCols = [];
             this.classes = $.extend(true, {}, SearchPanes["class"]);
             this.dom = {
                 container: $('<div/>').addClass(this.classes.container)
@@ -42,7 +42,10 @@
             this.c = $.extend(true, {}, SearchPanes.defaults, opts);
             this.s = {
                 dt: table,
-                updating: false
+                updating: false,
+                columns: [
+                // { selected: []},
+                ]
             };
             table.settings()[0].searchPane = this;
             var loadedFilter;
@@ -54,20 +57,23 @@
                 .columns(this.c.columns)
                 .eq(0)
                 .each(function (idx) {
-                that.panes.push(that._pane(idx));
+                _this.panes.push(_this._pane(idx));
             });
-            this._reloadSelect(loadedFilter, that);
+            this._reloadSelect(loadedFilter, this);
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-            table.on('stateSaveParams.dt', function (e, settings, data) {
+            table.on('stateSaveParams.dt', function (data) {
+                var _this = this;
                 if (!data.filter) {
                     data.filter = [];
                 }
-                for (var i = 0; i < that.panes.length; i++) {
-                    if (that.panes[i] !== undefined) {
-                        data.filter[i] = that.panes[i].table.rows({ selected: true }).data().pluck(0).flatten().toArray();
+                var me = function () {
+                    for (var i = 0; i < _this.panes.length; i++) {
+                        if (_this.panes[i] !== undefined) {
+                            data.filter[i] = _this.panes[i].table.rows({ selected: true }).data().pluck(0).flatten().toArray();
+                        }
                     }
-                }
+                };
             });
             table.state.save();
         }
@@ -78,7 +84,7 @@
             for (var i = 0; i < that.panes.length; i++) {
                 if (loadedFilter[i] !== null && loadedFilter[i] !== undefined) {
                     var table = that.panes[i].table;
-                    var rows = table.rows({ order: "index" }).data().pluck(0);
+                    var rows = table.rows({ order: 'index' }).data().pluck(0);
                     for (var j = 0; j < loadedFilter[i].length; j++) {
                         var id = loadedFilter[i].indexOf(rows[j]);
                         if (id > -1) {
@@ -98,38 +104,37 @@
                 $(this.dom.container).appendTo(host);
             }
         };
-        SearchPanes.prototype._getColType = function (table, idx) {
-            return table.settings()[0].aoColumns[idx].sType;
-        };
         SearchPanes.prototype._pane = function (idx) {
             var _this = this;
             var classes = this.classes;
-            var itemClasses = classes.item;
-            var paneClasses = classes.pane;
             var table = this.s.dt;
+            var tableCols = this.s.columns;
             var column = table.column(idx);
             var colOpts = this._getOptions(idx);
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
             var arrayFilter = [];
-            var splitBin = [];
+            tableCols.push([]);
             table.rows().every(function (rowIdx, tableLoop, rowLoop) {
-                var filter = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
-                var display = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+                var filter = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
+                    table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+                var display = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
+                    table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
                 if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+                    if (classes.arrayCols.indexOf(idx) === -1) {
+                        classes.arrayCols.push(idx);
+                    }
                     if (filter instanceof DataTable.Api) {
                         filter = filter.toArray();
                         display = display.toArray();
                     }
-                    else if (Array.isArray(filter)) {
-                        colOpts.match = 'any';
-                    }
+                    colOpts.match = 'any';
                     if (filter.length === display.length) {
                         for (var i = 0; i < filter.length; i++) {
                             arrayFilter.push({
-                                filter: filter[i],
-                                display: display[i]
+                                display: display[i],
+                                filter: filter[i]
                             });
                         }
                     }
@@ -139,13 +144,28 @@
                 }
                 else {
                     arrayFilter.push({
-                        filter: filter,
-                        display: display
+                        display: display,
+                        filter: filter
                     });
                 }
-                // arrayFilter = arrayFilter.filter(function(elem, index, self) {
-                // 	return index === self.indexOf(elem);
-                // })
+            });
+            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex, origData) {
+                if (tableCols[idx].length === 0) {
+                    return true;
+                }
+                var filter = data[idx];
+                if (colOpts.orthogonal.filter !== 'filter') {
+                    filter = typeof (colOpts.orthogonal) === 'string'
+                        ? table.cell(dataIndex, idx).render(colOpts.orthogonal)
+                        : table.cell(dataIndex, idx).render(colOpts.orthogonal.filter);
+                }
+                for (var i = 0; i < tableCols[idx].length; i++) {
+                    var town = data[2] || '';
+                    if (filter.indexOf(tableCols[idx][i].filter) !== -1) {
+                        return true;
+                    }
+                }
+                return false;
             });
             var bins = this._binData(this._flatten(arrayFilter));
             // Don't show the pane if there isn't enough variance in the data
@@ -155,18 +175,18 @@
             }
             $(container).append(dt);
             var dtPane = {
+                index: idx,
                 table: $(dt).DataTable({
-                    "paging": false,
-                    "scrollY": "200px",
-                    "info": false,
-                    select: true,
-                    'searching': this.c.searchBox,
                     columnDefs: [
                         { data: 'display', type: colType, targets: 0 },
                         { data: 'count', type: colType, targets: 1 }
-                    ]
-                }),
-                index: idx
+                    ],
+                    info: false,
+                    paging: false,
+                    scrollY: '200px',
+                    searching: this.c.searchBox,
+                    select: true
+                })
             };
             // On initialisation, do we need to set a filtering value from a
             // saved state or init option?
@@ -174,13 +194,14 @@
             search = search ? search.substr(1, search.length - 2).split('|') : [];
             var data = [];
             var prev = [];
-            for (var i = 0; i < arrayFilter.length; i++) {
-                if (prev.indexOf(arrayFilter[i].filter) === -1) {
+            for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
+                var i = arrayFilter_1[_i];
+                if (prev.indexOf(i.filter) === -1) {
                     data.push({
-                        filter: arrayFilter[i].filter,
-                        display: arrayFilter[i].display
+                        display: i.display,
+                        filter: i.filter
                     });
-                    prev.push(arrayFilter[i].filter);
+                    prev.push(i.filter);
                 }
             }
             var count = 0;
@@ -189,18 +210,16 @@
                     count++;
                 }
             });
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //var arrBin = this._binData(this._flatten(arrayFilter));
-            /*var arrData = arrBin.toArray();
-            arrData = arrData.filter(function(elem, index, self) {
-                return index === self.indexOf(elem);
-            })
-            */
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
-                    for (var j = 0; j < arrayFilter.length; j++) {
-                        if (data[i].filter === arrayFilter[j].filter || data[i] === arrayFilter[j].display) {
-                            dtPane.table.row.add({ filter: arrayFilter[j].filter, count: bins[data[i].filter], display: arrayFilter[j].display });
+                    for (var _a = 0, arrayFilter_2 = arrayFilter; _a < arrayFilter_2.length; _a++) {
+                        var j = arrayFilter_2[_a];
+                        if (data[i].filter === j.filter || data[i] === j.display) {
+                            dtPane.table.row.add({
+                                count: bins[data[i].filter],
+                                display: j.display,
+                                filter: j.filter
+                            });
                             break;
                         }
                     }
@@ -215,35 +234,30 @@
             dtPane.table.on('select.dt', function () {
                 clearTimeout(t0);
                 if (!_this.s.updating) {
-                    dtPane.table.rows({ selected: true }).data().toArray();
+                    var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
+                    tableCols[idx] = selectedRows;
                     _this._search(dtPane);
-                    if (_this.c.filterPanes) {
+                    if (_this.c.cascadePanes) {
                         _this._updatePane(dtPane.index, true);
                     }
                 }
             });
             dtPane.table.on('deselect.dt', function () {
                 t0 = setTimeout(function () {
-                    dtPane.table.rows({ selected: true }).data().toArray();
+                    var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
+                    tableCols[idx] = selectedRows;
                     _this._search(dtPane);
-                    if (_this.c.filterPanes) {
+                    if (_this.c.cascadePanes) {
                         _this._updatePane(dtPane.index, false);
                     }
                 }, 50);
             });
             return dtPane;
         };
-        SearchPanes.prototype._flatten = function (arr) {
-            return arr.reduce(function flatten(res, a) {
-                Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
-                return res;
-            }, []);
-        };
         SearchPanes.prototype._search = function (paneIn) {
             var columnIdx = paneIn.index;
             var table = this.s.dt;
             var options = this._getOptions(columnIdx);
-            console.log(options);
             var filters = paneIn.table.rows({ selected: true }).data().pluck('filter').toArray();
             var nullIndex = filters.indexOf(this.c.emptyMessage);
             var container = $(paneIn.table.table().container());
@@ -251,16 +265,16 @@
                 filters[nullIndex] = '';
             }
             if (filters.length > 0) {
-                container.addClass("selected");
+                container.addClass('selected');
             }
             if (filters.length === 0) {
-                container.removeClass("selected");
+                container.removeClass('selected');
                 table
                     .columns(columnIdx)
                     .search('')
                     .draw();
             }
-            else if (options.match === 'any') {
+            else if (options.match === 'any' || this.classes.arrayCols.indexOf(columnIdx) !== -1) {
                 table
                     .column(columnIdx)
                     .search('(' +
@@ -277,41 +291,90 @@
                     .draw();
             }
             else {
+                table.draw();
+                /**
                 table
                     .columns(columnIdx)
-                    .search('^(' +
-                    $.map(filters, function (filter) {
-                        return $.fn.dataTable.util.escapeRegex(filter);
-                    })
+                    .search(
+                        '^(' +
+                        $.map(filters, function(filter) {
+                            return($.fn as any).dataTable.util.escapeRegex(filter);
+                        })
                         .join('|')
-                    + ')$', true, false)
+                        + ')$',
+                        true,
+                        false
+                    )
                     .draw();
+                // */
             }
         };
         SearchPanes.prototype._updatePane = function (callerIndex, select) {
-            for (var i = 0; i < this.panes.length; i++) {
-                // Update the panes if doing a deselct. if doing a select then 
+            var _loop_1 = function (pane) {
+                // Update the panes if doing a deselct. if doing a select then
                 // update all of the panes except for the one causing the change
-                if (this.panes[i] !== undefined && (this.panes[i].index !== callerIndex || !select)) {
-                    var selected = this.panes[i].table.rows({ selected: true }).data().pluck(0);
-                    var colOpts = this._getOptions(this.panes[i].index);
-                    var column = this.s.dt.column(this.panes[i].index, { search: "applied" });
-                    this.panes[i].table.clear();
-                    var binData = typeof colOpts.options === 'function' ?
-                        colOpts.options(this.s.dt, this.panes[i].index) :
-                        colOpts.options ?
-                            new DataTable.Api(null, colOpts.options) :
-                            column.data();
-                    var bins = this._binData(binData.flatten());
-                    var data = binData
-                        .unique()
-                        .sort()
-                        .toArray();
-                    this.s.updating = true;
-                    for (var j = 0; j < data.length; j++) {
-                        if (data[j]) {
-                            var row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
-                            var selectIndex = selected.indexOf(data[j]);
+                if (pane !== undefined && (pane.index !== callerIndex || !select)) {
+                    var selected = pane.table.rows({ selected: true }).data().pluck(0);
+                    var colOpts_1 = this_1._getOptions(pane.index);
+                    var column = this_1.s.dt.column(pane.index, { search: 'applied' });
+                    var arrayFilter_4 = [];
+                    var table_1 = this_1.s.dt;
+                    var idx_1 = pane.index;
+                    var visibleRows = table_1.rows();
+                    var classes_1 = this_1.classes;
+                    pane.table.clear();
+                    visibleRows.every(function (rowIdx, tableLoop, rowLoop) {
+                        var filter = typeof (colOpts_1.orthogonal) === 'string' ? table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal) :
+                            table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal.filter);
+                        var display = typeof (colOpts_1.orthogonal) === 'string' ? table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal) :
+                            table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal.display);
+                        if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+                            if (classes_1.arrayCols.indexOf(idx_1) === -1) {
+                                classes_1.arrayCols.push(idx_1);
+                            }
+                            if (filter instanceof DataTable.Api) {
+                                filter = filter.toArray();
+                                display = display.toArray();
+                            }
+                            colOpts_1.match = 'any';
+                            if (filter.length === display.length) {
+                                for (var i = 0; i < filter.length; i++) {
+                                    arrayFilter_4.push({
+                                        display: display[i],
+                                        filter: filter[i]
+                                    });
+                                }
+                            }
+                            else {
+                                throw new Error('display and filter not the same length');
+                            }
+                        }
+                        else {
+                            arrayFilter_4.push({
+                                display: display,
+                                filter: filter
+                            });
+                        }
+                    });
+                    var bins = this_1._binData(this_1._flatten(arrayFilter_4));
+                    var data = [];
+                    var prev = [];
+                    for (var _i = 0, arrayFilter_3 = arrayFilter_4; _i < arrayFilter_3.length; _i++) {
+                        var i = arrayFilter_3[_i];
+                        if (prev.indexOf(i.filter) === -1) {
+                            data.push({
+                                display: i.display,
+                                filter: i.filter
+                            });
+                            prev.push(i.filter);
+                        }
+                    }
+                    this_1.s.updating = true;
+                    for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
+                        var dataP = data_1[_a];
+                        if (dataP) {
+                            var row = pane.table.row.add({ filter: dataP.filter, count: bins[dataP.filter], display: dataP.display });
+                            var selectIndex = selected.indexOf(dataP);
                             if (selectIndex > -1) {
                                 row.select();
                                 selected.splice(selectIndex, 1);
@@ -319,24 +382,30 @@
                         }
                     }
                     if (selected.length > 0) {
-                        for (var j = 0; j < selected.length; j++) {
-                            var row = this.panes[i].table.row.add([selected[j], 0]);
+                        for (var _b = 0, selected_1 = selected; _b < selected_1.length; _b++) {
+                            var selectPoint = selected_1[_b];
+                            var row = pane.table.row.add({ filter: selectPoint, count: 0, display: selectPoint });
                             row.select();
                         }
                     }
-                    this.s.updating = false;
-                    this.panes[i].table.draw();
+                    this_1.s.updating = false;
+                    pane.table.draw();
                 }
+            };
+            var this_1 = this;
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                _loop_1(pane);
             }
         };
         SearchPanes.prototype._getOptions = function (colIdx) {
             var table = this.s.dt;
             var defaults = {
+                match: 'exact',
                 orthogonal: {
-                    search: 'filter',
-                    display: 'display'
-                },
-                match: 'exact'
+                    display: 'display',
+                    search: 'filter'
+                }
             };
             return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
         };
@@ -374,44 +443,53 @@
             return out;
         };
         SearchPanes.prototype.rebuild = function () {
-            var that = this;
+            var _this = this;
             this.dom.container.empty();
             this.s.dt
                 .columns(this.c.columns)
                 .eq(0)
                 .each(function (idx) {
-                that._pane(idx);
+                _this._pane(idx);
             });
-            //$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
         };
+        SearchPanes.prototype._getColType = function (table, idx) {
+            return table.settings()[0].aoColumns[idx].sType;
+        };
+        SearchPanes.prototype._flatten = function (arr) {
+            return arr.reduce(function flatten(res, a) {
+                Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
+                return res;
+            }, []);
+        };
+        SearchPanes.version = '0.0.2';
         SearchPanes["class"] = {
-            container: 'dt-searchPanes',
+            arrayCols: [],
             clear: 'clear',
+            container: 'dt-searchPanes',
+            item: {
+                count: 'count',
+                label: 'label',
+                selected: 'selected'
+            },
             pane: {
                 active: 'filtering',
                 container: 'pane',
-                title: 'title',
-                scroller: 'scroller'
-            },
-            item: {
-                selected: 'selected',
-                label: 'label',
-                count: 'count'
+                scroller: 'scroller',
+                title: 'title'
             }
         };
         SearchPanes.defaults = {
+            cascadePanes: false,
             container: function (dt) {
                 return dt.table().container();
             },
             columns: undefined,
+            emptyMessage: '<i>No Data</i>',
             insert: 'prepend',
-            threshold: 0.5,
             minRows: 1,
             searchBox: true,
-            cascaderPanes: false,
-            emptyMessage: "<i>No Data</i>"
+            threshold: 0.5
         };
-        SearchPanes.version = '0.0.2';
         return SearchPanes;
     }());
     $.fn.dataTable.SearchPanes = SearchPanes;
@@ -444,7 +522,7 @@
         if (init || defaults) {
             var opts = $.extend({}, init, defaults);
             if (init !== false) {
-                new SearchPanes(settings, opts);
+                var sep = new SearchPanes(settings, opts);
             }
         }
     });

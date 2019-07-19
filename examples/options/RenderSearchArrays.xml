@@ -28,8 +28,7 @@ $(document).ready(function() {
 					sp:'[].name'
 				},
 				searchPane: {
-					orthogonal:'sp',
-					match:'any'
+					orthogonal:'sp'
 				}
 			},
 		]
@@ -45,7 +44,7 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on rendered data. The threshold is set to 0 so that the rendered columns will display their data.
+This example demonstrates searching on Arrayss which are being rendered. The threshold is set to 0 so that the rendered columns will display their data.
 
 ]]></info>
 

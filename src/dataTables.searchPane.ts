@@ -62,6 +62,7 @@ declare var define: {
 		private static version = '0.0.2';
 
 		private static class = {
+			arrayCols: [],
 			clear: 'clear',
 			container: 'dt-searchPanes',
 			item: {
@@ -74,11 +75,11 @@ declare var define: {
 				container: 'pane',
 				scroller: 'scroller',
 				title: 'title',
-			}
+			},
 		};
 
 		private static defaults = {
-			cascaderPanes: false,
+			cascadePanes: false,
 			container(dt) {
 				return dt.table().container();
 			},
@@ -95,12 +96,13 @@ declare var define: {
 		public c;
 		public s;
 		public panes;
+		public arrayCols;
 
 		constructor(settings, opts) {
 
 			let table = new DataTable.Api(settings);
 			this.panes = [];
-
+			this.arrayCols = [];
 			this.classes = $.extend(true, {}, SearchPanes.class);
 
 			this.dom = {
@@ -108,10 +110,10 @@ declare var define: {
 			};
 
 			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
-
 			this.s = {
+				columns: [],
 				dt: table,
-				updating: false
+				updating: false,
 			};
 
 			table.settings()[0].searchPane = this;
@@ -183,24 +185,31 @@ declare var define: {
 		public _pane(idx) {
 			let classes = this.classes;
 			let table = this.s.dt;
+			let tableCols = this.s.columns;
 			let column = table.column(idx);
 			let colOpts = this._getOptions(idx);
-			let dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
 			let container = this.dom.container;
 			let colType =  this._getColType(table, idx);
+			let dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
 			let arrayFilter = [];
+
+			// Add an empty array for each column for holding the selected values
+			tableCols.push([]);
 
 			table.rows().every(function(rowIdx, tableLoop, rowLoop) {
 
+				// Retrieve the rendered data from the cell
 				let filter = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
 				 table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
 				let display = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
 				 table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
 
+				// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 				if (Array.isArray(filter) || filter instanceof DataTable.Api) {
-
+					if (classes.arrayCols.indexOf(idx) === -1) {
+						classes.arrayCols.push(idx);
+					}
 					if (filter instanceof DataTable.Api) {
-
 						filter = filter.toArray();
 						display = display.toArray();
 					}
@@ -232,6 +241,32 @@ declare var define: {
 				}
 			});
 
+			// Custom search function for table
+			$.fn.dataTable.ext.search.push(
+				function(settings, searchData, dataIndex, origData) {
+
+					// If no data has been selected then show all
+					if (tableCols[idx].length === 0) {
+						return true;
+					}
+					// Get the current filtered data
+					let filter = searchData[idx];
+					if (colOpts.orthogonal.filter !== 'filter') {
+						filter = typeof(colOpts.orthogonal) === 'string'
+						? table.cell(dataIndex, idx).render(colOpts.orthogonal)
+						: table.cell(dataIndex, idx).render(colOpts.orthogonal.filter);
+					}
+
+					// For each item selected in the pane, check if it is available in the cell
+					for (let colSelect of tableCols[idx]) {
+						if (filter.indexOf(colSelect.filter) !== -1) {
+							return true;
+						}
+					}
+					return false;
+				}
+			);
+
 			let bins = this._binData(this._flatten(arrayFilter));
 
 			// Don't show the pane if there isn't enough variance in the data
@@ -240,6 +275,7 @@ declare var define: {
 				return;
 			}
 
+			// If the varaince is accceptable then display the search pane
 			$(container).append(dt);
 			let dtPane = {
 				index: idx,
@@ -263,18 +299,20 @@ declare var define: {
 			let data = [];
 			let prev = [];
 
-			for (let i of arrayFilter) {
+			// Make sure that the values stored are unique
+			for (let filterEl of arrayFilter) {
 
-					if (prev.indexOf(i.filter) === -1) {
+					if (prev.indexOf(filterEl.filter) === -1) {
 
 						data.push({
-							display: i.display,
-							filter: i.filter
+							display: filterEl.display,
+							filter: filterEl.filter
 						});
-						prev.push(i.filter);
+						prev.push(filterEl.filter);
 					}
 			}
 
+			// Count the number of empty cells
 			let count: number = 0;
 			arrayFilter.forEach(element => {
 
@@ -284,6 +322,7 @@ declare var define: {
 				}
 			});
 
+			// Add all of the search options to the pane
 			for (let i = 0, ien = data.length; i < ien; i++) {
 				if (data[i]) {
 					for (let j of arrayFilter) {
@@ -308,25 +347,31 @@ declare var define: {
 
 			let t0;
 
+			// When an item is selected on the pane, add these to the array which holds selected items.
+			// Custom search will perform.
 			dtPane.table.on('select.dt', () => {
 				clearTimeout(t0);
 
 				if (!this.s.updating) {
-						dtPane.table.rows({selected: true}).data().toArray();
-						this._search(dtPane);
-						if (this.c.filterPanes) {
+					let selectedRows = dtPane.table.rows({selected: true}).data().toArray();
+					tableCols[idx] = selectedRows;
+					this._search(dtPane);
+					if (this.c.cascadePanes) {
 							this._updatePane(dtPane.index, true);
 						}
 				}
 			});
 
+			// When an item is deselected on the pane, re add the currently selected items to the array 
+			// which holds selected items. Custom search will be performed.
 			dtPane.table.on('deselect.dt', () => {
 				t0 = setTimeout(() => {
 
-					dtPane.table.rows({selected: true}).data().toArray();
+					let selectedRows = dtPane.table.rows({selected: true}).data().toArray();
+					tableCols[idx] = selectedRows;
 					this._search(dtPane);
 
-					if (this.c.filterPanes) {
+					if (this.c.cascadePanes) {
 						this._updatePane(dtPane.index, false);
 					}
 				}, 50);
@@ -355,7 +400,7 @@ declare var define: {
 					.search('')
 					.draw();
 			}
-			else if (options.match === 'any') {
+			else if (options.match === 'any' || this.classes.arrayCols.indexOf(columnIdx) !== -1) {
 				table
 					.column(columnIdx)
 					.search(
@@ -376,47 +421,88 @@ declare var define: {
 					.draw();
 			}
 			else {
-				table
-					.columns(columnIdx)
-					.search(
-						'^(' +
-						$.map(filters, function(filter) {
-							return($.fn as any).dataTable.util.escapeRegex(filter);
-						})
-						.join('|')
-						+ ')$',
-						true,
-						false
-					)
-					.draw();
+				table.draw();
 			}
 		}
 
 		public _updatePane(callerIndex, select) {
-			for (let i of this.panes) {
+			for (let pane of this.panes) {
 				// Update the panes if doing a deselct. if doing a select then
 				// update all of the panes except for the one causing the change
-				if (this.panes[i] !== undefined && (this.panes[i].index !== callerIndex || !select)) {
-					let selected = this.panes[i].table.rows({selected: true}).data().pluck(0);
-					let colOpts = this._getOptions(this.panes[i].index);
-					let column = this.s.dt.column(this.panes[i].index, {search: 'applied'});
-					this.panes[i].table.clear();
-					let binData = typeof colOpts.options === 'function' ?
-						colOpts.options(this.s.dt, this.panes[i].index) :
-						colOpts.options ?
-							new DataTable.Api(null, colOpts.options) :
-							column.data();
-					let bins = this._binData(binData.flatten());
-					let data = binData
-					.unique()
-					.sort()
-					.toArray();
+				if (pane !== undefined && (pane.index !== callerIndex || !select)) {
+					let selected = pane.table.rows({selected: true}).data().pluck(0);
+					let colOpts = this._getOptions(pane.index);
+					let column = this.s.dt.column(pane.index, {search: 'applied'});
+					let arrayFilter = [];
+					let table = this.s.dt;
+					let idx = pane.index;
+					let visibleRows = table.rows();
+					let classes = this.classes;
+					pane.table.clear();
+					visibleRows.every(function(rowIdx, tableLoop, rowLoop) {
 
+						let filter = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
+						 table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+						let display = typeof(colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
+						 table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+						if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+							if (classes.arrayCols.indexOf(idx) === -1) {
+								classes.arrayCols.push(idx);
+							}
+							if (filter instanceof DataTable.Api) {
+
+								filter = filter.toArray();
+								display = display.toArray();
+							}
+
+							colOpts.match = 'any';
+
+							if (filter.length === display.length) {
+
+								for (let i = 0; i < filter.length; i++) {
+
+									arrayFilter.push({
+
+										display: display[i],
+										filter: filter[i]
+									});
+								}
+							}
+							else {
+
+								throw new Error('display and filter not the same length');
+							}
+						}
+						else {
+
+							arrayFilter.push({
+								display,
+								filter
+							});
+						}
+					});
+
+					let bins = this._binData(this._flatten(arrayFilter));
+					let data = [];
+					let prev = [];
+
+					for (let i of arrayFilter) {
+
+						if (prev.indexOf(i.filter) === -1) {
+
+							data.push({
+								display: i.display,
+								filter: i.filter
+							});
+							prev.push(i.filter);
+						}
+					}
 					this.s.updating = true;
-					for (let j of data) {
-						if (data[j]) {
-							let row = this.panes[i].table.row.add([data[j], bins[data[j]]]);
-							let selectIndex = selected.indexOf(data[j]);
+
+					for (let dataP of data) {
+						if (dataP) {
+							let row = pane.table.row.add({filter: dataP.filter, count: bins[dataP.filter], display: dataP.display});
+							let selectIndex = selected.indexOf(dataP);
 							if (selectIndex > -1) {
 								row.select();
 								selected.splice(selectIndex, 1);
@@ -424,14 +510,13 @@ declare var define: {
 						}
 					}
 					if (selected.length > 0) {
-						for (let j of selected) {
-							let row = this.panes[i].table.row.add([selected[j], 0]);
+						for (let selectPoint of selected) {
+							let row = pane.table.row.add({filter: selectPoint, count: 0, display: selectPoint});
 							row.select();
-
 						}
 					}
 					this.s.updating = false;
-					this.panes[i].table.draw();
+					pane.table.draw();
 				}
 			}
 		}
