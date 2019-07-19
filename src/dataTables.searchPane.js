@@ -61,7 +61,6 @@
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
             table.on('stateSaveParams.dt', function (e, settings, data) {
-                console.log();
                 var paneColumns = [];
                 for (var i = 0; i < _this.panes.length; i++) {
                     if (_this.panes[i]) {
@@ -69,7 +68,6 @@
                     }
                 }
                 data.searchPane = paneColumns;
-                console.log(data);
             });
             table.state.save();
         }
@@ -77,6 +75,8 @@
             if (loadedFilter === undefined) {
                 return;
             }
+            // For each pane, check that the loadedFilter list exists and is not null,
+            // find the id of each search item and set it to be selected.
             for (var i = 0; i < that.panes.length; i++) {
                 if (loadedFilter.searchPane[i] !== null && loadedFilter.searchPane[i] !== undefined) {
                     var table = that.panes[i].table;
