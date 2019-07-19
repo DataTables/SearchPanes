@@ -41,11 +41,10 @@
             };
             this.c = $.extend(true, {}, SearchPanes.defaults, opts);
             this.s = {
+                colOpts: [],
+                columns: [],
                 dt: table,
-                updating: false,
-                columns: [
-                // { selected: []},
-                ]
+                updating: false
             };
             table.settings()[0].searchPane = this;
             var loadedFilter;
@@ -110,17 +109,21 @@
             var table = this.s.dt;
             var tableCols = this.s.columns;
             var column = table.column(idx);
-            var colOpts = this._getOptions(idx);
-            var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
+            this.s.colOpts.push(this._getOptions(idx));
+            var colOpts = this.s.colOpts[idx];
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
+            var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
             var arrayFilter = [];
+            // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                // Retrieve the rendered data from the cell
                 var filter = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
                     table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
                 var display = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
                     table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+                // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
                 if (Array.isArray(filter) || filter instanceof DataTable.Api) {
                     if (classes.arrayCols.indexOf(idx) === -1) {
                         classes.arrayCols.push(idx);
@@ -149,19 +152,23 @@
                     });
                 }
             });
-            $.fn.dataTable.ext.search.push(function (settings, data, dataIndex, origData) {
+            // Custom search function for table
+            $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex, origData) {
+                // If no data has been selected then show all
                 if (tableCols[idx].length === 0) {
                     return true;
                 }
-                var filter = data[idx];
+                // Get the current filtered data
+                var filter = searchData[idx];
                 if (colOpts.orthogonal.filter !== 'filter') {
                     filter = typeof (colOpts.orthogonal) === 'string'
                         ? table.cell(dataIndex, idx).render(colOpts.orthogonal)
                         : table.cell(dataIndex, idx).render(colOpts.orthogonal.filter);
                 }
-                for (var i = 0; i < tableCols[idx].length; i++) {
-                    var town = data[2] || '';
-                    if (filter.indexOf(tableCols[idx][i].filter) !== -1) {
+                // For each item selected in the pane, check if it is available in the cell
+                for (var _i = 0, _a = tableCols[idx]; _i < _a.length; _i++) {
+                    var colSelect = _a[_i];
+                    if (filter.indexOf(colSelect.filter) !== -1) {
                         return true;
                     }
                 }
@@ -173,6 +180,7 @@
             if (this._variance(bins) < this.c.threshold && !colOpts.options) {
                 return;
             }
+            // If the varaince is accceptable then display the search pane
             $(container).append(dt);
             var dtPane = {
                 index: idx,
@@ -194,22 +202,25 @@
             search = search ? search.substr(1, search.length - 2).split('|') : [];
             var data = [];
             var prev = [];
+            // Make sure that the values stored are unique
             for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
-                var i = arrayFilter_1[_i];
-                if (prev.indexOf(i.filter) === -1) {
+                var filterEl = arrayFilter_1[_i];
+                if (prev.indexOf(filterEl.filter) === -1) {
                     data.push({
-                        display: i.display,
-                        filter: i.filter
+                        display: filterEl.display,
+                        filter: filterEl.filter
                     });
-                    prev.push(i.filter);
+                    prev.push(filterEl.filter);
                 }
             }
+            // Count the number of empty cells
             var count = 0;
             arrayFilter.forEach(function (element) {
                 if (element.filter === '') {
                     count++;
                 }
             });
+            // Add all of the search options to the pane
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
                     for (var _a = 0, arrayFilter_2 = arrayFilter; _a < arrayFilter_2.length; _a++) {
@@ -231,6 +242,8 @@
             $.fn.dataTable.select.init(dtPane.table);
             dtPane.table.draw();
             var t0;
+            // When an item is selected on the pane, add these to the array which holds selected items.
+            // Custom search will perform.
             dtPane.table.on('select.dt', function () {
                 clearTimeout(t0);
                 if (!_this.s.updating) {
@@ -242,6 +255,8 @@
                     }
                 }
             });
+            // When an item is deselected on the pane, re add the currently selected items to the array 
+            // which holds selected items. Custom search will be performed.
             dtPane.table.on('deselect.dt', function () {
                 t0 = setTimeout(function () {
                     var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
@@ -257,7 +272,7 @@
         SearchPanes.prototype._search = function (paneIn) {
             var columnIdx = paneIn.index;
             var table = this.s.dt;
-            var options = this._getOptions(columnIdx);
+            var options = this.s.colOpts[columnIdx];
             var filters = paneIn.table.rows({ selected: true }).data().pluck('filter').toArray();
             var nullIndex = filters.indexOf(this.c.emptyMessage);
             var container = $(paneIn.table.table().container());
@@ -292,21 +307,6 @@
             }
             else {
                 table.draw();
-                /**
-                table
-                    .columns(columnIdx)
-                    .search(
-                        '^(' +
-                        $.map(filters, function(filter) {
-                            return($.fn as any).dataTable.util.escapeRegex(filter);
-                        })
-                        .join('|')
-                        + ')$',
-                        true,
-                        false
-                    )
-                    .draw();
-                // */
             }
         };
         SearchPanes.prototype._updatePane = function (callerIndex, select) {
@@ -315,7 +315,7 @@
                 // update all of the panes except for the one causing the change
                 if (pane !== undefined && (pane.index !== callerIndex || !select)) {
                     var selected = pane.table.rows({ selected: true }).data().pluck(0);
-                    var colOpts_1 = this_1._getOptions(pane.index);
+                    var colOpts_1 = this_1.s.colOpts[pane.index];
                     var column = this_1.s.dt.column(pane.index, { search: 'applied' });
                     var arrayFilter_4 = [];
                     var table_1 = this_1.s.dt;

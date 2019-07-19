@@ -111,6 +111,7 @@ declare var define: {
 
 			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 			this.s = {
+				colOpts: [],
 				columns: [],
 				dt: table,
 				updating: false,
@@ -187,7 +188,8 @@ declare var define: {
 			let table = this.s.dt;
 			let tableCols = this.s.columns;
 			let column = table.column(idx);
-			let colOpts = this._getOptions(idx);
+			this.s.colOpts.push(this._getOptions(idx));
+			let colOpts = this.s.colOpts[idx];
 			let container = this.dom.container;
 			let colType =  this._getColType(table, idx);
 			let dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
@@ -383,7 +385,7 @@ declare var define: {
 		public _search(paneIn) {
 			let columnIdx = paneIn.index;
 			let table = this.s.dt;
-			let options = this._getOptions(columnIdx);
+			let options = this.s.colOpts[columnIdx];
 			let filters = paneIn.table.rows({selected: true}).data().pluck('filter').toArray();
 			let nullIndex = filters.indexOf(this.c.emptyMessage);
 			let container = $(paneIn.table.table().container());
@@ -431,7 +433,7 @@ declare var define: {
 				// update all of the panes except for the one causing the change
 				if (pane !== undefined && (pane.index !== callerIndex || !select)) {
 					let selected = pane.table.rows({selected: true}).data().pluck(0);
-					let colOpts = this._getOptions(pane.index);
+					let colOpts = this.s.colOpts[pane.index];
 					let column = this.s.dt.column(pane.index, {search: 'applied'});
 					let arrayFilter = [];
 					let table = this.s.dt;
