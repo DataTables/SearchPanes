@@ -48,9 +48,8 @@
             };
             table.settings()[0].searchPane = this;
             var loadedFilter;
-            var loadTest = table.state.loaded();
             if (table.state.loaded()) {
-                loadedFilter = table.state.loaded().filter;
+                loadedFilter = table.state.loaded();
             }
             table
                 .columns(this.c.columns)
@@ -61,18 +60,16 @@
             this._reloadSelect(loadedFilter, this);
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-            table.on('stateSaveParams.dt', function (data) {
-                var _this = this;
-                if (!data.filter) {
-                    data.filter = [];
-                }
-                var me = function () {
-                    for (var i = 0; i < _this.panes.length; i++) {
-                        if (_this.panes[i] !== undefined) {
-                            data.filter[i] = _this.panes[i].table.rows({ selected: true }).data().pluck(0).flatten().toArray();
-                        }
+            table.on('stateSaveParams.dt', function (e, settings, data) {
+                console.log();
+                var paneColumns = [];
+                for (var i = 0; i < _this.panes.length; i++) {
+                    if (_this.panes[i]) {
+                        paneColumns[i] = _this.panes[i].table.rows({ selected: true }).data().pluck('filter').toArray();
                     }
-                };
+                }
+                data.searchPane = paneColumns;
+                console.log(data);
             });
             table.state.save();
         }
@@ -81,11 +78,12 @@
                 return;
             }
             for (var i = 0; i < that.panes.length; i++) {
-                if (loadedFilter[i] !== null && loadedFilter[i] !== undefined) {
+                if (loadedFilter.searchPane[i] !== null && loadedFilter.searchPane[i] !== undefined) {
                     var table = that.panes[i].table;
-                    var rows = table.rows({ order: 'index' }).data().pluck(0);
-                    for (var j = 0; j < loadedFilter[i].length; j++) {
-                        var id = loadedFilter[i].indexOf(rows[j]);
+                    var rows = table.rows({ order: 'index' }).data().pluck('filter');
+                    for (var _i = 0, _a = loadedFilter.searchPane[i]; _i < _a.length; _i++) {
+                        var filter = _a[_i];
+                        var id = rows.indexOf(filter);
                         if (id > -1) {
                             table.row(id).select();
                         }
@@ -117,43 +115,12 @@
             var arrayFilter = [];
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
-            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
-                // Retrieve the rendered data from the cell
-                var filter = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
-                    table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
-                var display = typeof (colOpts.orthogonal) === 'string' ? table.cell(rowIdx, idx).render(colOpts.orthogonal) :
-                    table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
-                // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
-                if (Array.isArray(filter) || filter instanceof DataTable.Api) {
-                    if (classes.arrayCols.indexOf(idx) === -1) {
-                        classes.arrayCols.push(idx);
-                    }
-                    if (filter instanceof DataTable.Api) {
-                        filter = filter.toArray();
-                        display = display.toArray();
-                    }
-                    colOpts.match = 'any';
-                    if (filter.length === display.length) {
-                        for (var i = 0; i < filter.length; i++) {
-                            arrayFilter.push({
-                                display: display[i],
-                                filter: filter[i]
-                            });
-                        }
-                    }
-                    else {
-                        throw new Error('display and filter not the same length');
-                    }
-                }
-                else {
-                    arrayFilter.push({
-                        display: display,
-                        filter: filter
-                    });
-                }
-            });
+            this._populatePane(table, colOpts, classes, idx, arrayFilter);
             // Custom search function for table
             $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex, origData) {
+                if (settings.nTable !== table.table().node()) {
+                    return true;
+                }
                 // If no data has been selected then show all
                 if (tableCols[idx].length === 0) {
                     return true;
@@ -203,16 +170,7 @@
             var data = [];
             var prev = [];
             // Make sure that the values stored are unique
-            for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
-                var filterEl = arrayFilter_1[_i];
-                if (prev.indexOf(filterEl.filter) === -1) {
-                    data.push({
-                        display: filterEl.display,
-                        filter: filterEl.filter
-                    });
-                    prev.push(filterEl.filter);
-                }
-            }
+            this._findUnique(prev, data, arrayFilter);
             // Count the number of empty cells
             var count = 0;
             arrayFilter.forEach(function (element) {
@@ -223,8 +181,8 @@
             // Add all of the search options to the pane
             for (var i = 0, ien = data.length; i < ien; i++) {
                 if (data[i]) {
-                    for (var _a = 0, arrayFilter_2 = arrayFilter; _a < arrayFilter_2.length; _a++) {
-                        var j = arrayFilter_2[_a];
+                    for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
+                        var j = arrayFilter_1[_i];
                         if (data[i].filter === j.filter || data[i] === j.display) {
                             dtPane.table.row.add({
                                 count: bins[data[i].filter],
@@ -255,7 +213,7 @@
                     }
                 }
             });
-            // When an item is deselected on the pane, re add the currently selected items to the array 
+            // When an item is deselected on the pane, re add the currently selected items to the array
             // which holds selected items. Custom search will be performed.
             dtPane.table.on('deselect.dt', function () {
                 t0 = setTimeout(function () {
@@ -270,132 +228,121 @@
             return dtPane;
         };
         SearchPanes.prototype._search = function (paneIn) {
-            var columnIdx = paneIn.index;
             var table = this.s.dt;
-            var options = this.s.colOpts[columnIdx];
             var filters = paneIn.table.rows({ selected: true }).data().pluck('filter').toArray();
             var nullIndex = filters.indexOf(this.c.emptyMessage);
             var container = $(paneIn.table.table().container());
+            // If null index is found then search for empty cells as a filter.
             if (nullIndex > -1) {
                 filters[nullIndex] = '';
             }
+            // If a filter has been applied then outline the respective pane, remove it when it no longer is.
             if (filters.length > 0) {
                 container.addClass('selected');
             }
-            if (filters.length === 0) {
+            else if (filters.length === 0) {
                 container.removeClass('selected');
-                table
-                    .columns(columnIdx)
-                    .search('')
-                    .draw();
             }
-            else if (options.match === 'any' || this.classes.arrayCols.indexOf(columnIdx) !== -1) {
-                table
-                    .column(columnIdx)
-                    .search('(' +
-                    $.map(filters, function (filter) {
-                        if (filter !== '') {
-                            return $.fn.dataTable.util.escapeRegex(filter);
-                        }
-                        else {
-                            return '^$';
-                        }
-                    })
-                        .join('|')
-                    + ')', true, false)
-                    .draw();
-            }
-            else {
-                table.draw();
-            }
+            table.draw();
         };
         SearchPanes.prototype._updatePane = function (callerIndex, select) {
-            var _loop_1 = function (pane) {
-                // Update the panes if doing a deselct. if doing a select then
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                // Update the panes if doing a deselect. if doing a select then
                 // update all of the panes except for the one causing the change
                 if (pane !== undefined && (pane.index !== callerIndex || !select)) {
-                    var selected = pane.table.rows({ selected: true }).data().pluck(0);
-                    var colOpts_1 = this_1.s.colOpts[pane.index];
-                    var column = this_1.s.dt.column(pane.index, { search: 'applied' });
-                    var arrayFilter_4 = [];
-                    var table_1 = this_1.s.dt;
-                    var idx_1 = pane.index;
-                    var visibleRows = table_1.rows();
-                    var classes_1 = this_1.classes;
+                    var selected = pane.table.rows({ selected: true }).data().toArray();
+                    var colOpts = this.s.colOpts[pane.index];
+                    var arrayFilter = [];
+                    var table = this.s.dt;
+                    var classes = this.classes;
+                    // Clear the pane in preparation for adding the updated search options
                     pane.table.clear();
-                    visibleRows.every(function (rowIdx, tableLoop, rowLoop) {
-                        var filter = typeof (colOpts_1.orthogonal) === 'string' ? table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal) :
-                            table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal.filter);
-                        var display = typeof (colOpts_1.orthogonal) === 'string' ? table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal) :
-                            table_1.cell(rowIdx, idx_1).render(colOpts_1.orthogonal.display);
-                        if (Array.isArray(filter) || filter instanceof DataTable.Api) {
-                            if (classes_1.arrayCols.indexOf(idx_1) === -1) {
-                                classes_1.arrayCols.push(idx_1);
-                            }
-                            if (filter instanceof DataTable.Api) {
-                                filter = filter.toArray();
-                                display = display.toArray();
-                            }
-                            colOpts_1.match = 'any';
-                            if (filter.length === display.length) {
-                                for (var i = 0; i < filter.length; i++) {
-                                    arrayFilter_4.push({
-                                        display: display[i],
-                                        filter: filter[i]
-                                    });
-                                }
-                            }
-                            else {
-                                throw new Error('display and filter not the same length');
-                            }
-                        }
-                        else {
-                            arrayFilter_4.push({
-                                display: display,
-                                filter: filter
-                            });
-                        }
-                    });
-                    var bins = this_1._binData(this_1._flatten(arrayFilter_4));
+                    this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
+                    var bins = this._binData(this._flatten(arrayFilter));
                     var data = [];
                     var prev = [];
-                    for (var _i = 0, arrayFilter_3 = arrayFilter_4; _i < arrayFilter_3.length; _i++) {
-                        var i = arrayFilter_3[_i];
-                        if (prev.indexOf(i.filter) === -1) {
-                            data.push({
-                                display: i.display,
-                                filter: i.filter
-                            });
-                            prev.push(i.filter);
-                        }
-                    }
-                    this_1.s.updating = true;
-                    for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-                        var dataP = data_1[_a];
+                    this._findUnique(prev, data, arrayFilter);
+                    this.s.updating = true;
+                    var _loop_1 = function (dataP) {
                         if (dataP) {
+                            // Add all of the data found through the search should be added to the panes
                             var row = pane.table.row.add({ filter: dataP.filter, count: bins[dataP.filter], display: dataP.display });
-                            var selectIndex = selected.indexOf(dataP);
-                            if (selectIndex > -1) {
+                            // Find out if the filter was selected in the previous search, if so select it and remove from array.
+                            var selectIndex = selected.findIndex(function (element) {
+                                return element.filter === dataP.filter;
+                            });
+                            if (selectIndex !== -1) {
                                 row.select();
                                 selected.splice(selectIndex, 1);
                             }
                         }
+                    };
+                    for (var _b = 0, data_1 = data; _b < data_1.length; _b++) {
+                        var dataP = data_1[_b];
+                        _loop_1(dataP);
                     }
-                    if (selected.length > 0) {
-                        for (var _b = 0, selected_1 = selected; _b < selected_1.length; _b++) {
-                            var selectPoint = selected_1[_b];
-                            var row = pane.table.row.add({ filter: selectPoint, count: 0, display: selectPoint });
-                            row.select();
-                        }
+                    // Add search options which were previously selected but whos results are no
+                    // longer present in the resulting data set.
+                    for (var _c = 0, selected_1 = selected; _c < selected_1.length; _c++) {
+                        var selectedEl = selected_1[_c];
+                        var row = pane.table.row.add({ filter: selectedEl.filter, count: 0, display: selectedEl.display });
+                        row.select();
                     }
-                    this_1.s.updating = false;
+                    this.s.updating = false;
                     pane.table.draw();
                 }
-            };
-            var this_1 = this;
-            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
-                var pane = _a[_i];
-                _loop_1(pane);
+            }
+        };
+        SearchPanes.prototype._populatePane = function (table, colOpts, classes, idx, arrayFilter) {
+            table.rows({ search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
+                // Retrieve the rendered data from the cell
+                var filter = typeof (colOpts.orthogonal) === 'string'
+                    ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
+                    : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+                var display = typeof (colOpts.orthogonal) === 'string'
+                    ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
+                    : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+                // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
+                if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+                    if (classes.arrayCols.indexOf(idx) === -1) {
+                        classes.arrayCols.push(idx);
+                    }
+                    if (filter instanceof DataTable.Api) {
+                        filter = filter.toArray();
+                        display = display.toArray();
+                    }
+                    colOpts.match = 'any';
+                    if (filter.length === display.length) {
+                        for (var i = 0; i < filter.length; i++) {
+                            arrayFilter.push({
+                                display: display[i],
+                                filter: filter[i]
+                            });
+                        }
+                    }
+                    else {
+                        throw new Error('display and filter not the same length');
+                    }
+                }
+                else {
+                    arrayFilter.push({
+                        display: display,
+                        filter: filter
+                    });
+                }
+            });
+        };
+        SearchPanes.prototype._findUnique = function (prev, data, arrayFilter) {
+            for (var _i = 0, arrayFilter_2 = arrayFilter; _i < arrayFilter_2.length; _i++) {
+                var filterEl = arrayFilter_2[_i];
+                if (prev.indexOf(filterEl.filter) === -1) {
+                    data.push({
+                        display: filterEl.display,
+                        filter: filterEl.filter
+                    });
+                    prev.push(filterEl.filter);
+                }
             }
         };
         SearchPanes.prototype._getOptions = function (colIdx) {
