@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpane select"/>
+
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPane:{
+            viewTotal: true ,
+        },
+        language:{
+            searchPane:{
+                count: '{total}',
+                countFiltered: '{shown} ({total})'
+            },
+        }
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates the viewTotal option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
+
+`language.searchPane.count` - this is the format of the count column when no filters have been applied to the table.
+
+`language.searchPane.countFiltered` - this is the format of the count column when filters have been applied to the table.
+
+"{total}" - This is the token which is replaced by the total count of that value in the table.
+
+"{shown}" - This is the token which is replaced by the count of each value where that row is being displayed currently. 
+
+The values of the messages shown in this example are the same as the defaults which will be used if only `viewTotal` is set to true and no custom messages are defined.
+
+The default for `viewTotal` is false. 
+
+]]></info>
+
+</dt-example>

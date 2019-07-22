@@ -9,13 +9,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPane:{
-            viewTotal: true ,
-        },
-        language:{
-            searchPane:{
-                count: '{total}',
-                countFiltered: '{shown} ({total})'
-            },
+            countWidth: '100px',
         }
     });
 });
@@ -29,7 +23,9 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example shows how to customise the width of the count column.
+
+The default for `countWidth` is 50px.
 
 ]]></info>
 

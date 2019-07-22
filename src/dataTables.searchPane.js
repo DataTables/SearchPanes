@@ -44,6 +44,7 @@
                 colOpts: [],
                 columns: [],
                 dt: table,
+                filteringActive: false,
                 updating: false
             };
             table.settings()[0].searchPane = this;
@@ -113,9 +114,19 @@
             var colType = this._getColType(table, idx);
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
             var arrayFilter = [];
+            var arrayTotals = [];
+            var binsTotal;
+            var countMessage = table.i18n('searchPane.count', '{total}');
+            var filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             this._populatePane(table, colOpts, classes, idx, arrayFilter);
+            // If the option to view the totals in the form "displayed/total" is true then find
+            // the total count for the whole table to display alongside the displayed count
+            if (this.c.viewTotal) {
+                this._detailsPane(table, colOpts, classes, idx, arrayTotals);
+                binsTotal = this._binData(this._flatten(arrayTotals));
+            }
             // Custom search function for table
             $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex, origData) {
                 if (settings.nTable !== table.table().node()) {
@@ -153,8 +164,25 @@
                 index: idx,
                 table: $(dt).DataTable({
                     columnDefs: [
-                        { data: 'display', type: colType, targets: 0 },
-                        { data: 'count', type: colType, targets: 1 }
+                        {
+                            data: 'display',
+                            targets: 0,
+                            type: colType
+                        },
+                        {
+                            className: 'dtsp-countColumn',
+                            data: 'count',
+                            render: function (data, type, row) {
+                                var message;
+                                _this.s.filteringActive
+                                    ? message = filteredMessage.replace(/{total}/, row.total)
+                                    : message = countMessage.replace(/{total}/, row.total);
+                                message = message.replace(/{shown}/, row.shown);
+                                return message;
+                            },
+                            targets: 1,
+                            width: this.c.countWidth
+                        }
                     ],
                     info: false,
                     paging: false,
@@ -185,16 +213,17 @@
                         var j = arrayFilter_1[_i];
                         if (data[i].filter === j.filter || data[i] === j.display) {
                             dtPane.table.row.add({
-                                count: bins[data[i].filter],
                                 display: j.display,
-                                filter: j.filter
+                                filter: j.filter,
+                                shown: bins[data[i].filter],
+                                total: bins[data[i].filter]
                             });
                             break;
                         }
                     }
                 }
                 else {
-                    dtPane.table.row.add({ filter: this.c.emptyMessage, count: count, display: this.c.emptyMessage });
+                    dtPane.table.row.add({ filter: this.c.emptyMessage, shown: count, total: count, display: this.c.emptyMessage });
                 }
             }
             $.fn.dataTable.select.init(dtPane.table);
@@ -205,27 +234,26 @@
             dtPane.table.on('select.dt', function () {
                 clearTimeout(t0);
                 if (!_this.s.updating) {
-                    var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
-                    tableCols[idx] = selectedRows;
-                    _this._search(dtPane);
-                    if (_this.c.cascadePanes) {
-                        _this._updatePane(dtPane.index, true);
-                    }
+                    _this._updateTable(dtPane, tableCols, idx, true);
                 }
             });
             // When an item is deselected on the pane, re add the currently selected items to the array
             // which holds selected items. Custom search will be performed.
             dtPane.table.on('deselect.dt', function () {
                 t0 = setTimeout(function () {
-                    var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
-                    tableCols[idx] = selectedRows;
-                    _this._search(dtPane);
-                    if (_this.c.cascadePanes) {
-                        _this._updatePane(dtPane.index, false);
-                    }
+                    _this._updateTable(dtPane, tableCols, idx, false);
                 }, 50);
             });
             return dtPane;
+        };
+        SearchPanes.prototype._updateTable = function (dtPane, tableCols, idx, select) {
+            var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
+            tableCols[idx] = selectedRows;
+            this._search(dtPane || this.c.viewTotal);
+            // If either of the options that effect how the panes are displayed are selected then update the Panes
+            if (this.c.cascadePanes || this.c.viewTotal) {
+                this._updatePane(dtPane.index, select);
+            }
         };
         SearchPanes.prototype._search = function (paneIn) {
             var table = this.s.dt;
@@ -246,28 +274,87 @@
             table.draw();
         };
         SearchPanes.prototype._updatePane = function (callerIndex, select) {
-            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
-                var pane = _a[_i];
+            this.s.updating = true;
+            this.s.filteringActive = false;
+            var selectArray = [];
+            var filterCount = 0;
+            var filterIdx;
+            // If the viewTotal option is active then it must be determined whether there is a filter in place already
+            if (this.c.viewTotal) {
+                // There is if select is true
+                if (select) {
+                    this.s.filteringActive = true;
+                }
+                else {
+                    // Check each pane to find how many filters are in place in each
+                    for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                        var pane = _a[_i];
+                        if (pane !== undefined) {
+                            var selected = pane.table.rows({ selected: true }).data().toArray().length;
+                            if (selected > 0) {
+                                this.s.filteringActive = true;
+                            }
+                            selectArray.push(selected);
+                            filterCount += selected;
+                        }
+                        else {
+                            selectArray.push(0);
+                        }
+                    }
+                }
+                // If there is only one in place then find the index of the corresponding pane
+                if (filterCount === 1) {
+                    filterIdx = selectArray.indexOf(1);
+                }
+            }
+            for (var _b = 0, _c = this.panes; _b < _c.length; _b++) {
+                var pane = _c[_b];
                 // Update the panes if doing a deselect. if doing a select then
                 // update all of the panes except for the one causing the change
-                if (pane !== undefined && (pane.index !== callerIndex || !select)) {
+                if (pane !== undefined && (pane.index !== callerIndex || !select || !this.s.filteringActive)) {
                     var selected = pane.table.rows({ selected: true }).data().toArray();
                     var colOpts = this.s.colOpts[pane.index];
                     var arrayFilter = [];
+                    var arrayTotals = [];
                     var table = this.s.dt;
                     var classes = this.classes;
+                    var data = [];
+                    var prev = [];
+                    var binsTotal = void 0;
+                    var scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
                     // Clear the pane in preparation for adding the updated search options
                     pane.table.clear();
                     this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
+                    // If the viewTotal option is selected then find the totals for the table
+                    if (this.c.viewTotal) {
+                        this._detailsPane(table, colOpts, classes, pane.index, arrayTotals);
+                        binsTotal = this._binData(this._flatten(arrayTotals));
+                        this._findUnique(prev, data, arrayTotals);
+                    }
                     var bins = this._binData(this._flatten(arrayFilter));
-                    var data = [];
-                    var prev = [];
                     this._findUnique(prev, data, arrayFilter);
-                    this.s.updating = true;
+                    // If a filter has been removed so that only one remains then the remaining filter should have
+                    // the non filtered formatting, therefore set filteringActive to be false.
+                    if (filterIdx !== undefined && filterIdx === pane.index) {
+                        this.s.filteringActive = false;
+                    }
                     var _loop_1 = function (dataP) {
                         if (dataP) {
-                            // Add all of the data found through the search should be added to the panes
-                            var row = pane.table.row.add({ filter: dataP.filter, count: bins[dataP.filter], display: dataP.display });
+                            var row = void 0;
+                            // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
+                            // Do this also if the viewTotal option has been selected and cascadePanes has not
+                            row = pane.table.row.add({
+                                display: dataP.display,
+                                filter: dataP.filter,
+                                shown: !this_1.c.viewTotal
+                                    ? bins[dataP.filter]
+                                    : bins[dataP.filter] !== undefined
+                                        ? bins[dataP.filter]
+                                        : '0',
+                                total: this_1.c.viewTotal
+                                    ? String(binsTotal[dataP.filter])
+                                    : bins[dataP.filter]
+                            });
                             // Find out if the filter was selected in the previous search, if so select it and remove from array.
                             var selectIndex = selected.findIndex(function (element) {
                                 return element.filter === dataP.filter;
@@ -278,60 +365,77 @@
                             }
                         }
                     };
-                    for (var _b = 0, data_1 = data; _b < data_1.length; _b++) {
-                        var dataP = data_1[_b];
+                    var this_1 = this;
+                    for (var _d = 0, data_1 = data; _d < data_1.length; _d++) {
+                        var dataP = data_1[_d];
                         _loop_1(dataP);
+                    }
+                    // Set filtering Active to be again if it was previously set to false,
+                    // so that succeeding panes have the correct formatting.
+                    if (filterIdx !== undefined && filterIdx === pane.index) {
+                        this.s.filteringActive = true;
                     }
                     // Add search options which were previously selected but whos results are no
                     // longer present in the resulting data set.
-                    for (var _c = 0, selected_1 = selected; _c < selected_1.length; _c++) {
-                        var selectedEl = selected_1[_c];
-                        var row = pane.table.row.add({ filter: selectedEl.filter, count: 0, display: selectedEl.display });
+                    for (var _e = 0, selected_1 = selected; _e < selected_1.length; _e++) {
+                        var selectedEl = selected_1[_e];
+                        var row = pane.table.row.add({ filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display });
                         row.select();
                     }
-                    this.s.updating = false;
                     pane.table.draw();
+                    pane.table.table().node().parentNode.scrollTop = scrollTop;
                 }
             }
+            this.s.updating = false;
+        };
+        SearchPanes.prototype._detailsPane = function (table, colOpts, classes, idx, arrayTotals) {
+            var _this = this;
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayTotals);
+            });
         };
         SearchPanes.prototype._populatePane = function (table, colOpts, classes, idx, arrayFilter) {
+            var _this = this;
             table.rows({ search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
-                // Retrieve the rendered data from the cell
-                var filter = typeof (colOpts.orthogonal) === 'string'
-                    ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
-                    : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
-                var display = typeof (colOpts.orthogonal) === 'string'
-                    ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
-                    : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
-                // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
-                if (Array.isArray(filter) || filter instanceof DataTable.Api) {
-                    if (classes.arrayCols.indexOf(idx) === -1) {
-                        classes.arrayCols.push(idx);
-                    }
-                    if (filter instanceof DataTable.Api) {
-                        filter = filter.toArray();
-                        display = display.toArray();
-                    }
-                    colOpts.match = 'any';
-                    if (filter.length === display.length) {
-                        for (var i = 0; i < filter.length; i++) {
-                            arrayFilter.push({
-                                display: display[i],
-                                filter: filter[i]
-                            });
-                        }
-                    }
-                    else {
-                        throw new Error('display and filter not the same length');
+                _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
+            });
+        };
+        SearchPanes.prototype._populatePaneArray = function (colOpts, table, rowIdx, idx, classes, array) {
+            // Retrieve the rendered data from the cell
+            var filter = typeof (colOpts.orthogonal) === 'string'
+                ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
+                : table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+            var display = typeof (colOpts.orthogonal) === 'string'
+                ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
+                : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+            // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
+            if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+                if (classes.arrayCols.indexOf(idx) === -1) {
+                    classes.arrayCols.push(idx);
+                }
+                if (filter instanceof DataTable.Api) {
+                    filter = filter.toArray();
+                    display = display.toArray();
+                }
+                colOpts.match = 'any';
+                if (filter.length === display.length) {
+                    for (var i = 0; i < filter.length; i++) {
+                        array.push({
+                            display: display[i],
+                            filter: filter[i]
+                        });
                     }
                 }
                 else {
-                    arrayFilter.push({
-                        display: display,
-                        filter: filter
-                    });
+                    throw new Error('display and filter not the same length');
                 }
-            });
+            }
+            else {
+                array.push({
+                    display: display,
+                    filter: filter
+                });
+            }
         };
         SearchPanes.prototype._findUnique = function (prev, data, arrayFilter) {
             for (var _i = 0, arrayFilter_2 = arrayFilter; _i < arrayFilter_2.length; _i++) {
@@ -431,11 +535,13 @@
                 return dt.table().container();
             },
             columns: undefined,
+            countWidth: '50px',
             emptyMessage: '<i>No Data</i>',
             insert: 'prepend',
             minRows: 1,
             searchBox: true,
-            threshold: 0.5
+            threshold: 0.5,
+            viewTotal: false
         };
         return SearchPanes;
     }());
