@@ -85,8 +85,10 @@ declare var define: {
 			},
 			columns: undefined,
 			countWidth: '50px',
+			dataLength: 30,
 			emptyMessage: '<i>No Data</i>',
 			insert: 'prepend',
+			maxOptions: 5,
 			minRows: 1,
 			searchBox: true,
 			threshold: 0.5,
@@ -230,7 +232,6 @@ declare var define: {
 						? table.cell(dataIndex, idx).render(colOpts.orthogonal)
 						: table.cell(dataIndex, idx).render(colOpts.orthogonal.filter);
 					}
-
 					// For each item selected in the pane, check if it is available in the cell
 					for (let colSelect of tableCols[idx]) {
 						if (filter.indexOf(colSelect.filter) !== -1) {
@@ -242,12 +243,14 @@ declare var define: {
 			);
 
 			let bins = this._binData(this._flatten(arrayFilter));
-
+				console.log(Object.keys(bins).length)
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			if (this._variance(bins) < this.c.threshold && !colOpts.options) {
+			if (this._variance(bins) < this.c.threshold && Object.keys(bins).length > this.c.maxOptions && !colOpts.options) {
+				console.log(this._variance(bins), idx);
 				return;
 			}
+			console.log(this._variance(bins), idx);
 
 			// If the varaince is accceptable then display the search pane
 			$(container).append(dt);
@@ -259,6 +262,13 @@ declare var define: {
 							data: 'display',
 							targets: 0,
 							type: colType,
+							render: (data, type, row) => {
+								return !this.c.dataLength ?
+									data:
+								data.length > this.c.dataLength ?
+									data.substr(0, this.c.dataLength) + '...' :
+									data;
+							},
 						},
 						{
 							className:'dtsp-countColumn',
@@ -352,7 +362,7 @@ declare var define: {
 		public _updateTable(dtPane, tableCols, idx, select) {
 			let selectedRows = dtPane.table.rows({selected: true}).data().toArray();
 			tableCols[idx] = selectedRows;
-			this._search(dtPane || this.c.viewTotal);
+			this._search(dtPane);
 			// If either of the options that effect how the panes are displayed are selected then update the Panes
 			if (this.c.cascadePanes || this.c.viewTotal) {
 				this._updatePane(dtPane.index, select);
