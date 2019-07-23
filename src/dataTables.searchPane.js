@@ -58,6 +58,22 @@
                 .each(function (idx) {
                 _this.panes.push(_this._pane(idx));
             });
+            // PreSelect any selections which have been defined using the preSelect option
+            table
+                .columns(this.c.columns)
+                .eq(0)
+                .each(function (idx) {
+                if (_this.s.colOpts[idx].preSelect !== undefined) {
+                    for (var i = 0; i < _this.panes[idx].table.rows().data().toArray().length; i++) {
+                        if (_this.s.colOpts[idx].preSelect.indexOf(_this.panes[idx].table.cell(i, 0).data()) !== -1) {
+                            _this.panes[idx].table.row(i).select();
+                            if (!_this.s.updating) {
+                                _this._updateTable(_this.panes[idx], _this.s.columns, idx, true);
+                            }
+                        }
+                    }
+                }
+            });
             this._reloadSelect(loadedFilter, this);
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
@@ -110,7 +126,6 @@
             var column = table.column(idx);
             this.s.colOpts.push(this._getOptions(idx));
             var colOpts = this.s.colOpts[idx];
-            //console.log(colOpts);
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
@@ -122,7 +137,7 @@
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             this._populatePane(table, colOpts, classes, idx, arrayFilter);
-            // If the option to view the totals in the form "displayed/total" is true then find
+            // If the option viewTotal is true then find
             // the total count for the whole table to display alongside the displayed count
             if (this.c.viewTotal) {
                 this._detailsPane(table, colOpts, classes, idx, arrayTotals);
@@ -154,16 +169,14 @@
                 return false;
             });
             var bins = this._binData(this._flatten(arrayFilter));
-            //console.log(Object.keys(bins).length, table.rows()[0].length)
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
-            // if (this._variance(bins) < this.c.threshold && Object.keys(bins).length > this.c.maxOptions && !colOpts.options) {
-            console.log(this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length));
-            if ((colOpts.show !== true && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold && !colOpts.options) || colOpts.show === false) {
-                //	console.log(this._variance(bins), idx);
+            if ((colOpts.show !== true &&
+                this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold &&
+                !colOpts.options)
+                || colOpts.show === false) {
                 return;
             }
-            //console.log(this._variance(bins), idx);
             // If the varaince is accceptable then display the search pane
             $(container).append(dt);
             var dtPane = {
@@ -172,15 +185,14 @@
                     columnDefs: [
                         {
                             data: 'display',
-                            targets: 0,
-                            type: colType,
                             render: function (data, type, row) {
                                 return !_this.c.dataLength ?
-                                    data :
-                                    data.length > _this.c.dataLength ?
-                                        data.substr(0, _this.c.dataLength) + '...' :
-                                        data;
-                            }
+                                    data : data.length > _this.c.dataLength ?
+                                    data.substr(0, _this.c.dataLength) + '...' :
+                                    data;
+                            },
+                            targets: 0,
+                            type: colType
                         },
                         {
                             className: 'dtsp-countColumn',
@@ -225,7 +237,7 @@
                     for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
                         var j = arrayFilter_1[_i];
                         if (data[i].filter === j.filter || data[i] === j.display) {
-                            dtPane.table.row.add({
+                            var row = dtPane.table.row.add({
                                 display: j.display,
                                 filter: j.filter,
                                 shown: bins[data[i].filter],
@@ -465,12 +477,14 @@
         SearchPanes.prototype._getOptions = function (colIdx) {
             var table = this.s.dt;
             var defaults = {
+                grouping: undefined,
                 match: 'exact',
                 orthogonal: {
                     display: 'display',
                     search: 'filter',
                     show: undefined
-                }
+                },
+                preSelect: undefined
             };
             return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
         };

@@ -137,6 +137,23 @@ declare var define: {
 					this.panes.push(this._pane(idx));
 				});
 
+			// PreSelect any selections which have been defined using the preSelect option
+			table
+				.columns(this.c.columns)
+				.eq(0)
+				.each((idx) => {
+					if (this.s.colOpts[idx].preSelect !== undefined) {
+						for (let i = 0; i < this.panes[idx].table.rows().data().toArray().length; i++) {
+							if (this.s.colOpts[idx].preSelect.indexOf(this.panes[idx].table.cell(i, 0).data()) !== -1) {
+								this.panes[idx].table.row(i).select();
+								if (!this.s.updating) {
+									this._updateTable(this.panes[idx], this.s.columns, idx, true);
+								}
+							}
+						}
+					}
+				});
+
 			this._reloadSelect(loadedFilter, this);
 
 			this._attach();
@@ -318,7 +335,7 @@ declare var define: {
 				if (data[i]) {
 					for (let j of arrayFilter) {
 						if (data[i].filter === j.filter || data[i] === j.display) {
-							dtPane.table.row.add({
+							let row = dtPane.table.row.add({
 								display: j.display,
 								filter: j.filter,
 								shown: bins[data[i].filter],
@@ -386,7 +403,6 @@ declare var define: {
 			else if (filters.length === 0) {
 				container.removeClass('selected');
 			}
-
 			table.draw();
 
 		}
@@ -585,12 +601,14 @@ declare var define: {
 		public _getOptions(colIdx) {
 			let table = this.s.dt;
 			let defaults = {
+				grouping: undefined,
 				match: 'exact',
 				orthogonal: {
 					display: 'display',
 					search: 'filter',
 					show: undefined,
 				},
+				preSelect: undefined,
 			};
 			return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
 		}
