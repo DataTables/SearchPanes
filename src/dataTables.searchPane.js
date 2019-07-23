@@ -171,10 +171,10 @@
             var bins = this._binData(this._flatten(arrayFilter));
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
-            if ((colOpts.show !== true &&
-                this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold &&
-                !colOpts.options)
-                || colOpts.show === false) {
+            console.log(colOpts.show, this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length), this.c.threshold);
+            if ((colOpts.show === undefined && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold) ||
+                colOpts.show === false ||
+                (!isNaN(colOpts.show) && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.show)) {
                 return;
             }
             // If the varaince is accceptable then display the search pane
