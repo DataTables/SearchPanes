@@ -263,10 +263,11 @@ declare var define: {
 
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			console.log(colOpts.show,this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length), this.c.threshold)
-			if ((colOpts.show === undefined && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold) ||
+			if ((colOpts.show === undefined &&
+					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold) ||
 				colOpts.show === false ||
-				(!isNaN(colOpts.show) && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.show)) {
+				(!isNaN(colOpts.show) &&
+					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.show)) {
 				return;
 			}
 
@@ -335,12 +336,14 @@ declare var define: {
 				if (data[i]) {
 					for (let j of arrayFilter) {
 						if (data[i].filter === j.filter || data[i] === j.display) {
-							let row = dtPane.table.row.add({
-								display: j.display,
-								filter: j.filter,
-								shown: bins[data[i].filter],
-								total: bins[data[i].filter],
-							});
+							if ((colOpts.hide === undefined || colOpts.hide.indexOf(data[i].filter) === -1)) {
+								let row = dtPane.table.row.add({
+									display: j.display,
+									filter: j.filter,
+									shown: bins[data[i].filter],
+									total: bins[data[i].filter],
+								});
+							}
 							break;
 						}
 					}
@@ -482,7 +485,7 @@ declare var define: {
 					}
 
 					for (let dataP of data) {
-						if (dataP) {
+						if (dataP && (colOpts.hide === undefined || colOpts.hide.indexOf(data.filter) === -1)) {
 							let row;
 							// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 							// Do this also if the viewTotal option has been selected and cascadePanes has not
@@ -605,6 +608,7 @@ declare var define: {
 				match: 'exact',
 				orthogonal: {
 					display: 'display',
+					hide: undefined,
 					search: 'filter',
 					show: undefined,
 				},

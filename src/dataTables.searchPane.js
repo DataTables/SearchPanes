@@ -171,10 +171,11 @@
             var bins = this._binData(this._flatten(arrayFilter));
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
-            console.log(colOpts.show, this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length), this.c.threshold);
-            if ((colOpts.show === undefined && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold) ||
+            if ((colOpts.show === undefined &&
+                this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold) ||
                 colOpts.show === false ||
-                (!isNaN(colOpts.show) && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.show)) {
+                (!isNaN(colOpts.show) &&
+                    this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.show)) {
                 return;
             }
             // If the varaince is accceptable then display the search pane
@@ -237,12 +238,14 @@
                     for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
                         var j = arrayFilter_1[_i];
                         if (data[i].filter === j.filter || data[i] === j.display) {
-                            var row = dtPane.table.row.add({
-                                display: j.display,
-                                filter: j.filter,
-                                shown: bins[data[i].filter],
-                                total: bins[data[i].filter]
-                            });
+                            if ((colOpts.hide === undefined || colOpts.hide.indexOf(data[i].filter) === -1)) {
+                                var row = dtPane.table.row.add({
+                                    display: j.display,
+                                    filter: j.filter,
+                                    shown: bins[data[i].filter],
+                                    total: bins[data[i].filter]
+                                });
+                            }
                             break;
                         }
                     }
@@ -364,7 +367,7 @@
                         this.s.filteringActive = false;
                     }
                     var _loop_1 = function (dataP) {
-                        if (dataP) {
+                        if (dataP && (colOpts.hide === undefined || colOpts.hide.indexOf(data.filter) === -1)) {
                             var row = void 0;
                             // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
                             // Do this also if the viewTotal option has been selected and cascadePanes has not
@@ -482,7 +485,8 @@
                 orthogonal: {
                     display: 'display',
                     search: 'filter',
-                    show: undefined
+                    show: undefined,
+                    hide: undefined
                 },
                 preSelect: undefined
             };
