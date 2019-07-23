@@ -110,6 +110,7 @@
             var column = table.column(idx);
             this.s.colOpts.push(this._getOptions(idx));
             var colOpts = this.s.colOpts[idx];
+            //console.log(colOpts);
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
@@ -153,14 +154,16 @@
                 return false;
             });
             var bins = this._binData(this._flatten(arrayFilter));
-            console.log(Object.keys(bins).length);
+            //console.log(Object.keys(bins).length, table.rows()[0].length)
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
-            if (this._variance(bins) < this.c.threshold && Object.keys(bins).length > this.c.maxOptions && !colOpts.options) {
-                console.log(this._variance(bins), idx);
+            // if (this._variance(bins) < this.c.threshold && Object.keys(bins).length > this.c.maxOptions && !colOpts.options) {
+            console.log(this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length));
+            if ((colOpts.show !== true && this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold && !colOpts.options) || colOpts.show === false) {
+                //	console.log(this._variance(bins), idx);
                 return;
             }
-            console.log(this._variance(bins), idx);
+            //console.log(this._variance(bins), idx);
             // If the varaince is accceptable then display the search pane
             $(container).append(dt);
             var dtPane = {
@@ -465,7 +468,8 @@
                 match: 'exact',
                 orthogonal: {
                     display: 'display',
-                    search: 'filter'
+                    search: 'filter',
+                    show: undefined
                 }
             };
             return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
@@ -485,6 +489,9 @@
                 varSum += Math.pow(mean - data[i], 2);
             }
             return varSum / (count - 1);
+        };
+        SearchPanes.prototype._uniqueRatio = function (bins, rowCount) {
+            return bins / rowCount;
         };
         SearchPanes.prototype._binData = function (data) {
             var out = {};
@@ -552,7 +559,7 @@
             maxOptions: 5,
             minRows: 1,
             searchBox: true,
-            threshold: 0.5,
+            threshold: 0.6,
             viewTotal: false
         };
         return SearchPanes;

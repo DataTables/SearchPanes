@@ -91,7 +91,7 @@ declare var define: {
 			maxOptions: 5,
 			minRows: 1,
 			searchBox: true,
-			threshold: 0.5,
+			threshold: 0.6,
 			viewTotal: false,
 		};
 
@@ -208,7 +208,7 @@ declare var define: {
 
 			this._populatePane(table, colOpts, classes, idx, arrayFilter);
 
-			// If the option to view the totals in the form "displayed/total" is true then find
+			// If the option viewTotal is true then find
 			// the total count for the whole table to display alongside the displayed count
 			if (this.c.viewTotal) {
 				this._detailsPane(table, colOpts, classes, idx, arrayTotals);
@@ -243,32 +243,34 @@ declare var define: {
 			);
 
 			let bins = this._binData(this._flatten(arrayFilter));
-				console.log(Object.keys(bins).length)
+
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			if (this._variance(bins) < this.c.threshold && Object.keys(bins).length > this.c.maxOptions && !colOpts.options) {
-				console.log(this._variance(bins), idx);
+			if ((colOpts.show !== true &&
+					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold &&
+				 	!colOpts.options)
+				|| colOpts.show === false) {
 				return;
 			}
-			console.log(this._variance(bins), idx);
 
 			// If the varaince is accceptable then display the search pane
 			$(container).append(dt);
+
 			let dtPane = {
 				index: idx,
 				table: $(dt).DataTable({
 					columnDefs: [
 						{
 							data: 'display',
-							targets: 0,
-							type: colType,
 							render: (data, type, row) => {
 								return !this.c.dataLength ?
-									data:
-								data.length > this.c.dataLength ?
+									data : data.length > this.c.dataLength ?
 									data.substr(0, this.c.dataLength) + '...' :
 									data;
 							},
+							targets: 0,
+							type: colType,
+
 						},
 						{
 							className:'dtsp-countColumn',
@@ -305,16 +307,14 @@ declare var define: {
 
 			// Count the number of empty cells
 			let count: number = 0;
-			arrayFilter.forEach(element => {
-
+	  arrayFilter.forEach(element => {
 				if (element.filter === '') {
-
 					count++;
 				}
 			});
 
 			// Add all of the search options to the pane
-			for (let i = 0, ien = data.length; i < ien; i++) {
+	  for (let i = 0, ien = data.length; i < ien; i++) {
 				if (data[i]) {
 					for (let j of arrayFilter) {
 						if (data[i].filter === j.filter || data[i] === j.display) {
@@ -336,12 +336,11 @@ declare var define: {
 			$.fn.dataTable.select.init(dtPane.table);
 
 			dtPane.table.draw();
-
 			let t0;
 
 			// When an item is selected on the pane, add these to the array which holds selected items.
 			// Custom search will perform.
-			dtPane.table.on('select.dt', () => {
+	  dtPane.table.on('select.dt', () => {
 				clearTimeout(t0);
 				if (!this.s.updating) {
 					this._updateTable(dtPane, tableCols, idx, true);
@@ -350,7 +349,7 @@ declare var define: {
 
 			// When an item is deselected on the pane, re add the currently selected items to the array
 			// which holds selected items. Custom search will be performed.
-			dtPane.table.on('deselect.dt', () => {
+	  dtPane.table.on('deselect.dt', () => {
 				t0 = setTimeout(() => {
 					this._updateTable(dtPane, tableCols, idx, false);
 				}, 50);
@@ -589,7 +588,8 @@ declare var define: {
 				match: 'exact',
 				orthogonal: {
 					display: 'display',
-					search: 'filter'
+					search: 'filter',
+					show: undefined,
 				},
 			};
 			return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
@@ -615,6 +615,9 @@ declare var define: {
 			return varSum / (count - 1);
 		}
 
+		public _uniqueRatio(bins, rowCount) {
+			return bins / rowCount;
+		}
 		public _binData(data): {} {
 			let out = {};
 			data = this._flatten(data);
@@ -658,10 +661,10 @@ declare var define: {
 		}
 
 	}
-	($.fn as any).dataTable.SearchPanes = SearchPanes;
-	($.fn as any).DataTable.SearchPanes = SearchPanes;
+ ($.fn as any).dataTable.SearchPanes = SearchPanes;
+ ($.fn as any).DataTable.SearchPanes = SearchPanes;
 
-	DataTable.Api.register('searchPanes.rebuild()', function() {
+ DataTable.Api.register('searchPanes.rebuild()', function() {
 		return this.iterator('table', function(ctx) {
 			if (ctx.searchPane) {
 				ctx.searchPane.rebuild();
@@ -669,7 +672,7 @@ declare var define: {
 		});
 	});
 
-	DataTable.Api.register('column().paneOptions()', function(options) {
+ DataTable.Api.register('column().paneOptions()', function(options) {
 		return this.iterator('column', function(ctx, idx) {
 			let col = ctx.aoColumns[idx];
 
@@ -684,7 +687,7 @@ declare var define: {
 		});
 	});
 
-	$(document).on('init.dt', function(e, settings, json) {
+ $(document).on('init.dt', function(e, settings, json) {
 		if (e.namespace !== 'dt') {
 			return;
 		}
@@ -701,5 +704,5 @@ declare var define: {
 		}
 	});
 
-	return SearchPanes;
+ return SearchPanes;
 }));
