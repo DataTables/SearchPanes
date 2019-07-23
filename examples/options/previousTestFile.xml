@@ -9,7 +9,7 @@
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPane:{
-            threshold: 0
+            threshold: 1
         },
 		ajax: "../arrayData.json",
 		columns: [
