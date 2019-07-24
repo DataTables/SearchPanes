@@ -18,12 +18,6 @@ $(document).ready(function() {
             },
             {
                 searchPane:{
-                    show: 0.99,
-                },
-                targets:[1],
-            },
-            {
-                searchPane:{
                     show: false,
                 },
                 targets: [2],

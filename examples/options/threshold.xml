@@ -10,6 +10,14 @@ $(document).ready(function() {
         searchPane:{
             threshold: 0.4,
         },
+        columnDefs:[
+            {
+                searchPane:{
+                    threshold: 0.99,
+                },
+                targets:[0]
+            },
+        ],
     });
 });
 

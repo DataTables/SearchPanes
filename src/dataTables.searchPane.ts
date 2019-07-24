@@ -219,7 +219,7 @@ declare var define: {
 			let binsTotal;
 			let countMessage = table.i18n('searchPane.count', '{total}');
 			let filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
-
+			//console.log(colOpts);
 			// Add an empty array for each column for holding the selected values
 			tableCols.push([]);
 
@@ -263,11 +263,12 @@ declare var define: {
 
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			if ((colOpts.show === undefined &&
-					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold) ||
-				colOpts.show === false ||
-				(!isNaN(colOpts.show) &&
-					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.show)) {
+			if ((colOpts.show === undefined && 
+					(colOpts.threshold === undefined ?
+						this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
+						this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
+				|| colOpts.show === false
+				|| (colOpts.show !== undefined && colOpts.show !== true)) {
 				return;
 			}
 
@@ -343,7 +344,6 @@ declare var define: {
 									shown: bins[data[i].filter],
 									total: bins[data[i].filter],
 								});
-								console.log(row.data());
 							}
 							break;
 						}
@@ -553,7 +553,6 @@ declare var define: {
 				? table.cell(rowIdx, idx).render(colOpts.orthogonal)
 				: table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
 
-			console.log(filter, display, colOpts.orthogonal)
 
 			// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 			if (Array.isArray(filter) || filter instanceof DataTable.Api) {
@@ -614,6 +613,7 @@ declare var define: {
 					hide: undefined,
 					search: 'filter',
 					show: undefined,
+					threshold: undefined,
 				},
 				preSelect: undefined,
 			};
