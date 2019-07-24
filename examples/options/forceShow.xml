@@ -38,8 +38,6 @@ This is the SearchPane extension for DataTables. It allows results to be filtere
 This example Demonstrates the `show` option for defining whether a column should show a searchPane or not.
 Here we have set the first name Column to have a pane where it would not normally due to the variance, and have hidden the position column which would.
 
-For Column 1 the value of `show` is set to 0.99. If the value of `show is` a number then it will be used as the threshold.
-
 The default value of `show` is undefined so that as standard the searchpanes will be decided on variance.
 
 ]]></info>
