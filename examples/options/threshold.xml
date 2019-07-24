@@ -33,6 +33,8 @@ This is the SearchPane extension for DataTables. It allows results to be filtere
 This example shows how the definition of the `threshold` config option allows the user to define the level of uniqueness for a pane to be displayed.
 The `threshold` of uniqueness is the number of unique values throughout the table divided by the total number of values.
 
+Thresholds can also be set for individual columns. Here we set the threshold of the firstname column to be 0.99.
+
 The default of `threshold` is 0.6
 
 ]]></info>
