@@ -219,7 +219,7 @@ declare var define: {
 			let binsTotal;
 			let countMessage = table.i18n('searchPane.count', '{total}');
 			let filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
-			//console.log(colOpts);
+			console.log(colOpts);
 			// Add an empty array for each column for holding the selected values
 			tableCols.push([]);
 
@@ -553,6 +553,9 @@ declare var define: {
 				? table.cell(rowIdx, idx).render(colOpts.orthogonal)
 				: table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
 
+			if (colOpts.options !== undefined && colOpts.options.indexOf(+filter) === -1) {
+				return;
+			}
 
 			// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 			if (Array.isArray(filter) || filter instanceof DataTable.Api) {

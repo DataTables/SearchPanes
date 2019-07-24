@@ -134,7 +134,7 @@
             var binsTotal;
             var countMessage = table.i18n('searchPane.count', '{total}');
             var filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
-            //console.log(colOpts);
+            console.log(colOpts);
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             this._populatePane(table, colOpts, classes, idx, arrayFilter);
@@ -438,6 +438,9 @@
             var display = typeof (colOpts.orthogonal) === 'string'
                 ? table.cell(rowIdx, idx).render(colOpts.orthogonal)
                 : table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+            if (colOpts.options !== undefined && colOpts.options.indexOf(+filter) === -1) {
+                return;
+            }
             // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
             if (Array.isArray(filter) || filter instanceof DataTable.Api) {
                 if (classes.arrayCols.indexOf(idx) === -1) {
