@@ -219,7 +219,6 @@ declare var define: {
 			let binsTotal;
 			let countMessage = table.i18n('searchPane.count', '{total}');
 			let filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
-			console.log(colOpts);
 			// Add an empty array for each column for holding the selected values
 			tableCols.push([]);
 
@@ -251,9 +250,19 @@ declare var define: {
 					}
 					// For each item selected in the pane, check if it is available in the cell
 					for (let colSelect of tableCols[idx]) {
-						if (filter.indexOf(colSelect.filter) !== -1) {
-							return true;
+						if(Array.isArray(colSelect.filter)){
+							for(let filterP of colSelect.filter){
+								if (filter.indexOf(filterP) !== -1) {
+									return true;
+								}
+							}
 						}
+						else {
+							if (filter.indexOf(colSelect.filter) !== -1) {
+								return true;
+							}
+						}
+
 					}
 					return false;
 				}
@@ -343,15 +352,17 @@ declare var define: {
 									shown: bins[data[i].filter],
 									total: bins[data[i].filter],
 								});
+								break;
 							}
-						break;
 					}
 				}
 				else {
 					dtPane.table.row.add({filter: this.c.emptyMessage, shown: count, total: count, display: this.c.emptyMessage});
 				}
 			}
-
+			if (colOpts.comparison !== undefined) {
+				this._getComparisonRows(dtPane, colOpts, bins, binsTotal);
+			}
 			$.fn.dataTable.select.init(dtPane.table);
 
 			dtPane.table.draw();
@@ -377,6 +388,94 @@ declare var define: {
 			return dtPane;
 		}
 
+		public _getComparisonRows(dtPane, colOpts, bins, binsTotal){
+			let vals =dtPane.table.rows().data();
+			let rows = []
+			for (let comp of colOpts.comparison) {
+				let comparisonObj = {
+					filter:[],
+					shown:0,
+					total:0,
+					display:comp.label,
+				}
+				switch (comp.condition) {
+					case '==': {
+						for (let val of vals) {
+							if (val.filter === comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					case '!=': {
+						for (let val of vals) {
+							if (val.filter !== comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					case '<': {
+						for (let val of vals) {
+							if (val.filter < comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					case '>': {
+						for (let val of vals) {
+							if (val.filter > comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					case '<=': {
+						for (let val of vals) {
+							if (val.filter <= comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					case '>=': {
+						for (let val of vals) {
+							if (val.filter >= comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					case 'includes': {
+						for (let val of vals) {
+							if (val.filter.includes(comp.value)) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+					default: {
+						for (let val of vals) {
+							if (val.filter === comp.value) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+						break;
+					}
+				}
+				//console.log(comparisonObj.shown)
+				rows.push(dtPane.table.row.add(comparisonObj));
+			}
+			return rows;
+		}
+		public _comparisonStatUpdate(val, comparisonObj, bins, binsTotal){
+			comparisonObj.filter.push(val.filter);
+			bins[val.filter] !== undefined ? comparisonObj.shown += bins[val.filter] : comparisonObj.shown += 0;
+			binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter]:comparisonObj.total += 0;
+			//console.log(comparisonObj.show, bins[val.filter])
+			return comparisonObj;
+		}
 		public _updateTable(dtPane, tableCols, idx, select) {
 			let selectedRows = dtPane.table.rows({selected: true}).data().toArray();
 			tableCols[idx] = selectedRows;
@@ -449,6 +548,7 @@ declare var define: {
 				// update all of the panes except for the one causing the change
 				if (pane !== undefined && (pane.index !== callerIndex || !select || !this.s.filteringActive)) {
 					let selected = pane.table.rows({selected: true}).data().toArray();
+					console.log(pane.table.rows({selected: true}).data().toArray(), "sas")
 					let colOpts = this.s.colOpts[pane.index];
 					let arrayFilter = [];
 					let arrayTotals = [];
@@ -503,6 +603,20 @@ declare var define: {
 							// Find out if the filter was selected in the previous search, if so select it and remove from array.
 							let selectIndex = selected.findIndex(function(element) {
 								return element.filter === dataP.filter;
+							});
+							if (selectIndex !== -1) {
+								row.select();
+								selected.splice(selectIndex, 1);
+							}
+						}
+					}
+					if (colOpts.comparison !== undefined) {
+						let rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
+						for (let row of rows) {
+							let selectIndex = selected.findIndex(function(element) {
+								if (element.filter === row.data().filter) {
+									return true;
+								}
 							});
 							if (selectIndex !== -1) {
 								row.select();
@@ -614,6 +728,7 @@ declare var define: {
 					search: 'filter',
 					show: undefined,
 					threshold: undefined,
+					comparison: undefined,
 				},
 				preSelect: undefined,
 			};

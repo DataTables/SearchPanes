@@ -134,7 +134,6 @@
             var binsTotal;
             var countMessage = table.i18n('searchPane.count', '{total}');
             var filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
-            console.log(colOpts);
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             this._populatePane(table, colOpts, classes, idx, arrayFilter);
@@ -163,8 +162,18 @@
                 // For each item selected in the pane, check if it is available in the cell
                 for (var _i = 0, _a = tableCols[idx]; _i < _a.length; _i++) {
                     var colSelect = _a[_i];
-                    if (filter.indexOf(colSelect.filter) !== -1) {
-                        return true;
+                    if (Array.isArray(colSelect.filter)) {
+                        for (var _b = 0, _c = colSelect.filter; _b < _c.length; _b++) {
+                            var filterP = _c[_b];
+                            if (filter.indexOf(filterP) !== -1) {
+                                return true;
+                            }
+                        }
+                    }
+                    else {
+                        if (filter.indexOf(colSelect.filter) !== -1) {
+                            return true;
+                        }
                     }
                 }
                 return false;
@@ -246,13 +255,16 @@
                                 shown: bins[data[i].filter],
                                 total: bins[data[i].filter]
                             });
+                            break;
                         }
-                        break;
                     }
                 }
                 else {
                     dtPane.table.row.add({ filter: this.c.emptyMessage, shown: count, total: count, display: this.c.emptyMessage });
                 }
+            }
+            if (colOpts.comparison !== undefined) {
+                this._getComparisonRows(dtPane, colOpts, bins, binsTotal);
             }
             $.fn.dataTable.select.init(dtPane.table);
             dtPane.table.draw();
@@ -273,6 +285,103 @@
                 }, 50);
             });
             return dtPane;
+        };
+        SearchPanes.prototype._getComparisonRows = function (dtPane, colOpts, bins, binsTotal) {
+            var vals = dtPane.table.rows().data();
+            var rows = [];
+            for (var _i = 0, _a = colOpts.comparison; _i < _a.length; _i++) {
+                var comp = _a[_i];
+                var comparisonObj = {
+                    filter: [],
+                    shown: 0,
+                    total: 0,
+                    display: comp.label
+                };
+                switch (comp.condition) {
+                    case '==': {
+                        for (var _b = 0, vals_1 = vals; _b < vals_1.length; _b++) {
+                            var val = vals_1[_b];
+                            if (val.filter === comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    case '!=': {
+                        for (var _c = 0, vals_2 = vals; _c < vals_2.length; _c++) {
+                            var val = vals_2[_c];
+                            if (val.filter !== comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    case '<': {
+                        for (var _d = 0, vals_3 = vals; _d < vals_3.length; _d++) {
+                            var val = vals_3[_d];
+                            if (val.filter < comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    case '>': {
+                        for (var _e = 0, vals_4 = vals; _e < vals_4.length; _e++) {
+                            var val = vals_4[_e];
+                            if (val.filter > comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    case '<=': {
+                        for (var _f = 0, vals_5 = vals; _f < vals_5.length; _f++) {
+                            var val = vals_5[_f];
+                            if (val.filter <= comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    case '>=': {
+                        for (var _g = 0, vals_6 = vals; _g < vals_6.length; _g++) {
+                            var val = vals_6[_g];
+                            if (val.filter >= comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    case 'includes': {
+                        for (var _h = 0, vals_7 = vals; _h < vals_7.length; _h++) {
+                            var val = vals_7[_h];
+                            if (val.filter.includes(comp.value)) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                    default: {
+                        for (var _j = 0, vals_8 = vals; _j < vals_8.length; _j++) {
+                            var val = vals_8[_j];
+                            if (val.filter === comp.value) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                        break;
+                    }
+                }
+                //console.log(comparisonObj.shown)
+                rows.push(dtPane.table.row.add(comparisonObj));
+            }
+            return rows;
+        };
+        SearchPanes.prototype._comparisonStatUpdate = function (val, comparisonObj, bins, binsTotal) {
+            comparisonObj.filter.push(val.filter);
+            bins[val.filter] !== undefined ? comparisonObj.shown += bins[val.filter] : comparisonObj.shown += 0;
+            binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter] : comparisonObj.total += 0;
+            //console.log(comparisonObj.show, bins[val.filter])
+            return comparisonObj;
         };
         SearchPanes.prototype._updateTable = function (dtPane, tableCols, idx, select) {
             var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
@@ -341,6 +450,7 @@
                 // update all of the panes except for the one causing the change
                 if (pane !== undefined && (pane.index !== callerIndex || !select || !this.s.filteringActive)) {
                     var selected = pane.table.rows({ selected: true }).data().toArray();
+                    console.log(pane.table.rows({ selected: true }).data().toArray(), "sas");
                     var colOpts = this.s.colOpts[pane.index];
                     var arrayFilter = [];
                     var arrayTotals = [];
@@ -398,6 +508,25 @@
                         var dataP = data_1[_d];
                         _loop_1(dataP);
                     }
+                    if (colOpts.comparison !== undefined) {
+                        var rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
+                        var _loop_2 = function (row) {
+                            var selectIndex = selected.findIndex(function (element) {
+                                console.log(element, row.data());
+                                if (element.display === row.data().display) {
+                                    return true;
+                                }
+                            });
+                            if (selectIndex !== -1) {
+                                row.select();
+                                selected.splice(selectIndex, 1);
+                            }
+                        };
+                        for (var _e = 0, rows_1 = rows; _e < rows_1.length; _e++) {
+                            var row = rows_1[_e];
+                            _loop_2(row);
+                        }
+                    }
                     // Set filtering Active to be again if it was previously set to false,
                     // so that succeeding panes have the correct formatting.
                     if (filterIdx !== undefined && filterIdx === pane.index) {
@@ -405,8 +534,8 @@
                     }
                     // Add search options which were previously selected but whos results are no
                     // longer present in the resulting data set.
-                    for (var _e = 0, selected_1 = selected; _e < selected_1.length; _e++) {
-                        var selectedEl = selected_1[_e];
+                    for (var _f = 0, selected_1 = selected; _f < selected_1.length; _f++) {
+                        var selectedEl = selected_1[_f];
                         var row = pane.table.row.add({ filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display });
                         row.select();
                     }

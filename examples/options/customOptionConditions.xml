@@ -60,9 +60,7 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how the definition of the maxOptions config property can overcome having a low variance but still wanting a searchPane.
-
-By setting the maxOptions values, any columns with less than that number of options will generate a searchpane.
+This example shows how to set up custom comparison options.
 
 ]]></info>
 
