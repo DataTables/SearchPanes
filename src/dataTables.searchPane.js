@@ -240,16 +240,14 @@
                     for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
                         var j = arrayFilter_1[_i];
                         if (data[i].filter === j.filter || data[i] === j.display) {
-                            if ((colOpts.hide === undefined || colOpts.hide.indexOf(data[i].filter) === -1)) {
-                                var row = dtPane.table.row.add({
-                                    display: j.display,
-                                    filter: j.filter,
-                                    shown: bins[data[i].filter],
-                                    total: bins[data[i].filter]
-                                });
-                            }
-                            break;
+                            var row = dtPane.table.row.add({
+                                display: j.display,
+                                filter: j.filter,
+                                shown: bins[data[i].filter],
+                                total: bins[data[i].filter]
+                            });
                         }
+                        break;
                     }
                 }
                 else {
@@ -369,7 +367,7 @@
                         this.s.filteringActive = false;
                     }
                     var _loop_1 = function (dataP) {
-                        if (dataP && (colOpts.hide === undefined || colOpts.hide.indexOf(data.filter) === -1)) {
+                        if (dataP) {
                             var row = void 0;
                             // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
                             // Do this also if the viewTotal option has been selected and cascadePanes has not
@@ -489,7 +487,6 @@
                 match: 'exact',
                 orthogonal: {
                     display: 'display',
-                    hide: undefined,
                     search: 'filter',
                     show: undefined,
                     threshold: undefined

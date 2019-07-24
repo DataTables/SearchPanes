@@ -337,7 +337,6 @@ declare var define: {
 				if (data[i]) {
 					for (let j of arrayFilter) {
 						if (data[i].filter === j.filter || data[i] === j.display) {
-							if ((colOpts.hide === undefined || colOpts.hide.indexOf(data[i].filter) === -1)) {
 								let row = dtPane.table.row.add({
 									display: j.display,
 									filter: j.filter,
@@ -345,8 +344,7 @@ declare var define: {
 									total: bins[data[i].filter],
 								});
 							}
-							break;
-						}
+						break;
 					}
 				}
 				else {
@@ -486,7 +484,7 @@ declare var define: {
 					}
 
 					for (let dataP of data) {
-						if (dataP && (colOpts.hide === undefined || colOpts.hide.indexOf(data.filter) === -1)) {
+						if (dataP) {
 							let row;
 							// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 							// Do this also if the viewTotal option has been selected and cascadePanes has not
@@ -613,7 +611,6 @@ declare var define: {
 				match: 'exact',
 				orthogonal: {
 					display: 'display',
-					hide: undefined,
 					search: 'filter',
 					show: undefined,
 					threshold: undefined,
