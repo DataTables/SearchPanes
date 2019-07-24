@@ -247,7 +247,7 @@ declare var define: {
 					if (colOpts.orthogonal.filter !== 'filter') {
 						filter = typeof(colOpts.orthogonal) === 'string'
 						? table.cell(dataIndex, idx).render(colOpts.orthogonal)
-						: table.cell(dataIndex, idx).render(colOpts.orthogonal.filter);
+						: table.cell(dataIndex, idx).render(colOpts.orthogonal.search);
 					}
 					// For each item selected in the pane, check if it is available in the cell
 					for (let colSelect of tableCols[idx]) {
@@ -343,6 +343,7 @@ declare var define: {
 									shown: bins[data[i].filter],
 									total: bins[data[i].filter],
 								});
+								console.log(row.data());
 							}
 							break;
 						}
@@ -546,11 +547,13 @@ declare var define: {
 			// Retrieve the rendered data from the cell
 			let filter = typeof(colOpts.orthogonal) === 'string'
 				? table.cell(rowIdx, idx).render(colOpts.orthogonal)
-				: table.cell(rowIdx, idx).render(colOpts.orthogonal.filter);
+				: table.cell(rowIdx, idx).render(colOpts.orthogonal.search);
 
 			let display = typeof(colOpts.orthogonal) === 'string'
 				? table.cell(rowIdx, idx).render(colOpts.orthogonal)
 				: table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+
+			console.log(filter, display, colOpts.orthogonal)
 
 			// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 			if (Array.isArray(filter) || filter instanceof DataTable.Api) {
