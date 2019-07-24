@@ -237,10 +237,12 @@ declare var define: {
 					if (settings.nTable !== table.table().node()) {
 						return true;
 					}
+
 					// If no data has been selected then show all
 					if (tableCols[idx].length === 0) {
 						return true;
 					}
+
 					// Get the current filtered data
 					let filter = searchData[idx];
 					if (colOpts.orthogonal.filter !== 'filter') {
@@ -248,10 +250,11 @@ declare var define: {
 						? table.cell(dataIndex, idx).render(colOpts.orthogonal)
 						: table.cell(dataIndex, idx).render(colOpts.orthogonal.search);
 					}
+
 					// For each item selected in the pane, check if it is available in the cell
 					for (let colSelect of tableCols[idx]) {
-						if(Array.isArray(colSelect.filter)){
-							for(let filterP of colSelect.filter){
+						if (Array.isArray(colSelect.filter)) {
+							for (let filterP of colSelect.filter) {
 								if (filter.indexOf(filterP) !== -1) {
 									return true;
 								}
@@ -272,7 +275,7 @@ declare var define: {
 
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			if ((colOpts.show === undefined && 
+			if ((colOpts.show === undefined &&
 					(colOpts.threshold === undefined ?
 						this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
 						this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
@@ -301,7 +304,7 @@ declare var define: {
 
 						},
 						{
-							className:'dtsp-countColumn',
+							className: 'dtsp-countColumn',
 							data: 'count',
 							render: (data, type, row) => {
 								let message;
@@ -388,16 +391,16 @@ declare var define: {
 			return dtPane;
 		}
 
-		public _getComparisonRows(dtPane, colOpts, bins, binsTotal){
-			let vals =dtPane.table.rows().data();
-			let rows = []
+		public _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
+			let vals = dtPane.table.rows().data();
+			let rows = [];
 			for (let comp of colOpts.comparison) {
 				let comparisonObj = {
-					filter:[],
-					shown:0,
-					total:0,
-					display:comp.label,
-				}
+					display: comp.label,
+					filter: [],
+					shown: 0,
+					total: 0,
+				};
 				switch (comp.condition) {
 					case '==': {
 						for (let val of vals) {
@@ -455,6 +458,13 @@ declare var define: {
 						}
 						break;
 					}
+					case '||': {
+						for (let val of vals) {
+							if (comp.value.indexOf(val.filter) !== -1) {
+								comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							}
+						}
+					}
 					default: {
 						for (let val of vals) {
 							if (val.filter === comp.value) {
@@ -464,16 +474,14 @@ declare var define: {
 						break;
 					}
 				}
-				//console.log(comparisonObj.shown)
 				rows.push(dtPane.table.row.add(comparisonObj));
 			}
 			return rows;
 		}
-		public _comparisonStatUpdate(val, comparisonObj, bins, binsTotal){
+		public _comparisonStatUpdate(val, comparisonObj, bins, binsTotal) {
 			comparisonObj.filter.push(val.filter);
 			bins[val.filter] !== undefined ? comparisonObj.shown += bins[val.filter] : comparisonObj.shown += 0;
-			binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter]:comparisonObj.total += 0;
-			//console.log(comparisonObj.show, bins[val.filter])
+			binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter] : comparisonObj.total += 0;
 			return comparisonObj;
 		}
 		public _updateTable(dtPane, tableCols, idx, select) {
@@ -548,7 +556,6 @@ declare var define: {
 				// update all of the panes except for the one causing the change
 				if (pane !== undefined && (pane.index !== callerIndex || !select || !this.s.filteringActive)) {
 					let selected = pane.table.rows({selected: true}).data().toArray();
-					console.log(pane.table.rows({selected: true}).data().toArray(), "sas")
 					let colOpts = this.s.colOpts[pane.index];
 					let arrayFilter = [];
 					let arrayTotals = [];
@@ -614,7 +621,7 @@ declare var define: {
 						let rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
 						for (let row of rows) {
 							let selectIndex = selected.findIndex(function(element) {
-								if (element.filter === row.data().filter) {
+								if (element.display === row.data().display) {
 									return true;
 								}
 							});
@@ -724,11 +731,11 @@ declare var define: {
 				grouping: undefined,
 				match: 'exact',
 				orthogonal: {
+					comparison: undefined,
 					display: 'display',
 					search: 'filter',
 					show: undefined,
 					threshold: undefined,
-					comparison: undefined,
 				},
 				preSelect: undefined,
 			};

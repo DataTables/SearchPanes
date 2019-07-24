@@ -292,10 +292,10 @@
             for (var _i = 0, _a = colOpts.comparison; _i < _a.length; _i++) {
                 var comp = _a[_i];
                 var comparisonObj = {
+                    display: comp.label,
                     filter: [],
                     shown: 0,
-                    total: 0,
-                    display: comp.label
+                    total: 0
                 };
                 switch (comp.condition) {
                     case '==': {
@@ -361,9 +361,17 @@
                         }
                         break;
                     }
-                    default: {
+                    case '||': {
                         for (var _j = 0, vals_8 = vals; _j < vals_8.length; _j++) {
                             var val = vals_8[_j];
+                            if (comp.value.indexOf(val.filter) !== -1) {
+                                comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            }
+                        }
+                    }
+                    default: {
+                        for (var _k = 0, vals_9 = vals; _k < vals_9.length; _k++) {
+                            var val = vals_9[_k];
                             if (val.filter === comp.value) {
                                 comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
                             }
@@ -371,7 +379,6 @@
                         break;
                     }
                 }
-                //console.log(comparisonObj.shown)
                 rows.push(dtPane.table.row.add(comparisonObj));
             }
             return rows;
@@ -380,7 +387,6 @@
             comparisonObj.filter.push(val.filter);
             bins[val.filter] !== undefined ? comparisonObj.shown += bins[val.filter] : comparisonObj.shown += 0;
             binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter] : comparisonObj.total += 0;
-            //console.log(comparisonObj.show, bins[val.filter])
             return comparisonObj;
         };
         SearchPanes.prototype._updateTable = function (dtPane, tableCols, idx, select) {
@@ -450,7 +456,6 @@
                 // update all of the panes except for the one causing the change
                 if (pane !== undefined && (pane.index !== callerIndex || !select || !this.s.filteringActive)) {
                     var selected = pane.table.rows({ selected: true }).data().toArray();
-                    console.log(pane.table.rows({ selected: true }).data().toArray(), "sas");
                     var colOpts = this.s.colOpts[pane.index];
                     var arrayFilter = [];
                     var arrayTotals = [];
@@ -512,7 +517,6 @@
                         var rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
                         var _loop_2 = function (row) {
                             var selectIndex = selected.findIndex(function (element) {
-                                console.log(element, row.data());
                                 if (element.display === row.data().display) {
                                     return true;
                                 }
@@ -615,6 +619,7 @@
                 grouping: undefined,
                 match: 'exact',
                 orthogonal: {
+                    comparison: undefined,
                     display: 'display',
                     search: 'filter',
                     show: undefined,
