@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" order="1">
+<dt-example table-type="html-index" order="1">
 
 <css lib="datatables searchpane select" />
 <js lib="jquery datatables searchpane select">
@@ -7,47 +7,58 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPane:{
+        searchPane: {
+            cascadePanes: true,
             viewTotal: true,
         },
-        columnDefs:[
+        columnDefs:[ 
+            {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            },
             {
                 searchPane: {
-                    comparison:[
+                    options:[
                         {
                             label: 'Over 60',
                             value: 60,
                             condition:'>',
                         },
+                        {
+                            label: '20 to 30',
+                            value: function(rowData){
+                                return rowData.filter <= 30 && rowData.filter >=20;
+                            }
+                        }
                     ]
                 },
                 targets:[4],
             },
             {
                 searchPane: {
-                    comparison:[
+                    options:[
                         {
                             label: 'Not Edinburgh',
                             value: 'Edinburgh',
                             condition: '!=',
                         },
+                        {
+                            label: 'Not London',
+                            value: function(rowData){
+                                return rowData.filter !== 'London';
+                            }
+                        }
                     ],
                 },
                 targets: [3]
-            },
-            {
-                searchPane: {
-                    comparison:[
-                        {
-                            label:'Chief',
-                            value: 'Chief',
-                            condition: 'includes',
-                        },
-                    ],
-                },
-                targets: [2],
             }
-        ]
+        ],
+        select: {
+			style:    'os',
+			selector: 'td:first-child'
+		},
+		order: [[ 1, 'asc' ]]
     });
 });
 
