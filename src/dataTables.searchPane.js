@@ -172,7 +172,6 @@
                 }
                 return false;
             });
-            console.log(arrayFilter);
             var bins = this._binData(this._flatten(arrayFilter));
             // If the option viewTotal is true then find
             // the total count for the whole table to display alongside the displayed count
@@ -185,12 +184,13 @@
             }
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
-            if ((colOpts.show === undefined &&
-                (colOpts.threshold === undefined ?
-                    this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
-                    this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
+            console.log(Object.keys(bins).length);
+            if ((colOpts.show === undefined && (colOpts.threshold === undefined ?
+                this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
+                this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
                 || colOpts.show === false
-                || (colOpts.show !== undefined && colOpts.show !== true)) {
+                || (colOpts.show !== undefined && colOpts.show !== true)
+                || (colOpts.show !== true && Object.keys(bins).length <= 1)) {
                 return;
             }
             // If the varaince is accceptable then display the search pane
@@ -259,10 +259,6 @@
                                 shown: bins[data[i].filter],
                                 total: bins[data[i].filter]
                             });
-                            if (idx === 0) {
-                                console.log(row.data());
-                                console.log(bins);
-                            }
                             break;
                         }
                     }
@@ -607,7 +603,6 @@
             for (var i = 0, ien = data.length; i < ien; i++) {
                 var d = data[i].filter;
                 if (d === null || d === undefined) {
-                    console.log("cont");
                     continue;
                 }
                 if (!out[d]) {

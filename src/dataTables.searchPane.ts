@@ -264,7 +264,6 @@ declare var define: {
 					return false;
 				}
 			);
-			console.log(arrayFilter)
 
 			let bins = this._binData(this._flatten(arrayFilter));
 
@@ -280,12 +279,14 @@ declare var define: {
 
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			if ((colOpts.show === undefined &&
-					(colOpts.threshold === undefined ?
-						this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
-						this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
+			console.log(Object.keys(bins).length)
+			if ((colOpts.show === undefined && (colOpts.threshold === undefined ?
+					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
+					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
 				|| colOpts.show === false
-				|| (colOpts.show !== undefined && colOpts.show !== true)) {
+				|| (colOpts.show !== undefined && colOpts.show !== true)
+				|| (colOpts.show !== true  && Object.keys(bins).length <= 1)
+			) {
 				return;
 			}
 
@@ -360,11 +361,6 @@ declare var define: {
 									shown: bins[data[i].filter],
 									total: bins[data[i].filter],
 								});
-								if (idx === 0) {
-									console.log(row.data());
-									console.log(bins);
-								}
-
 								break;
 							}
 					}
