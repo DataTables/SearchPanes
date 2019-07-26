@@ -118,7 +118,8 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to set up custom comparison options.
+This example shows how to set up custom comparison options. There are multiple predefined conditions such as <, >, <=, >=, ==, != and includes.
+Alternatively the user can define their own comparison function.
 
 ]]></info>
 

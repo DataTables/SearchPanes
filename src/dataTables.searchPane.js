@@ -278,6 +278,9 @@
             }
             $.fn.dataTable.select.init(dtPane.table);
             dtPane.table.draw();
+            if (colOpts.hideCount || this.c.hideCount) {
+                dtPane.table.column(1).visible(false);
+            }
             var t0;
             // When an item is selected on the pane, add these to the array which holds selected items.
             // Custom search will perform.
@@ -482,6 +485,7 @@
                 orthogonal: {
                     comparison: undefined,
                     display: 'display',
+                    hideCount: false,
                     search: 'filter',
                     show: undefined,
                     threshold: undefined

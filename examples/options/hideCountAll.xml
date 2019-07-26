@@ -9,9 +9,8 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPane:{
-            cascadePanes: true,
             hideCount: true,
-        }
+        },
     });
 });
 
@@ -24,8 +23,7 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates the cascadePanes functionality. This allows the panes to be filtered based on the values
-selected in the other panes. cascadePanes is false as default.
+This example shows how to hide the count in all columns
 
 ]]></info>
 
