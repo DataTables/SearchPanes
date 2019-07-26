@@ -9,8 +9,21 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPane:{
-            searchBox:false
-        }
+            dtOpts:{
+                searching:false,
+            }
+        },
+        columnDefs: [
+            
+            {
+                searchPane:{
+                    dtOpts:{
+                        info: true,
+                    }
+                },
+                targets: [2]
+            },
+        ]
     });
 });
 

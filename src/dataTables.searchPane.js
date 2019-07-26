@@ -201,9 +201,10 @@
             }
             // If the varaince is accceptable then display the search pane
             $(container).append(dt);
+            console.log(this.c.dtOpts);
             var dtPane = {
                 index: idx,
-                table: $(dt).DataTable({
+                table: $(dt).DataTable($.extend(true, {
                     columnDefs: [
                         {
                             data: 'display',
@@ -234,9 +235,9 @@
                     info: false,
                     paging: false,
                     scrollY: '200px',
-                    searching: this.c.searchBox,
+                    searching: true,
                     select: true
-                })
+                }, this.c.dtOpts, colOpts.dtOpts))
             };
             // On initialisation, do we need to set a filtering value from a
             // saved state or init option?
