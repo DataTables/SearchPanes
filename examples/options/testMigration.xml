@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" order="1">
+<dt-example table-type="html-index" order="1">
 
 <css lib="datatables searchpane select" />
 <js lib="jquery datatables searchpane select">
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPane:{
+    var dt = $('#example').DataTable( {
+        searchPane: {
             viewTotal: true,
         },
-        columnDefs:[
+        columnDefs:[ 
             {
+                orderable: false,
+                className: 'select-checkbox',
                 searchPane: {
-                    comparison:[
+                    show: true,
+                    options:[
                         {
-                            label: 'Over 60',
-                            value: 60,
-                            condition:'>',
-                        },
-                    ]
-                },
-                targets:[4],
-            },
-            {
-                searchPane: {
-                    comparison:[
-                        {
-                            label: 'Not Edinburgh',
-                            value: 'Edinburgh',
-                            condition: '!=',
+                            label: 'Checked',
+                            value: function(rowData,rowIdx){
+                                console.log(this.row(rowIdx, {selected: true}).any())
+                                return this.row(rowIdx, {selected: true}).any();
+                            },
+                            successReplace: 'true'
                         },
                         {
-                            label: 'UK',
-                            value:['Edinburgh', 'London'],
-                            condition:'||',
+                            label: 'Un-Checked',
+                            value: function(rowData, rowIdx){
+                                console.log(this.row(rowIdx, {selected: true}).any() === false)
+                                return this.row(rowIdx, {selected: true}).any() === false;
+                            },
+                            successReplace: 'false'
                         },
                     ],
                 },
-                targets: [3]
+                targets: [0]
             },
-            {
-                searchPane: {
-                    comparison:[
-                        {
-                            label:'Chief',
-                            value: 'Chief',
-                            condition: 'includes',
-                        },
-                    ],
-                },
-                targets: [2],
-            }
-        ]
+        ],
+        select: {
+			style:    'os',
+			selector: 'td:first-child'
+		},
+		order: [[ 1, 'asc' ]]
+    });
+
+    dt.on('select.dt', () => {			
+        dt.searchPane.rebuildPane(0);
+    });
+
+    dt.on('deselect.dt', () => {
+        dt.searchPane.rebuildPane(0);
     });
 });
 
@@ -65,9 +63,7 @@ $(document).ready(function() {
 
 This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how the definition of the maxOptions config property can overcome having a low variance but still wanting a searchPane.
-
-By setting the maxOptions values, any columns with less than that number of options will generate a searchpane.
+This example shows how to set up custom comparison options.
 
 ]]></info>
 

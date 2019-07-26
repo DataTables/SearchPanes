@@ -109,6 +109,8 @@ declare var define: {
 			this.arrayCols = [];
 			this.classes = $.extend(true, {}, SearchPanes.class);
 
+			
+
 			this.dom = {
 				container: $('<div/>').addClass(this.classes.container)
 			};
@@ -123,7 +125,7 @@ declare var define: {
 				updating: false,
 			};
 
-			table.settings()[0].searchPane = this;
+			table.settings()[0]._searchPane = this;
 
 			let loadedFilter;
 			if (table.state.loaded()) {
@@ -211,6 +213,7 @@ declare var define: {
 			let column = table.column(idx);
 			this.s.colOpts.push(this._getOptions(idx));
 			let colOpts = this.s.colOpts[idx];
+			let tableVals = table.rows({search:'applied'}).data().toArray();
 			let container = this.dom.container;
 			let colType =  this._getColType(table, idx);
 			let dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
@@ -223,11 +226,9 @@ declare var define: {
 			tableCols.push([]);
 			this._populatePane(table, colOpts, classes, idx, arrayFilter);
 
-			
-
 			// Custom search function for table
 			$.fn.dataTable.ext.search.push(
-				function(settings, searchData, dataIndex, origData) {
+				(settings, searchData, dataIndex, origData) => {
 					if (settings.nTable !== table.table().node()) {
 						return true;
 					}
@@ -254,6 +255,13 @@ declare var define: {
 								}
 							}
 						}
+						else if(typeof colSelect.filter === 'function'){
+							if(colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)){
+								this.rebuildPane(idx);
+								return true;
+							}
+							return false;
+						}
 						else {
 							if (filter === colSelect.filter) {
 								return true;
@@ -279,7 +287,6 @@ declare var define: {
 
 			// Don't show the pane if there isn't enough variance in the data
 			// colOpts.options is checked incase the options to restrict the choices are selected
-			console.log(Object.keys(bins).length)
 			if ((colOpts.show === undefined && (colOpts.threshold === undefined ?
 					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
 					this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
@@ -355,14 +362,14 @@ declare var define: {
 				if (data[i]) {
 					for (let j of arrayFilter) {
 						if (data[i].filter === j.filter || data[i] === j.display) {
-								let row = dtPane.table.row.add({
-									display: j.display,
-									filter: j.filter,
-									shown: bins[data[i].filter],
-									total: bins[data[i].filter],
-								});
-								break;
-							}
+							let row = dtPane.table.row.add({
+								display: j.display,
+								filter: j.filter,
+								shown: bins[data[i].filter],
+								total: bins[data[i].filter],
+							});
+							break;
+						}
 					}
 				}
 				else {
@@ -399,21 +406,34 @@ declare var define: {
 
 		public _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
 			let vals = dtPane.table.rows().data();
+			let tableVals = this.s.dt.rows({search:'applied'}).data().toArray();
+			let appRows = this.s.dt.rows({search:'applied'});
+			let tableValsTotal = this.s.dt.rows().data().toArray();
+			let allRows = this.s.dt.rows();
+			let paneRows = dtPane.table.rows();
 			dtPane.table.clear();
 			let rows = [];
 			for (let comp of colOpts.options) {
 				let comparisonObj = {
 					display: comp.label,
-					filter: [],
+					filter: typeof comp.value === 'function' ? comp.value : [],
 					shown: 0,
 					total: 0,
 				};
 				if (typeof comp.value === 'function') {
-					for (let val of vals) {
-						if (comp.value(val)) {
-							comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+					let count = 0;
+					let total = 0;
+					for (let tVal = 0; tVal < tableVals.length; tVal++) {
+						if (comp.value.call(this.s.dt, tableVals[tVal], appRows[0][tVal])) {
+							count++;
 						}
 					}
+					for(let i = 0; i< tableValsTotal.length; i++){
+						if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
+							total++;
+						}
+					}
+					comparisonObj = this._comparisonStatUpdate(comp, comparisonObj, count, total);
 				}
 				else {
 					for (let val of vals) {
@@ -428,7 +448,7 @@ declare var define: {
 							(condition === 'includes' && val.filter.indexOf(comp.value) !== -1) ||
 							(condition === '||' && val.filter.indexOf(comp.value) !== -1)
 						) {
-							comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+							comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins[val.filter], binsTotal[val.filter]);
 						}
 					}
 				}
@@ -439,9 +459,11 @@ declare var define: {
 			return rows;
 		}
 		public _comparisonStatUpdate(val, comparisonObj, bins, binsTotal) {
-			comparisonObj.filter.push(val.filter);
-			bins[val.filter] !== undefined ? comparisonObj.shown += bins[val.filter] : comparisonObj.shown += 0;
-			binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter] : comparisonObj.total += 0;
+			if(typeof comparisonObj.filter !== 'function'){
+				comparisonObj.filter.push(val.filter);
+			}
+			bins !== undefined ? comparisonObj.shown += bins : comparisonObj.shown += 0;
+			binsTotal !== undefined ? comparisonObj.total += binsTotal : comparisonObj.total += 0;
 			return comparisonObj;
 		}
 		public _updateTable(dtPane, tableCols, idx, select) {
@@ -613,6 +635,8 @@ declare var define: {
 			this.s.updating = false;
 		}
 
+		
+
 		public _detailsPane(table, colOpts, classes, idx, arrayTotals) {
 			table.rows().every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayTotals);
@@ -755,6 +779,134 @@ declare var define: {
 				});
 		}
 
+		public rebuildPane(callerIndex){
+			this.s.filteringActive = false;
+			this.s.updating = true;
+			let selectArray = [];
+			let filterCount = 0;
+			let filterIdx;
+			let pane = this.panes[callerIndex];
+
+			// If the viewTotal option is active then it must be determined whether there is a filter in place already
+			if (this.c.viewTotal) {
+
+				// Check each pane to find how many filters are in place in each
+
+				if (pane !== undefined) {
+					let selected = pane.table.rows({selected: true}).data().toArray().length;
+					if (selected > 0) {
+						this.s.filteringActive = true;
+					}
+					selectArray.push(selected);
+					filterCount += selected;
+				}
+				else {
+					selectArray.push(0);
+				}
+				// If there is only one in place then find the index of the corresponding pane
+				if (filterCount === 1) {
+					filterIdx = selectArray.indexOf(1);
+				}
+			}
+			if (pane !== undefined && (pane.index !== callerIndex || !this.s.filteringActive)) {
+				let selected = pane.table.rows({selected: true}).data().toArray();
+				let colOpts = this.s.colOpts[pane.index];
+				let arrayFilter = [];
+				let arrayTotals = [];
+				let table = this.s.dt;
+				let classes = this.classes;
+				let data = [];
+				let prev = [];
+				let binsTotal;
+				let scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
+
+				// Clear the pane in preparation for adding the updated search options
+				pane.table.clear();
+
+				this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
+
+				let bins = this._binData(this._flatten(arrayFilter));
+
+				// If the viewTotal option is selected then find the totals for the table
+				if (this.c.viewTotal) {
+					this._detailsPane(table, colOpts, classes, pane.index, arrayTotals);
+
+					binsTotal = this._binData(this._flatten(arrayTotals));
+
+					this._findUnique(prev, data, arrayTotals);
+				}
+				else {
+					binsTotal = bins;
+				}
+
+				this._findUnique(prev, data, arrayFilter);
+
+				// If a filter has been removed so that only one remains then the remaining filter should have
+				// the non filtered formatting, therefore set filteringActive to be false.
+				if (filterIdx !== undefined && filterIdx === pane.index) {
+					this.s.filteringActive = false;
+				}
+
+				for (let dataP of data) {
+					if (dataP) {
+						
+						let row;
+						// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
+						// Do this also if the viewTotal option has been selected and cascadePanes has not
+						row = pane.table.row.add({
+							display: dataP.display,
+							filter: dataP.filter,
+							shown: !this.c.viewTotal
+								? bins[dataP.filter]
+								: bins[dataP.filter] !== undefined
+									? bins[dataP.filter]
+									: '0',
+							total: this.c.viewTotal
+								? String(binsTotal[dataP.filter])
+								: bins[dataP.filter],
+						});
+						// Find out if the filter was selected in the previous search, if so select it and remove from array.
+						let selectIndex = selected.findIndex(function(element) {
+							return element.filter === dataP.filter;
+						});
+						if (selectIndex !== -1) {
+							row.select();
+							selected.splice(selectIndex, 1);
+						}
+					}
+				}
+				if (colOpts.options !== undefined) {
+					let rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
+					for (let row of rows) {
+						let selectIndex = selected.findIndex(function(element) {
+							if (element.display === row.data().display) {
+								return true;
+							}
+						});
+						if (selectIndex !== -1) {
+							row.select();
+							selected.splice(selectIndex, 1);
+						}
+					}
+				}
+				// Set filtering Active to be again if it was previously set to false,
+				// so that succeeding panes have the correct formatting.
+				if (filterIdx !== undefined && filterIdx === pane.index) {
+					this.s.filteringActive = true;
+				}
+
+				// Add search options which were previously selected but whos results are no
+				// longer present in the resulting data set.
+				for (let selectedEl of selected) {
+					let row = pane.table.row.add({filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display});
+					row.select();
+				}
+				pane.table.draw();
+				pane.table.table().node().parentNode.scrollTop = scrollTop;
+			}
+			this.s.updating = false;
+		}
+
 		private _getColType(table, idx) {
 			return table.settings()[0].aoColumns[idx].sType;
 		}
@@ -771,24 +923,24 @@ declare var define: {
  ($.fn as any).DataTable.SearchPanes = SearchPanes;
 
  DataTable.Api.register('searchPanes.rebuild()', function() {
-		return this.iterator('table', function(ctx) {
-			if (ctx.searchPane) {
-				ctx.searchPane.rebuild();
+		return this.iterator('table', function(this) {
+			if (this.searchPane) {
+				this.searchPane.rebuild();
 			}
 		});
 	});
 
  DataTable.Api.register('column().paneOptions()', function(options) {
-		return this.iterator('column', function(ctx, idx) {
-			let col = ctx.aoColumns[idx];
+		return this.iterator('column', function(this, idx) {
+			let col = this.aoColumns[idx];
 
 			if (!col.searchPane) {
 				col.searchPane = {};
 			}
 			col.searchPane.values = options;
 
-			if (ctx.searchPane) {
-				ctx.searchPane.rebuild();
+			if (this.searchPane) {
+				this.searchPane.rebuild();
 			}
 		});
 	});
@@ -812,3 +964,16 @@ declare var define: {
 
  return SearchPanes;
 }));
+
+let DataTable = $.fn.dataTable;
+let apiRegister = (DataTable.Api as any).register;
+
+apiRegister('searchPane()', function () {
+	return this;
+})
+
+apiRegister('searchPane.rebuildPane()', function (callerIndex) {
+	var ctx = this.context[0];
+	ctx._searchPane.rebuildPane(0);
+
+})

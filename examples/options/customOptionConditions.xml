@@ -6,31 +6,70 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    var dt = $('#example').DataTable( {
         searchPane: {
-            cascadePanes: true,
             viewTotal: true,
         },
         columnDefs:[ 
             {
                 orderable: false,
                 className: 'select-checkbox',
-                targets:   0
+                searchPane: {
+                    show: true,
+                    options:[
+                        {
+                            label: 'Checked',
+                            value: function(rowData,rowIdx){
+                                return this.row(rowIdx, {selected: true}).any();
+                            },
+                        },
+                        {
+                            label: 'Un-Checked',
+                            value: function(rowData, rowIdx){
+                                return this.row(rowIdx, {selected: true}).any() === false;
+                            },
+                        },
+                    ],
+                },
+                targets: [0]
             },
             {
                 searchPane: {
                     options:[
                         {
+                            label: 'Under 20',
+                            value: 20,
+                            condition:'<',
+                        },
+                        {
+                            label: '20 to 30',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 30 && rowData[4] >=20;
+                            }
+                        },
+                         {
+                            label: '30 to 40',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 40 && rowData[4] >=30;
+                            }
+                        },
+                         {
+                            label: '40 to 50',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 50 && rowData[4] >=40;
+                            }
+                        },
+                         {
+                            label: '50 to 60',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 60 && rowData[4] >=50;
+                            }
+                        },
+                         {
                             label: 'Over 60',
                             value: 60,
                             condition:'>',
                         },
-                        {
-                            label: '20 to 30',
-                            value: function(rowData){
-                                return rowData.filter <= 30 && rowData.filter >=20;
-                            }
-                        }
                     ]
                 },
                 targets:[4],
@@ -45,8 +84,8 @@ $(document).ready(function() {
                         },
                         {
                             label: 'Not London',
-                            value: function(rowData){
-                                return rowData.filter !== 'London';
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'London';
                             }
                         }
                     ],
@@ -59,6 +98,14 @@ $(document).ready(function() {
 			selector: 'td:first-child'
 		},
 		order: [[ 1, 'asc' ]]
+    });
+
+    dt.on('select.dt', () => {			
+        dt.searchPane.rebuildPane(0);
+    });
+
+    dt.on('deselect.dt', () => {
+        dt.searchPane.rebuildPane(0);
     });
 });
 

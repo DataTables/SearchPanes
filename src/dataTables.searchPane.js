@@ -47,7 +47,7 @@
                 filteringActive: false,
                 updating: false
             };
-            table.settings()[0].searchPane = this;
+            table.settings()[0]._searchPane = this;
             var loadedFilter;
             if (table.state.loaded()) {
                 loadedFilter = table.state.loaded();
@@ -126,6 +126,7 @@
             var column = table.column(idx);
             this.s.colOpts.push(this._getOptions(idx));
             var colOpts = this.s.colOpts[idx];
+            var tableVals = table.rows({ search: 'applied' }).data().toArray();
             var container = this.dom.container;
             var colType = this._getColType(table, idx);
             var dt = $('<table><thead><tr><th>' + $(column.header()).text() + '</th><th/></tr></thead></table>');
@@ -164,6 +165,13 @@
                             }
                         }
                     }
+                    else if (typeof colSelect.filter === 'function') {
+                        if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+                            _this.rebuildPane(idx);
+                            return true;
+                        }
+                        return false;
+                    }
                     else {
                         if (filter === colSelect.filter) {
                             return true;
@@ -184,7 +192,6 @@
             }
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
-            console.log(Object.keys(bins).length);
             if ((colOpts.show === undefined && (colOpts.threshold === undefined ?
                 this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > this.c.threshold :
                 this._uniqueRatio(Object.keys(bins).length, table.rows()[0].length) > colOpts.threshold))
@@ -292,27 +299,39 @@
         };
         SearchPanes.prototype._getComparisonRows = function (dtPane, colOpts, bins, binsTotal) {
             var vals = dtPane.table.rows().data();
+            var tableVals = this.s.dt.rows({ search: 'applied' }).data().toArray();
+            var appRows = this.s.dt.rows({ search: 'applied' });
+            var tableValsTotal = this.s.dt.rows().data().toArray();
+            var allRows = this.s.dt.rows();
+            var paneRows = dtPane.table.rows();
             dtPane.table.clear();
             var rows = [];
             for (var _i = 0, _a = colOpts.options; _i < _a.length; _i++) {
                 var comp = _a[_i];
                 var comparisonObj = {
                     display: comp.label,
-                    filter: [],
+                    filter: typeof comp.value === 'function' ? comp.value : [],
                     shown: 0,
                     total: 0
                 };
                 if (typeof comp.value === 'function') {
-                    for (var _b = 0, vals_1 = vals; _b < vals_1.length; _b++) {
-                        var val = vals_1[_b];
-                        if (comp.value(val)) {
-                            comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                    var count = 0;
+                    var total = 0;
+                    for (var tVal = 0; tVal < tableVals.length; tVal++) {
+                        if (comp.value.call(this.s.dt, tableVals[tVal], appRows[0][tVal])) {
+                            count++;
                         }
                     }
+                    for (var i = 0; i < tableValsTotal.length; i++) {
+                        if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
+                            total++;
+                        }
+                    }
+                    comparisonObj = this._comparisonStatUpdate(comp, comparisonObj, count, total);
                 }
                 else {
-                    for (var _c = 0, vals_2 = vals; _c < vals_2.length; _c++) {
-                        var val = vals_2[_c];
+                    for (var _b = 0, vals_1 = vals; _b < vals_1.length; _b++) {
+                        var val = vals_1[_b];
                         var condition = comp.condition;
                         if ((condition === '==' && val.filter === comp.value) ||
                             (condition === '!=' && val.filter !== comp.value) ||
@@ -322,7 +341,7 @@
                             (condition === '>=' && val.filter >= comp.value) ||
                             (condition === 'includes' && val.filter.indexOf(comp.value) !== -1) ||
                             (condition === '||' && val.filter.indexOf(comp.value) !== -1)) {
-                            comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins, binsTotal);
+                            comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins[val.filter], binsTotal[val.filter]);
                         }
                     }
                 }
@@ -333,9 +352,11 @@
             return rows;
         };
         SearchPanes.prototype._comparisonStatUpdate = function (val, comparisonObj, bins, binsTotal) {
-            comparisonObj.filter.push(val.filter);
-            bins[val.filter] !== undefined ? comparisonObj.shown += bins[val.filter] : comparisonObj.shown += 0;
-            binsTotal[val.filter] !== undefined ? comparisonObj.total += binsTotal[val.filter] : comparisonObj.total += 0;
+            if (typeof comparisonObj.filter !== 'function') {
+                comparisonObj.filter.push(val.filter);
+            }
+            bins !== undefined ? comparisonObj.shown += bins : comparisonObj.shown += 0;
+            binsTotal !== undefined ? comparisonObj.total += binsTotal : comparisonObj.total += 0;
             return comparisonObj;
         };
         SearchPanes.prototype._updateTable = function (dtPane, tableCols, idx, select) {
@@ -624,6 +645,129 @@
                 _this._pane(idx);
             });
         };
+        SearchPanes.prototype.rebuildPane = function (callerIndex) {
+            this.s.filteringActive = false;
+            this.s.updating = true;
+            var selectArray = [];
+            var filterCount = 0;
+            var filterIdx;
+            var pane = this.panes[callerIndex];
+            // If the viewTotal option is active then it must be determined whether there is a filter in place already
+            if (this.c.viewTotal) {
+                // Check each pane to find how many filters are in place in each
+                if (pane !== undefined) {
+                    var selected = pane.table.rows({ selected: true }).data().toArray().length;
+                    if (selected > 0) {
+                        this.s.filteringActive = true;
+                    }
+                    selectArray.push(selected);
+                    filterCount += selected;
+                }
+                else {
+                    selectArray.push(0);
+                }
+                // If there is only one in place then find the index of the corresponding pane
+                if (filterCount === 1) {
+                    filterIdx = selectArray.indexOf(1);
+                }
+            }
+            if (pane !== undefined && (pane.index !== callerIndex || !this.s.filteringActive)) {
+                var selected = pane.table.rows({ selected: true }).data().toArray();
+                var colOpts = this.s.colOpts[pane.index];
+                var arrayFilter = [];
+                var arrayTotals = [];
+                var table = this.s.dt;
+                var classes = this.classes;
+                var data = [];
+                var prev = [];
+                var binsTotal = void 0;
+                var scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
+                // Clear the pane in preparation for adding the updated search options
+                pane.table.clear();
+                this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
+                var bins = this._binData(this._flatten(arrayFilter));
+                // If the viewTotal option is selected then find the totals for the table
+                if (this.c.viewTotal) {
+                    this._detailsPane(table, colOpts, classes, pane.index, arrayTotals);
+                    binsTotal = this._binData(this._flatten(arrayTotals));
+                    this._findUnique(prev, data, arrayTotals);
+                }
+                else {
+                    binsTotal = bins;
+                }
+                this._findUnique(prev, data, arrayFilter);
+                // If a filter has been removed so that only one remains then the remaining filter should have
+                // the non filtered formatting, therefore set filteringActive to be false.
+                if (filterIdx !== undefined && filterIdx === pane.index) {
+                    this.s.filteringActive = false;
+                }
+                var _loop_3 = function (dataP) {
+                    if (dataP) {
+                        var row = void 0;
+                        // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
+                        // Do this also if the viewTotal option has been selected and cascadePanes has not
+                        row = pane.table.row.add({
+                            display: dataP.display,
+                            filter: dataP.filter,
+                            shown: !this_2.c.viewTotal
+                                ? bins[dataP.filter]
+                                : bins[dataP.filter] !== undefined
+                                    ? bins[dataP.filter]
+                                    : '0',
+                            total: this_2.c.viewTotal
+                                ? String(binsTotal[dataP.filter])
+                                : bins[dataP.filter]
+                        });
+                        // Find out if the filter was selected in the previous search, if so select it and remove from array.
+                        var selectIndex = selected.findIndex(function (element) {
+                            return element.filter === dataP.filter;
+                        });
+                        if (selectIndex !== -1) {
+                            row.select();
+                            selected.splice(selectIndex, 1);
+                        }
+                    }
+                };
+                var this_2 = this;
+                for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+                    var dataP = data_2[_i];
+                    _loop_3(dataP);
+                }
+                if (colOpts.options !== undefined) {
+                    var rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
+                    var _loop_4 = function (row) {
+                        var selectIndex = selected.findIndex(function (element) {
+                            if (element.display === row.data().display) {
+                                return true;
+                            }
+                        });
+                        if (selectIndex !== -1) {
+                            row.select();
+                            selected.splice(selectIndex, 1);
+                        }
+                    };
+                    for (var _a = 0, rows_2 = rows; _a < rows_2.length; _a++) {
+                        var row = rows_2[_a];
+                        _loop_4(row);
+                    }
+                }
+                // Set filtering Active to be again if it was previously set to false,
+                // so that succeeding panes have the correct formatting.
+                if (filterIdx !== undefined && filterIdx === pane.index) {
+                    this.s.filteringActive = true;
+                }
+                // Add search options which were previously selected but whos results are no
+                // longer present in the resulting data set.
+                for (var _b = 0, selected_2 = selected; _b < selected_2.length; _b++) {
+                    var selectedEl = selected_2[_b];
+                    var row = pane.table.row.add({ filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display });
+                    row.select();
+                }
+                pane.table.draw();
+                pane.table.table().node().parentNode.scrollTop = scrollTop;
+            }
+            this.s.updating = false;
+        };
         SearchPanes.prototype._getColType = function (table, idx) {
             return table.settings()[0].aoColumns[idx].sType;
         };
@@ -671,21 +815,21 @@
     $.fn.dataTable.SearchPanes = SearchPanes;
     $.fn.DataTable.SearchPanes = SearchPanes;
     DataTable.Api.register('searchPanes.rebuild()', function () {
-        return this.iterator('table', function (ctx) {
-            if (ctx.searchPane) {
-                ctx.searchPane.rebuild();
+        return this.iterator('table', function () {
+            if (this.searchPane) {
+                this.searchPane.rebuild();
             }
         });
     });
     DataTable.Api.register('column().paneOptions()', function (options) {
-        return this.iterator('column', function (ctx, idx) {
-            var col = ctx.aoColumns[idx];
+        return this.iterator('column', function (idx) {
+            var col = this.aoColumns[idx];
             if (!col.searchPane) {
                 col.searchPane = {};
             }
             col.searchPane.values = options;
-            if (ctx.searchPane) {
-                ctx.searchPane.rebuild();
+            if (this.searchPane) {
+                this.searchPane.rebuild();
             }
         });
     });
@@ -704,3 +848,12 @@
     });
     return SearchPanes;
 }));
+var DataTable = $.fn.dataTable;
+var apiRegister = DataTable.Api.register;
+apiRegister('searchPane()', function () {
+    return this;
+});
+apiRegister('searchPane.rebuildPane()', function (callerIndex) {
+    var ctx = this.context[0];
+    ctx._searchPane.rebuildPane(0);
+});

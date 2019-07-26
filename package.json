@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/DataTables/SearchPane#readme",
   "dependencies": {
+    "@types/datatables.net": "^1.10.17",
     "tslint": "^5.18.0",
     "tslint-eslint-rules": "^5.4.0"
   },
