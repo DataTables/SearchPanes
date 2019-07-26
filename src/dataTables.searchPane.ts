@@ -441,8 +441,7 @@ declare var define: {
 							(condition === '>' && val.filter > comp.value) ||
 							(condition === '<=' && val.filter <= comp.value) ||
 							(condition === '>=' && val.filter >= comp.value) ||
-							(condition === 'includes' && val.filter.indexOf(comp.value) !== -1) ||
-							(condition === '||' && val.filter.indexOf(comp.value) !== -1)
+							(condition === 'includes' && val.filter.indexOf(comp.value) !== -1)
 						) {
 							comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins[val.filter], binsTotal[val.filter]);
 						}

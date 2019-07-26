@@ -302,7 +302,6 @@
             var appRows = this.s.dt.rows({ search: 'applied' });
             var tableValsTotal = this.s.dt.rows().data().toArray();
             var allRows = this.s.dt.rows();
-            var paneRows = dtPane.table.rows();
             dtPane.table.clear();
             var rows = [];
             for (var _i = 0, _a = colOpts.options; _i < _a.length; _i++) {
@@ -338,8 +337,7 @@
                             (condition === '>' && val.filter > comp.value) ||
                             (condition === '<=' && val.filter <= comp.value) ||
                             (condition === '>=' && val.filter >= comp.value) ||
-                            (condition === 'includes' && val.filter.indexOf(comp.value) !== -1) ||
-                            (condition === '||' && val.filter.indexOf(comp.value) !== -1)) {
+                            (condition === 'includes' && val.filter.indexOf(comp.value) !== -1)) {
                             comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins[val.filter], binsTotal[val.filter]);
                         }
                     }
