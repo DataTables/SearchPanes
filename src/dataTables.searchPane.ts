@@ -214,11 +214,11 @@ declare var define: {
 			let container = this.c.container;
 			let host = typeof container === 'function' ? container(this.s.dt) : container;
 
-			if (this.c.insert === 'prepend') {
-				$(this.dom.container).prependTo(host);
+			if (this.c.insert === 'append') {
+				$(this.dom.container).appendTo(host);
 			}
 			else {
-				$(this.dom.container).appendTo(host);
+				$(this.dom.container).prependTo(host);
 			}
 		}
 

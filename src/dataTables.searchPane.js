@@ -126,11 +126,11 @@
         SearchPanes.prototype._attach = function () {
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;
-            if (this.c.insert === 'prepend') {
-                $(this.dom.container).prependTo(host);
+            if (this.c.insert === 'append') {
+                $(this.dom.container).appendTo(host);
             }
             else {
-                $(this.dom.container).appendTo(host);
+                $(this.dom.container).prependTo(host);
             }
         };
         SearchPanes.prototype._pane = function (idx) {
