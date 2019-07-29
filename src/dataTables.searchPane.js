@@ -97,11 +97,11 @@
             });
             table.on('draw.dt', function (e, settings, data) {
                 if (!_this.s.updating) {
-                    var tableEdit = true;
+                    var filterActive = true;
                     if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
-                        tableEdit = false;
+                        filterActive = false;
                     }
-                    _this._updatePane(false, tableEdit);
+                    _this._updatePane(false, filterActive, true);
                 }
             });
             table.state.save();
@@ -344,7 +344,6 @@
             }
             var message = this.s.dt.i18n('searchPane.title', 'Filters Active - %d', filterCount);
             this.dom.title[0].innerHTML = (message);
-            //this._attach();
         };
         SearchPanes.prototype._getComparisonRows = function (dtPane, colOpts, bins, binsTotal) {
             var vals = dtPane.table.rows().data();
@@ -442,7 +441,8 @@
             table.draw();
             this.s.updating = false;
         };
-        SearchPanes.prototype._updatePane = function (callerIndex, select) {
+        SearchPanes.prototype._updatePane = function (callerIndex, select, draw) {
+            if (draw === void 0) { draw = false; }
             this.s.updating = true;
             this.s.filteringActive = false;
             var selectArray = [];
@@ -468,7 +468,7 @@
             }
             for (var _b = 0, _c = this.panes; _b < _c.length; _b++) {
                 var pane = _c[_b];
-                this._updateCommon(pane, callerIndex, filterIdx);
+                this._updateCommon(pane, callerIndex, filterIdx, draw);
             }
             this.s.updating = false;
         };
@@ -478,11 +478,19 @@
                 _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayTotals);
             });
         };
-        SearchPanes.prototype._populatePane = function (table, colOpts, classes, idx, arrayFilter) {
+        SearchPanes.prototype._populatePane = function (table, colOpts, classes, idx, arrayFilter, draw) {
             var _this = this;
-            table.rows({ search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
-                _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
-            });
+            if (draw === void 0) { draw = false; }
+            if (draw) {
+                table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
+                });
+            }
+            else {
+                table.rows({ search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
+                    _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
+                });
+            }
         };
         SearchPanes.prototype._populatePaneArray = function (colOpts, table, rowIdx, idx, classes, array) {
             // Retrieve the rendered data from the cell
@@ -599,7 +607,8 @@
                 _this._pane(idx);
             });
         };
-        SearchPanes.prototype._updateCommon = function (pane, callerIndex, filterIdx) {
+        SearchPanes.prototype._updateCommon = function (pane, callerIndex, filterIdx, draw) {
+            if (draw === void 0) { draw = false; }
             // Update the panes if doing a deselect. if doing a select then
             // update all of the panes except for the one causing the change
             if (pane !== undefined && (pane.index !== callerIndex || !this.s.filteringActive)) {
@@ -615,7 +624,7 @@
                 var scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
                 // Clear the pane in preparation for adding the updated search options
                 pane.table.clear();
-                this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
+                this._populatePane(table, colOpts, classes, pane.index, arrayFilter, draw);
                 var bins = this._binData(this._flatten(arrayFilter));
                 // If the viewTotal option is selected then find the totals for the table
                 if (this.c.viewTotal) {
@@ -693,9 +702,25 @@
                 // longer present in the resulting data set.
                 for (var _b = 0, selected_1 = selected; _b < selected_1.length; _b++) {
                     var selectedEl = selected_1[_b];
-                    var row = pane.table.row.add({ filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display });
-                    row.select();
+                    if ((draw && bins[selectedEl.filter] !== undefined) || !draw) {
+                        var row = pane.table.row.add({ filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display });
+                        row.select();
+                    }
+                    else {
+                        var id = void 0;
+                        for (var _c = 0, _d = this.s.columns[pane.index]; _c < _d.length; _c++) {
+                            var selection = _d[_c];
+                            if (selection.filter === selectedEl.filter) {
+                                id = this.s.columns[pane.index].indexOf(selection);
+                                break;
+                            }
+                        }
+                        if (id !== undefined) {
+                            this.s.columns[pane.index].splice(id, 1);
+                        }
+                    }
                 }
+                this.s.dt.draw();
                 pane.table.draw();
                 pane.table.table().node().parentNode.scrollTop = scrollTop;
             }

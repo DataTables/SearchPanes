@@ -117,8 +117,6 @@ declare var define: {
 
 			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 
-			
-
 			this.s = {
 				colOpts: [],
 				columns: [],
@@ -173,7 +171,6 @@ declare var define: {
 
 			this.dom.title.append();
 			this._updateFilterCount();
-			
 
 			table.on('stateSaveParams.dt', (e, settings, data) => {
 				let paneColumns = [];
@@ -187,11 +184,11 @@ declare var define: {
 
 			table.on('draw.dt', (e, settings, data) => {
 				if (!this.s.updating) {
-					let tableEdit = true;
+					let filterActive = true;
 					if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
-						tableEdit = false;
+						filterActive = false;
 					}
-					this._updatePane(false, tableEdit);
+					this._updatePane(false, filterActive, true);
 				}
 			});
 
@@ -260,7 +257,6 @@ declare var define: {
 					if (settings.nTable !== table.table().node()) {
 						return true;
 					}
-
 					// If no data has been selected then show all
 					if (tableCols[idx].length === 0) {
 						return true;
@@ -449,16 +445,15 @@ declare var define: {
 			return dtPane;
 		}
 
-		public _updateFilterCount(){
+		public _updateFilterCount() {
 			let filterCount = 0;
-			for(let pane of this.panes){
-				if(pane !== undefined){
+			for (let pane of this.panes) {
+				if (pane !== undefined) {
 					filterCount += pane.table.rows({selected: true}).data().toArray().length;
 				}
 			}
 			let message = this.s.dt.i18n('searchPane.title', 'Filters Active - %d', filterCount);
 			this.dom.title[0].innerHTML = (message);
-			//this._attach();
 		}
 
 		public _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
@@ -564,7 +559,7 @@ declare var define: {
 			this.s.updating = false;
 		}
 
-		public _updatePane(callerIndex, select) {
+		public _updatePane(callerIndex, select, draw = false) {
 			this.s.updating = true;
 			this.s.filteringActive = false;
 			let selectArray = [];
@@ -589,7 +584,7 @@ declare var define: {
 				}
 			}
 			for (let pane of this.panes) {
-				this._updateCommon(pane, callerIndex, filterIdx);
+				this._updateCommon(pane, callerIndex, filterIdx, draw);
 			}
 			this.s.updating = false;
 		}
@@ -600,10 +595,17 @@ declare var define: {
 			});
 		}
 
-		public _populatePane(table, colOpts, classes, idx, arrayFilter) {
+		public _populatePane(table, colOpts, classes, idx, arrayFilter, draw = false) {
+			if (draw) {
+				table.rows().every((rowIdx, tableLoop, rowLoop) => {
+					this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
+				});
+			}
+			else {
 				table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 					this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
 				});
+			}
 		}
 
 		public _populatePaneArray(colOpts, table, rowIdx, idx, classes, array) {
@@ -748,7 +750,7 @@ declare var define: {
 				});
 		}
 
-		public _updateCommon(pane, callerIndex, filterIdx) {
+		public _updateCommon(pane, callerIndex, filterIdx, draw = false) {
 			// Update the panes if doing a deselect. if doing a select then
 			// update all of the panes except for the one causing the change
 			if (pane !== undefined && (pane.index !== callerIndex || !this.s.filteringActive)) {
@@ -766,7 +768,7 @@ declare var define: {
 				// Clear the pane in preparation for adding the updated search options
 				pane.table.clear();
 
-				this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
+				this._populatePane(table, colOpts, classes, pane.index, arrayFilter, draw);
 
 				let bins = this._binData(this._flatten(arrayFilter));
 
@@ -842,9 +844,24 @@ declare var define: {
 				// Add search options which were previously selected but whos results are no
 				// longer present in the resulting data set.
 				for (let selectedEl of selected) {
-					let row = pane.table.row.add({filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display});
-					row.select();
+					if ((draw && bins[selectedEl.filter] !== undefined) || !draw) {
+						let row = pane.table.row.add({filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display});
+						row.select();
+					}
+					else {
+						let id;
+						for (let selection of this.s.columns[pane.index]) {
+							if (selection.filter === selectedEl.filter) {
+								id = this.s.columns[pane.index].indexOf(selection);
+								break;
+							}
+						}
+						if (id !== undefined) {
+							this.s.columns[pane.index].splice(id, 1);
+						}
+					}
 				}
+				this.s.dt.draw();
 				pane.table.draw();
 				pane.table.table().node().parentNode.scrollTop = scrollTop;
 			}
