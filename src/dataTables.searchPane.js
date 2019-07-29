@@ -37,7 +37,8 @@
             this.arrayCols = [];
             this.classes = $.extend(true, {}, SearchPanes["class"]);
             this.dom = {
-                container: $('<div/>').addClass(this.classes.container)
+                container: $('<div/>').addClass(this.classes.container),
+                title: $('<div/>').addClass(this.classes.title)
             };
             this.c = $.extend(true, {}, SearchPanes.defaults, opts);
             this.s = {
@@ -83,6 +84,8 @@
             this._reloadSelect(loadedFilter, this);
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+            this.dom.title.append();
+            this._updateFilterCount();
             table.on('stateSaveParams.dt', function (e, settings, data) {
                 var paneColumns = [];
                 for (var i = 0; i < _this.panes.length; i++) {
@@ -127,10 +130,12 @@
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;
             if (this.c.insert === 'append') {
+                $(this.dom.title).appendTo(host);
                 $(this.dom.container).appendTo(host);
             }
             else {
                 $(this.dom.container).prependTo(host);
+                $(this.dom.title).prependTo(host);
             }
         };
         SearchPanes.prototype._pane = function (idx) {
@@ -316,6 +321,7 @@
                 clearTimeout(t0);
                 if (!_this.s.updating) {
                     _this._updateTable(dtPane, tableCols, idx, true);
+                    _this._updateFilterCount();
                 }
             });
             // When an item is deselected on the pane, re add the currently selected items to the array
@@ -323,9 +329,22 @@
             dtPane.table.on('deselect.dt', function () {
                 t0 = setTimeout(function () {
                     _this._updateTable(dtPane, tableCols, idx, false);
+                    _this._updateFilterCount();
                 }, 50);
             });
             return dtPane;
+        };
+        SearchPanes.prototype._updateFilterCount = function () {
+            var filterCount = 0;
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                if (pane !== undefined) {
+                    filterCount += pane.table.rows({ selected: true }).data().toArray().length;
+                }
+            }
+            var message = this.s.dt.i18n('searchPane.title', 'Filters Active - %d', filterCount);
+            this.dom.title[0].innerHTML = (message);
+            //this._attach();
         };
         SearchPanes.prototype._getComparisonRows = function (dtPane, colOpts, bins, binsTotal) {
             var vals = dtPane.table.rows().data();
@@ -739,7 +758,8 @@
                 container: 'pane',
                 scroller: 'scroller',
                 title: 'title'
-            }
+            },
+            title: 'dtsp-title'
         };
         SearchPanes.defaults = {
             cascadePanes: false,

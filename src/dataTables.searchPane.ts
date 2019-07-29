@@ -76,6 +76,7 @@ declare var define: {
 				scroller: 'scroller',
 				title: 'title',
 			},
+			title: 'dtsp-title',
 		};
 
 		private static defaults = {
@@ -110,10 +111,13 @@ declare var define: {
 			this.classes = $.extend(true, {}, SearchPanes.class);
 
 			this.dom = {
-				container: $('<div/>').addClass(this.classes.container)
+				container: $('<div/>').addClass(this.classes.container),
+				title: $('<div/>').addClass(this.classes.title),
 			};
 
 			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
+
+			
 
 			this.s = {
 				colOpts: [],
@@ -167,6 +171,10 @@ declare var define: {
 			this._attach();
 			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
 
+			this.dom.title.append();
+			this._updateFilterCount();
+			
+
 			table.on('stateSaveParams.dt', (e, settings, data) => {
 				let paneColumns = [];
 				for (let i = 0; i < this.panes.length; i++) {
@@ -215,10 +223,12 @@ declare var define: {
 			let host = typeof container === 'function' ? container(this.s.dt) : container;
 
 			if (this.c.insert === 'append') {
+				$(this.dom.title).appendTo(host);
 				$(this.dom.container).appendTo(host);
 			}
 			else {
 				$(this.dom.container).prependTo(host);
+				$(this.dom.title).prependTo(host);
 			}
 		}
 
@@ -423,6 +433,7 @@ declare var define: {
 				clearTimeout(t0);
 				if (!this.s.updating) {
 					this._updateTable(dtPane, tableCols, idx, true);
+					this._updateFilterCount();
 				}
 			});
 
@@ -431,10 +442,23 @@ declare var define: {
 	  dtPane.table.on('deselect.dt', () => {
 				t0 = setTimeout(() => {
 					this._updateTable(dtPane, tableCols, idx, false);
+					this._updateFilterCount();
 				}, 50);
 			});
 
 			return dtPane;
+		}
+
+		public _updateFilterCount(){
+			let filterCount = 0;
+			for(let pane of this.panes){
+				if(pane !== undefined){
+					filterCount += pane.table.rows({selected: true}).data().toArray().length;
+				}
+			}
+			let message = this.s.dt.i18n('searchPane.title', 'Filters Active - %d', filterCount);
+			this.dom.title[0].innerHTML = (message);
+			//this._attach();
 		}
 
 		public _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
