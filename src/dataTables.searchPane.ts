@@ -64,6 +64,7 @@ declare var define: {
 		private static class = {
 			arrayCols: [],
 			clear: 'clear',
+			clearAll: 'clearAll',
 			container: 'dt-searchPanes',
 			item: {
 				count: 'count',
@@ -111,6 +112,7 @@ declare var define: {
 			this.classes = $.extend(true, {}, SearchPanes.class);
 
 			this.dom = {
+				clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
 				container: $('<div/>').addClass(this.classes.container),
 				title: $('<div/>').addClass(this.classes.title),
 			};
@@ -192,6 +194,10 @@ declare var define: {
 				}
 			});
 
+			this.dom.clearAll[0].addEventListener('click', () => {
+				this._clearSelections();
+			});
+
 			table.state.save();
 		}
 
@@ -215,6 +221,17 @@ declare var define: {
 			}
 		}
 
+		public _clearSelections() {
+			for (let pane of this.panes) {
+				this._clearPane(pane);
+			}
+		}
+
+		public _clearPane(pane) {
+			if (pane !== undefined && pane.table.rows({selected: true}).data().toArray().length > 0) {
+				pane.table.rows().deselect();
+		}
+		}
 		public _attach() {
 			let container = this.c.container;
 			let host = typeof container === 'function' ? container(this.s.dt) : container;
@@ -222,10 +239,12 @@ declare var define: {
 			if (this.c.insert === 'append') {
 				$(this.dom.title).appendTo(host);
 				$(this.dom.container).appendTo(host);
+				$(this.dom.clearAll).appendTo(host);
 			}
 			else {
 				$(this.dom.container).prependTo(host);
 				$(this.dom.title).prependTo(host);
+				$(this.dom.clearAll).prependTo(host);
 			}
 		}
 
@@ -240,6 +259,7 @@ declare var define: {
 			this.s.colOpts.push(colExists ? this._getOptions(idx) : this._getBonusOptions(idx - rowLength));
 			let colOpts =  this.s.colOpts[idx];
 			let colType =  this._getColType(table, colExists ? idx : 0);
+			let clear = $('<button class="clear" type="button">Clear Pane</button>');
 			let dt = $('<table><thead><tr><th>' + (colExists ?
 				$(column.header()).text() :
 				this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
@@ -330,6 +350,7 @@ declare var define: {
 			}
 
 			// If the varaince is accceptable then display the search pane
+			$(container).append(clear);
 			$(container).append(dt);
 			let dtPane = {
 				index: this.panes.length,
@@ -440,6 +461,10 @@ declare var define: {
 					this._updateTable(dtPane, tableCols, idx, false);
 					this._updateFilterCount();
 				}, 50);
+			});
+
+			clear[0].addEventListener('click', () => {
+				this._clearPane(this.panes[idx]);
 			});
 
 			return dtPane;

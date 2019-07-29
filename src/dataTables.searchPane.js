@@ -37,6 +37,7 @@
             this.arrayCols = [];
             this.classes = $.extend(true, {}, SearchPanes["class"]);
             this.dom = {
+                clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
                 container: $('<div/>').addClass(this.classes.container),
                 title: $('<div/>').addClass(this.classes.title)
             };
@@ -104,6 +105,9 @@
                     _this._updatePane(false, filterActive, true);
                 }
             });
+            this.dom.clearAll[0].addEventListener('click', function () {
+                _this._clearSelections();
+            });
             table.state.save();
         }
         SearchPanes.prototype._reloadSelect = function (loadedFilter, that) {
@@ -126,16 +130,29 @@
                 }
             }
         };
+        SearchPanes.prototype._clearSelections = function () {
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                this._clearPane(pane);
+            }
+        };
+        SearchPanes.prototype._clearPane = function (pane) {
+            if (pane !== undefined && pane.table.rows({ selected: true }).data().toArray().length > 0) {
+                pane.table.rows().deselect();
+            }
+        };
         SearchPanes.prototype._attach = function () {
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;
             if (this.c.insert === 'append') {
                 $(this.dom.title).appendTo(host);
                 $(this.dom.container).appendTo(host);
+                $(this.dom.clearAll).appendTo(host);
             }
             else {
                 $(this.dom.container).prependTo(host);
                 $(this.dom.title).prependTo(host);
+                $(this.dom.clearAll).prependTo(host);
             }
         };
         SearchPanes.prototype._pane = function (idx) {
@@ -150,6 +167,7 @@
             this.s.colOpts.push(colExists ? this._getOptions(idx) : this._getBonusOptions(idx - rowLength));
             var colOpts = this.s.colOpts[idx];
             var colType = this._getColType(table, colExists ? idx : 0);
+            var clear = $('<button class="clear" type="button">Clear Pane</button>');
             var dt = $('<table><thead><tr><th>' + (colExists ?
                 $(column.header()).text() :
                 this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
@@ -230,6 +248,7 @@
                 }
             }
             // If the varaince is accceptable then display the search pane
+            $(container).append(clear);
             $(container).append(dt);
             var dtPane = {
                 index: this.panes.length,
@@ -331,6 +350,10 @@
                     _this._updateTable(dtPane, tableCols, idx, false);
                     _this._updateFilterCount();
                 }, 50);
+            });
+            console.log(clear);
+            clear[0].addEventListener('click', function () {
+                _this._clearPane(_this.panes[idx]);
             });
             return dtPane;
         };
@@ -772,6 +795,7 @@
         SearchPanes["class"] = {
             arrayCols: [],
             clear: 'clear',
+            clearAll: 'clearAll',
             container: 'dt-searchPanes',
             item: {
                 count: 'count',
