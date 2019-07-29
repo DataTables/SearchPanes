@@ -92,6 +92,15 @@
                 }
                 data.searchPane = paneColumns;
             });
+            table.on('draw.dt', function (e, settings, data) {
+                if (!_this.s.updating) {
+                    var tableEdit = true;
+                    if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
+                        tableEdit = false;
+                    }
+                    _this._updatePane(false, tableEdit);
+                }
+            });
             table.state.save();
         }
         SearchPanes.prototype._reloadSelect = function (loadedFilter, that) {
@@ -396,6 +405,7 @@
         };
         SearchPanes.prototype._searchExtras = function (paneIn) {
             var table = this.s.dt;
+            this.s.updating = true;
             var filters = paneIn.table.rows({ selected: true }).data().pluck('filter').toArray();
             var nullIndex = filters.indexOf(this.c.emptyMessage);
             var container = $(paneIn.table.table().container());
@@ -411,6 +421,7 @@
                 container.removeClass('selected');
             }
             table.draw();
+            this.s.updating = false;
         };
         SearchPanes.prototype._updatePane = function (callerIndex, select) {
             this.s.updating = true;
@@ -607,18 +618,20 @@
                         var row = void 0;
                         // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
                         // Do this also if the viewTotal option has been selected and cascadePanes has not
-                        row = pane.table.row.add({
-                            display: dataP.display,
-                            filter: dataP.filter,
-                            shown: !this_1.c.viewTotal
-                                ? bins[dataP.filter]
-                                : bins[dataP.filter] !== undefined
+                        if (bins[dataP.filter] !== undefined || !this_1.c.cascadePanes) {
+                            row = pane.table.row.add({
+                                display: dataP.display,
+                                filter: dataP.filter,
+                                shown: !this_1.c.viewTotal
                                     ? bins[dataP.filter]
-                                    : '0',
-                            total: this_1.c.viewTotal
-                                ? String(binsTotal[dataP.filter])
-                                : bins[dataP.filter]
-                        });
+                                    : bins[dataP.filter] !== undefined
+                                        ? bins[dataP.filter]
+                                        : '0',
+                                total: this_1.c.viewTotal
+                                    ? String(binsTotal[dataP.filter])
+                                    : bins[dataP.filter]
+                            });
+                        }
                         // Find out if the filter was selected in the previous search, if so select it and remove from array.
                         var selectIndex = selected.findIndex(function (element) {
                             return element.filter === dataP.filter;
@@ -669,7 +682,6 @@
             }
         };
         SearchPanes.prototype.rebuildPane = function (callerIndex) {
-            this.s.filteringActive = false;
             this.s.updating = true;
             var selectArray = [];
             var filterCount = 0;

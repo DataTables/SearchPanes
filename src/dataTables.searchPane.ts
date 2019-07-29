@@ -177,6 +177,16 @@ declare var define: {
 				data.searchPane = paneColumns;
 			});
 
+			table.on('draw.dt', (e, settings, data) => {
+				if (!this.s.updating) {
+					let tableEdit = true;
+					if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
+						tableEdit = false;
+					}
+					this._updatePane(false, tableEdit);
+				}
+			});
+
 			table.state.save();
 		}
 
@@ -401,6 +411,7 @@ declare var define: {
 			$.fn.dataTable.select.init(dtPane.table);
 
 			dtPane.table.draw();
+
 			if (colOpts.hideCount || this.c.hideCount) {
 				dtPane.table.column(1).visible(false);
 			}
@@ -507,6 +518,7 @@ declare var define: {
 
 		public _searchExtras(paneIn) {
 			let table = this.s.dt;
+			this.s.updating = true;
 			let filters = paneIn.table.rows({selected: true}).data().pluck('filter').toArray();
 			let nullIndex = filters.indexOf(this.c.emptyMessage);
 			let container = $(paneIn.table.table().container());
@@ -525,7 +537,7 @@ declare var define: {
 			}
 
 			table.draw();
-
+			this.s.updating = false;
 		}
 
 		public _updatePane(callerIndex, select) {
@@ -552,7 +564,6 @@ declare var define: {
 					filterIdx = selectArray.indexOf(1);
 				}
 			}
-
 			for (let pane of this.panes) {
 				this._updateCommon(pane, callerIndex, filterIdx);
 			}
@@ -754,24 +765,26 @@ declare var define: {
 				if (filterIdx !== undefined && filterIdx === pane.index) {
 					this.s.filteringActive = false;
 				}
-
 				for (let dataP of data) {
 					if (dataP) {
 						let row;
 						// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 						// Do this also if the viewTotal option has been selected and cascadePanes has not
-						row = pane.table.row.add({
-							display: dataP.display,
-							filter: dataP.filter,
-							shown: !this.c.viewTotal
-								? bins[dataP.filter]
-								: bins[dataP.filter] !== undefined
+						if (bins[dataP.filter] !== undefined || !this.c.cascadePanes) {
+							row = pane.table.row.add({
+								display: dataP.display,
+								filter: dataP.filter,
+								shown: !this.c.viewTotal
 									? bins[dataP.filter]
-									: '0',
-							total: this.c.viewTotal
-								? String(binsTotal[dataP.filter])
-								: bins[dataP.filter],
-						});
+									: bins[dataP.filter] !== undefined
+										? bins[dataP.filter]
+										: '0',
+								total: this.c.viewTotal
+									? String(binsTotal[dataP.filter])
+									: bins[dataP.filter],
+							});
+						}
+
 						// Find out if the filter was selected in the previous search, if so select it and remove from array.
 						let selectIndex = selected.findIndex(function(element) {
 							return element.filter === dataP.filter;
@@ -814,7 +827,6 @@ declare var define: {
 		}
 
 		public rebuildPane(callerIndex) {
-			this.s.filteringActive = false;
 			this.s.updating = true;
 			let selectArray = [];
 			let filterCount = 0;
