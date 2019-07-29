@@ -66,6 +66,7 @@ declare var define: {
 			clear: 'clear',
 			clearAll: 'clearAll',
 			container: 'dt-searchPanes',
+			hide: 'hide',
 			item: {
 				count: 'count',
 				label: 'label',
@@ -115,6 +116,7 @@ declare var define: {
 				clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
 				container: $('<div/>').addClass(this.classes.container),
 				title: $('<div/>').addClass(this.classes.title),
+				hide: $('<button type="button">Hide Panes</button>').addClass(this.classes.hide),
 			};
 
 			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
@@ -171,7 +173,6 @@ declare var define: {
 			this._attach();
 			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
 
-			this.dom.title.append();
 			this._updateFilterCount();
 
 			table.on('stateSaveParams.dt', (e, settings, data) => {
@@ -196,6 +197,18 @@ declare var define: {
 
 			this.dom.clearAll[0].addEventListener('click', () => {
 				this._clearSelections();
+			});
+
+			this.dom.hide[0].addEventListener('click', () => {
+				let elements = document.getElementsByClassName('dt-searchPanes');
+				if (this.dom.hide[0].innerHTML === 'Hide Panes') {
+					$(elements[0]).hide();
+					this.dom.hide[0].innerHTML = 'Show Panes';
+				}
+				else {
+					$(elements[0]).show();
+					this.dom.hide[0].innerHTML = 'Hide Panes';
+				}
 			});
 
 			table.state.save();
@@ -235,8 +248,10 @@ declare var define: {
 		public _attach() {
 			let container = this.c.container;
 			let host = typeof container === 'function' ? container(this.s.dt) : container;
+			console.log(document)
 
 			if (this.c.insert === 'append') {
+				$(this.dom.hide).appendTo(host);
 				$(this.dom.title).appendTo(host);
 				$(this.dom.container).appendTo(host);
 				$(this.dom.clearAll).appendTo(host);
@@ -245,6 +260,7 @@ declare var define: {
 				$(this.dom.container).prependTo(host);
 				$(this.dom.title).prependTo(host);
 				$(this.dom.clearAll).prependTo(host);
+				$(this.dom.hide).prependTo(host);
 			}
 		}
 

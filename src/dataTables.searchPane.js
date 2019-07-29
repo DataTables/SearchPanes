@@ -39,7 +39,8 @@
             this.dom = {
                 clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
                 container: $('<div/>').addClass(this.classes.container),
-                title: $('<div/>').addClass(this.classes.title)
+                title: $('<div/>').addClass(this.classes.title),
+                hide: $('<button type="button">Hide Panes</button>').addClass(this.classes.hide)
             };
             this.c = $.extend(true, {}, SearchPanes.defaults, opts);
             this.s = {
@@ -85,7 +86,6 @@
             this._reloadSelect(loadedFilter, this);
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-            this.dom.title.append();
             this._updateFilterCount();
             table.on('stateSaveParams.dt', function (e, settings, data) {
                 var paneColumns = [];
@@ -107,6 +107,17 @@
             });
             this.dom.clearAll[0].addEventListener('click', function () {
                 _this._clearSelections();
+            });
+            this.dom.hide[0].addEventListener('click', function () {
+                var elements = document.getElementsByClassName('dt-searchPanes');
+                if (_this.dom.hide[0].innerHTML === 'Hide Panes') {
+                    $(elements[0]).hide();
+                    _this.dom.hide[0].innerHTML = 'Show Panes';
+                }
+                else {
+                    $(elements[0]).show();
+                    _this.dom.hide[0].innerHTML = 'Hide Panes';
+                }
             });
             table.state.save();
         }
@@ -144,7 +155,9 @@
         SearchPanes.prototype._attach = function () {
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;
+            console.log(document);
             if (this.c.insert === 'append') {
+                $(this.dom.hide).appendTo(host);
                 $(this.dom.title).appendTo(host);
                 $(this.dom.container).appendTo(host);
                 $(this.dom.clearAll).appendTo(host);
@@ -153,6 +166,7 @@
                 $(this.dom.container).prependTo(host);
                 $(this.dom.title).prependTo(host);
                 $(this.dom.clearAll).prependTo(host);
+                $(this.dom.hide).prependTo(host);
             }
         };
         SearchPanes.prototype._pane = function (idx) {
@@ -351,7 +365,6 @@
                     _this._updateFilterCount();
                 }, 50);
             });
-            console.log(clear);
             clear[0].addEventListener('click', function () {
                 _this._clearPane(_this.panes[idx]);
             });
@@ -797,6 +810,7 @@
             clear: 'clear',
             clearAll: 'clearAll',
             container: 'dt-searchPanes',
+            hide: 'hide',
             item: {
                 count: 'count',
                 label: 'label',
