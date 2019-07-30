@@ -11,7 +11,7 @@ fi
 # If not run from DataTables build script, redirect to there
 if [ -z "$DT_BUILD" ]; then
     cd $DT_DIR/build
-    ./make.sh extension SearchPane $DEBUG
+    ./make.sh extension SearchPanes $DEBUG
     cd -
     exit
 fi
@@ -25,7 +25,7 @@ DT_BUILT="${DT_SRC}/built/DataTables"
 
 # Copy CSS
 rsync -r css $OUT_DIR
-css_frameworks searchPane $OUT_DIR/css
+css_frameworks searchPanes $OUT_DIR/css
 
 # Copy images
 #rsync -r images $OUT_DIR
@@ -35,7 +35,7 @@ tsc src/dataTables.searchPanes.ts --module none
 # Copy JS
 rsync -r src/* $OUT_DIR/js
 js_compress $OUT_DIR/js/dataTables.searchPanes.js
-js_frameworks searchPane $OUT_DIR/js
+js_frameworks searchPanes $OUT_DIR/js
 
 # Copy and build examples
 rsync -r examples $OUT_DIR

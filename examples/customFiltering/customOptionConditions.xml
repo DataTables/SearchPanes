@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-index" order="1">
 
-<css lib="datatables searchpane select" />
-<js lib="jquery datatables searchpane select">
+<css lib="datatables searchpanes select" />
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        searchPane: {
+        searchPanes: {
             viewTotal: true,
         },
         columnDefs:[ 
             {
                 orderable: false,
                 className: 'select-checkbox',
-                searchPane: {
+                searchPanes: {
                     show: true,
                     options:[
                         {
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 targets: [0]
             },
             {
-                searchPane: {
+                searchPanes: {
                     options:[
                         {
                             label: 'Under 20',
@@ -75,7 +75,7 @@ $(document).ready(function() {
                 targets:[4],
             },
             {
-                searchPane: {
+                searchPanes: {
                     options:[
                         {
                             label: 'Not Edinburgh',
@@ -101,22 +101,22 @@ $(document).ready(function() {
     });
 
     dt.on('select.dt', () => {			
-        dt.searchPane.rebuildPane(0);
+        dt.searchPanes.rebuildPane(0);
     });
 
     dt.on('deselect.dt', () => {
-        dt.searchPane.rebuildPane(0);
+        dt.searchPanes.rebuildPane(0);
     });
 });
 
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="SearchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to set up custom comparison options. There are multiple predefined conditions such as <, >, <=, >=, ==, != and includes.
 Alternatively the user can define their own comparison function.

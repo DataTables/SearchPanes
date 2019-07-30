@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="ajax" order="1">
 
-<css lib="datatables buttons searchpane select editor" />
-<js lib="jquery datatables buttons searchpane select editor">
+<css lib="datatables buttons searchpanes select editor" />
+<js lib="jquery datatables buttons searchpanes select editor">
 <![CDATA[
 
 var editor; // use a global for the submit and return data rendering in the examples
@@ -38,7 +38,7 @@ $(document).ready(function() {
 	} );
 
 	$('#example').DataTable( {
-        searchPane:true,
+        searchPanes:true,
 		dom: "Bfrtip",
 		ajax: "../../php/staff.php",
 		columns: [

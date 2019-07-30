@@ -1,9 +1,9 @@
-/*! SearchPane 0.0.2
+/*! SearchPanes 0.0.2
  * 2018 SpryMedia Ltd - datatables.net/license
  */
 
 /**
- * @summary     SearchPane
+ * @summary     SearchPanes
  * @description Search Panes for DataTables columns
  * @version     0.0.2
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
@@ -132,7 +132,7 @@ declare var define: {
 				updating: false,
 			};
 
-			table.settings()[0]._searchPane = this;
+			table.settings()[0]._searchPanes = this;
 
 			let loadedFilter;
 			if (table.state.loaded()) {
@@ -192,7 +192,7 @@ declare var define: {
 						paneColumns[i] = this.panes[i].table.rows({selected: true}).data().pluck('filter').toArray();
 					}
 				}
-				data.searchPane = paneColumns;
+				data.searchPanes = paneColumns;
 			});
 
 			table.on('draw.dt', (e, settings, data) => {
@@ -320,8 +320,8 @@ declare var define: {
 		public _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
 			let vals = dtPane.table.rows().data();
 			let options = colOpts.options !== undefined ? colOpts.options :
-				colOpts.searchPane !== undefined && colOpts.searchPane.options !== undefined ?
-					colOpts.searchPane.options :
+				colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
+					colOpts.searchPanes.options :
 					undefined;
 			console.log(options)
 			if (options === undefined) {
@@ -418,7 +418,7 @@ declare var define: {
 				true,
 				{},
 				defaults,
-					table.settings()[0].aoColumns[colIdx].searchPane
+					table.settings()[0].aoColumns[colIdx].searchPanes
 			);
 		}
 
@@ -456,8 +456,8 @@ declare var define: {
 			let arrayFilter = [];
 			let arrayTotals = [];
 			let binsTotal;
-			let countMessage = table.i18n('searchPane.count', '{total}');
-			let filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
+			let countMessage = table.i18n('searchPanes.count', '{total}');
+			let filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
 			// Add an empty array for each column for holding the selected values
 			tableCols.push([]);
 
@@ -540,7 +540,7 @@ declare var define: {
 					return;
 				}
 				if (Object.keys(bins).length < this.c.minRows && (colOpts.options === undefined
-					&& (colOpts.searchPane === undefined || colOpts.searchPane.options === undefined))) {
+					&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
 					return;
 				}
 			}
@@ -628,7 +628,7 @@ declare var define: {
 			}
 			console.log(colOpts)
 			if (colOpts.options !== undefined ||
-				(colOpts.searchPane !== undefined  && colOpts.searchPane.options !== undefined)) {
+				(colOpts.searchPanes !== undefined  && colOpts.searchPanes.options !== undefined)) {
 
 				this._getComparisonRows(dtPane, colOpts, bins, binsTotal);
 			}
@@ -759,10 +759,10 @@ declare var define: {
 			// For each pane, check that the loadedFilter list exists and is not null,
 			// find the id of each search item and set it to be selected.
 			for (let i = 0; i < that.panes.length; i++) {
-				if (loadedFilter.searchPane[i] !== null && loadedFilter.searchPane[i] !== undefined) {
+				if (loadedFilter.searchPanes[i] !== null && loadedFilter.searchPanes[i] !== undefined) {
 					let table = that.panes[i].table;
 					let rows = table.rows({order: 'index'}).data().pluck('filter');
-					for (let filter of loadedFilter.searchPane[i]) {
+					for (let filter of loadedFilter.searchPanes[i]) {
 						let id = rows.indexOf(filter);
 						if (id > -1) {
 							table.row(id).select();
@@ -877,7 +877,7 @@ declare var define: {
 						}
 					}
 				}
-				if ((colOpts.searchPane !== undefined && colOpts.searchPane.options !== undefined) ||
+				if ((colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined) ||
 					colOpts.options !== undefined) {
 					let rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
 					for (let row of rows) {
@@ -946,7 +946,7 @@ declare var define: {
 					filterCount += pane.table.rows({selected: true}).data().toArray().length;
 				}
 			}
-			let message = this.s.dt.i18n('searchPane.title', 'Filters Active - %d', filterCount);
+			let message = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
 			this.dom.title[0].innerHTML = (message);
 		}
 
@@ -1009,8 +1009,8 @@ declare var define: {
 
  DataTable.Api.register('searchPanes.rebuild()', function() {
 		return this.iterator('table', function(this) {
-			if (this.searchPane) {
-				this.searchPane.rebuild();
+			if (this.searchPanes) {
+				this.searchPanes.rebuild();
 			}
 		});
 	});
@@ -1019,13 +1019,13 @@ declare var define: {
 		return this.iterator('column', function(this, idx) {
 			let col = this.aoColumns[idx];
 
-			if (!col.searchPane) {
-				col.searchPane = {};
+			if (!col.searchPanes) {
+				col.searchPanes = {};
 			}
-			col.searchPane.values = options;
+			col.searchPanes.values = options;
 
-			if (this.searchPane) {
-				this.searchPane.rebuild();
+			if (this.searchPanes) {
+				this.searchPanes.rebuild();
 			}
 		});
 	});
@@ -1035,8 +1035,8 @@ declare var define: {
 			return;
 		}
 
-		let init = settings.oInit.searchPane;
-		let defaults = DataTable.defaults.searchPane;
+		let init = settings.oInit.searchPanes;
+		let defaults = DataTable.defaults.searchPanes;
 
 		if (init || defaults) {
 			let opts = $.extend({}, init, defaults);
@@ -1052,12 +1052,12 @@ declare var define: {
 
 let apiRegister = ($.fn.dataTable.Api as any).register;
 
-apiRegister('searchPane()', function() {
+apiRegister('searchPanes()', function() {
 	return this;
 });
 
 apiRegister('searchPanes.rebuildPane()', function(callerIndex) {
 	let ctx = this.context[0];
-	ctx._searchPane.rebuildPane(callerIndex);
+	ctx._searchPanes.rebuildPane(callerIndex);
 
 });

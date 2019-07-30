@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="display nowrap" order="2">
 
-<css lib="datatables searchpane select"/>
+<css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpane select">
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPane:{
+        searchPanes:{
             viewTotal: true ,
         },
         language:{
-            searchPane:{
+            searchPanes:{
                 count: '{total}',
                 countFiltered: '{shown} ({total})'
             },
@@ -23,17 +23,17 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="searchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates the viewTotal option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
 
-`language.searchPane.count` - this is the format of the count column when no filters have been applied to the table.
+`language.searchPanes.count` - this is the format of the count column when no filters have been applied to the table.
 
-`language.searchPane.countFiltered` - this is the format of the count column when filters have been applied to the table.
+`language.searchPanes.countFiltered` - this is the format of the count column when filters have been applied to the table.
 
 "{total}" - This is the token which is replaced by the total count of that value in the table.
 

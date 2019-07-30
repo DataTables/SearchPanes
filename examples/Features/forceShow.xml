@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="display nowrap" order="2">
 
-<css lib="datatables searchpane select"/>
+<css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpane select">
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPane:true,
+        searchPanes:true,
         columnDefs:[
             {
-                searchPane:{
+                searchPanes:{
                     show: true,
                 },
                 targets: [0],
             },
             {
-                searchPane:{
+                searchPanes:{
                     show: false,
                 },
                 targets: [2],
@@ -29,16 +29,16 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="searchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example Demonstrates the `show` option for defining whether a column should show a searchPane or not.
+This example Demonstrates the `show` option for defining whether a column should show a searchPanes or not.
 Here we have set the first name Column to have a pane where it would not normally due to the variance, and have hidden the position column which would.
 
-The default value of `show` is undefined so that as standard the searchpanes will be decided on variance.
+The default value of `show` is undefined so that as standard the searchPaness will be decided on variance.
 
 ]]></info>
 

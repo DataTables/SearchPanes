@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="display nowrap" order="2">
 
-<css lib="datatables searchpane select"/>
+<css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpane select">
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPane:{
+        searchPanes:{
             panes: [
                 {
                     header:'custom',
-                    searchPane:{
+                    searchPanes:{
                         options:[
                             {
                                 label:'tokyian accountants',
@@ -35,11 +35,11 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="SearchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the SearchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates the functionality to add custom panes. Panes are populated with custom options which can search the table across multiple columns.
 Technically this is also possible to do with a custom function in any of the automatically occurring Panes. This just seems a bit neater.

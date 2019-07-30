@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" order="1">
 
-<css lib="datatables searchpane select" />
-<js lib="jquery datatables searchpane select">
+<css lib="datatables searchpanes select" />
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPane:true,
+        searchPanes:true,
         columnDefs:[
             {
-                searchPane: {
+                searchPanes: {
                     hide:['Edinburgh','London']
                 },
                 targets:[3],
@@ -22,11 +22,11 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="searchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to exclude filtering options from the Pane using a config option. In this example, Edinburgh and london are removed from the options in the Pane;
 ]]></info>

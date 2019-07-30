@@ -1,4 +1,4 @@
-/*! SearchPane 0.0.2
+/*! SearchPanes 0.0.2
  * 2018 SpryMedia Ltd - datatables.net/license
  */
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
@@ -51,7 +51,7 @@
                 redraw: false,
                 updating: false
             };
-            table.settings()[0]._searchPane = this;
+            table.settings()[0]._searchPanes = this;
             var loadedFilter;
             if (table.state.loaded()) {
                 loadedFilter = table.state.loaded();
@@ -102,7 +102,7 @@
                         paneColumns[i] = _this.panes[i].table.rows({ selected: true }).data().pluck('filter').toArray();
                     }
                 }
-                data.searchPane = paneColumns;
+                data.searchPanes = paneColumns;
             });
             table.on('draw.dt', function (e, settings, data) {
                 if (!_this.s.updating) {
@@ -217,8 +217,8 @@
         SearchPanes.prototype._getComparisonRows = function (dtPane, colOpts, bins, binsTotal) {
             var vals = dtPane.table.rows().data();
             var options = colOpts.options !== undefined ? colOpts.options :
-                colOpts.searchPane !== undefined && colOpts.searchPane.options !== undefined ?
-                    colOpts.searchPane.options :
+                colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
+                    colOpts.searchPanes.options :
                     undefined;
             console.log(options);
             if (options === undefined) {
@@ -304,7 +304,7 @@
                 },
                 preSelect: undefined
             };
-            return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPane);
+            return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPanes);
         };
         SearchPanes.prototype._getSelected = function (pane, selectArray, filterCount) {
             if (pane !== undefined) {
@@ -340,8 +340,8 @@
             var arrayFilter = [];
             var arrayTotals = [];
             var binsTotal;
-            var countMessage = table.i18n('searchPane.count', '{total}');
-            var filteredMessage = table.i18n('searchPane.countFiltered', '{shown} ({total})');
+            var countMessage = table.i18n('searchPanes.count', '{total}');
+            var filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             // Custom search function for table
@@ -415,7 +415,7 @@
                     return;
                 }
                 if (Object.keys(bins).length < this.c.minRows && (colOpts.options === undefined
-                    && (colOpts.searchPane === undefined || colOpts.searchPane.options === undefined))) {
+                    && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
                     return;
                 }
             }
@@ -499,7 +499,7 @@
             }
             console.log(colOpts);
             if (colOpts.options !== undefined ||
-                (colOpts.searchPane !== undefined && colOpts.searchPane.options !== undefined)) {
+                (colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined)) {
                 this._getComparisonRows(dtPane, colOpts, bins, binsTotal);
             }
             $.fn.dataTable.select.init(dtPane.table);
@@ -609,10 +609,10 @@
             // For each pane, check that the loadedFilter list exists and is not null,
             // find the id of each search item and set it to be selected.
             for (var i = 0; i < that.panes.length; i++) {
-                if (loadedFilter.searchPane[i] !== null && loadedFilter.searchPane[i] !== undefined) {
+                if (loadedFilter.searchPanes[i] !== null && loadedFilter.searchPanes[i] !== undefined) {
                     var table = that.panes[i].table;
                     var rows = table.rows({ order: 'index' }).data().pluck('filter');
-                    for (var _i = 0, _a = loadedFilter.searchPane[i]; _i < _a.length; _i++) {
+                    for (var _i = 0, _a = loadedFilter.searchPanes[i]; _i < _a.length; _i++) {
                         var filter = _a[_i];
                         var id = rows.indexOf(filter);
                         if (id > -1) {
@@ -718,7 +718,7 @@
                         _loop_1(dataP);
                     }
                 }
-                if ((colOpts.searchPane !== undefined && colOpts.searchPane.options !== undefined) ||
+                if ((colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined) ||
                     colOpts.options !== undefined) {
                     var rows = this._getComparisonRows(pane, colOpts, bins, binsTotal);
                     var _loop_2 = function (row) {
@@ -790,7 +790,7 @@
                     filterCount += pane.table.rows({ selected: true }).data().toArray().length;
                 }
             }
-            var message = this.s.dt.i18n('searchPane.title', 'Filters Active - %d', filterCount);
+            var message = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
             this.dom.title[0].innerHTML = (message);
         };
         SearchPanes.prototype._updatePane = function (callerIndex, select, draw) {
@@ -888,20 +888,20 @@
     $.fn.DataTable.SearchPanes = SearchPanes;
     DataTable.Api.register('searchPanes.rebuild()', function () {
         return this.iterator('table', function () {
-            if (this.searchPane) {
-                this.searchPane.rebuild();
+            if (this.searchPanes) {
+                this.searchPanes.rebuild();
             }
         });
     });
     DataTable.Api.register('column().paneOptions()', function (options) {
         return this.iterator('column', function (idx) {
             var col = this.aoColumns[idx];
-            if (!col.searchPane) {
-                col.searchPane = {};
+            if (!col.searchPanes) {
+                col.searchPanes = {};
             }
-            col.searchPane.values = options;
-            if (this.searchPane) {
-                this.searchPane.rebuild();
+            col.searchPanes.values = options;
+            if (this.searchPanes) {
+                this.searchPanes.rebuild();
             }
         });
     });
@@ -909,8 +909,8 @@
         if (e.namespace !== 'dt') {
             return;
         }
-        var init = settings.oInit.searchPane;
-        var defaults = DataTable.defaults.searchPane;
+        var init = settings.oInit.searchPanes;
+        var defaults = DataTable.defaults.searchPanes;
         if (init || defaults) {
             var opts = $.extend({}, init, defaults);
             if (init !== false) {
@@ -921,10 +921,10 @@
     return SearchPanes;
 }));
 var apiRegister = $.fn.dataTable.Api.register;
-apiRegister('searchPane()', function () {
+apiRegister('searchPanes()', function () {
     return this;
 });
-apiRegister('searchPane.rebuildPane()', function (callerIndex) {
+apiRegister('searchPanes.rebuildPane()', function (callerIndex) {
     var ctx = this.context[0];
-    ctx._searchPane.rebuildPane(callerIndex);
+    ctx._searchPanes.rebuildPane(callerIndex);
 });

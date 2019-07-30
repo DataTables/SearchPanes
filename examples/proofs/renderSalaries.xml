@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="ajax" order="1">
 
-<css lib="datatables searchpane select" />
-<js lib="jquery datatables searchpane select">
+<css lib="datatables searchpanes select" />
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../objects.json',
-        searchPane:true,
+        searchPanes:true,
         columnDefs:[
             {
-                searchPane:{
+                searchPanes:{
                     show: true,
                 },
                 targets:[5],
@@ -50,11 +50,11 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="searchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates searching on rendered data. The threshold is set to 1 so that the rendered columns will display their data.
 

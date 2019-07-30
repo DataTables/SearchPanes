@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html-wide" table-class="display nowrap" order="2">
 
-<css lib="datatables searchpane select"/>
+<css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpane select">
+<js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
@@ -16,7 +16,7 @@ $(document).ready(function() {
     $('#example td').eq(57).html('€');
     $('#example td').eq(66).html('€');
     $('#example').DataTable( {
-        searchPane:true,
+        searchPanes:true,
         paging: false
     });
 });
@@ -24,11 +24,11 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPane">Configuration option</title>
+<title lib="searchPanes">Configuration option</title>
 
 <info><![CDATA[
 
-This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 See other examples for more detail.
 
