@@ -1056,7 +1056,7 @@ apiRegister('searchPane()', function() {
 	return this;
 });
 
-apiRegister('searchPane.rebuildPane()', function(callerIndex) {
+apiRegister('searchPanes.rebuildPane()', function(callerIndex) {
 	let ctx = this.context[0];
 	ctx._searchPane.rebuildPane(callerIndex);
 

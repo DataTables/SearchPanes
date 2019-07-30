@@ -30,11 +30,11 @@ css_frameworks searchPane $OUT_DIR/css
 # Copy images
 #rsync -r images $OUT_DIR
 
-tsc src/dataTables.searchPane.ts --module none
+tsc src/dataTables.searchPanes.ts --module none
 
 # Copy JS
 rsync -r src/* $OUT_DIR/js
-js_compress $OUT_DIR/js/dataTables.searchPane.js
+js_compress $OUT_DIR/js/dataTables.searchPanes.js
 js_frameworks searchPane $OUT_DIR/js
 
 # Copy and build examples
