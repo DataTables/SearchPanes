@@ -60,7 +60,6 @@
                 .columns(this.c.columns)
                 .eq(0)
                 .each(function (idx) {
-                console.log(idx);
                 _this.panes.push(_this._pane(idx));
             });
             if (table.data().toArray().length === 0) {
@@ -71,7 +70,6 @@
                 var paneLength = this.c.panes.length;
                 for (var i = 0; i < paneLength; i++) {
                     var id = rowLength + i;
-                    //console.log(rowLength, i, id, table.columns().eq(0).toArray())
                     this.panes.push(this._pane(id));
                 }
             }
@@ -220,7 +218,6 @@
                 colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
                     colOpts.searchPanes.options :
                     undefined;
-            console.log(options);
             if (options === undefined) {
                 return;
             }
@@ -333,7 +330,6 @@
             var colOpts = this.s.colOpts[idx];
             var colType = this._getColType(table, colExists ? idx : 0);
             var clear = $('<button class="clear" type="button">Clear Pane</button>');
-            console.log(this.c.panes, idx, rowLength);
             var dt = $('<table><thead><tr><th>' + (colExists ?
                 $(column.header()).text() :
                 this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
@@ -361,17 +357,17 @@
                         filter = typeof (colOpts.orthogonal) === 'string'
                             ? table.cell(dataIndex, idx).render(colOpts.orthogonal)
                             : table.cell(dataIndex, idx).render(colOpts.orthogonal.search);
+                        if (filter instanceof $.fn.dataTable.Api) {
+                            filter = filter.toArray();
+                        }
                     }
                 }
                 // For each item selected in the pane, check if it is available in the cell
                 for (var _i = 0, _a = tableCols[idx]; _i < _a.length; _i++) {
                     var colSelect = _a[_i];
-                    if (Array.isArray(colSelect.filter)) {
-                        for (var _b = 0, _c = colSelect.filter; _b < _c.length; _b++) {
-                            var filterP = _c[_b];
-                            if (filter.indexOf(filterP) !== -1) {
-                                return true;
-                            }
+                    if (Array.isArray(filter)) {
+                        if (filter.indexOf(colSelect.filter) !== -1) {
+                            return true;
                         }
                     }
                     else if (typeof colSelect.filter === 'function') {
@@ -497,7 +493,6 @@
                     }
                 }
             }
-            console.log(colOpts);
             if (colOpts.options !== undefined ||
                 (colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined)) {
                 this._getComparisonRows(dtPane, colOpts, bins, binsTotal);

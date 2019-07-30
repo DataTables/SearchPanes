@@ -143,7 +143,6 @@ declare var define: {
 				.columns(this.c.columns)
 				.eq(0)
 				.each((idx) => {
-					console.log(idx);
 					this.panes.push(this._pane(idx));
 				});
 
@@ -156,7 +155,6 @@ declare var define: {
 				let paneLength = this.c.panes.length;
 				for (let i = 0; i < paneLength; i++) {
 					let id = rowLength + i;
-					//console.log(rowLength, i, id, table.columns().eq(0).toArray())
 					this.panes.push(this._pane(id));
 				}
 			}
@@ -323,7 +321,6 @@ declare var define: {
 				colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
 					colOpts.searchPanes.options :
 					undefined;
-			console.log(options)
 			if (options === undefined) {
 				return;
 			}
@@ -449,7 +446,6 @@ declare var define: {
 			let colOpts =  this.s.colOpts[idx];
 			let colType =  this._getColType(table, colExists ? idx : 0);
 			let clear = $('<button class="clear" type="button">Clear Pane</button>');
-			console.log(this.c.panes, idx, rowLength)
 			let dt = $('<table><thead><tr><th>' + (colExists ?
 				$(column.header()).text() :
 				this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
@@ -472,24 +468,25 @@ declare var define: {
 						return true;
 					}
 
-					let filter = '';
+					let filter: string|string[] = '';
 					if (colExists) {
 						// Get the current filtered data
 						filter = searchData[idx];
 						if (colOpts.orthogonal.filter !== 'filter') {
 							filter = typeof(colOpts.orthogonal) === 'string'
-							? table.cell(dataIndex, idx).render(colOpts.orthogonal)
-							: table.cell(dataIndex, idx).render(colOpts.orthogonal.search);
+								? table.cell(dataIndex, idx).render(colOpts.orthogonal)
+								: table.cell(dataIndex, idx).render(colOpts.orthogonal.search);
+								if((filter as any) instanceof $.fn.dataTable.Api){
+									filter = (filter as any).toArray();
+								}
 						}
 					}
 
 					// For each item selected in the pane, check if it is available in the cell
 					for (let colSelect of tableCols[idx]) {
-						if (Array.isArray(colSelect.filter)) {
-							for (let filterP of colSelect.filter) {
-								if (filter.indexOf(filterP) !== -1) {
-									return true;
-								}
+						if (Array.isArray(filter)) {
+							if (filter.indexOf(colSelect.filter) !== -1) {
+								return true;
 							}
 						}
 						else if (typeof colSelect.filter === 'function') {
@@ -626,7 +623,6 @@ declare var define: {
 					}
 				}
 			}
-			console.log(colOpts)
 			if (colOpts.options !== undefined ||
 				(colOpts.searchPanes !== undefined  && colOpts.searchPanes.options !== undefined)) {
 
