@@ -18,13 +18,13 @@ table = $(document).ready(function() {
 </js>
 <js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Maintain State</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to keep selections in the pane consistent after reloads.
+This example demonstrates how to keep selections in the pane consistent after reloads by setting the `stateSave` config option to true. The default is false.
 
 ]]></info>
 

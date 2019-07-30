@@ -20,7 +20,7 @@ $(document).ready(function() {
 </js>
 <js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Abstract Types</title>
 
 <info><![CDATA[
 

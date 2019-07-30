@@ -18,15 +18,15 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Dealing with Long Data in Panes</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how it is possible to define how many characters to allow to be displayed for each search option in the searchPanes.
+This example demonstrates how it is possible to define how many characters to allow to be displayed for each search option in the searchPanes by making use of the `dataLength`.
 
-The default for dataLength is false;
+The default for `dataLength` is false;
 
 ]]></info>
 

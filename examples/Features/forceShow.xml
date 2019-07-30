@@ -29,7 +29,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Force Panes to Show/Hide for Specified Columns</title>
 
 <info><![CDATA[
 

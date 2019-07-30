@@ -20,15 +20,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Minimum Rows for Pane</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the min rows feature. Here we are setting the minRows value to be 10, so any table with less than 10 rows will cause the searchPanes to not show. The default value is 1, meaning that an empty table will result in the searchPanes not being visible.
-
-<button id="Reduce">Reduce Table Size</button> Press this button to reduce the table size and see the min rows feature in action!
+This example shows the `minRows` feature. Here we are setting the `minRows` value to be 10, so any column with less than 10 unique values will cause the searchPane for that column to not show. The default value is 1, meaning that columns with only 1 value will not get a Pane.
 
 ]]></info>
 

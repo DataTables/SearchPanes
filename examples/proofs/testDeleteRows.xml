@@ -15,13 +15,17 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Interaction when Deleting Rows mid-Search</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+To demonstrate how the Panes deal with data being deleted mid search do the following...
+
+1. Search By 'A'
+2. In the console run the following command `$('#example').DataTable().row(0).remove().draw()` twice. This will remove both of the A entries in the table.
+3. Press the clear button to remove the filtering on 'A' or select 'B' or 'C' and then deselect it.
 
 ]]></info>
     <custom-table>

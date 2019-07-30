@@ -35,7 +35,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Configuration option</title>
+<title lib="SearchPanes">Custom Filtering Pane</title>
 
 <info><![CDATA[
 
@@ -43,7 +43,7 @@ This is the SearchPanes extension for DataTables. It allows results to be filter
 
 This example demonstrates the functionality to add custom panes. Panes are populated with custom options which can search the table across multiple columns.
 Technically this is also possible to do with a custom function in any of the automatically occurring Panes. This just seems a bit neater.
-The panes config option holds an object for each custom Pane.
+The `panes` config option holds an object for each custom Pane.
 
 ]]></info>
 

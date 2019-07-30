@@ -24,13 +24,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Dealing with Unusual Characters</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example shows that the panes are able to deal with unusual characters including utf-8 characters.
 
 ]]></info>
 

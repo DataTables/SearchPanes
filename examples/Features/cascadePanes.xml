@@ -17,14 +17,14 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Cascade Panes</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates the cascadePanes functionality. This allows the panes to be filtered based on the values
-selected in the other panes. cascadePanes is false as default.
+This example demonstrates the `cascadePanes` functionality. This allows the panes to be filtered based on the values
+selected in the other panes. `cascadePanes` is false as default.
 
 ]]></info>
 

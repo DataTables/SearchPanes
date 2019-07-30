@@ -50,13 +50,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Interaction with Rendering Function to Create Custom Options</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on rendered data. The threshold is set to 1 so that the rendered columns will display their data.
+This example demonstrates searching on rendered data. The `threshold` is set to 1 so that the rendered columns will display their data.
 
 ]]></info>
 

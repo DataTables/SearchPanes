@@ -23,7 +23,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">View Totals and Subtotals</title>
 
 <info><![CDATA[
 

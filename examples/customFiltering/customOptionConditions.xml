@@ -112,13 +112,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Configuration option</title>
+<title lib="SearchPanes">Custom Filtering Options</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to set up custom comparison options. There are multiple predefined conditions such as <, >, <=, >=, ==, != and includes.
+This example shows how to set up custom comparison options. There are multiple predefined conditions such as `<`, `>`, `<=`, `>=`, `==`, `!=` and `includes`.
 Alternatively the user can define their own comparison function.
 
 ]]></info>

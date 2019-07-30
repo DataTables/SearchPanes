@@ -17,13 +17,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Disable Button to Collapse Panes</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example shows how to disable the option to hide the button that makes the Panes Collapsible by setting the `hide` config option to false. It is true by default.
 
 ]]></info>
 

@@ -30,14 +30,14 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Configuration option</title>
+<title lib="SearchPanes">Pane Customisation</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the deactivation of the search box by setting the searchPanes dtOpts property for searching to have a 
-value of false. The default for searching is true. This occurs on all of the panes, the info is displayed only on the second column's pane.
+This example shows the deactivation of the search box by setting the searchPanes dtOpts property for `searching` to have a 
+value of false and allowing the `info` of the third columns pane to be true. The default for `searching` is true and `info` is false. This occurs on all of the panes, the `info` is displayed only on the second column's pane.
 
 ]]></info>
 

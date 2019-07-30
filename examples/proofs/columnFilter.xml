@@ -34,13 +34,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Column Filter Integration</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how the columnFilter feature can be used with searchPanes. By setting the viewTotal config option to true the count will display the count in that style, cascadePanes could also be activated to only show options present in the table.
+This example shows how the `columnFilter` feature can be used with searchPanes. By setting the `viewTotal` config option to true the count will display the count in that style, `cascadePanes` could also be activated to only show options present in the table.
 
 ]]></info>
 

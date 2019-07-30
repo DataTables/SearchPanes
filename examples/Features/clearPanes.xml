@@ -17,13 +17,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Disable Clear Buttons for Panes</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-
+This shows how to stop the clear buttons being displayed by setting the `clear` config option to be false. `clear` is true by default.
 ]]></info>
 
 </dt-example>

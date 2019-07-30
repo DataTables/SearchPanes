@@ -31,7 +31,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Interaction with Built in DataTables Rendering Function</title>
 
 <info><![CDATA[
 

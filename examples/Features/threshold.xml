@@ -24,7 +24,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Configuration option</title>
+<title lib="searchPanes">Uniqueness Threshold</title>
 
 <info><![CDATA[
 
@@ -35,7 +35,7 @@ The `threshold` of uniqueness is the number of unique values throughout the tabl
 
 Thresholds can also be set for individual columns. Here we set the threshold of the firstname column to be 0.99.
 
-The default of `threshold` is 0.6
+The default of `threshold` is 0.6.
 
 ]]></info>
 

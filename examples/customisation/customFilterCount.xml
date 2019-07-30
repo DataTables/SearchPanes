@@ -24,13 +24,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Configuration option</title>
+<title lib="SearchPanes">Internationalisation</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how the internationalisation functionality built into dataTables can be used to show how many filters have been applied in the title section. Values can be defined for individual values with '_' being for the rest.
+This example shows how the internationalisation functionality built into dataTables can be used to show how many filters have been applied in the title section. Values can be defined for individual values like '0' with '_' being for the rest.
 
 ]]></info>
 
