@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="ajax" order="1">
+
+<css lib="datatables buttons searchpane select editor" />
+<js lib="jquery datatables buttons searchpane select editor">
+<![CDATA[
+
+var editor; // use a global for the submit and return data rendering in the examples
+
+$(document).ready(function() {
+	editor = new $.fn.dataTable.Editor( {
+		ajax: "../../Editor/php/staff.php",
+		table: "#example",
+		fields: [ {
+				label: "First name:",
+				name: "first_name"
+			}, {
+				label: "Last name:",
+				name: "last_name"
+			}, {
+				label: "Position:",
+				name: "position"
+			}, {
+				label: "Office:",
+				name: "office"
+			}, {
+				label: "Extension:",
+				name: "extn"
+			}, {
+				label: "Start date:",
+				name: "start_date",
+				type: "datetime"
+			}, {
+				label: "Salary:",
+				name: "salary"
+			}
+		]
+	} );
+
+	$('#example').DataTable( {
+        searchPane:true,
+		dom: "Bfrtip",
+		ajax: "../../php/staff.php",
+		columns: [
+			{ data: null, render: function ( data, type, row ) {
+				// Combine the first and last names into a single table field
+				return data.first_name+' '+data.last_name;
+			} },
+			{ data: "position" },
+			{ data: "office" },
+			{ data: "extn" },
+			{ data: "start_date" },
+			{ data: "salary", render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) }
+		],
+		select: true,
+		buttons: [
+			{ extend: "create", editor: editor },
+			{ extend: "edit",   editor: editor },
+			{ extend: "remove", editor: editor }
+		]
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="Editor">Basic initialisation</title>
+
+<info><![CDATA[
+
+[Editor](//editor.datatables.net) is a Create, Read, Update and Delete (CRUD) extension for [DataTables](//datatables.net) that provides the ability to easily add, edit and delete rows on a database that is displayed by a DataTable. Editor provides a clean and responsive interface for end user manipulation of data, an expressive API for complete control and a well defined server communications protocol for data submission.
+
+This simple example shows a table with seven fields, each of which can be edited as plain text. In other examples we will explore how to add date pickers, `dt-tag select` elements and other controls to make form input intuitive for the system user, among many other aspects of the Editor API.
+
+]]></info>
+
+</dt-example>
+

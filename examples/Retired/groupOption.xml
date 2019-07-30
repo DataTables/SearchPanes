@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" order="1">
+
+<css lib="datatables searchpane select" />
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPane:{
+            viewTotal: true,
+        },
+        columnDefs:[
+            {
+                searchPane: {
+                    options:[
+                        {
+                            label: 'UK',
+                            value:['Edinburgh', 'London'],
+                            condition:'||',
+                        },
+                    ],
+                },
+                targets: [3]
+            }
+        ]
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates how the comparison config option can be used to group options in the pane under one label.
+
+]]></info>
+
+</dt-example>
+

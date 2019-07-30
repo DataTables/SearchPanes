@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpane select"/>
+
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPane:{
+            cascadePanes: true
+        }
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates the cascadePanes functionality. This allows the panes to be filtered based on the values
+selected in the other panes. cascadePanes is false as default.
+
+]]></info>
+
+</dt-example>

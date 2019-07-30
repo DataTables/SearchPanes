@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpane select"/>
+
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+     $('#example tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    var table = $('#example').DataTable( {
+        searchPane:{
+            viewTotal: true,
+        }
+    });
+
+     table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how the columnFilter feature can be used with searchPane. By setting the viewTotal config option to true the count will display the count in that style, cascadePanes could also be activated to only show options present in the table.
+
+]]></info>
+
+</dt-example>

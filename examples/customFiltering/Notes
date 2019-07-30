@@ -1,0 +1,5 @@
+Noticeable delay when selecting custom filtering options and non custom options where other panes have them present.
+
+customOptions.xml retired due to being replaced by customOptions and the == funcitonality.
+
+groupOption.xml retired due to being replaced by customOptions and the ability to define your own functions.

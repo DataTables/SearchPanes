@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" order="1">
+
+<css lib="datatables searchpane select" />
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPane:{
+            threshold: 0.4,
+        },
+        columnDefs:[
+            {
+                searchPane:{
+                    threshold: 0.99,
+                },
+                targets:[0]
+            },
+        ],
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how the definition of the `threshold` config option allows the user to define the level of uniqueness for a pane to be displayed.
+The `threshold` of uniqueness is the number of unique values throughout the table divided by the total number of values.
+
+Thresholds can also be set for individual columns. Here we set the threshold of the firstname column to be 0.99.
+
+The default of `threshold` is 0.6
+
+]]></info>
+
+</dt-example>
+

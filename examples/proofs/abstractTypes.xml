@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpane select"/>
+
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        searchPane:true,
+        columnDefs: [
+            { type: 'ip-address', targets:1 }
+        ]
+    });
+
+});
+
+]]>
+</js>
+<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates how to allow the panes to sort correctly for abstract data Types. Simply include the plugin 
+for the column in the main DataTable and the pane will use the same type for its column. 
+
+]]></info>
+
+<custom-table>
+	<table id="example" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>Server Name</th>
+				<th>IP Address</th>
+			</tr>
+		</thead>
+        <tbody>
+            <tr>
+                <td>Zeus</td>
+                <td>90.4.3.2</td>
+            </tr>
+            <tr>
+                <td>Hermes</td>
+                <td>90.321.1.6</td>
+            </tr>
+            <tr>
+                <td>Hades</td>
+                <td>2.6.6.6</td>
+            </tr>
+            <tr>
+                <td>Posiedon</td>
+                <td>0.1.2.3</td>
+            </tr>
+            <tr>
+                <td>Athena</td>
+                <td>172.4.12.1111</td>
+            </tr>
+            <tr>
+                <td>Bill</td>
+                <td>172.29.0.162</td>
+            </tr>
+            <tr>
+                <td>Bob</td>
+                <td>172.29.0.162</td>
+            </tr>
+            <tr>
+                <td>Ben</td>
+                <td>172.29.0.162</td>
+            </tr>
+        </tbody>
+		<tfoot>
+			<tr>
+				<th>Server Name</th>
+				<th>IP Address</th>
+
+			</tr>
+		</tfoot>
+	</table>
+</custom-table>
+
+</dt-example>

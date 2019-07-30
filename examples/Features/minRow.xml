@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpane select"/>
+
+<js lib="jquery datatables searchpane select">
+<![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        searchPane: {
+            minRows:10
+        }
+    });
+    $('#Reduce').click(function(){
+        dt.rows(":gt(7)").remove().searchPanes.rebuild().draw();
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPane">Configuration option</title>
+
+<info><![CDATA[
+
+This is the SearchPane extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows the min rows feature. Here we are setting the minRows value to be 10, so any table with less than 10 rows will cause the searchPane to not show. The default value is 1, meaning that an empty table will result in the searchPane not being visible.
+
+<button id="Reduce">Reduce Table Size</button> Press this button to reduce the table size and see the min rows feature in action!
+
+]]></info>
+
+</dt-example>
