@@ -32,9 +32,26 @@
 		<![CDATA[
         As standard, SearchPanes will not add any custom options to the panes.
 
-        When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function recieves the data from the current row and the current row index as a parameter for use in the function. The data from the row is passed in as an array with one element from each column. The function must return true if that row is to be included in the search results and false if it is not. By allowing the programmer to define their own functions they can make them as complicated as they so choose.
+        When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function recieves the following parameters.
 
-        There are a handful of predefined comparisons that can be made by setting value to not be a function. When `columns.searchPanes.options.value` is not a function, the `columns.searchPanes.options.condition` comes into play. the following are options for the value of `columns.searchPanes.options.condition` -  `<`, `>`, `<=`, `>=`, `==`, `!=` and `includes`. When this is the case, the vlaue of `columns.searchPanes.options.value` is compared against the value of the cell in question using the predefined condition which has been selected.
+        * rowData - the data from the current row being compared as an array with one element from each column
+        * rowIdx - the index of the row currently being compared
+
+        The functions context is an API instance of the host DataTable. This means that from within the custom search functions it is possible to call this.rows().data() and other API methods.
+        
+        The function must return true if that row is to be included in the search results and false if it is not. By allowing the programmer to define their own functions they can make them as complicated as they so choose.
+
+        There are a handful of predefined comparisons that can be made by setting value to not be a function. When `columns.searchPanes.options.value` is not a function, the `columns.searchPanes.options.condition` comes into play. the following are options for the value of `columns.searchPanes.options.condition`
+
+        * `<`
+        * `>`
+        * `<=`
+        * `>=`
+        * `==`
+        * `!=`
+        * `includes`
+        
+        When this is the case, the value of `columns.searchPanes.options.value` is compared against the value of the cell in question using the predefined condition which has been selected.
 
         This is useful when you want to add an option to search for options which aren't just values in the column. For example, countries in europe, or cities which arent edinburgh, or age ranges.
         ]]>
