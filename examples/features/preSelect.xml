@@ -28,9 +28,9 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to set up the Panes so that some values are pre-Selected. Here the Office column is being targeted and told to `preselect` 'Edinburgh' and 'London'. This is done by setting the `preSelect` option to be an array of these strings.
+This example shows how to set up the Panes so that some values are pre-Selected. Here the Office column is being targeted and told to `-init columns.searchPanes.preSelect` 'Edinburgh' and 'London'. This is done by setting the `-init columns.searchPanes.preSelect` option to be an array of these strings.
 
-The default for `preSelect` is undefined.
+The default for `-init columns.searchPanes.preSelect` is undefined.
 
 ]]></info>
 

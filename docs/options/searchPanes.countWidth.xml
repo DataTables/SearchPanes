@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.countWidth</name>
+	<summary>Define the width of the count column in the panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init searchPanes.countWidth` option to a html value for width, the count  columns width will be adjusted to this. 
+        </description>
+	</type>
+
+	<default value="50px">
+        The default value for the `-init searchPanes.countWidth` paramater is `50px`. When this default value is in place the width of the count columns in the panes is 50 pixels.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will set the width of the count column to 50 pixels.
+
+        By overwriting this value in the initialisation, the count column will have a width of whatever is set. 
+
+		The `-init searchPanes.countWidth` functionality is useful when custom messages have been declared when using `-init searchPanes.viewTotal`, `-init language.searchPanes.count` and `-init language.searchPanes.countFiltered` as if the messages are long then the display of the searchPane may become a bit cluttered. 
+        ]]>
+	</description>
+
+	<example title="Alter width of count Column"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            countWidth: '100px',
+        }
+    });
+});
+
+]]></example>
+
+<related>-init searchPanes.viewTotal</related>
+<related>-init language.searchPanes.count</related>
+<related>-init language.searchPanes.countFiltered</related>
+
+</dt-option>

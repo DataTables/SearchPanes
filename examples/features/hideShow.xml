@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to disable the option to hide the button that makes the Panes Collapsible by setting the `hide` config option to false. It is true by default.
+This example shows how to disable the option to hide the button that makes the Panes Collapsible by setting the `-init searchPanes.hide` config option to false. `-init searchPanes.hide` is true by default.
 
 ]]></info>
 

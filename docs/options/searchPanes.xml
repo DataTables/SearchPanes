@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes</name>
+	<summary>Enable Search Panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes` option to true, a series of Panes will be displayed to aid searching the associated DataTable.
+
+			This is a short-cut option to enable searchPanes with the default configuration options. Customisations can be made by giving this parameter as an object.
+        </description>
+	</type>
+
+    <type type="object">
+        <description>
+            By setting the `-init searchPanes` option to an object, SearchPanes will be enabled for the relevant DataTable, with the SearchPanes defaults (`$.fn.dataTable.SearchPanes.defaults`) extended and overwritten by any conflicting options procided in the object as defined by the programmer.
+        </description>
+    </type>
+
+	<default value="false">
+        The default value for the `-init searchPanes` paramater is `false`. When this default value is in place no panes will be displayed and you will display a standard DataTable along with any other extensions that are in use.
+	<description>
+		<![CDATA[
+        SearchPanes is an extension that allows for clearer more accesible searching functionality. 
+        
+        When a selection is made in one of the associated panes, the DataTable will be searched for records that meet the criteria of the selections made in the panes. These records will then be displayed while all of the records that do not meet the criteria will not be included in the DataTable.
+
+        SearchPanes can be enabled by either simply setting the `-init searchPanes` option to true, which will set the configuration options to be the defaults as defined by `$.fn.dataTable.SearchPanes.defaults` or an object with further properties to define operation which is different to the defaults.
+
+        Please note that as with all other configuration options for SearchPanes, this option is an extension to the [default set of DataTables options](/reference/option). This property should be set in the DataTables initialisation object.
+        ]]>
+	</description>
+
+	<example title="Enable SearchPanes"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: true
+    });
+});
+
+]]></example>
+
+</dt-option>

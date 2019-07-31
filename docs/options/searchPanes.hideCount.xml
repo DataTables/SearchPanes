@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.hideCount</name>
+	<summary>Hide the count column in the panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.hideCount` option to `true` the count column will be hidden in all of the panes.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init searchPanes.hideCount` paramater is `false`. Meaning that as standard the count column will be included in the panes.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init searchPanes.hideCount` is set to 'true' then the count column will no longer be displayed in any of the panes.
+
+		This is useful as a styling option for those that do not want to include the count column. 
+
+        The count column can be hidden for individual of the panes by making use of the `-init columns.searchPanes.hideCount`.
+        ]]>
+	</description>
+
+	<example title="Hide count for all panes"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            hideCount: true,
+        },
+    });
+});
+
+]]></example>
+
+<related>-init columns.searchPanes.hideCount</related>
+
+</dt-option>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.clear</name>
+	<summary>Disable buttons to allow quick clearing of selections in panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.clear` option to false, the buttons which allow for individual panes and all of the panes as a collective group to be cleared will not be shown. 
+        </description>
+	</type>
+
+	<default value="true">
+        The default value for the `-init searchPanes.clear` paramater is `true`. When this default value is in place the buttons which allow selections to be cleared will be visible.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will display the buttons which allow selections to be cleared in individual panes and across all panes above each pane. When `-init searchPanes.clear` is set to `false`, the buttons will not be attached to the document.
+
+		The `-init searchPanes.clear` functionality is useful when wanting to quickly deselect all of the options in a pane. It is useful to be able to disable these buttons, for example on smaller tables with a much smaller number of options it may be preferrable to remove them and have a simpler user interface. 
+        ]]>
+	</description>
+
+	<example title="Disable Clear Buttons"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            clear: false
+        }
+    });
+});
+
+]]></example>
+
+</dt-option>

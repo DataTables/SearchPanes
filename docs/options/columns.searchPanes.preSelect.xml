@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.preSelect</name>
+	<summary>Set values to be pre-selected in a pane</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="Array">
+		<description>
+            By setting the `-init columns.searchPanes.preSelect` option to an array of `-type string` values, the pane produced for that column will be searched and if the values of the `-init columns.searchPanes.preSelect` option are found then they will be pre-selected.
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init columns.searchPanes.preSelect` paramater is `-type undefined`. When this default value is in place, no values will be preSelected in the pane.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will not pre-select any values in any of the panes.
+		
+		If any of the elements in the array held in `-init columns.searchPanes.preSelect` are present in the pane then they will be pre-selected. 
+        ]]>
+	</description>
+
+	<example title="Pre-Select Values in a Pane"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        columnDefs:[
+            {
+                searchPanes: {
+                    preSelect:['Edinburgh','London']
+                },
+                targets:[3],
+            }
+        ]
+    });
+});
+
+]]></example>
+
+</dt-option>

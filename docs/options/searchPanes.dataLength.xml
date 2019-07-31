@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.dataLength</name>
+	<summary>Make use of elipsis for a certain length of entry</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="integer">
+		<description>
+            By setting the `-init searchPanes.dataLength` option to a number after that many characters the cell will cut off and append '...'.
+        </description>
+	</type>
+
+	<default value="30">
+        The default value for the `-init searchPanes.dataLength` paramater is `30`. Meaning that as standard after 30 characters the cell will cut off the end and append '...'.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will be displayed with the cells which have a length greater than 30 characters as the first 30 characters postfixed by '...'.
+
+		This is useful as it prevents the cells becoming mishapen and overpopulated.
+        ]]>
+	</description>
+
+	<example title="Setting Data Length to Smaller Value"><![CDATA[
+
+ $('#example').DataTable( {
+        searchPanes:{
+            dataLength: 15,
+        },    
+    });
+
+]]></example>
+
+</dt-option>

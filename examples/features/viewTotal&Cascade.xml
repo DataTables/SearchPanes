@@ -24,8 +24,8 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates the `cascadePanes` feature working alongside the `viewTotal` feature. This allows the panes to be filtered based on the values
-selected in the other panes. `cascadePanes` is false as default, as is `viewTotal`.
+This example demonstrates the `-init searchPanes.cascadePanes` feature working alongside the `-init searchPanes.viewTotal` feature. This allows the panes to be filtered based on the values
+selected in the other panes. `-init searchPanes.cascadePanes` is false as default, as is `-init searchPanes.viewTotal`.
 
 ]]></info>
 

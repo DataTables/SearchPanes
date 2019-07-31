@@ -23,9 +23,9 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to customise the width of the count column by making use of the `countWidth` config option.
+This example shows how to customise the width of the count column by making use of the `-init searchPanes.countWidth` config option.
 
-The default for `countWidth` is 50px.
+The default for `-init searchPanes.countWidth` is 50px.
 
 ]]></info>
 

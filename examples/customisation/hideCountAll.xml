@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to hide the count in all columns by setting the `hideCount` config option to true.
+This example shows how to hide the count in all columns by setting the `-init searchPanes.hideCount` config option to true.
 
 ]]></info>
 

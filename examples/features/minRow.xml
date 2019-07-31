@@ -26,7 +26,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the `minRows` feature. Here we are setting the `minRows` value to be 10, so any column with less than 10 unique values will cause the searchPane for that column to not show. The default value is 1, meaning that columns with only 1 value will not get a Pane.
+This example shows the `-init searchPanes.minRows` feature. Here we are setting the `-init searchPanes.minRows` value to be 10, so any column with less than 10 unique values will cause the searchPane for that column to not show. The default value is 1, meaning that columns with only 1 value will not get a Pane.
 
 ]]></info>
 

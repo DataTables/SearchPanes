@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to make the searchPanes appear at the base of the dataTable rather than the top by setting the `insert` config option to 'append'. It is 'prepend' as default.
+This example demonstrates how to make the searchPanes appear at the base of the dataTable rather than the top by setting the `-init searchPanes.insert` config option to 'append'. It is 'prepend' as default.
 
 ]]></info>
 

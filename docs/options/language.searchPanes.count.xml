@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.count</name>
+	<summary>Set the message to be displayed in the count column when no searching is taking place</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init language.searchPanes.count` to be a different string you change what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and no  filtering is taking place.
+        </description>
+	</type>
+
+	<default value="{total}">
+        The default value for the `-init language.searchPanes.count` paramater is `{total}`. 
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place.
+		
+		The internals of searchPanes replace 2 strings when creating the output for the count column. The first is `{shown}`, this is the count for each different value that is currently being displayed in the DataTable. The other is `{total}`, this is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will both be replaced by the same value.
+
+        Both of the above strings can be included in the count message although they will be the same when no filtering is taking place.
+        ]]>
+	</description>
+
+	<example title="Change messages for viewTotal"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            viewTotal: true ,
+        },
+        language:{
+            searchPanes:{
+                count: '{total} found',
+                countFiltered: '{total} ({total})'
+            },
+        }
+    });
+});
+
+]]></example>
+
+<related>-init language.searchPanes.countFiltered</related>
+<related>-init searchPanes.viewTotal</related>
+
+</dt-option>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.options</name>
+	<summary>Define custom search options</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="array">
+		<description>
+            The `-init columns.searchPanes.options` array takes objects in the following form. The `columns.searchPanes.options.label` property is a `-type string` that holds the value that will be displayed in the pane. The `columns.searchPanes.options.value` property can be either of type `-type function` or other for a comparison. The `columns.searchPanes.options.value` property is a `-type string` that holds the condition from the predefined list to be compared against.
+
+            This leads to the object being in one of two forms, either...
+            ```
+                {
+                    label: string,
+                    value: function
+                }
+            ```
+            or ...
+            ```
+                {
+                    label: string,
+                    value: !function,
+                    condition: string,   
+                }
+            ```
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value of `-init columns.searchPanes.options` is undefined. If there are no custom options defined then none will be added to the panes.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will not add any custom options to the panes.
+
+        When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function recieves the data from the current row and the current row index as a parameter for use in the function. The data from the row is passed in as an array with one element from each column. The function must return true if that row is to be included in the search results and false if it is not. By allowing the programmer to define their own functions they can make them as complicated as they so choose.
+
+        There are a handful of predefined comparisons that can be made by setting value to not be a function. When `columns.searchPanes.options.value` is not a function, the `columns.searchPanes.options.condition` comes into play. the following are options for the value of `columns.searchPanes.options.condition` -  `<`, `>`, `<=`, `>=`, `==`, `!=` and `includes`. When this is the case, the vlaue of `columns.searchPanes.options.value` is compared against the value of the cell in question using the predefined condition which has been selected.
+
+        This is useful when you want to add an option to search for options which aren't just values in the column. For example, countries in europe, or cities which arent edinburgh, or age ranges.
+        ]]>
+	</description>
+
+	<example title="Define custom Options for a specific pane"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        searchPanes: true,
+        columnDefs:[ 
+            {
+                searchPanes: {
+                    options:[
+                        {
+                            label: 'Under 20',
+                            value: 20,
+                            condition:'<',
+                        },
+                        {
+                            label: '20 to 30',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 30 && rowData[4] >=20;
+                            }
+                        },
+                         {
+                            label: '30 to 40',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 40 && rowData[4] >=30;
+                            }
+                        },
+                         {
+                            label: '40 to 50',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 50 && rowData[4] >=40;
+                            }
+                        },
+                         {
+                            label: '50 to 60',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 60 && rowData[4] >=50;
+                            }
+                        },
+                         {
+                            label: 'Over 60',
+                            value: 60,
+                            condition:'>',
+                        },
+                    ]
+                },
+                targets:[4],
+            },
+            {
+                searchPanes: {
+                    options:[
+                        {
+                            label: 'Not Edinburgh',
+                            value: 'Edinburgh',
+                            condition: '!=',
+                        },
+                        {
+                            label: 'Not London',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'London';
+                            }
+                        }
+                    ],
+                },
+                targets: [3]
+            }
+        ],
+});
+
+]]></example>
+
+<related>-init searchPanes.panes</related>
+
+</dt-option>

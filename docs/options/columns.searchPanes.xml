@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes</name>
+	<summary>Container for options for individual columns</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            This option is capable of holding all of the sub-options for individual panes.
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init columns.searchPanes` object is `-type undefined`. Meaning that as standard there are no extra options to add to the pane for that individual column.
+	<description>
+		<![CDATA[
+        As standard, no custom options will be applied to the pane for the column if `-init columns.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object.
+
+		This is useful as it means that the panes for individual columns can be customised rather than a small change affecting every pane.
+        ]]>
+	</description>
+
+	<example title="Alter searching and info of the third columns pane"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: true,
+        columnDefs:[
+            {
+                dtOpts:{
+                    searching:false,
+                    info: true,
+                },
+                targets[2]
+            }
+        }
+    });
+});
+
+]]></example>
+
+<example title="Hide count for the 5th columns pane"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        columnDefs:[
+            {
+                searchPanes: {
+                    hideCount: true,
+                },
+                targets: [4]
+            }
+        ]
+    });
+});
+
+]]></example>
+	<example title="Define custom Options for a specific pane"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        searchPanes: true,
+        columnDefs:[ 
+            {
+                searchPanes: {
+                    options:[
+                        {
+                            label: 'Under 20',
+                            value: 20,
+                            condition:'<',
+                        },
+                        {
+                            label: '20 to 30',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 30 && rowData[4] >=20;
+                            }
+                        },
+                         {
+                            label: '30 to 40',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 40 && rowData[4] >=30;
+                            }
+                        },
+                         {
+                            label: '40 to 50',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 50 && rowData[4] >=40;
+                            }
+                        },
+                         {
+                            label: '50 to 60',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 60 && rowData[4] >=50;
+                            }
+                        },
+                         {
+                            label: 'Over 60',
+                            value: 60,
+                            condition:'>',
+                        },
+                    ]
+                },
+                targets:[4],
+            },
+            {
+                searchPanes: {
+                    options:[
+                        {
+                            label: 'Not Edinburgh',
+                            value: 'Edinburgh',
+                            condition: '!=',
+                        },
+                        {
+                            label: 'Not London',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'London';
+                            }
+                        }
+                    ],
+                },
+                targets: [3]
+            }
+        ],
+});
+
+]]></example>
+
+<example title="Pre-Select Values in a Pane"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        columnDefs:[
+            {
+                searchPanes: {
+                    preSelect:['Edinburgh','London']
+                },
+                targets:[3],
+            }
+        ]
+    });
+});
+
+]]></example>
+
+<example title="Force panes to hide and show"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        columnDefs:[
+            {
+                searchPanes:{
+                    show: true,
+                },
+                targets: [0],
+            },
+            {
+                searchPanes:{
+                    show: false,
+                },
+                targets: [2],
+            }
+        ]
+    });
+});
+
+]]></example>
+
+<example title="Change the threshold of the uniqueness ratio for a specific column"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: true,
+        columnDefs:[
+            {
+                searchPanes:{
+                    threshold: 0.99,
+                },
+                targets:[0]
+            },
+        ],
+    });
+});
+
+]]></example>
+
+<related>-init columns.searchPanes.dtOpts</related>
+<related>-init columns.searchPanes.hideCount</related>
+<related>-init columns.searchPanes.options</related>
+<related>-init columns.searchPanes.preSelect</related>
+<related>-init columns.searchPanes.show</related>
+<related>-init columns.searchPanes.threshold</related>
+
+</dt-option>
