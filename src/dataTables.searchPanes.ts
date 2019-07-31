@@ -109,6 +109,14 @@ declare var define: {
 
 		constructor(paneSettings, opts) {
 
+			if ( ! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')  ) {
+				throw new Error('SearchPane requires DataTables 1.10 or newer');
+			}
+
+			if ( ! DataTable.select ) {
+				throw new Error('SearchPane requires Select');
+			}
+
 			let table = new DataTable.Api(paneSettings);
 			this.panes = [];
 			this.arrayCols = [];

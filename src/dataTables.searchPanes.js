@@ -32,6 +32,12 @@
     var SearchPanes = /** @class */ (function () {
         function SearchPanes(paneSettings, opts) {
             var _this = this;
+            if (!DataTable || !DataTable.versionCheck || !DataTable.versionCheck('1.10.0')) {
+                throw new Error('SearchPane requires DataTables 1.10 or newer');
+            }
+            if (!DataTable.select) {
+                throw new Error('SearchPane requires Select');
+            }
             var table = new DataTable.Api(paneSettings);
             this.panes = [];
             this.arrayCols = [];
