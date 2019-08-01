@@ -193,7 +193,7 @@ declare var define: {
 					}
 				});
 
-			this._reloadSelect(loadedFilter, this);
+			this._reloadSelect(loadedFilter);
 
 			// Attach panes, clear buttons, hide button and title bar to the document
 			this._attach();
@@ -214,6 +214,7 @@ declare var define: {
 				data.searchPanes = paneColumns;
 			});
 
+			// If the panes are to be collapsed on initialisation then do so
 			if (this.c.collapse) {
 				this._hidePanes();
 			}
@@ -236,6 +237,7 @@ declare var define: {
 				});
 			}
 
+			// When the hide button has been pressed collapse or show the panes depending on the current state
 			if (this.c.hide) {
 				this.dom.hide[0].addEventListener('click', () => {
 					this._hidePanes();
@@ -245,33 +247,86 @@ declare var define: {
 			table.state.save();
 		}
 
-		public _attach() {
+		/**
+		 * rebuilds all of the panes
+		 */
+		public rebuild() {
+			this.dom.container.empty();
+			this.s.dt
+				.columns(this.c.columns)
+				.eq(0)
+				.each((idx) => {
+					this._pane(idx);
+				});
+		}
+
+		/**
+		 * Rebuilds an individual pane
+		 * @param callerIndex The index of the pane that has caused the selection/deselection
+		 */
+		public rebuildPane(callerIndex) {
+			this.s.updating = true;
+			let selectArray = [];
+			let filterCount = 0;
+			let filterIdx;
+			let pane = this.panes[callerIndex];
+
+			// If the viewTotal option is active then it must be determined whether there is a filter in place already
+			if (this.c.viewTotal) {
+
+				// Check each pane to find how many filters are in place in each
+				filterCount = this._getSelected(pane, selectArray, filterCount);
+
+				// If there is only one in place then find the index of the corresponding pane
+				if (filterCount === 1) {
+					filterIdx = selectArray.indexOf(1);
+				}
+			}
+			this._updateCommon(pane, callerIndex, filterIdx);
+			this.s.updating = false;
+		}
+
+		/**
+		 * Attach the panes, buttons and title to the document
+		 */
+		private _attach() {
 			let container = this.c.container;
 			let host = typeof container === 'function' ? container(this.s.dt) : container;
 
+			// If the panes are to appear after the table
 			if (this.c.insert === 'append') {
+				// If the hide button is permitted attach it
 				if (this.c.hide) {
 					$(this.dom.hide).appendTo(host);
 				}
 				$(this.dom.title).appendTo(host);
+				// If the clear button is permitted attach it
 				if (this.c.clear) {
 					$(this.dom.clearAll).appendTo(host);
 				}
 				$(this.dom.container).appendTo(host);
 			}
+			// If the panes are to appear before the table
 			else {
 				$(this.dom.container).prependTo(host);
 				$(this.dom.title).prependTo(host);
+				// If the hide button is permitted attach it
 				if (this.c.clear) {
 					$(this.dom.clearAll).prependTo(host);
 				}
+				// If the clear button is permitted attach it
 				if (this.c.hide) {
 					$(this.dom.hide).prependTo(host);
 				}
 			}
 		}
 
-		public _binData(data): {} {
+		/**
+		 * Caclulate the count for each different value in a column.
+		 * @param data The data to be binned
+		 * @return {object} out Object of different cell values as keys and counts as values
+		 */
+		private _binData(data): {} {
 			let out = {};
 			data = this._flatten(data);
 			for (let i = 0, ien = data.length; i < ien; i++) {
@@ -292,35 +347,68 @@ declare var define: {
 			return out;
 		}
 
-		public _clearPane(pane) {
+		/**
+		 * Clear the selections in a pane
+		 * @param pane the pane to have its selections cleared
+		 */
+		private _clearPane(pane) {
+			// Deselect all rows which are selected and update the table and filter count.
 			pane.table.rows({selected: true}).deselect();
 			this._updateTable(pane, this.s.columns, pane.index, false);
 			this._updateFilterCount();
 		}
 
-		public _clearSelections() {
+		/**
+		 * Clear the selections of all of the panes
+		 */
+		private _clearSelections() {
 			for (let pane of this.panes) {
 				this._clearPane(pane);
 			}
 		}
 
-		public _comparisonStatUpdate(val, comparisonObj, bins, binsTotal) {
+		/**
+		 * Get the bins for the custom options
+		 * @param val the data in a row
+		 * @param comparisonObj The data for the custom Option
+		 * @param bins The counts for each of the different options in the column
+		 * @param binsTotal The total counts for each of the different options in the column
+		 * @return {object} comparisonObj the same object as a parameter but with updated counts
+		 */
+		private _comparisonStatUpdate(val, comparisonObj, bins, binsTotal) {
+			// If the value of the filter is a function then it will throw an error if we try to push on to it
 			if (typeof comparisonObj.filter !== 'function') {
 				comparisonObj.filter.push(val.filter);
 			}
+			// Update the totals
 			bins !== undefined ? comparisonObj.shown += bins : comparisonObj.shown += 0;
 			binsTotal !== undefined ? comparisonObj.total += binsTotal : comparisonObj.total += 0;
 			return comparisonObj;
 		}
 
-		public _detailsPane(table, colOpts, classes, idx, arrayTotals) {
+		/**
+		 * Update the array which holds the display and filter values for the table
+		 * @param table The DataTable
+		 * @param colOpts The options for this column of the DataTable
+		 * @param classes The class for the pane
+		 * @param idx the id of the column
+		 * @param arrayTotals the array of filter and display values for the rows
+		 */
+		private _detailsPane(table, colOpts, classes, idx, arrayTotals) {
 			table.rows().every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayTotals);
 			});
 		}
 
-		public _findUnique(prev, data, arrayFilter) {
+		/**
+		 * Find the unique filter values in an array
+		 * @param prev empty array to push past data on to
+		 * @param data empty array to populate with data which has not yet been found
+		 * @param arrayFilter the array of all of the display and filter values for the table
+		 */
+		private _findUnique(prev, data, arrayFilter) {
 			for (let filterEl of arrayFilter) {
+				// If the data has not already been processed then add it to the unique array and the previously processed array.
 				if (prev.indexOf(filterEl.filter) === -1) {
 					data.push({
 						display: filterEl.display,
@@ -331,9 +419,19 @@ declare var define: {
 			}
 		}
 
-		public _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
+		/**
+		 * Adds the custom options to the panes
+		 * @param dtPane The pane for which the custom options are to be added
+		 * @param colOpts The options for the column of which this pane is assigned
+		 * @param bins The counts of the different values which are currently visible in the column of the DataTable
+		 * @param binsTotal The counts of the different values which are in the original column of the DataTable
+		 * @returns {Array} Returns the array of rows which have been added to the pane
+		 */
+		private _getComparisonRows(dtPane, colOpts, bins, binsTotal) {
 			let vals = dtPane.table.rows().data();
-			let options = colOpts.options !== undefined ? colOpts.options :
+			// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
+			let options = colOpts.options !== undefined ?
+				colOpts.options :
 				colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
 					colOpts.searchPanes.options :
 					undefined;
@@ -344,33 +442,42 @@ declare var define: {
 			let appRows = this.s.dt.rows({search: 'applied'});
 			let tableValsTotal = this.s.dt.rows().data().toArray();
 			let allRows = this.s.dt.rows();
+			// Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
 			dtPane.table.clear();
 			let rows = [];
 			for (let comp of options) {
+				// Initialise the object which is to be placed in the row
 				let comparisonObj = {
 					display: comp.label !== '' ? comp.label : this.c.emptyMessage,
 					filter: typeof comp.value === 'function' ? comp.value : [],
 					shown: 0,
 					total: 0,
 				};
+				// If a custom function is in place
 				if (typeof comp.value === 'function') {
 					let count = 0;
 					let total = 0;
+					// Count the number of times the function evaluates to true for the data currently being displayed
 					for (let tVal = 0; tVal < tableVals.length; tVal++) {
 						if (comp.value.call(this.s.dt, tableVals[tVal], appRows[0][tVal])) {
 							count++;
 						}
 					}
+					// Count the number of times the function evaluates to true for the original data in the Table
 					for (let i = 0; i < tableValsTotal.length; i++) {
 						if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
 							total++;
 						}
 					}
+					// Update the comparisonObj
 					comparisonObj = this._comparisonStatUpdate(comp, comparisonObj, count, total);
 				}
+				// If not a custom option must be a predefined contition
 				else {
 					for (let val of vals) {
 						let condition = comp.condition;
+						// If the condition is one of the predefined conditions and the value
+						// of the rows filter meets the condition update the comparisonObj
 						if (
 							(condition === '==' && val.filter === comp.value) ||
 							(condition === '!=' && val.filter !== comp.value) ||
@@ -384,6 +491,7 @@ declare var define: {
 						}
 					}
 				}
+				// If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
 				if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
 					rows.push(dtPane.table.row.add(comparisonObj));
 				}
@@ -391,7 +499,12 @@ declare var define: {
 			return rows;
 		}
 
-		public _getBonusOptions(Idx) {
+		/**
+		 * Gets the options for the row for the customPanes
+		 * @param Idx The index of the column the options should be retrieved for
+		 * @returns {object} The options for the row extended to include the options from the user.
+		 */
+		private _getBonusOptions(Idx) {
 			let defaults = {
 				grouping: undefined,
 				orthogonal: {
@@ -411,10 +524,13 @@ declare var define: {
 				this.c.panes[Idx] !== undefined ? this.c.panes[Idx] : {}
 			);
 		}
-
-		public _getOptions(colIdx) {
+		/**
+		 * Gets the options for the row for the customPanes
+		 * @param Idx The index of the column the options should be retrieved for
+		 * @returns {object} The options for the row extended to include the options from the user.
+		 */
+		private _getOptions(colIdx) {
 			let table = this.s.dt;
-			let rowLength = table.columns().eq(0).toArray().length;
 			let defaults = {
 				grouping: undefined,
 				orthogonal: {
@@ -435,12 +551,21 @@ declare var define: {
 			);
 		}
 
-		public _getSelected(pane, selectArray, filterCount) {
+		/**
+		 * Adds to an array the number of selections which have been made in a certain pane.
+		 * @param pane The pane in question
+		 * @param selectArray an array to be populated with the number of selected rows
+		 * @param filterCount a running total of the number of filters in place
+		 * @returns {integer} filterCount
+		 */
+		private _getSelected(pane, selectArray, filterCount) {
+			// If the pane doesn't exist there are no filters in place on it
 			if (pane !== undefined) {
 				let selected = pane.table.rows({selected: true}).data().toArray().length;
 				if (selected > 0) {
 					this.s.filteringActive = true;
 				}
+				// Push on the number of selected rows in this pane and update filterCount
 				selectArray.push(selected);
 				filterCount += selected;
 			}
@@ -450,7 +575,10 @@ declare var define: {
 			return filterCount;
 		}
 
-		public _hidePanes() {
+		/**
+		 * Collapses the pane so that they are out of sight or makes them re-appear
+		 */
+		private _hidePanes() {
 			let elements = document.getElementsByClassName('dt-searchPanes');
 			// If the innerHTML is Hide then hide the panes and set it to show for the next time around.
 			// Otherwise show the panes and set the innerHTML to Show
@@ -464,26 +592,33 @@ declare var define: {
 			}
 		}
 
-		public _pane(idx) {
+		/**
+		 * Creates the panes, sets up the search function
+		 * @param idx the index of the column for this pane
+		 * @returns {object} the pane that has been created, including the table and the index of the pane
+		 */
+		private _pane(idx) {
 			let table = this.s.dt;
 			let classes = this.classes;
-			let rowLength = table.columns().eq(0).toArray().length;
 			let tableCols = this.s.columns;
 			let container = this.dom.container;
+			let colOpts =  this.s.colOpts[idx];
+			let rowLength = table.columns().eq(0).toArray().length;
 			let colExists = idx < rowLength;
 			let column = table.column(colExists ? idx : 0);
 			this.s.colOpts.push(colExists ? this._getOptions(idx) : this._getBonusOptions(idx - rowLength));
-			let colOpts =  this.s.colOpts[idx];
-			let colType =  this._getColType(table, colExists ? idx : 0);
 			let clear = $('<button class="clear" type="button">Clear Pane</button>');
 			let dt = $('<table><thead><tr><th>' + (colExists ?
 				$(column.header()).text() :
 				this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
-			let arrayFilter = [];
-			let arrayTotals = [];
-			let binsTotal;
+
 			let countMessage = table.i18n('searchPanes.count', '{total}');
 			let filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
+			let arrayFilter = [];
+			let arrayTotals = [];
+			let bins = {};
+			let binsTotal = {};
+
 			// Add an empty array for each column for holding the selected values
 			tableCols.push([]);
 
@@ -538,7 +673,7 @@ declare var define: {
 				}
 			);
 
-			let bins = {};
+			// If it is not a custom pane in place
 			if (colExists) {
 				this._populatePane(table, colOpts, classes, idx, arrayFilter);
 
@@ -565,6 +700,8 @@ declare var define: {
 				) {
 					return;
 				}
+				// Don't show the pane if there are too few rows for it to qualify,
+				// assuming it is not a custom pane or containing custom options
 				if (Object.keys(bins).length < this.c.minRows && (colOpts.options === undefined
 					&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
 					return;
@@ -613,6 +750,7 @@ declare var define: {
 				}, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {})),
 			} ;
 
+			// If it is not a custom pane
 			if (colExists) {
 				// On initialisation, do we need to set a filtering value from a
 				// saved state or init option?
@@ -652,6 +790,8 @@ declare var define: {
 					}
 				}
 			}
+
+			// If there are custom options set or it is a custom pane then get them
 			if (colOpts.options !== undefined ||
 				(colOpts.searchPanes !== undefined  && colOpts.searchPanes.options !== undefined)) {
 
@@ -659,11 +799,15 @@ declare var define: {
 			}
 			$.fn.dataTable.select.init(dtPane.table);
 
+			// Display the pane
 			dtPane.table.draw();
 
+			// Hide the count column if that is desired
 			if (colOpts.hideCount || this.c.hideCount) {
 				dtPane.table.column(1).visible(false);
 			}
+
+			// Declare timeout Variable
 			let t0;
 
 			// When an item is selected on the pane, add these to the array which holds selected items.
@@ -685,6 +829,7 @@ declare var define: {
 				}, 50);
 			});
 
+			// If the clear button for this pane is clicked clear the selections
 			if (this.c.clear) {
 				clear[0].addEventListener('click', () => {
 					this._clearPane(this.panes[idx]);
@@ -694,7 +839,16 @@ declare var define: {
 			return dtPane;
 		}
 
-		public _populatePaneArray(colOpts, table, rowIdx, idx, classes, array) {
+		/**
+		 * populates an array with all of the data for the table
+		 * @param colOpts The options for this panes column
+		 * @param table The DataTable
+		 * @param rowIdx The current row index to be compared
+		 * @param idx The column Index
+		 * @param classes The searchPanes classes
+		 * @param array the array to be populated for the pane
+		 */
+		private _populatePaneArray(colOpts, table, rowIdx, idx, classes, array) {
 			// Retrieve the rendered data from the cell
 			let filter = typeof(colOpts.orthogonal) === 'string'
 				? table.cell(rowIdx, idx).render(colOpts.orthogonal)
@@ -739,53 +893,34 @@ declare var define: {
 			}
 		}
 
-		public _populatePane(table, colOpts, classes, idx, arrayFilter) {
+		/**
+		 * Fill the array with the values that are currently being displayed in the table
+		 * @param table the DataTable
+		 * @param colOpts the options for this pane's Column
+		 * @param classes the searchPane classes
+		 * @param idx the index of the pane's column
+		 * @param arrayFilter the array to be populated with the currently displayed values
+		 */
+		private _populatePane(table, colOpts, classes, idx, arrayFilter) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
 			});
 		}
 
-		public rebuild() {
-			this.dom.container.empty();
-			this.s.dt
-				.columns(this.c.columns)
-				.eq(0)
-				.each((idx) => {
-					this._pane(idx);
-				});
-		}
-
-		public rebuildPane(callerIndex) {
-			this.s.updating = true;
-			let selectArray = [];
-			let filterCount = 0;
-			let filterIdx;
-			let pane = this.panes[callerIndex];
-
-			// If the viewTotal option is active then it must be determined whether there is a filter in place already
-			if (this.c.viewTotal) {
-
-				// Check each pane to find how many filters are in place in each
-				filterCount = this._getSelected(pane, selectArray, filterCount);
-
-				// If there is only one in place then find the index of the corresponding pane
-				if (filterCount === 1) {
-					filterIdx = selectArray.indexOf(1);
-				}
-			}
-			this._updateCommon(pane, callerIndex, filterIdx);
-			this.s.updating = false;
-		}
-
-		public _reloadSelect(loadedFilter, that) {
+		/**
+		 * Reloads all of the previous selects into the panes
+		 * @param loadedFilter The loaded filters from a previous state
+		 */
+		private _reloadSelect(loadedFilter) {
+			// If the state was not saved don't selected any
 			if (loadedFilter === undefined) {
 					return;
 			}
 			// For each pane, check that the loadedFilter list exists and is not null,
 			// find the id of each search item and set it to be selected.
-			for (let i = 0; i < that.panes.length; i++) {
+			for (let i = 0; i < this.panes.length; i++) {
 				if (loadedFilter.searchPanes[i] !== null && loadedFilter.searchPanes[i] !== undefined) {
-					let table = that.panes[i].table;
+					let table = this.panes[i].table;
 					let rows = table.rows({order: 'index'}).data().pluck('filter');
 					for (let filter of loadedFilter.searchPanes[i]) {
 						let id = rows.indexOf(filter);
@@ -797,7 +932,11 @@ declare var define: {
 			}
 		}
 
-		public _searchExtras(paneIn) {
+		/**
+		 * Adds outline to the panes where a selection has been made
+		 * @param paneIn the pane in question
+		 */
+		private _searchExtras(paneIn) {
 			let table = this.s.dt;
 			this.s.updating = true;
 			let filters = paneIn.table.rows({selected: true}).data().pluck('filter').toArray();
@@ -821,31 +960,45 @@ declare var define: {
 			this.s.updating = false;
 		}
 
-		public _uniqueRatio(bins, rowCount) {
+		/**
+		 * Finds the ratio of the number of different options in the table to the number of rows
+		 * @param bins the number of different options in the table
+		 * @param rowCount the total number of rows in the table
+		 * @returns {number} returns the ratio
+		 */
+		private _uniqueRatio(bins, rowCount) {
 			return bins / rowCount;
 		}
 
-		public _updateCommon(pane, callerIndex, filterIdx, draw = false) {
+		/**
+		 * updates the options within the pane
+		 * @param pane The pane in question
+		 * @param callerIndex the index of the pane that triggered this action
+		 * @param filterIdx the index of the postition of a sole selected option
+		 * @param draw a flag to define whether this has been called due to a draw event or not
+		 */
+		private _updateCommon(pane, callerIndex, filterIdx, draw = false) {
 			// Update the panes if doing a deselect. if doing a select then
 			// update all of the panes except for the one causing the change
 			if (pane !== undefined && (pane.index !== callerIndex || !this.s.filteringActive)) {
-				let selected = pane.table.rows({selected: true}).data().toArray();
+				let table = this.s.dt;
+				let classes = this.classes;
 				let colOpts = this.s.colOpts[pane.index];
+				let selected = pane.table.rows({selected: true}).data().toArray();
+				let rowLength = table.columns().eq(0).toArray().length;
+				let scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
+				let colExists = pane.index < rowLength;
 				let arrayFilter = [];
 				let arrayTotals = [];
-				let table = this.s.dt;
-				let rowLength = table.columns().eq(0).toArray().length;
-				let colExists = pane.index < rowLength;
-				let classes = this.classes;
 				let data = [];
 				let prev = [];
-				let binsTotal;
-				let scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
+				let bins = {};
+				let binsTotal = {};
 
 				// Clear the pane in preparation for adding the updated search options
 				pane.table.clear();
-				let bins = {};
 
+				// If it is not a custom pane
 				if (colExists) {
 					this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
 
@@ -964,7 +1117,10 @@ declare var define: {
 			}
 		}
 
-		public _updateFilterCount() {
+		/**
+		 * Updates the number of filters that have been applied in the title
+		 */
+		private _updateFilterCount() {
 			let filterCount = 0;
 			for (let pane of this.panes) {
 				if (pane !== undefined) {
@@ -975,7 +1131,13 @@ declare var define: {
 			this.dom.title[0].innerHTML = (message);
 		}
 
-		public _updatePane(callerIndex, select, draw = false) {
+		/**
+		 * Updates the values of all of the panes
+		 * @param callerIndex the index of the pane that caused this to run
+		 * @param select whether a select has been made in a pane or not
+		 * @param draw whether this has been triggered by a draw event or not
+		 */
+		private _updatePane(callerIndex, select, draw = false) {
 			this.s.updating = true;
 			this.s.filteringActive = false;
 			let selectArray = [];
@@ -1005,7 +1167,14 @@ declare var define: {
 			this.s.updating = false;
 		}
 
-		public _updateTable(dtPane, tableCols, idx, select) {
+		/**
+		 * Updates the panes if one of the options to do so has been set to true
+		 * @param dtPane the pane in question
+		 * @param tableCols the array of all of the selected rows across the panes
+		 * @param idx the index of the column for this pane
+		 * @param select whether this has been triggered by a select event or not
+		 */
+		private _updateTable(dtPane, tableCols, idx, select) {
 			let selectedRows = dtPane.table.rows({selected: true}).data().toArray();
 			tableCols[idx] = selectedRows;
 			this._searchExtras(dtPane);
@@ -1015,12 +1184,10 @@ declare var define: {
 			}
 		}
 
-		private _getColType(table, idx) {
-			return table.settings()[0].aoColumns[idx] !== undefined ?
-				table.settings()[0].aoColumns[idx].sType :
-				table.settings()[0].aoColumns[0].sType;
-		}
-
+		/**
+		 * flattens?
+		 * @param arr the array to be flattened
+		 */
 		private _flatten(arr) {
 			return arr.reduce(function flatten(res, a) {
 				Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);

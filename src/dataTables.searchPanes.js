@@ -102,7 +102,7 @@
                     }
                 }
             });
-            this._reloadSelect(loadedFilter, this);
+            this._reloadSelect(loadedFilter);
             // Attach panes, clear buttons, hide button and title bar to the document
             this._attach();
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
@@ -118,6 +118,7 @@
                 }
                 data.searchPanes = paneColumns;
             });
+            // If the panes are to be collapsed on initialisation then do so
             if (this.c.collapse) {
                 this._hidePanes();
             }
@@ -137,6 +138,7 @@
                     _this._clearSelections();
                 });
             }
+            // When the hide button has been pressed collapse or show the panes depending on the current state
             if (this.c.hide) {
                 this.dom.hide[0].addEventListener('click', function () {
                     _this._hidePanes();
@@ -144,30 +146,79 @@
             }
             table.state.save();
         }
+        /**
+         * rebuilds all of the panes
+         */
+        SearchPanes.prototype.rebuild = function () {
+            var _this = this;
+            this.dom.container.empty();
+            this.s.dt
+                .columns(this.c.columns)
+                .eq(0)
+                .each(function (idx) {
+                _this._pane(idx);
+            });
+        };
+        /**
+         * Rebuilds an individual pane
+         * @param callerIndex The index of the pane that has caused the selection/deselection
+         */
+        SearchPanes.prototype.rebuildPane = function (callerIndex) {
+            this.s.updating = true;
+            var selectArray = [];
+            var filterCount = 0;
+            var filterIdx;
+            var pane = this.panes[callerIndex];
+            // If the viewTotal option is active then it must be determined whether there is a filter in place already
+            if (this.c.viewTotal) {
+                // Check each pane to find how many filters are in place in each
+                filterCount = this._getSelected(pane, selectArray, filterCount);
+                // If there is only one in place then find the index of the corresponding pane
+                if (filterCount === 1) {
+                    filterIdx = selectArray.indexOf(1);
+                }
+            }
+            this._updateCommon(pane, callerIndex, filterIdx);
+            this.s.updating = false;
+        };
+        /**
+         * Attach the panes, buttons and title to the document
+         */
         SearchPanes.prototype._attach = function () {
             var container = this.c.container;
             var host = typeof container === 'function' ? container(this.s.dt) : container;
+            // If the panes are to appear after the table
             if (this.c.insert === 'append') {
+                // If the hide button is permitted attach it
                 if (this.c.hide) {
                     $(this.dom.hide).appendTo(host);
                 }
                 $(this.dom.title).appendTo(host);
+                // If the clear button is permitted attach it
                 if (this.c.clear) {
                     $(this.dom.clearAll).appendTo(host);
                 }
                 $(this.dom.container).appendTo(host);
             }
+            // If the panes are to appear before the table
             else {
                 $(this.dom.container).prependTo(host);
                 $(this.dom.title).prependTo(host);
+                // If the hide button is permitted attach it
                 if (this.c.clear) {
                     $(this.dom.clearAll).prependTo(host);
                 }
+                // If the clear button is permitted attach it
                 if (this.c.hide) {
                     $(this.dom.hide).prependTo(host);
                 }
             }
         };
+        /**
+         * Caclulate the count for each different value in a column.
+         * @param data The data to be binned
+         * @return {object} out Object of different cell values as keys and counts as values
+         */
         SearchPanes.prototype._binData = function (data) {
             var out = {};
             data = this._flatten(data);
@@ -185,34 +236,67 @@
             }
             return out;
         };
+        /**
+         * Clear the selections in a pane
+         * @param pane the pane to have its selections cleared
+         */
         SearchPanes.prototype._clearPane = function (pane) {
+            // Deselect all rows which are selected and update the table and filter count.
             pane.table.rows({ selected: true }).deselect();
             this._updateTable(pane, this.s.columns, pane.index, false);
             this._updateFilterCount();
         };
+        /**
+         * Clear the selections of all of the panes
+         */
         SearchPanes.prototype._clearSelections = function () {
             for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
                 var pane = _a[_i];
                 this._clearPane(pane);
             }
         };
+        /**
+         * Get the bins for the custom options
+         * @param val the data in a row
+         * @param comparisonObj The data for the custom Option
+         * @param bins The counts for each of the different options in the column
+         * @param binsTotal The total counts for each of the different options in the column
+         * @return {object} comparisonObj the same object as a parameter but with updated counts
+         */
         SearchPanes.prototype._comparisonStatUpdate = function (val, comparisonObj, bins, binsTotal) {
+            // If the value of the filter is a function then it will throw an error if we try to push on to it
             if (typeof comparisonObj.filter !== 'function') {
                 comparisonObj.filter.push(val.filter);
             }
+            // Update the totals
             bins !== undefined ? comparisonObj.shown += bins : comparisonObj.shown += 0;
             binsTotal !== undefined ? comparisonObj.total += binsTotal : comparisonObj.total += 0;
             return comparisonObj;
         };
+        /**
+         * Update the array which holds the display and filter values for the table
+         * @param table The DataTable
+         * @param colOpts The options for this column of the DataTable
+         * @param classes The class for the pane
+         * @param idx the id of the column
+         * @param arrayTotals the array of filter and display values for the rows
+         */
         SearchPanes.prototype._detailsPane = function (table, colOpts, classes, idx, arrayTotals) {
             var _this = this;
             table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayTotals);
             });
         };
+        /**
+         * Find the unique filter values in an array
+         * @param prev empty array to push past data on to
+         * @param data empty array to populate with data which has not yet been found
+         * @param arrayFilter the array of all of the display and filter values for the table
+         */
         SearchPanes.prototype._findUnique = function (prev, data, arrayFilter) {
             for (var _i = 0, arrayFilter_1 = arrayFilter; _i < arrayFilter_1.length; _i++) {
                 var filterEl = arrayFilter_1[_i];
+                // If the data has not already been processed then add it to the unique array and the previously processed array.
                 if (prev.indexOf(filterEl.filter) === -1) {
                     data.push({
                         display: filterEl.display,
@@ -222,9 +306,19 @@
                 }
             }
         };
+        /**
+         * Adds the custom options to the panes
+         * @param dtPane The pane for which the custom options are to be added
+         * @param colOpts The options for the column of which this pane is assigned
+         * @param bins The counts of the different values which are currently visible in the column of the DataTable
+         * @param binsTotal The counts of the different values which are in the original column of the DataTable
+         * @returns {Array} Returns the array of rows which have been added to the pane
+         */
         SearchPanes.prototype._getComparisonRows = function (dtPane, colOpts, bins, binsTotal) {
             var vals = dtPane.table.rows().data();
-            var options = colOpts.options !== undefined ? colOpts.options :
+            // Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
+            var options = colOpts.options !== undefined ?
+                colOpts.options :
                 colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
                     colOpts.searchPanes.options :
                     undefined;
@@ -235,35 +329,44 @@
             var appRows = this.s.dt.rows({ search: 'applied' });
             var tableValsTotal = this.s.dt.rows().data().toArray();
             var allRows = this.s.dt.rows();
+            // Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
             dtPane.table.clear();
             var rows = [];
             for (var _i = 0, options_1 = options; _i < options_1.length; _i++) {
                 var comp = options_1[_i];
+                // Initialise the object which is to be placed in the row
                 var comparisonObj = {
                     display: comp.label !== '' ? comp.label : this.c.emptyMessage,
                     filter: typeof comp.value === 'function' ? comp.value : [],
                     shown: 0,
                     total: 0
                 };
+                // If a custom function is in place
                 if (typeof comp.value === 'function') {
                     var count = 0;
                     var total = 0;
+                    // Count the number of times the function evaluates to true for the data currently being displayed
                     for (var tVal = 0; tVal < tableVals.length; tVal++) {
                         if (comp.value.call(this.s.dt, tableVals[tVal], appRows[0][tVal])) {
                             count++;
                         }
                     }
+                    // Count the number of times the function evaluates to true for the original data in the Table
                     for (var i = 0; i < tableValsTotal.length; i++) {
                         if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
                             total++;
                         }
                     }
+                    // Update the comparisonObj
                     comparisonObj = this._comparisonStatUpdate(comp, comparisonObj, count, total);
                 }
+                // If not a custom option must be a predefined contition
                 else {
                     for (var _a = 0, vals_1 = vals; _a < vals_1.length; _a++) {
                         var val = vals_1[_a];
                         var condition = comp.condition;
+                        // If the condition is one of the predefined conditions and the value
+                        // of the rows filter meets the condition update the comparisonObj
                         if ((condition === '==' && val.filter === comp.value) ||
                             (condition === '!=' && val.filter !== comp.value) ||
                             (condition === '<' && val.filter < comp.value) ||
@@ -275,12 +378,18 @@
                         }
                     }
                 }
+                // If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
                 if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
                     rows.push(dtPane.table.row.add(comparisonObj));
                 }
             }
             return rows;
         };
+        /**
+         * Gets the options for the row for the customPanes
+         * @param Idx The index of the column the options should be retrieved for
+         * @returns {object} The options for the row extended to include the options from the user.
+         */
         SearchPanes.prototype._getBonusOptions = function (Idx) {
             var defaults = {
                 grouping: undefined,
@@ -296,9 +405,13 @@
             };
             return $.extend(true, {}, defaults, this.c.panes[Idx] !== undefined ? this.c.panes[Idx] : {});
         };
+        /**
+         * Gets the options for the row for the customPanes
+         * @param Idx The index of the column the options should be retrieved for
+         * @returns {object} The options for the row extended to include the options from the user.
+         */
         SearchPanes.prototype._getOptions = function (colIdx) {
             var table = this.s.dt;
-            var rowLength = table.columns().eq(0).toArray().length;
             var defaults = {
                 grouping: undefined,
                 orthogonal: {
@@ -313,12 +426,21 @@
             };
             return $.extend(true, {}, defaults, table.settings()[0].aoColumns[colIdx].searchPanes);
         };
+        /**
+         * Adds to an array the number of selections which have been made in a certain pane.
+         * @param pane The pane in question
+         * @param selectArray an array to be populated with the number of selected rows
+         * @param filterCount a running total of the number of filters in place
+         * @returns {integer} filterCount
+         */
         SearchPanes.prototype._getSelected = function (pane, selectArray, filterCount) {
+            // If the pane doesn't exist there are no filters in place on it
             if (pane !== undefined) {
                 var selected = pane.table.rows({ selected: true }).data().toArray().length;
                 if (selected > 0) {
                     this.s.filteringActive = true;
                 }
+                // Push on the number of selected rows in this pane and update filterCount
                 selectArray.push(selected);
                 filterCount += selected;
             }
@@ -327,6 +449,9 @@
             }
             return filterCount;
         };
+        /**
+         * Collapses the pane so that they are out of sight or makes them re-appear
+         */
         SearchPanes.prototype._hidePanes = function () {
             var elements = document.getElementsByClassName('dt-searchPanes');
             // If the innerHTML is Hide then hide the panes and set it to show for the next time around.
@@ -340,27 +465,32 @@
                 this.dom.hide[0].innerHTML = 'Hide Panes';
             }
         };
+        /**
+         * Creates the panes, sets up the search function
+         * @param idx the index of the column for this pane
+         * @returns {object} the pane that has been created, including the table and the index of the pane
+         */
         SearchPanes.prototype._pane = function (idx) {
             var _this = this;
             var table = this.s.dt;
             var classes = this.classes;
-            var rowLength = table.columns().eq(0).toArray().length;
             var tableCols = this.s.columns;
             var container = this.dom.container;
+            var colOpts = this.s.colOpts[idx];
+            var rowLength = table.columns().eq(0).toArray().length;
             var colExists = idx < rowLength;
             var column = table.column(colExists ? idx : 0);
             this.s.colOpts.push(colExists ? this._getOptions(idx) : this._getBonusOptions(idx - rowLength));
-            var colOpts = this.s.colOpts[idx];
-            var colType = this._getColType(table, colExists ? idx : 0);
             var clear = $('<button class="clear" type="button">Clear Pane</button>');
             var dt = $('<table><thead><tr><th>' + (colExists ?
                 $(column.header()).text() :
                 this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
-            var arrayFilter = [];
-            var arrayTotals = [];
-            var binsTotal;
             var countMessage = table.i18n('searchPanes.count', '{total}');
             var filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
+            var arrayFilter = [];
+            var arrayTotals = [];
+            var bins = {};
+            var binsTotal = {};
             // Add an empty array for each column for holding the selected values
             tableCols.push([]);
             // Custom search function for table
@@ -410,7 +540,7 @@
                 }
                 return false;
             });
-            var bins = {};
+            // If it is not a custom pane in place
             if (colExists) {
                 this._populatePane(table, colOpts, classes, idx, arrayFilter);
                 bins = this._binData(this._flatten(arrayFilter));
@@ -433,6 +563,8 @@
                     || (colOpts.show !== true && Object.keys(bins).length <= 1)) {
                     return;
                 }
+                // Don't show the pane if there are too few rows for it to qualify,
+                // assuming it is not a custom pane or containing custom options
                 if (Object.keys(bins).length < this.c.minRows && (colOpts.options === undefined
                     && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
                     return;
@@ -479,6 +611,7 @@
                     select: true
                 }, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}))
             };
+            // If it is not a custom pane
             if (colExists) {
                 // On initialisation, do we need to set a filtering value from a
                 // saved state or init option?
@@ -516,15 +649,19 @@
                     }
                 }
             }
+            // If there are custom options set or it is a custom pane then get them
             if (colOpts.options !== undefined ||
                 (colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined)) {
                 this._getComparisonRows(dtPane, colOpts, bins, binsTotal);
             }
             $.fn.dataTable.select.init(dtPane.table);
+            // Display the pane
             dtPane.table.draw();
+            // Hide the count column if that is desired
             if (colOpts.hideCount || this.c.hideCount) {
                 dtPane.table.column(1).visible(false);
             }
+            // Declare timeout Variable
             var t0;
             // When an item is selected on the pane, add these to the array which holds selected items.
             // Custom search will perform.
@@ -543,6 +680,7 @@
                     _this._updateFilterCount();
                 }, 50);
             });
+            // If the clear button for this pane is clicked clear the selections
             if (this.c.clear) {
                 clear[0].addEventListener('click', function () {
                     _this._clearPane(_this.panes[idx]);
@@ -550,6 +688,15 @@
             }
             return dtPane;
         };
+        /**
+         * populates an array with all of the data for the table
+         * @param colOpts The options for this panes column
+         * @param table The DataTable
+         * @param rowIdx The current row index to be compared
+         * @param idx The column Index
+         * @param classes The searchPanes classes
+         * @param array the array to be populated for the pane
+         */
         SearchPanes.prototype._populatePaneArray = function (colOpts, table, rowIdx, idx, classes, array) {
             // Retrieve the rendered data from the cell
             var filter = typeof (colOpts.orthogonal) === 'string'
@@ -586,49 +733,34 @@
                 });
             }
         };
+        /**
+         * Fill the array with the values that are currently being displayed in the table
+         * @param table the DataTable
+         * @param colOpts the options for this pane's Column
+         * @param classes the searchPane classes
+         * @param idx the index of the pane's column
+         * @param arrayFilter the array to be populated with the currently displayed values
+         */
         SearchPanes.prototype._populatePane = function (table, colOpts, classes, idx, arrayFilter) {
             var _this = this;
             table.rows({ search: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
                 _this._populatePaneArray(colOpts, table, rowIdx, idx, classes, arrayFilter);
             });
         };
-        SearchPanes.prototype.rebuild = function () {
-            var _this = this;
-            this.dom.container.empty();
-            this.s.dt
-                .columns(this.c.columns)
-                .eq(0)
-                .each(function (idx) {
-                _this._pane(idx);
-            });
-        };
-        SearchPanes.prototype.rebuildPane = function (callerIndex) {
-            this.s.updating = true;
-            var selectArray = [];
-            var filterCount = 0;
-            var filterIdx;
-            var pane = this.panes[callerIndex];
-            // If the viewTotal option is active then it must be determined whether there is a filter in place already
-            if (this.c.viewTotal) {
-                // Check each pane to find how many filters are in place in each
-                filterCount = this._getSelected(pane, selectArray, filterCount);
-                // If there is only one in place then find the index of the corresponding pane
-                if (filterCount === 1) {
-                    filterIdx = selectArray.indexOf(1);
-                }
-            }
-            this._updateCommon(pane, callerIndex, filterIdx);
-            this.s.updating = false;
-        };
-        SearchPanes.prototype._reloadSelect = function (loadedFilter, that) {
+        /**
+         * Reloads all of the previous selects into the panes
+         * @param loadedFilter The loaded filters from a previous state
+         */
+        SearchPanes.prototype._reloadSelect = function (loadedFilter) {
+            // If the state was not saved don't selected any
             if (loadedFilter === undefined) {
                 return;
             }
             // For each pane, check that the loadedFilter list exists and is not null,
             // find the id of each search item and set it to be selected.
-            for (var i = 0; i < that.panes.length; i++) {
+            for (var i = 0; i < this.panes.length; i++) {
                 if (loadedFilter.searchPanes[i] !== null && loadedFilter.searchPanes[i] !== undefined) {
-                    var table = that.panes[i].table;
+                    var table = this.panes[i].table;
                     var rows = table.rows({ order: 'index' }).data().pluck('filter');
                     for (var _i = 0, _a = loadedFilter.searchPanes[i]; _i < _a.length; _i++) {
                         var filter = _a[_i];
@@ -640,6 +772,10 @@
                 }
             }
         };
+        /**
+         * Adds outline to the panes where a selection has been made
+         * @param paneIn the pane in question
+         */
         SearchPanes.prototype._searchExtras = function (paneIn) {
             var table = this.s.dt;
             this.s.updating = true;
@@ -660,29 +796,43 @@
             table.draw();
             this.s.updating = false;
         };
+        /**
+         * Finds the ratio of the number of different options in the table to the number of rows
+         * @param bins the number of different options in the table
+         * @param rowCount the total number of rows in the table
+         * @returns {number} returns the ratio
+         */
         SearchPanes.prototype._uniqueRatio = function (bins, rowCount) {
             return bins / rowCount;
         };
+        /**
+         * updates the options within the pane
+         * @param pane The pane in question
+         * @param callerIndex the index of the pane that triggered this action
+         * @param filterIdx the index of the postition of a sole selected option
+         * @param draw a flag to define whether this has been called due to a draw event or not
+         */
         SearchPanes.prototype._updateCommon = function (pane, callerIndex, filterIdx, draw) {
             if (draw === void 0) { draw = false; }
             // Update the panes if doing a deselect. if doing a select then
             // update all of the panes except for the one causing the change
             if (pane !== undefined && (pane.index !== callerIndex || !this.s.filteringActive)) {
-                var selected = pane.table.rows({ selected: true }).data().toArray();
+                var table = this.s.dt;
+                var classes = this.classes;
                 var colOpts = this.s.colOpts[pane.index];
+                var selected = pane.table.rows({ selected: true }).data().toArray();
+                var rowLength = table.columns().eq(0).toArray().length;
+                var scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
+                var colExists = pane.index < rowLength;
                 var arrayFilter = [];
                 var arrayTotals = [];
-                var table = this.s.dt;
-                var rowLength = table.columns().eq(0).toArray().length;
-                var colExists = pane.index < rowLength;
-                var classes = this.classes;
                 var data = [];
                 var prev = [];
-                var binsTotal = void 0;
-                var scrollTop = $(pane.table.table().node()).parent()[0].scrollTop;
+                var bins = {};
+                var binsTotal = {};
                 // Clear the pane in preparation for adding the updated search options
                 pane.table.clear();
-                var bins = {};
+                // If it is not a custom pane
                 if (colExists) {
                     this._populatePane(table, colOpts, classes, pane.index, arrayFilter);
                     bins = this._binData(this._flatten(arrayFilter));
@@ -800,6 +950,9 @@
                 pane.table.table().node().parentNode.scrollTop = scrollTop;
             }
         };
+        /**
+         * Updates the number of filters that have been applied in the title
+         */
         SearchPanes.prototype._updateFilterCount = function () {
             var filterCount = 0;
             for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
@@ -811,6 +964,12 @@
             var message = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
             this.dom.title[0].innerHTML = (message);
         };
+        /**
+         * Updates the values of all of the panes
+         * @param callerIndex the index of the pane that caused this to run
+         * @param select whether a select has been made in a pane or not
+         * @param draw whether this has been triggered by a draw event or not
+         */
         SearchPanes.prototype._updatePane = function (callerIndex, select, draw) {
             if (draw === void 0) { draw = false; }
             this.s.updating = true;
@@ -842,6 +1001,13 @@
             }
             this.s.updating = false;
         };
+        /**
+         * Updates the panes if one of the options to do so has been set to true
+         * @param dtPane the pane in question
+         * @param tableCols the array of all of the selected rows across the panes
+         * @param idx the index of the column for this pane
+         * @param select whether this has been triggered by a select event or not
+         */
         SearchPanes.prototype._updateTable = function (dtPane, tableCols, idx, select) {
             var selectedRows = dtPane.table.rows({ selected: true }).data().toArray();
             tableCols[idx] = selectedRows;
@@ -851,11 +1017,10 @@
                 this._updatePane(dtPane.index, select);
             }
         };
-        SearchPanes.prototype._getColType = function (table, idx) {
-            return table.settings()[0].aoColumns[idx] !== undefined ?
-                table.settings()[0].aoColumns[idx].sType :
-                table.settings()[0].aoColumns[0].sType;
-        };
+        /**
+         * flattens?
+         * @param arr the array to be flattened
+         */
         SearchPanes.prototype._flatten = function (arr) {
             return arr.reduce(function flatten(res, a) {
                 Array.isArray(a) ? a.reduce(flatten, res) : res.push(a);
