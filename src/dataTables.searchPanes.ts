@@ -109,11 +109,11 @@ declare var define: {
 
 		constructor(paneSettings, opts) {
 
-			if ( ! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')  ) {
+			if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 				throw new Error('SearchPane requires DataTables 1.10 or newer');
 			}
 
-			if ( ! DataTable.select ) {
+			if (! DataTable.select) {
 				throw new Error('SearchPane requires Select');
 			}
 
@@ -476,7 +476,7 @@ declare var define: {
 						return true;
 					}
 
-					let filter: string|string[] = '';
+					let filter: string | string[] = '';
 					if (colExists) {
 						// Get the current filtered data
 						filter = searchData[idx];
@@ -484,9 +484,9 @@ declare var define: {
 							filter = typeof(colOpts.orthogonal) === 'string'
 								? table.cell(dataIndex, idx).render(colOpts.orthogonal)
 								: table.cell(dataIndex, idx).render(colOpts.orthogonal.search);
-								if((filter as any) instanceof $.fn.dataTable.Api){
-									filter = (filter as any).toArray();
-								}
+							if ((filter as any) instanceof $.fn.dataTable.Api) {
+								filter = (filter as any).toArray();
+							}
 						}
 					}
 					// For each item selected in the pane, check if it is available in the cell
@@ -812,7 +812,7 @@ declare var define: {
 				let arrayFilter = [];
 				let arrayTotals = [];
 				let table = this.s.dt;
-				let rowLength = table.columns().eq(0).toArray().length;			
+				let rowLength = table.columns().eq(0).toArray().length;
 				let colExists = pane.index < rowLength;
 				let classes = this.classes;
 				let data = [];
