@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.orthogonal</name>
+	<summary>Set values of orthogonal data for rendering functions</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init columns.searchPanes.orthogonal` option to a `-type string` you select which property of the rendering function to use when searching a pane. 
+        </description>
+	</type>
+
+    <type type="object">
+        <description>
+            This is the default type of `-init columns.searchPanes.orthogonal`. If this is in place then the searchPanes will display the same values displayed in the DataTable and will search the DataTable using the same raw Data.
+        </description>
+    </type>
+
+	<default value="object">
+        The default value of the `-init columns.searchPanes.orthogonal` object is shown below
+
+        ```
+        orthogonal: {
+            display: 'display',
+            search: 'filter'
+        }
+        ```        
+
+        This means that as standard the pane will display the same data as the DataTable, and search using the original data from the DataTable.
+	<description>
+		<![CDATA[
+        `-init columns.searchPanes.orthogonal` is mainly used when the programmer is creating their own custom rendering function. By setting its value to a string it tells SearchPanes how to display and filter on the data it is provided from the DataTable.
+
+        SearchPanes uses rendering when populating the table and as standard will render the display value using the `columns.searchPanes.orthogonal.display` property and will identify the value to use while filtering by rendering on the `columns.searchPanes.orthogonal.filter` value.   
+        
+        `-init columns.searchPanes.orthogonal` is normally only defined as a string when dealing with arrays. By setting the render object to the following 
+
+        ```
+        {
+            render: {
+                _: '[, ].name',
+                sp: '[].name'
+            }
+        }
+        ```
+
+        and `-init columns.searchPanes.orthogonal` to `'sp'`, the original array will be displayed in the dataTable as a list seperated by ', ', where as in the SearchPane each individual element will be displayed. It is then possible to search by individual element rather than the entire array combination. 
+        ]]>
+	</description>
+
+	<example title="Normal Render Function Which Uses Default Value of orthogonal"><![CDATA[
+{ 
+    data: "salary", 
+    render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) 
+}
+
+]]></example>
+
+<example title="Render Function for Arrays"><![CDATA[
+{ 
+    data: "permission",
+    render: {
+        _: '[, ].name',
+        sp:'[].name'
+    },
+    searchPanes: {
+        orthogonal:'sp'
+    }
+}
+]]></example>
+
+
+</dt-option>

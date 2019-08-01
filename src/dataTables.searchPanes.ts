@@ -489,7 +489,6 @@ declare var define: {
 								}
 						}
 					}
-
 					// For each item selected in the pane, check if it is available in the cell
 					for (let colSelect of tableCols[idx]) {
 						if (Array.isArray(filter)) {
