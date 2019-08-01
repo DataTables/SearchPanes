@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.collapse</name>
+	<summary>Allow panes to be hidden on startup</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.collapse` option to true, the panes will be hidden on start up and will be accesible by pressing the button labeled 'show panes'.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init searchPanes.collapse` paramater is `false`. This means that as standard the panes will be visible when the page is loaded. 
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will display the panes on start up.
+
+        By setting the `-init searchPanes.collapse` option to true, they will be collapsed on start up and can be viewed by pressing the 'show panes' button.
+        ]]>
+	</description>
+
+	<example title="Enable Collapse Panes"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            collapse: true
+        }
+    });
+});
+
+]]></example>
+
+</dt-option>
