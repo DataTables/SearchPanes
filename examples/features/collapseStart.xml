@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example allows the panes to be collapsed on start up rather than visible
 
 ]]></info>
 
