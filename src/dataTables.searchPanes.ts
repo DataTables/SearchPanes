@@ -81,9 +81,11 @@ declare var define: {
 			title: 'dtsp-title',
 		};
 
+		// Define SearchPanes default options
 		private static defaults = {
 			cascadePanes: false,
 			clear: true,
+			collapse: false,
 			container(dt) {
 				return dt.table().container();
 			},
@@ -109,10 +111,12 @@ declare var define: {
 
 		constructor(paneSettings, opts) {
 
+			// Check that the required version of DataTables is included
 			if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 				throw new Error('SearchPane requires DataTables 1.10 or newer');
 			}
 
+			// Check that Select is included
 			if (! DataTable.select) {
 				throw new Error('SearchPane requires Select');
 			}
@@ -122,6 +126,7 @@ declare var define: {
 			this.arrayCols = [];
 			this.classes = $.extend(true, {}, SearchPanes.class);
 
+			// Add extra elements to DOM object including clear and hide buttons
 			this.dom = {
 				clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
 				container: $('<div/>').addClass(this.classes.container),
@@ -129,6 +134,7 @@ declare var define: {
 				title: $('<div/>').addClass(this.classes.title),
 			};
 
+			// Get options from user
 			this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 
 			this.s = {
@@ -147,6 +153,7 @@ declare var define: {
 				loadedFilter = table.state.loaded();
 			}
 
+			// Create Panes
 			table
 				.columns(this.c.columns)
 				.eq(0)
@@ -154,10 +161,12 @@ declare var define: {
 					this.panes.push(this._pane(idx));
 				});
 
+			// If the table is empty don't do anything else
 			if (table.data().toArray().length === 0) {
 				return;
 			}
 
+			// If there is any extra custom panes defined then create panes for them too
 			let rowLength = table.columns().eq(0).toArray().length;
 			if (this.c.panes !== undefined) {
 				let paneLength = this.c.panes.length;
@@ -186,11 +195,15 @@ declare var define: {
 
 			this._reloadSelect(loadedFilter, this);
 
+			// Attach panes, clear buttons, hide button and title bar to the document
 			this._attach();
+
 			$.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
 
+			// Update the title bar to show how many filters have been selected
 			this._updateFilterCount();
 
+			// When saving the state store all of the selected rows for preselection next time around
 			table.on('stateSaveParams.dt', (e, settings, data) => {
 				let paneColumns = [];
 				for (let i = 0; i < this.panes.length; i++) {
@@ -201,6 +214,11 @@ declare var define: {
 				data.searchPanes = paneColumns;
 			});
 
+			if (this.c.collapse) {
+				this._hidePanes();
+			}
+
+			// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 			table.on('draw.dt', (e, settings, data) => {
 				if (!this.s.updating) {
 					let filterActive = true;
@@ -208,12 +226,10 @@ declare var define: {
 						filterActive = false;
 					}
 					this._updatePane(false, filterActive, true);
-					// this.s.redraw = true;
-					// this.s.dt.draw();
-					// this.s.redraw = false;
 				}
 			});
 
+			// When the clear All button has been pressed clear all of the selections in the panes
 			if (this.c.clear) {
 				this.dom.clearAll[0].addEventListener('click', () => {
 					this._clearSelections();
@@ -222,15 +238,7 @@ declare var define: {
 
 			if (this.c.hide) {
 				this.dom.hide[0].addEventListener('click', () => {
-					let elements = document.getElementsByClassName('dt-searchPanes');
-					if (this.dom.hide[0].innerHTML === 'Hide Panes') {
-						$(elements[0]).hide();
-						this.dom.hide[0].innerHTML = 'Show Panes';
-					}
-					else {
-						$(elements[0]).show();
-						this.dom.hide[0].innerHTML = 'Hide Panes';
-					}
+					this._hidePanes();
 				});
 			}
 
@@ -440,6 +448,20 @@ declare var define: {
 				selectArray.push(0);
 			}
 			return filterCount;
+		}
+
+		public _hidePanes() {
+			let elements = document.getElementsByClassName('dt-searchPanes');
+			// If the innerHTML is Hide then hide the panes and set it to show for the next time around.
+			// Otherwise show the panes and set the innerHTML to Show
+			if (this.dom.hide[0].innerHTML === 'Hide Panes') {
+				$(elements[0]).hide();
+				this.dom.hide[0].innerHTML = 'Show Panes';
+			}
+			else {
+				$(elements[0]).show();
+				this.dom.hide[0].innerHTML = 'Hide Panes';
+			}
 		}
 
 		public _pane(idx) {
