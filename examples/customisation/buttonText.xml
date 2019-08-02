@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: true,
+        language: {
+            searchPanes: {
+                clearMessage: 'Obliterate Selections',
+                collapse:{
+                    hide: '↓',
+                    show: '↑'
+                },
+                clearPane: 'Clear Selection'
+            }
+        }
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPanes">Internationalisation</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to edit the text in the clear and hide show buttons.
+
+]]></info>
+
+</dt-example>

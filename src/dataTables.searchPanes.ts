@@ -148,6 +148,9 @@ declare var define: {
 
 			table.settings()[0]._searchPanes = this;
 
+			this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
+			this.dom.hide[0].innerHTML = table.i18n('searchPanes.collapse.hide', 'Hide Panes'); 
+
 			let loadedFilter;
 			if (table.state.loaded()) {
 				loadedFilter = table.state.loaded();
@@ -363,7 +366,9 @@ declare var define: {
 		 */
 		private _clearSelections() {
 			for (let pane of this.panes) {
-				this._clearPane(pane);
+				if(pane !== undefined){
+					this._clearPane(pane);
+				}
 			}
 		}
 
@@ -582,13 +587,13 @@ declare var define: {
 			let elements = document.getElementsByClassName('dt-searchPanes');
 			// If the innerHTML is Hide then hide the panes and set it to show for the next time around.
 			// Otherwise show the panes and set the innerHTML to Show
-			if (this.dom.hide[0].innerHTML === 'Hide Panes') {
+			if (this.dom.hide[0].innerHTML ===  this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes')) {
 				$(elements[0]).hide();
-				this.dom.hide[0].innerHTML = 'Show Panes';
+				this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.show','Show Panes');
 			}
 			else {
 				$(elements[0]).show();
-				this.dom.hide[0].innerHTML = 'Hide Panes';
+				this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.hide','Hide Panes');
 			}
 		}
 
@@ -602,12 +607,13 @@ declare var define: {
 			let classes = this.classes;
 			let tableCols = this.s.columns;
 			let container = this.dom.container;
-			let colOpts =  this.s.colOpts[idx];
 			let rowLength = table.columns().eq(0).toArray().length;
 			let colExists = idx < rowLength;
 			let column = table.column(colExists ? idx : 0);
 			this.s.colOpts.push(colExists ? this._getOptions(idx) : this._getBonusOptions(idx - rowLength));
-			let clear = $('<button class="clear" type="button">Clear Pane</button>');
+			let colOpts =  this.s.colOpts[idx];
+			let clear = $('<button class="clear" type="button">X</button>');
+			clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
 			let dt = $('<table><thead><tr><th>' + (colExists ?
 				$(column.header()).text() :
 				this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');

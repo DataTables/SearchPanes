@@ -62,6 +62,8 @@
                 updating: false
             };
             table.settings()[0]._searchPanes = this;
+            this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
+            this.dom.hide[0].innerHTML = table.i18n('searchPanes.collapse.hide', 'Hide Panes');
             var loadedFilter;
             if (table.state.loaded()) {
                 loadedFilter = table.state.loaded();
@@ -252,7 +254,9 @@
         SearchPanes.prototype._clearSelections = function () {
             for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
                 var pane = _a[_i];
-                this._clearPane(pane);
+                if (pane !== undefined) {
+                    this._clearPane(pane);
+                }
             }
         };
         /**
@@ -456,13 +460,13 @@
             var elements = document.getElementsByClassName('dt-searchPanes');
             // If the innerHTML is Hide then hide the panes and set it to show for the next time around.
             // Otherwise show the panes and set the innerHTML to Show
-            if (this.dom.hide[0].innerHTML === 'Hide Panes') {
+            if (this.dom.hide[0].innerHTML === this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes')) {
                 $(elements[0]).hide();
-                this.dom.hide[0].innerHTML = 'Show Panes';
+                this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.show', 'Show Panes');
             }
             else {
                 $(elements[0]).show();
-                this.dom.hide[0].innerHTML = 'Hide Panes';
+                this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes');
             }
         };
         /**
@@ -476,12 +480,13 @@
             var classes = this.classes;
             var tableCols = this.s.columns;
             var container = this.dom.container;
-            var colOpts = this.s.colOpts[idx];
             var rowLength = table.columns().eq(0).toArray().length;
             var colExists = idx < rowLength;
             var column = table.column(colExists ? idx : 0);
             this.s.colOpts.push(colExists ? this._getOptions(idx) : this._getBonusOptions(idx - rowLength));
-            var clear = $('<button class="clear" type="button">Clear Pane</button>');
+            var colOpts = this.s.colOpts[idx];
+            var clear = $('<button class="clear" type="button">X</button>');
+            clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
             var dt = $('<table><thead><tr><th>' + (colExists ?
                 $(column.header()).text() :
                 this.c.panes[idx - rowLength].header) + '</th><th/></tr></thead></table>');
