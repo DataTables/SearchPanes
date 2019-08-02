@@ -8,9 +8,29 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes: true,
+        searchPanes:{
+            panes: [
+                {
+                    header:'custom',
+                    searchPanes:{
+                        options:[
+                            {
+                                label:'tokyian accountants',
+                                value: function(rowData, rowIdx){
+                                    return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+                                }
+                            }
+                        ]
+                    },
+                    dtOpts:{
+                        searching: false,
+                        order: [[1, 'desc']]
+                    }
+                }
+            ]
+        },
         dom:'Bfrtip',
-        buttons:['searchPanesClear'],
+        buttons:['searchPanesClear', 'searchPanesCollapse','customPanesCollapse'],
     });
 });
 

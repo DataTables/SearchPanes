@@ -48,7 +48,9 @@
             this.dom = {
                 clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
                 container: $('<div/>').addClass(this.classes.container),
+                options: $('<div/>').addClass(this.classes.container),
                 hide: $('<button type="button">Hide Panes</button>').addClass(this.classes.hide),
+                search: $('<button type="button">Hide Panes</button>').addClass(this.classes.hide),
                 title: $('<div/>').addClass(this.classes.title)
             };
             // Get options from user
@@ -64,6 +66,7 @@
             table.settings()[0]._searchPanes = this;
             this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
             this.dom.hide[0].innerHTML = table.i18n('searchPanes.collapse.hide', 'Hide Panes');
+            this.dom.search[0].innerHTML = table.i18n('searchPanes.collapse.hide', 'Hide Panes');
             var loadedFilter;
             if (table.state.loaded()) {
                 loadedFilter = table.state.loaded();
@@ -155,7 +158,38 @@
             for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
                 var pane = _a[_i];
                 if (pane !== undefined) {
-                    this._clearPane(pane);
+                    this.clearPane(pane);
+                }
+            }
+        };
+        /**
+         * Collapses the pane so that they are out of sight or makes them re-appear
+         */
+        SearchPanes.prototype._hidePanes = function (section) {
+            if (section === void 0) { section = 'search'; }
+            var elements = document.getElementsByClassName('dt-searchPanes');
+            // If the innerHTML is Hide then hide the panes and set it to show for the next time around.
+            // Otherwise show the panes and set the innerHTML to Show
+            console.log(elements, section);
+            if (section === 'search') {
+                if (this.dom.search[0].innerHTML === this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes')) {
+                    $(elements[0]).hide();
+                    this.dom.search[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.show', 'Show Panes');
+                }
+                else {
+                    $(elements[0]).show();
+                    this.dom.search[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes');
+                }
+            }
+            else {
+                console.log(this.dom.hide[0].innerHTML, this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes'));
+                if (this.dom.hide[0].innerHTML === this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes')) {
+                    $(elements[1]).hide();
+                    this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.show', 'Show Panes');
+                }
+                else {
+                    $(elements[1]).show();
+                    this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes');
                 }
             }
         };
@@ -212,9 +246,11 @@
                     $(this.dom.clearAll).appendTo(host);
                 }
                 $(this.dom.container).appendTo(host);
+                $(this.dom.options).appendTo(host);
             }
             // If the panes are to appear before the table
             else {
+                $(this.dom.options).prependTo(host);
                 $(this.dom.container).prependTo(host);
                 $(this.dom.title).prependTo(host);
                 // If the hide button is permitted attach it
@@ -253,7 +289,7 @@
          * Clear the selections in a pane
          * @param pane the pane to have its selections cleared
          */
-        SearchPanes.prototype._clearPane = function (pane) {
+        SearchPanes.prototype.clearPane = function (pane) {
             // Deselect all rows which are selected and update the table and filter count.
             pane.table.rows({ selected: true }).deselect();
             this._updateTable(pane, this.s.columns, pane.index, false);
@@ -454,22 +490,6 @@
             return filterCount;
         };
         /**
-         * Collapses the pane so that they are out of sight or makes them re-appear
-         */
-        SearchPanes.prototype._hidePanes = function () {
-            var elements = document.getElementsByClassName('dt-searchPanes');
-            // If the innerHTML is Hide then hide the panes and set it to show for the next time around.
-            // Otherwise show the panes and set the innerHTML to Show
-            if (this.dom.hide[0].innerHTML === this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes')) {
-                $(elements[0]).hide();
-                this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.show', 'Show Panes');
-            }
-            else {
-                $(elements[0]).show();
-                this.dom.hide[0].innerHTML = this.s.dt.i18n('searchPanes.collapse.hide', 'Hide Panes');
-            }
-        };
-        /**
          * Creates the panes, sets up the search function
          * @param idx the index of the column for this pane
          * @returns {object} the pane that has been created, including the table and the index of the pane
@@ -480,6 +500,7 @@
             var classes = this.classes;
             var tableCols = this.s.columns;
             var container = this.dom.container;
+            var options = this.dom.options;
             var rowLength = table.columns().eq(0).toArray().length;
             var colExists = idx < rowLength;
             var column = table.column(colExists ? idx : 0);
@@ -579,7 +600,12 @@
             if (this.c.clear) {
                 $(container).append(clear);
             }
-            $(container).append(dt);
+            if (colExists) {
+                $(container).append(dt);
+            }
+            else {
+                $(options).append(dt);
+            }
             var dtPane = {
                 index: this.panes.length,
                 table: $(dt).DataTable($.extend(true, {
@@ -688,7 +714,7 @@
             // If the clear button for this pane is clicked clear the selections
             if (this.c.clear) {
                 clear[0].addEventListener('click', function () {
-                    _this._clearPane(_this.panes[idx]);
+                    _this.clearPane(_this.panes[idx]);
                 });
             }
             return dtPane;
@@ -1120,10 +1146,27 @@
         var ctx = this.context[0];
         ctx._searchPanes.clearSelections();
     });
+    apiRegister('searchPanes.hidePanes()', function (section) {
+        if (section === void 0) { section = 'search'; }
+        var ctx = this.context[0];
+        ctx._searchPanes._hidePanes(section);
+    });
     $.fn.dataTable.ext.buttons.searchPanesClear = {
         text: 'Clear Panes',
         action: function (e, dt, node, config) {
             dt.searchPanes.clearSelections();
+        }
+    };
+    $.fn.dataTable.ext.buttons.searchPanesCollapse = {
+        text: 'Search Panes',
+        action: function (e, dt, node, config) {
+            dt.searchPanes.hidePanes();
+        }
+    };
+    $.fn.dataTable.ext.buttons.customPanesCollapse = {
+        text: 'Custom Panes',
+        action: function (e, dt, node, config) {
+            dt.searchPanes.hidePanes('custom');
         }
     };
     return SearchPanes;
