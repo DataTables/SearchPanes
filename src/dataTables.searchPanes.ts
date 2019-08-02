@@ -236,7 +236,7 @@ declare var define: {
 			// When the clear All button has been pressed clear all of the selections in the panes
 			if (this.c.clear) {
 				this.dom.clearAll[0].addEventListener('click', () => {
-					this._clearSelections();
+					this.clearSelections();
 				});
 			}
 
@@ -248,6 +248,17 @@ declare var define: {
 			}
 
 			table.state.save();
+		}
+
+		/**
+		 * Clear the selections of all of the panes
+		 */
+		public clearSelections() {
+			for (let pane of this.panes) {
+				if(pane !== undefined){
+					this._clearPane(pane);
+				}
+			}
 		}
 
 		/**
@@ -359,17 +370,6 @@ declare var define: {
 			pane.table.rows({selected: true}).deselect();
 			this._updateTable(pane, this.s.columns, pane.index, false);
 			this._updateFilterCount();
-		}
-
-		/**
-		 * Clear the selections of all of the panes
-		 */
-		private _clearSelections() {
-			for (let pane of this.panes) {
-				if(pane !== undefined){
-					this._clearPane(pane);
-				}
-			}
 		}
 
 		/**
@@ -1245,17 +1245,31 @@ declare var define: {
 		}
 	});
 
+	let apiRegister = ($.fn.dataTable.Api as any).register;
+
+	apiRegister('searchPanes()', function() {
+		return this;
+	});
+
+	apiRegister('searchPanes.rebuildPane()', function(callerIndex) {
+		let ctx = this.context[0];
+		ctx._searchPanes.rebuildPane(callerIndex);
+
+	});
+
+	apiRegister('searchPanes.clearSelections()', function() {
+		let ctx = this.context[0];
+		ctx._searchPanes.clearSelections();
+	})
+
+	$.fn.dataTable.ext.buttons.searchPanesClear = {
+		text: 'Clear Panes',
+		action: function(e, dt, node, config){
+			dt.searchPanes.clearSelections()
+		}
+	}
+
  return SearchPanes;
 }));
 
-let apiRegister = ($.fn.dataTable.Api as any).register;
 
-apiRegister('searchPanes()', function() {
-	return this;
-});
-
-apiRegister('searchPanes.rebuildPane()', function(callerIndex) {
-	let ctx = this.context[0];
-	ctx._searchPanes.rebuildPane(callerIndex);
-
-});

@@ -137,7 +137,7 @@
             // When the clear All button has been pressed clear all of the selections in the panes
             if (this.c.clear) {
                 this.dom.clearAll[0].addEventListener('click', function () {
-                    _this._clearSelections();
+                    _this.clearSelections();
                 });
             }
             // When the hide button has been pressed collapse or show the panes depending on the current state
@@ -148,6 +148,17 @@
             }
             table.state.save();
         }
+        /**
+         * Clear the selections of all of the panes
+         */
+        SearchPanes.prototype.clearSelections = function () {
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                if (pane !== undefined) {
+                    this._clearPane(pane);
+                }
+            }
+        };
         /**
          * rebuilds all of the panes
          */
@@ -247,17 +258,6 @@
             pane.table.rows({ selected: true }).deselect();
             this._updateTable(pane, this.s.columns, pane.index, false);
             this._updateFilterCount();
-        };
-        /**
-         * Clear the selections of all of the panes
-         */
-        SearchPanes.prototype._clearSelections = function () {
-            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
-                var pane = _a[_i];
-                if (pane !== undefined) {
-                    this._clearPane(pane);
-                }
-            }
         };
         /**
          * Get the bins for the custom options
@@ -1108,13 +1108,23 @@
             }
         }
     });
+    var apiRegister = $.fn.dataTable.Api.register;
+    apiRegister('searchPanes()', function () {
+        return this;
+    });
+    apiRegister('searchPanes.rebuildPane()', function (callerIndex) {
+        var ctx = this.context[0];
+        ctx._searchPanes.rebuildPane(callerIndex);
+    });
+    apiRegister('searchPanes.clearSelections()', function () {
+        var ctx = this.context[0];
+        ctx._searchPanes.clearSelections();
+    });
+    $.fn.dataTable.ext.buttons.searchPanesClear = {
+        text: 'Clear Panes',
+        action: function (e, dt, node, config) {
+            dt.searchPanes.clearSelections();
+        }
+    };
     return SearchPanes;
 }));
-var apiRegister = $.fn.dataTable.Api.register;
-apiRegister('searchPanes()', function () {
-    return this;
-});
-apiRegister('searchPanes.rebuildPane()', function (callerIndex) {
-    var ctx = this.context[0];
-    ctx._searchPanes.rebuildPane(callerIndex);
-});
