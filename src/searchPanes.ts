@@ -1,7 +1,7 @@
 
 let DataTable = $.fn.dataTable;
 namespace DataTables {
-	interface StaticFunctions {
+	interface IStaticFunctions {
 		select: any;
 	}
 }
@@ -32,22 +32,11 @@ export default class SearchPanes {
 
 	// Define SearchPanes default options
 	private static defaults = {
-		cascadePanes: false,
 		clear: true,
 		container(dt) {
 			return dt.table().container();
 		},
 		columns: undefined,
-		countWidth: '50px',
-		dataLength: 30,
-		emptyMessage: '<i>No Data</i>',
-		hide: true,
-		insert: 'prepend',
-		maxOptions: 5,
-		minRows: 1,
-		searchBox: false,
-		threshold: 0.6,
-		viewTotal: false,
 	};
 
 	public classes;
@@ -55,9 +44,6 @@ export default class SearchPanes {
 	public c;
 	public s;
 	public panes;
-	public arrayCols;
-	public paneSettings;
-	public opts;
 
 	constructor(paneSettings, opts) {
 		// Check that the required version of DataTables is included
@@ -72,10 +58,7 @@ export default class SearchPanes {
 
 		let table = new DataTable.Api(paneSettings);
 		this.panes = [];
-		this.arrayCols = [];
 		this.classes = $.extend(true, {}, SearchPanes.class);
-		this.paneSettings = paneSettings;
-		this.opts = opts;
 
 		// Add extra elements to DOM object including clear and hide buttons
 		this.dom = {
@@ -90,11 +73,7 @@ export default class SearchPanes {
 
 		this.s = {
 			colOpts: [],
-			columns: [],
 			dt: table,
-			filteringActive: false,
-			redraw: false,
-			updating: false,
 		};
 
 		table.settings()[0]._searchPanes = this;
@@ -128,9 +107,7 @@ export default class SearchPanes {
 					for (let i = 0; i < this.panes[idx].s.dtPane.rows().data().toArray().length; i++) {
 						if (this.panes[idx].s.colOpts.preSelect.indexOf(this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
 							this.panes[idx].s.dtPane.row(i).select();
-							if (!this.s.updating) {
-								this.panes[idx]._updateTable(true);
-							}
+							this.panes[idx]._updateTable(true);
 						}
 					}
 				}
@@ -147,18 +124,16 @@ export default class SearchPanes {
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dt', (e, settings, data) => {
-			if (!this.s.updating) {
-				let filterActive = true;
-				if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
-					filterActive = false;
-				}
-				for (let pane of this.panes) {
-					if (pane.s.dtPane !== undefined) {
-						pane._updatePane(false, filterActive, true);
-					}
-				}
-				this._updateFilterCount();
+			let filterActive = true;
+			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
+				filterActive = false;
 			}
+			for (let pane of this.panes) {
+				if (pane.s.dtPane !== undefined) {
+					pane._updatePane(false, filterActive, true);
+				}
+			}
+			this._updateFilterCount();
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
@@ -171,6 +146,9 @@ export default class SearchPanes {
 		table.settings()[0]._searchPanes = this;
 	}
 
+	/**
+	 * Call the adjust function for all of the panes
+	 */
 	public adjust() {
 		for (let pane of this.panes) {
 			if (pane.s.dtPane !== undefined) {
@@ -190,6 +168,9 @@ export default class SearchPanes {
 		}
 	}
 
+	/**
+	 * returns the container node for the searchPanes
+	 */
 	public getNode() {
 		return this.dom.container;
 	}
@@ -212,6 +193,10 @@ export default class SearchPanes {
 		this.panes[0]._updateFilterCount();
 	}
 
+	/**
+	 * repopulates the desired pane by extracting new data from the table. faster than doing a rebuild
+	 * @param callerIndex the index of the pane to be rebuilt
+	 */
 	public repopulatePane(callerIndex) {
 		this.panes[callerIndex].repopulatePane();
 	}
@@ -234,14 +219,10 @@ export default class SearchPanes {
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach() {
-		let container = this.c.container;
-		let host = typeof container === 'function' ? container(this.s.dt) : container;
 		$(this.dom.options).appendTo(this.dom.container);
 		$(this.dom.title).appendTo(this.dom.container);
 		for (let pane of this.panes) {
-			//if (pane.dom.container[0].children.length !== 0) {
-				$(pane.dom.container).appendTo(this.dom.container);
-			//}
+			$(pane.dom.container).appendTo(this.dom.container);
 		}
 		// If the hide button is permitted attach it
 		if (this.c.clear) {

@@ -19,8 +19,8 @@ $(document).ready(function() {
     dt.cell(6,3).data('');
     dt.cell(2,4).data('');
     console.log("rebuild")
-    dt.searchPanes.rebuildPane(3);
-    dt.searchPanes.rebuildPane(4);
+    dt.searchPanes.repopulatePane(3);
+    dt.searchPanes.repopulatePane(4);
 });
 
 ]]>

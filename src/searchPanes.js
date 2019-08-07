@@ -13,10 +13,7 @@ var SearchPanes = /** @class */ (function () {
         }
         var table = new DataTable.Api(paneSettings);
         this.panes = [];
-        this.arrayCols = [];
         this.classes = $.extend(true, {}, SearchPanes["class"]);
-        this.paneSettings = paneSettings;
-        this.opts = opts;
         // Add extra elements to DOM object including clear and hide buttons
         this.dom = {
             clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
@@ -28,11 +25,7 @@ var SearchPanes = /** @class */ (function () {
         this.c = $.extend(true, {}, SearchPanes.defaults, opts);
         this.s = {
             colOpts: [],
-            columns: [],
-            dt: table,
-            filteringActive: false,
-            redraw: false,
-            updating: false
+            dt: table
         };
         table.settings()[0]._searchPanes = this;
         this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
@@ -61,9 +54,7 @@ var SearchPanes = /** @class */ (function () {
                 for (var i = 0; i < _this.panes[idx].s.dtPane.rows().data().toArray().length; i++) {
                     if (_this.panes[idx].s.colOpts.preSelect.indexOf(_this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
                         _this.panes[idx].s.dtPane.row(i).select();
-                        if (!_this.s.updating) {
-                            _this.panes[idx]._updateTable(true);
-                        }
+                        _this.panes[idx]._updateTable(true);
                     }
                 }
             }
@@ -76,19 +67,17 @@ var SearchPanes = /** @class */ (function () {
         this.panes[0]._updateFilterCount();
         // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
         table.on('draw.dt', function (e, settings, data) {
-            if (!_this.s.updating) {
-                var filterActive = true;
-                if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
-                    filterActive = false;
-                }
-                for (var _i = 0, _a = _this.panes; _i < _a.length; _i++) {
-                    var pane = _a[_i];
-                    if (pane.s.dtPane !== undefined) {
-                        pane._updatePane(false, filterActive, true);
-                    }
-                }
-                _this._updateFilterCount();
+            var filterActive = true;
+            if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
+                filterActive = false;
             }
+            for (var _i = 0, _a = _this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                if (pane.s.dtPane !== undefined) {
+                    pane._updatePane(false, filterActive, true);
+                }
+            }
+            _this._updateFilterCount();
         });
         // When the clear All button has been pressed clear all of the selections in the panes
         if (this.c.clear) {
@@ -98,6 +87,9 @@ var SearchPanes = /** @class */ (function () {
         }
         table.settings()[0]._searchPanes = this;
     }
+    /**
+     * Call the adjust function for all of the panes
+     */
     SearchPanes.prototype.adjust = function () {
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
@@ -117,6 +109,9 @@ var SearchPanes = /** @class */ (function () {
             }
         }
     };
+    /**
+     * returns the container node for the searchPanes
+     */
     SearchPanes.prototype.getNode = function () {
         return this.dom.container;
     };
@@ -136,6 +131,10 @@ var SearchPanes = /** @class */ (function () {
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
     };
+    /**
+     * repopulates the desired pane by extracting new data from the table. faster than doing a rebuild
+     * @param callerIndex the index of the pane to be rebuilt
+     */
     SearchPanes.prototype.repopulatePane = function (callerIndex) {
         this.panes[callerIndex].repopulatePane();
     };
@@ -157,15 +156,11 @@ var SearchPanes = /** @class */ (function () {
      * Attach the panes, buttons and title to the document
      */
     SearchPanes.prototype._attach = function () {
-        var container = this.c.container;
-        var host = typeof container === 'function' ? container(this.s.dt) : container;
         $(this.dom.options).appendTo(this.dom.container);
         $(this.dom.title).appendTo(this.dom.container);
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
-            //if (pane.dom.container[0].children.length !== 0) {
             $(pane.dom.container).appendTo(this.dom.container);
-            //}
         }
         // If the hide button is permitted attach it
         if (this.c.clear) {
@@ -194,22 +189,11 @@ var SearchPanes = /** @class */ (function () {
     };
     // Define SearchPanes default options
     SearchPanes.defaults = {
-        cascadePanes: false,
         clear: true,
         container: function (dt) {
             return dt.table().container();
         },
-        columns: undefined,
-        countWidth: '50px',
-        dataLength: 30,
-        emptyMessage: '<i>No Data</i>',
-        hide: true,
-        insert: 'prepend',
-        maxOptions: 5,
-        minRows: 1,
-        searchBox: false,
-        threshold: 0.6,
-        viewTotal: false
+        columns: undefined
     };
     return SearchPanes;
 }());
