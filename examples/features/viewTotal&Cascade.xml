@@ -11,7 +11,8 @@ $(document).ready(function() {
         searchPanes:{
             cascadePanes: true,
             viewTotal: true,
-        }
+        },
+        dom: 'Sfrtip',
     });
 });
 

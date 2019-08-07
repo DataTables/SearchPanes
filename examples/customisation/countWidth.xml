@@ -10,7 +10,8 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             countWidth: '100px',
-        }
+        },
+        dom: 'Sfrtip',
     });
 });
 

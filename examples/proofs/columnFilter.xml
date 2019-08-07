@@ -15,7 +15,8 @@ $(document).ready(function() {
     var table = $('#example').DataTable( {
         searchPanes:{
             viewTotal: true,
-        }
+        },
+        dom: 'Sfrtip',
     });
 
      table.columns().every( function () {

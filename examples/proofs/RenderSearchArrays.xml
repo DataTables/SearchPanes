@@ -6,11 +6,12 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    let dt = $('#example').DataTable( {
         ajax: '../resources/arrayData.json',
         searchPanes:{
             threshold:1
         },
+		dom: 'Sfrtip',
         columns: [
 			{ 
 				data: "users.first_name"
@@ -33,7 +34,10 @@ $(document).ready(function() {
 			},
 		]
     });
+	console.log("loaded")
+	dt.searchPanes.rebuild();
 });
+
 
 ]]>
 </js>

@@ -8,7 +8,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../resources/objects.json',
-        searchPanes:true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 searchPanes:{

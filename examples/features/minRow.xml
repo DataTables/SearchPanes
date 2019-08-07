@@ -10,7 +10,8 @@ $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPanes: {
             minRows:10
-        }
+        },
+        dom: 'Sfrtip',
     });
     $('#Reduce').click(function(){
         dt.rows(":gt(7)").remove().searchPaness.rebuild().draw();

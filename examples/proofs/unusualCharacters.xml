@@ -16,7 +16,7 @@ $(document).ready(function() {
     $('#example td').eq(57).html('€');
     $('#example td').eq(66).html('€');
     $('#example').DataTable( {
-        searchPanes:true,
+        dom: 'Sfrtip',
         paging: false
     });
 });

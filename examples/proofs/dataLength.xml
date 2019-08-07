@@ -12,6 +12,7 @@ $(document).ready(function() {
         searchPanes:{
             dataLength: 15,
         },    
+        dom: 'Sfrtip',
     });
 });
 

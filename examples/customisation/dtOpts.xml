@@ -10,9 +10,10 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             dtOpts:{
-                searching:false,
+                searching:true,
             },
         },
+        dom: 'Sfrtip',
         columnDefs: [
             
             {
@@ -36,7 +37,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the deactivation of the search box by setting the searchPanes dtOpts property for `-init searching` to have a value of false and allowing the `- init info` of the third columns pane to be true. The default for `-init searching` is true and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
+This example shows the deactivation of the search box by setting the searchPanes dtOpts property for `-init searching` to have a value of true and allowing the `- init info` of the third columns pane to be true. The default for `-init searching` is false and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
 
 ]]></info>
 

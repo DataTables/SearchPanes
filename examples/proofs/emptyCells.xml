@@ -11,6 +11,7 @@ $(document).ready(function() {
         searchPanes:{
             emptyMessage:"<i><b>EMPTY</b></i>",
         },
+        dom: 'Sfrtip',
     });
 
     dt.cell(2,3).data('');

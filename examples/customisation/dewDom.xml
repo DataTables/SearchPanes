@@ -7,18 +7,9 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        language: {
-            searchPanes: {
-                clearMessage: 'Obliterate Selections',
-                collapse: 'Filter',
-                clearPane: 'Clear Selection'
-            }
-        },
-        buttons:[
-            'searchPanes'
-        ],
-        dom: 'Bfrtip',
+    let table = $('#example').DataTable( {
+        dom:'Bfrtip',
+        buttons:['searchPanes'],
     });
 });
 
@@ -33,6 +24,16 @@ This is the searchPanes extension for DataTables. It allows results to be filter
 
 This example shows how to edit the text in the clear and hide show buttons.
 
+new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            {
+                text: 'SearchPane' + idx,
+                action(e, dt, node, conf) {
+                    this.hidePane(idx);
+                }
+            }
+        ]
+    });
 ]]></info>
 
 </dt-example>
