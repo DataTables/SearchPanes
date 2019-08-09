@@ -38,6 +38,7 @@ export default class SearchPanes {
 			return dt.table().container();
 		},
 		columns: undefined,
+		filterChanged(){},
 	};
 
 	public classes;
@@ -215,6 +216,7 @@ export default class SearchPanes {
 		}
 		let message = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
 		this.dom.title[0].innerHTML = (message);
+		this.c.filterChanged(filterCount);
 	}
 
 	/**

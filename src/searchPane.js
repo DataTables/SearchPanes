@@ -24,7 +24,8 @@ var SearchPane = /** @class */ (function () {
         this.classes = $.extend(true, {}, SearchPane["class"]);
         // Add extra elements to DOM object including clear and hide buttons
         this.dom = {
-            container: $('<div/>').addClass(this.classes.container)
+            container: $('<div/>').addClass(this.classes.container),
+            topRow: $('<div/>').addClass(this.classes.topRow)
         };
         // Get options from user
         this.c = $.extend(true, {}, SearchPane.defaults, opts);
@@ -170,11 +171,12 @@ var SearchPane = /** @class */ (function () {
         var table = this.s.dt;
         var column = table.column(this.colExists ? this.s.index : 0);
         var colOpts = this.s.colOpts;
-        var searchBox = $('<div class="after"><input class="clear search" type="search" placeholder="' + $(table.column(this.colExists ? this.s.index : 0).header()).text() + '"></input></div>');
-        var clear = $('<button class="clear" type="button">&#215;</button>');
-        var nameButton = $('<button class="clear" type="button">&#128475; ↕</button>');
-        var countButton = $('<button class="clear" type="button"># ↕</button>');
-        var magnify = $('<label class"clear">&#x1F50D</label>');
+        var searchBox = $('<input class="clear search" type="search" placeholder="' +
+            $(table.column(this.colExists ? this.s.index : 0).header()).text() + '"></input>');
+        var clear = $('<button class="clear exit" type="button">&#215;</button>');
+        var nameButton = $('<button class="clear" type="button">&#128475;↕</button>');
+        var countButton = $('<button class="clear" type="button">#↕</button>');
+        var searchButton = $('<button class="clear" type = "button"><span class ="searchIcon">⚲</span></button>');
         var rowLength = table.columns().eq(0).toArray().length;
         var dtP = $('<table><thead><tr><th>' + (this.colExists ?
             $(column.header()).text() :
@@ -221,20 +223,26 @@ var SearchPane = /** @class */ (function () {
         }
         // If the varaince is accceptable then display the search pane
         if (this.c.clear) {
+            // REQUIRES FIX!! ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	
+            $(this.dom.topRow).empty();
+            $(this.dom.topRow).addClass(this.classes.topRow);
             if (this.colExists) {
-                $(searchBox).appendTo(this.dom.container);
-                //$(magnify).appendTo(this.dom.container)
-                $(clear).appendTo(this.dom.container);
-                $(nameButton).appendTo(this.dom.container);
-                $(countButton).appendTo(this.dom.container);
+                console.log("exists");
+                $(searchBox).appendTo(this.dom.topRow);
+                $(searchButton).appendTo(this.dom.topRow);
+                $(clear).appendTo(this.dom.topRow);
+                $(nameButton).appendTo(this.dom.topRow);
+                $(countButton).appendTo(this.dom.topRow);
             }
             else {
-                $(searchBox).appendTo(this.dom.container);
-                //$(magnify).appendTo(this.dom.container);
-                $(clear).appendTo(this.dom.container);
-                $(nameButton).appendTo(this.dom.container);
-                $(countButton).appendTo(this.dom.container);
+                console.log("doesnt");
+                $(searchBox).appendTo(this.dom.topRow);
+                $(searchButton).appendTo(this.dom.topRow);
+                $(clear).appendTo(this.dom.topRow);
+                $(nameButton).appendTo(this.dom.topRow);
+                $(countButton).appendTo(this.dom.topRow);
             }
+            $(this.dom.topRow).appendTo(this.dom.container);
         }
         $(container).append(dtP);
         var errMode = $.fn.dataTable.ext.errMode;
@@ -911,7 +919,8 @@ var SearchPane = /** @class */ (function () {
             scroller: 'scroller',
             title: 'title'
         },
-        title: 'dtsp-title'
+        title: 'dtsp-title',
+        topRow: 'topRow'
     };
     // Define SearchPanes default options
     SearchPane.defaults = {

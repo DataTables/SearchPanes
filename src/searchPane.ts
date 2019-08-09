@@ -21,6 +21,7 @@ export default class SearchPane {
 			title: 'title',
 		},
 		title: 'dtsp-title',
+		topRow: 'topRow',
 	};
 
 	// Define SearchPanes default options
@@ -71,6 +72,7 @@ export default class SearchPane {
 		// Add extra elements to DOM object including clear and hide buttons
 		this.dom = {
 			container: $('<div/>').addClass(this.classes.container),
+			topRow: $('<div/>').addClass(this.classes.topRow),
 		};
 
 		// Get options from user
@@ -236,11 +238,12 @@ export default class SearchPane {
 		let table = this.s.dt;
 		let column = table.column(this.colExists ? this.s.index : 0);
 		let colOpts =  this.s.colOpts;
-		let searchBox = $('<div class="after"><input class="clear search" type="search" placeholder="' +
-			$(table.column(this.colExists ? this.s.index : 0).header()).text() + '"></input></div>');
-		let clear = $('<button class="clear" type="button">&#215;</button>');
-		let nameButton = $('<button class="clear" type="button">&#128475; ↕</button>');
-		let countButton = $('<button class="clear" type="button"># ↕</button>');
+		let searchBox = $('<input class="clear search" type="search" placeholder="' +
+			$(table.column(this.colExists ? this.s.index : 0).header()).text() + '"></input>');
+		let clear = $('<button class="clear exit" type="button">&#215;</button>');
+		let nameButton = $('<button class="clear" type="button">&#128475;↕</button>');
+		let countButton = $('<button class="clear" type="button">#↕</button>');
+		let searchButton = $('<button class="clear" type = "button"><span class ="searchIcon">⚲</span></button>');
 		let rowLength = table.columns().eq(0).toArray().length;
 		let dtP = $('<table><thead><tr><th>' + (this.colExists ?
 			$(column.header()).text() :
@@ -292,18 +295,26 @@ export default class SearchPane {
 
 		// If the varaince is accceptable then display the search pane
 		if (this.c.clear) {
+			// REQUIRES FIX!! ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	
+			$(this.dom.topRow).empty();
+			$(this.dom.topRow).addClass(this.classes.topRow);
 			if (this.colExists) {
-				$(searchBox).appendTo(this.dom.container);
-				$(clear).appendTo(this.dom.container);
-				$(nameButton).appendTo(this.dom.container);
-				$(countButton).appendTo(this.dom.container);
+				console.log("exists")
+				$(searchBox).appendTo(this.dom.topRow);
+				$(searchButton).appendTo(this.dom.topRow);
+				$(clear).appendTo(this.dom.topRow);
+				$(nameButton).appendTo(this.dom.topRow);
+				$(countButton).appendTo(this.dom.topRow);
 			}
 			else {
-				$(searchBox).appendTo(this.dom.container);
-				$(clear).appendTo(this.dom.container);
-				$(nameButton).appendTo(this.dom.container);
-				$(countButton).appendTo(this.dom.container);
+				console.log("doesnt")
+				$(searchBox).appendTo(this.dom.topRow);
+				$(searchButton).appendTo(this.dom.topRow);
+				$(clear).appendTo(this.dom.topRow);
+				$(nameButton).appendTo(this.dom.topRow);
+				$(countButton).appendTo(this.dom.topRow);
 			}
+			$(this.dom.topRow).appendTo(this.dom.container);
 		}
 		$(container).append(dtP);
 		let errMode = $.fn.dataTable.ext.errMode;

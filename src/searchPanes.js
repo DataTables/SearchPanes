@@ -152,12 +152,13 @@ var SearchPanes = /** @class */ (function () {
         }
         var message = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
         this.dom.title[0].innerHTML = (message);
+        this.c.filterChanged(filterCount);
     };
     /**
      * Attach the panes, buttons and title to the document
      */
     SearchPanes.prototype._attach = function () {
-        //$(this.dom.options).appendTo(this.dom.container);
+        // $(this.dom.options).appendTo(this.dom.container);
         $(this.dom.title).appendTo(this.dom.container);
         // If the hide button is permitted attach it
         if (this.c.clear) {
@@ -175,7 +176,6 @@ var SearchPanes = /** @class */ (function () {
         clear: 'clear',
         clearAll: 'clearAll',
         container: 'dt-searchPanes',
-        panes: 'panes',
         hide: 'hide',
         item: {
             count: 'count',
@@ -188,6 +188,7 @@ var SearchPanes = /** @class */ (function () {
             scroller: 'scroller',
             title: 'title'
         },
+        panes: 'panes',
         title: 'dtsp-title'
     };
     // Define SearchPanes default options
@@ -196,7 +197,8 @@ var SearchPanes = /** @class */ (function () {
         container: function (dt) {
             return dt.table().container();
         },
-        columns: undefined
+        columns: undefined,
+        filterChanged: function () { }
     };
     return SearchPanes;
 }());

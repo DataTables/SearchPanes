@@ -96,9 +96,13 @@ import SearchPanes from './searchPanes';
     $.fn.dataTable.ext.buttons.searchPanes = {
         text: 'Search Panes',
         init: function (dt, node, config) {
-            var panes = new $.fn.dataTable.SearchPanes(dt);
+            var panes = new $.fn.dataTable.SearchPanes(dt, {
+                filterChanged: function (count) {
+                    dt.button(node).text(dt.i18n('searchPanes.collapse', { 0: 'SearchPanes', _: 'SearchPanes (%d)' }, count));
+                }
+            });
             var message = dt.i18n('searchPanes.collapse', 'SearchPanes');
-            dt.button(0).text(message);
+            dt.button(node).text(message);
             config._panes = panes;
         },
         action: function (e, dt, node, config) {
