@@ -27,6 +27,7 @@ export default class SearchPanes {
 			scroller: 'scroller',
 			title: 'title',
 		},
+		panes: 'panes',
 		title: 'dtsp-title',
 	};
 
@@ -63,8 +64,9 @@ export default class SearchPanes {
 		// Add extra elements to DOM object including clear and hide buttons
 		this.dom = {
 			clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
-			container: $('<div/>').addClass(this.classes.container),
+			container: $('<div/>').addClass(this.classes.panes),
 			options: $('<div/>').addClass(this.classes.container),
+			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
 		};
 
@@ -219,14 +221,15 @@ export default class SearchPanes {
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach() {
-		$(this.dom.options).appendTo(this.dom.container);
+		// $(this.dom.options).appendTo(this.dom.container);
 		$(this.dom.title).appendTo(this.dom.container);
-		for (let pane of this.panes) {
-			$(pane.dom.container).appendTo(this.dom.container);
-		}
 		// If the hide button is permitted attach it
 		if (this.c.clear) {
 			$(this.dom.clearAll).appendTo(this.dom.container);
 		}
+		for (let pane of this.panes) {
+			$(pane.dom.container).appendTo(this.dom.panes);
+		}
+		$(this.dom.panes).appendTo(this.dom.container);
 	}
 }

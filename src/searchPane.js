@@ -44,6 +44,8 @@ var SearchPane = /** @class */ (function () {
         this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions(rowLength);
         var colOpts = this.s.colOpts;
         var clear = $('<button class="clear" type="button">X</button>');
+        var nameButton = $('<button class="clear" type="button">Name</button>');
+        var countButton = $('<button class="clear" type="button">Count</button>');
         clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
         this.s.index = idx;
         // Custom search function for table
@@ -168,7 +170,11 @@ var SearchPane = /** @class */ (function () {
         var table = this.s.dt;
         var column = table.column(this.colExists ? this.s.index : 0);
         var colOpts = this.s.colOpts;
-        var clear = $('<button class="clear" type="button">X</button>');
+        var searchBox = $('<div class="after"><input class="clear search" type="search" placeholder="' + $(table.column(this.colExists ? this.s.index : 0).header()).text() + '"></input></div>');
+        var clear = $('<button class="clear" type="button">&#215;</button>');
+        var nameButton = $('<button class="clear" type="button">&#128475; ↕</button>');
+        var countButton = $('<button class="clear" type="button"># ↕</button>');
+        var magnify = $('<label class"clear">&#x1F50D</label>');
         var rowLength = table.columns().eq(0).toArray().length;
         var dtP = $('<table><thead><tr><th>' + (this.colExists ?
             $(column.header()).text() :
@@ -202,22 +208,32 @@ var SearchPane = /** @class */ (function () {
                 || colOpts.show === false
                 || (colOpts.show !== undefined && colOpts.show !== true)
                 || (colOpts.show !== true && Object.keys(bins).length <= 1)) {
+                this.dom.container.addClass('hidden');
                 return;
             }
             // Don't show the pane if there are too few rows for it to qualify,
             // assuming it is not a custom pane or containing custom options
             if (Object.keys(bins).length < this.c.minRows && (colOpts.options === undefined
                 && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
+                this.dom.container.addClass('hidden');
                 return;
             }
         }
         // If the varaince is accceptable then display the search pane
         if (this.c.clear) {
             if (this.colExists) {
+                $(searchBox).appendTo(this.dom.container);
+                //$(magnify).appendTo(this.dom.container)
                 $(clear).appendTo(this.dom.container);
+                $(nameButton).appendTo(this.dom.container);
+                $(countButton).appendTo(this.dom.container);
             }
             else {
+                $(searchBox).appendTo(this.dom.container);
+                //$(magnify).appendTo(this.dom.container);
                 $(clear).appendTo(this.dom.container);
+                $(nameButton).appendTo(this.dom.container);
+                $(countButton).appendTo(this.dom.container);
             }
         }
         $(container).append(dtP);
@@ -244,7 +260,7 @@ var SearchPane = /** @class */ (function () {
                             ? message = filteredMessage.replace(/{total}/, row.total)
                             : message = countMessage.replace(/{total}/, row.total);
                         message = message.replace(/{shown}/, row.shown);
-                        return message;
+                        return '<div class="pill">' + message + '</div>';
                     },
                     targets: 1,
                     width: this.c.countWidth
@@ -882,7 +898,7 @@ var SearchPane = /** @class */ (function () {
         arrayCols: [],
         clear: 'clear',
         clearAll: 'clearAll',
-        container: 'dt-searchPanes',
+        container: 'dt-searchPane',
         hide: 'hide',
         item: {
             count: 'count',

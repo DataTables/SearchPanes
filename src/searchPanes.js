@@ -17,8 +17,9 @@ var SearchPanes = /** @class */ (function () {
         // Add extra elements to DOM object including clear and hide buttons
         this.dom = {
             clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
-            container: $('<div/>').addClass(this.classes.container),
+            container: $('<div/>').addClass(this.classes.panes),
             options: $('<div/>').addClass(this.classes.container),
+            panes: $('<div/>').addClass(this.classes.container),
             title: $('<div/>').addClass(this.classes.title)
         };
         // Get options from user
@@ -156,16 +157,17 @@ var SearchPanes = /** @class */ (function () {
      * Attach the panes, buttons and title to the document
      */
     SearchPanes.prototype._attach = function () {
-        $(this.dom.options).appendTo(this.dom.container);
+        //$(this.dom.options).appendTo(this.dom.container);
         $(this.dom.title).appendTo(this.dom.container);
-        for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
-            var pane = _a[_i];
-            $(pane.dom.container).appendTo(this.dom.container);
-        }
         // If the hide button is permitted attach it
         if (this.c.clear) {
             $(this.dom.clearAll).appendTo(this.dom.container);
         }
+        for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+            var pane = _a[_i];
+            $(pane.dom.container).appendTo(this.dom.panes);
+        }
+        $(this.dom.panes).appendTo(this.dom.container);
     };
     SearchPanes.version = '0.0.2';
     SearchPanes["class"] = {
@@ -173,6 +175,7 @@ var SearchPanes = /** @class */ (function () {
         clear: 'clear',
         clearAll: 'clearAll',
         container: 'dt-searchPanes',
+        panes: 'panes',
         hide: 'hide',
         item: {
             count: 'count',
