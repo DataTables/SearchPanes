@@ -160,6 +160,8 @@ export default class SearchPane {
 			});
 		}
 
+		
+
 		return this;
 	}
 
@@ -317,6 +319,7 @@ export default class SearchPane {
 			$(this.dom.topRow).appendTo(this.dom.container);
 		}
 		$(container).append(dtP);
+
 		let errMode = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
 		this.s.dtPane = $(dtP).DataTable($.extend(true, {
@@ -428,6 +431,19 @@ export default class SearchPane {
 			}
 		});
 
+		nameButton[0].addEventListener('click', () => {
+			let currentOrder = this.s.dtPane.order()[0][1];
+			this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+		});
+
+		countButton[0].addEventListener('click', () => {
+			let currentOrder = this.s.dtPane.order()[0][1];
+			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+		});
+
+		clear[0].addEventListener('click', () => {
+			this.clearPane();
+		})
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dt', (e, settings, data) => {
 			let paneColumns = [];
@@ -442,6 +458,8 @@ export default class SearchPane {
 				selected: paneColumns,
 			});
 		});
+
+		
 
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.

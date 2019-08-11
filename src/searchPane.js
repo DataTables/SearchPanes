@@ -344,6 +344,19 @@ var SearchPane = /** @class */ (function () {
                 _this._makeSelection(true);
             }
         });
+        nameButton[0].addEventListener('click', function () {
+            console.log(_this.s.dtPane.order());
+            var currentOrder = _this.s.dtPane.order()[0][1];
+            _this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+            console.log(currentOrder);
+        });
+        countButton[0].addEventListener('click', function () {
+            var currentOrder = _this.s.dtPane.order()[0][1];
+            _this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+        });
+        clear[0].addEventListener('click', function () {
+            _this.clearPane();
+        });
         // When saving the state store all of the selected rows for preselection next time around
         this.s.dt.on('stateSaveParams.dt', function (e, settings, data) {
             var paneColumns = [];
