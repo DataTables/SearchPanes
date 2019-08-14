@@ -45,6 +45,8 @@ export default class SearchPane {
 	public s;
 	public colExists;
 	public selections;
+	public customPaneSettings;
+	public displayColumns;
 
 	/**
 	 * Creates the panes, sets up the search function
@@ -53,7 +55,7 @@ export default class SearchPane {
 	 * @param idx the index of the column for this pane
 	 * @returns {object} the pane that has been created, including the table and the index of the pane
 	 */
-	constructor(paneSettings, opts, idx) {
+	constructor(paneSettings, opts, idx, displayColumns, panes = {}) {
 		// Check that the required version of DataTables is included
 		if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 			throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -64,14 +66,19 @@ export default class SearchPane {
 			throw new Error('SearchPane requires Select');
 		}
 		let table = new DataTable.Api(paneSettings);
-		table.one('init', () => {
-			this.rebuildPane();
-		});
+		// table.one('init', () => {
+		// 	this.rebuildPane();
+		// });
 		this.classes = $.extend(true, {}, SearchPane.class);
 
+		if (Object.keys(panes).length > 0) {
+			this.customPaneSettings = panes;
+		}
 		// Add extra elements to DOM object including clear and hide buttons
+		this.displayColumns = displayColumns;
 		this.dom = {
-			container: $('<div/>').addClass(this.classes.container),
+			container: $('<div/>').addClass(this.classes.container).addClass('displayColumns-' +
+			(displayColumns < 7 ? displayColumns : 6)),
 			topRow: $('<div/>').addClass(this.classes.topRow),
 		};
 
@@ -160,8 +167,6 @@ export default class SearchPane {
 			});
 		}
 
-		
-
 		return this;
 	}
 
@@ -240,8 +245,11 @@ export default class SearchPane {
 		let table = this.s.dt;
 		let column = table.column(this.colExists ? this.s.index : 0);
 		let colOpts =  this.s.colOpts;
-		let searchBox = $('<input class="clear search" type="search" placeholder="' +
-			$(table.column(this.colExists ? this.s.index : 0).header()).text() + '"></input>');
+		let searchBox = $('<input class="clear search" type="search"></input>')
+			.attr(
+				'placeholder',
+				this.colExists ? $(table.column(this.s.index).header()).text() : this.customPaneSettings.header
+			);
 		let clear = $('<button class="clear exit" type="button">&#215;</button>');
 		let nameButton = $('<button class="clear" type="button">&#128475;↕</button>');
 		let countButton = $('<button class="clear" type="button">#↕</button>');
@@ -249,7 +257,7 @@ export default class SearchPane {
 		let rowLength = table.columns().eq(0).toArray().length;
 		let dtP = $('<table><thead><tr><th>' + (this.colExists ?
 			$(column.header()).text() :
-			this.c.panes[this.s.index - rowLength].header) + '</th><th/></tr></thead></table>');
+			this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
 		let countMessage = table.i18n('searchPanes.count', '{total}');
 		let filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
 		let arrayFilter = [];
@@ -296,28 +304,38 @@ export default class SearchPane {
 		}
 
 		// If the varaince is accceptable then display the search pane
-		if (this.c.clear) {
-			// REQUIRES FIX!! ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	
-			$(this.dom.topRow).empty();
-			$(this.dom.topRow).addClass(this.classes.topRow);
-			if (this.colExists) {
-				console.log("exists")
-				$(searchBox).appendTo(this.dom.topRow);
-				$(searchButton).appendTo(this.dom.topRow);
-				$(clear).appendTo(this.dom.topRow);
-				$(nameButton).appendTo(this.dom.topRow);
-				$(countButton).appendTo(this.dom.topRow);
+		// REQUIRES FIX!! ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	
+		$(this.dom.topRow).empty();
+		$(this.dom.topRow).addClass(this.classes.topRow);
+
+		if (this.displayColumns > 3) {
+			$(this.dom.container).addClass('smallGap');
+			$(this.dom.topRow).addClass('subRowsContainer');
+			let upper = $('<div/>').addClass('subRows');
+			let lower = $('<div/>').addClass('subRows');
+			$(upper).appendTo(this.dom.topRow);
+			$(lower).appendTo(this.dom.topRow);
+			$(searchBox).appendTo(upper);
+			$(searchButton).appendTo(upper);
+			if (this.c.clear) {
+				$(clear).appendTo(lower);
 			}
-			else {
-				console.log("doesnt")
-				$(searchBox).appendTo(this.dom.topRow);
-				$(searchButton).appendTo(this.dom.topRow);
-				$(clear).appendTo(this.dom.topRow);
-				$(nameButton).appendTo(this.dom.topRow);
-				$(countButton).appendTo(this.dom.topRow);
-			}
-			$(this.dom.topRow).appendTo(this.dom.container);
+			$(nameButton).appendTo(lower);
+			$(countButton).appendTo(lower);
+
 		}
+		else {
+
+			$(searchBox).appendTo(this.dom.topRow);
+			$(searchButton).appendTo(this.dom.topRow);
+			if (this.c.clear) {
+				$(clear).appendTo(this.dom.topRow);
+			}
+			$(nameButton).appendTo(this.dom.topRow);
+			$(countButton).appendTo(this.dom.topRow);
+		}
+
+		$(this.dom.topRow).appendTo(this.dom.container);
 		$(container).append(dtP);
 
 		let errMode = $.fn.dataTable.ext.errMode;
@@ -355,7 +373,8 @@ export default class SearchPane {
 			searching: false,
 			select: true
 		}, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}));
-
+		// As the pane table is not in the document yet we must initialise select ourselves
+		($.fn.dataTable as any).select.init(this.s.dtPane);
 		$.fn.dataTable.ext.errMode = errMode;
 		// If it is not a custom pane
 		if (this.colExists) {
@@ -386,6 +405,9 @@ export default class SearchPane {
 							shown: bins[dataFilter[i].filter],
 							total: bins[dataFilter[i].filter],
 						});
+						if (this.s.colOpts.preSelect !== undefined && this.s.colOpts.preSelect.indexOf(dataFilter[i].filter) !== -1) {
+							row.select();
+						}
 					}
 				}
 				else {
@@ -393,11 +415,10 @@ export default class SearchPane {
 				}
 			}
 		}
-
 		// If there are custom options set or it is a custom pane then get them
 		if (colOpts.options !== undefined ||
-			(colOpts.searchPanes !== undefined  && colOpts.searchPanes.options !== undefined)) {
-			this._getComparisonRows(bins, binsTotal);
+			(this.customPaneSettings !== undefined && this.customPaneSettings.searchPanes.options !== undefined)) {
+				this._getComparisonRows(bins, binsTotal);
 		}
 
 		(DataTable as any).select.init(this.s.dtPane);
@@ -414,14 +435,14 @@ export default class SearchPane {
 		if (table.state.loaded()) {
 			loadedFilter = table.state.loaded();
 		}
-
 		this._reloadSelect(loadedFilter);
 
-			// Declare timeout Variable
+		// Declare timeout Variable
 		let t0;
 		this.s.dtPane.on('user-select.dt', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
 		});
+
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
 		this.s.dtPane.on('select.dt', () => {
@@ -443,7 +464,8 @@ export default class SearchPane {
 
 		clear[0].addEventListener('click', () => {
 			this.clearPane();
-		})
+		});
+
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dt', (e, settings, data) => {
 			let paneColumns = [];
@@ -458,8 +480,6 @@ export default class SearchPane {
 				selected: paneColumns,
 			});
 		});
-
-		
 
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
@@ -567,7 +587,7 @@ export default class SearchPane {
 			true,
 			{},
 			defaults,
-			this.c.panes[idx] !== undefined ? this.c.panes[idx] : {}
+			this.c !== undefined ? this.c : {}
 		);
 	}
 
@@ -583,8 +603,8 @@ export default class SearchPane {
 		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
 		let options = colOpts.options !== undefined ?
 			colOpts.options :
-			colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ?
-				colOpts.searchPanes.options :
+			this.customPaneSettings.searchPanes !== undefined && this.customPaneSettings.searchPanes.options !== undefined ?
+				this.customPaneSettings.searchPanes.options :
 				undefined;
 		if (options === undefined) {
 			return;
@@ -744,12 +764,12 @@ export default class SearchPane {
 
 		// Retrieve the rendered data from the cell
 		let filter = typeof(colOpts.orthogonal) === 'string'
-			? table.cell(rowIdx, idx).render(colOpts.orthogonal)
-			: table.cell(rowIdx, idx).render(colOpts.orthogonal.search);
+		? table.cell(rowIdx, idx).render(colOpts.orthogonal)
+		: table.cell(rowIdx, idx).render(colOpts.orthogonal.search);
 
 		let display = typeof(colOpts.orthogonal) === 'string'
-			? table.cell(rowIdx, idx).render(colOpts.orthogonal)
-			: table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
+		? table.cell(rowIdx, idx).render(colOpts.orthogonal)
+		: table.cell(rowIdx, idx).render(colOpts.orthogonal.display);
 
 		// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 		if (Array.isArray(filter) || filter instanceof DataTable.Api) {
@@ -814,6 +834,7 @@ export default class SearchPane {
 					table.row(id).select();
 				}
 			}
+
 		}
 	}
 
@@ -882,6 +903,7 @@ export default class SearchPane {
 				this._findUnique(data, arrayFilter);
 				// If the viewTotal option is selected then find the totals for the table
 				if (this.c.viewTotal) {
+					data = [];
 					arrayTotals = this._detailsPane();
 
 					binsTotal = this._binData(this._flatten(arrayTotals));
@@ -928,7 +950,9 @@ export default class SearchPane {
 				}
 			}
 			if ((colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined) ||
-				colOpts.options !== undefined) {
+				colOpts.options !== undefined ||
+				(this.customPaneSettings !== undefined && this.customPaneSettings.searchPanes.options !== undefined)) {
+
 				let rows = this._getComparisonRows(bins, binsTotal);
 				for (let row of rows) {
 					let selectIndex = selected.findIndex(function(element) {
@@ -999,7 +1023,7 @@ export default class SearchPane {
 		this._searchExtras();
 		// If either of the options that effect how the panes are displayed are selected then update the Panes
 		if (this.c.cascadePanes || this.c.viewTotal) {
-			this._updatePane(this.s.index, select);
+			this._updatePane(select, true);
 		}
 	}
 
@@ -1017,17 +1041,16 @@ export default class SearchPane {
 	 * @param select whether a select has been made in a pane or not
 	 * @param draw whether this has been triggered by a draw event or not
 	 */
-	private _updatePane(select, draw = false) {
+	private _updatePane(select, filteringActive, draw = false) {
 		this.s.updating = true;
 		this.s.filteringActive = false;
 		let selectArray = [];
 		let filterCount = 0;
 		let filterIdx;
-
 		// If the viewTotal option is active then it must be determined whether there is a filter in place already
 		if (this.c.viewTotal) {
 			// There is if select is true
-			if (select) {
+			if (select || filteringActive) {
 				this.s.filteringActive = true;
 			}
 			// If there is only one in place then find the index of the corresponding pane

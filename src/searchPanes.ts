@@ -39,6 +39,7 @@ export default class SearchPanes {
 		},
 		columns: undefined,
 		filterChanged(){},
+		displayColumns: 3,
 	};
 
 	public classes;
@@ -62,6 +63,9 @@ export default class SearchPanes {
 		this.panes = [];
 		this.classes = $.extend(true, {}, SearchPanes.class);
 
+		// Get options from user
+		this.c = $.extend(true, {}, SearchPanes.defaults, opts);
+
 		// Add extra elements to DOM object including clear and hide buttons
 		this.dom = {
 			clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
@@ -70,9 +74,6 @@ export default class SearchPanes {
 			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
 		};
-
-		// Get options from user
-		this.c = $.extend(true, {}, SearchPanes.defaults, opts);
 
 		this.s = {
 			colOpts: [],
@@ -88,7 +89,7 @@ export default class SearchPanes {
 			.columns(this.c.columns)
 			.eq(0)
 			.each((idx) => {
-				this.panes.push(new SearchPane(paneSettings, opts, idx));
+				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.displayColumns));
 			});
 
 		// If there is any extra custom panes defined then create panes for them too
@@ -97,7 +98,7 @@ export default class SearchPanes {
 			let paneLength = this.c.panes.length;
 			for (let i = 0; i < paneLength; i++) {
 				let id = rowLength + i;
-				this.panes.push(new SearchPane(paneSettings, opts, id));
+				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.displayColumns, this.c.panes[i]));
 			}
 		}
 
@@ -127,16 +128,19 @@ export default class SearchPanes {
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dt', (e, settings, data) => {
-			let filterActive = true;
-			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
-				filterActive = false;
-			}
-			for (let pane of this.panes) {
-				if (pane.s.dtPane !== undefined) {
-					pane._updatePane(false, filterActive, true);
+			if (!this.s.updating) {
+				let filterActive = true;
+				if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
+					filterActive = false;
 				}
+				for (let pane of this.panes) {
+					if (pane.s.dtPane !== undefined) {
+						pane._updatePane(false, filterActive, true);
+					}
+				}
+				this._updateFilterCount();
 			}
-			this._updateFilterCount();
+
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes

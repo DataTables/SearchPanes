@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            displayColumns: 6
+        },
+        dom: 'Sfrtip',
+        columnDefs:[
+            {
+                searchPanes:{
+                    show: true,
+                },
+                targets: [0, 1, 2, 3, 4, 5],
+            },
+        ],
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Change the number of columns the panes are displayed in.</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example Demonstrates the `-init searchPanes.displayColumns` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is 3.
+
+]]></info>
+
+</dt-example>

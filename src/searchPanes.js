@@ -14,6 +14,8 @@ var SearchPanes = /** @class */ (function () {
         var table = new DataTable.Api(paneSettings);
         this.panes = [];
         this.classes = $.extend(true, {}, SearchPanes["class"]);
+        // Get options from user
+        this.c = $.extend(true, {}, SearchPanes.defaults, opts);
         // Add extra elements to DOM object including clear and hide buttons
         this.dom = {
             clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
@@ -22,8 +24,6 @@ var SearchPanes = /** @class */ (function () {
             panes: $('<div/>').addClass(this.classes.container),
             title: $('<div/>').addClass(this.classes.title)
         };
-        // Get options from user
-        this.c = $.extend(true, {}, SearchPanes.defaults, opts);
         this.s = {
             colOpts: [],
             dt: table
@@ -35,7 +35,7 @@ var SearchPanes = /** @class */ (function () {
             .columns(this.c.columns)
             .eq(0)
             .each(function (idx) {
-            _this.panes.push(new SearchPane(paneSettings, opts, idx));
+            _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.displayColumns));
         });
         // If there is any extra custom panes defined then create panes for them too
         var rowLength = table.columns().eq(0).toArray().length;
@@ -43,7 +43,7 @@ var SearchPanes = /** @class */ (function () {
             var paneLength = this.c.panes.length;
             for (var i = 0; i < paneLength; i++) {
                 var id = rowLength + i;
-                this.panes.push(new SearchPane(paneSettings, opts, id));
+                this.panes.push(new SearchPane(paneSettings, opts, id, this.c.displayColumns, this.c.panes[i]));
             }
         }
         // PreSelect any selections which have been defined using the preSelect option
@@ -68,17 +68,19 @@ var SearchPanes = /** @class */ (function () {
         this.panes[0]._updateFilterCount();
         // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
         table.on('draw.dt', function (e, settings, data) {
-            var filterActive = true;
-            if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
-                filterActive = false;
-            }
-            for (var _i = 0, _a = _this.panes; _i < _a.length; _i++) {
-                var pane = _a[_i];
-                if (pane.s.dtPane !== undefined) {
-                    pane._updatePane(false, filterActive, true);
+            if (!_this.s.updating) {
+                var filterActive = true;
+                if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
+                    filterActive = false;
                 }
+                for (var _i = 0, _a = _this.panes; _i < _a.length; _i++) {
+                    var pane = _a[_i];
+                    if (pane.s.dtPane !== undefined) {
+                        pane._updatePane(false, filterActive, true);
+                    }
+                }
+                _this._updateFilterCount();
             }
-            _this._updateFilterCount();
         });
         // When the clear All button has been pressed clear all of the selections in the panes
         if (this.c.clear) {
@@ -198,7 +200,8 @@ var SearchPanes = /** @class */ (function () {
             return dt.table().container();
         },
         columns: undefined,
-        filterChanged: function () { }
+        filterChanged: function () { },
+        displayColumns: 3
     };
     return SearchPanes;
 }());

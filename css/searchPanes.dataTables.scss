@@ -2,8 +2,8 @@
 div.dt-searchPanes {
 	display:flex;
 	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: space-around;
+	flex-wrap: wrap;
+	justify-content: flex-start;
 	align-content: flex-start;
 	align-items: stretch;
 	clear: both;
@@ -158,6 +158,7 @@ div.dt-button-collection{
 		margin: 0px;
 	}
 }
+
 div.dt-searchPane {
 	flex-direction: row;
 	flex-wrap: nowrap;
@@ -190,6 +191,20 @@ div.dt-searchPane {
 		align-content: flex-start;
 		align-items: flex-start;
 
+	}
+
+	div.subRowsContainer {
+		flex-direction: column;
+	}
+
+	div.subRows {
+		display:flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-around;
+		align-content: flex-start;
+		align-items: flex-start;
+		width: 100%;
 	}
 	
 	input.clear, button.clear {
@@ -307,6 +322,7 @@ div.dt-searchPane {
 			min-width: 30px;
 			color: black;
 			font-size: 0.9em;
+			padding: 0 4px;
 		}
 	}
 
@@ -403,6 +419,35 @@ div.dt-searchPane {
 			}
 		}
 	}
+}
+
+div.displayColumns-1{
+	min-width: 95%;
+	max-width: 95%;
+}
+div.displayColumns-2{
+	min-width: 45%;
+	max-width: 45%;
+}
+div.displayColumns-3{
+	min-width: 30%;
+	max-width: 30%;
+}
+div.displayColumns-4{
+	min-width: 22%;
+	max-width: 22%;
+}
+div.displayColumns-5{
+	min-width: 18%;
+	max-width: 18%;
+}
+div.displayColumns-6{
+	min-width: 15%;
+	max-width: 15%;
+}
+
+div.smallGap{
+	padding: 0px;
 }
 
 div.hidden{
