@@ -1,0 +1,97 @@
+button.btn{
+    margin: 1px;
+}
+
+div.btn-group{
+    padding: 5px;
+
+    button.btn{
+        margin: 0;
+        height: 40px;
+        border: none;
+    }
+}
+
+div.dt-searchPanes{
+    button.clearAll{
+        max-width: 50px;
+    }
+}
+
+div.dt-searchPane {
+    margin: 5px;
+    thead{
+        display: none;
+    }
+
+    .mb-3{
+        margin-bottom: none !important;
+    }
+
+    .col-sm-12{
+        padding: 5px;
+    }
+
+    .input-group {
+        height: 40px !important;
+        padding: 5px;
+
+        .input-group-append{
+            display: inline-block;
+        }
+
+        .paneInputButton{
+            border: none;
+        }
+
+        .btn {
+            border: none;
+        }
+    }
+
+    div.dataTables_scrollHead{
+        display: none;
+    }
+
+    div.dataTables_scrollBody{
+        padding: 2px;
+        border: 2px #f0f0f0 solid;
+        border-radius: 4px;
+    }
+
+    input.search {
+        border: none;
+        font-size: 16px;
+    }
+
+    .searchIcon{
+        display: block;
+        position: relative;
+        transform: rotate(45deg) !important;
+    }
+
+    div.dataTables_wrapper {
+        div.dataTables_filter {
+            display: none;
+        }
+    }
+}
+
+div.panes {
+	padding: 5px;
+	border: 2px solid #f0f0f0;
+	border-radius: 10px;
+	margin: 5px;
+	clear: both;
+
+	div.dtsp-title {
+		float: left;
+		margin: 20px;
+		margin-bottom: 0px;
+		margin-top: 10px;
+	}
+
+	button.clearAll{
+		float: right;
+	}
+}

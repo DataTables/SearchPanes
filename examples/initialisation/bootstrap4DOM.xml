@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" table-class="display nowrap" order="2" framework="bootstrap4">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    let table = $('#example').DataTable({
+        dom: "<'row'<'col-sm-12'S>>" +
+                "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    });
+    
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">bootstrap4 Example</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to initialise the bootstrap design using the `-init dom` element.
+
+]]></info>
+
+</dt-example>

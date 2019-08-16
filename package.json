@@ -23,12 +23,15 @@
   "homepage": "https://github.com/DataTables/SearchPane#readme",
   "dependencies": {
     "@types/datatables.net": "^1.10.17",
+    "@types/datatables.net-buttons": "^1.4.2",
+    "@types/datatables.net-select": "^1.2.6",
+    "rollup": "^1.18.0",
     "tslint": "^5.18.0",
     "tslint-eslint-rules": "^5.4.0"
   },
   "devDependencies": {
     "@types/jquery": "^3.3.29",
-    "typescript": "^3.5.2",
-    "@types/node": "^12.0.10"
+    "@types/node": "^12.0.10",
+    "typescript": "^3.5.3"
   }
 }

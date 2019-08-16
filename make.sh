@@ -30,12 +30,21 @@ css_frameworks searchPanes $OUT_DIR/css
 # Copy images
 #rsync -r images $OUT_DIR
 
-node_modules/typescript/bin/tsc src/dataTables.searchPanes.ts --module none
+node_modules/typescript/bin/tsc src/searchPanes.ts --module ES6
+node_modules/typescript/bin/tsc src/searchPane.ts --module ES6
+node_modules/typescript/bin/tsc src/index.ts --module ES6
+node_modules/typescript/bin/tsc src/searchPanes.bootstrap4.ts --module ES6
+
 
 # Copy JS
 rsync -r src/* $OUT_DIR/js
 js_compress $OUT_DIR/js/dataTables.searchPanes.js
 js_frameworks searchPanes $OUT_DIR/js
+
+./node_modules/rollup/bin/rollup $OUT_DIR/js/index.js \
+    --format iife \
+    --name"searchPanes Bundle" \
+    --file $OUT_DIR/js/dataTables.searchPanes.js
 
 # Copy and build examples
 rsync -r examples $OUT_DIR

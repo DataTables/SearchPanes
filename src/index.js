@@ -75,6 +75,11 @@ import SearchPanes from './searchPanes';
         var ctx = this.context[0];
         ctx._searchPanes.rebuild();
     });
+    apiRegister('searchPanes.container()', function () {
+        var ctx = this.context[0];
+        console.log(ctx);
+        return ctx._searchPanes.getNode();
+    });
     $.fn.dataTable.ext.buttons.searchPanesClear = {
         text: 'Clear Panes',
         action: function (e, dt, node, config) {

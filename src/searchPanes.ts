@@ -10,7 +10,7 @@ export default class SearchPanes {
 
 	private static version = '0.0.2';
 
-	private static class = {
+	private static classes = {
 		arrayCols: [],
 		clear: 'clear',
 		clearAll: 'clearAll',
@@ -61,7 +61,7 @@ export default class SearchPanes {
 
 		let table = new DataTable.Api(paneSettings);
 		this.panes = [];
-		this.classes = $.extend(true, {}, SearchPanes.class);
+		this.classes = $.extend(true, {}, SearchPanes.classes);
 
 		// Get options from user
 		this.c = $.extend(true, {}, SearchPanes.defaults, opts);
@@ -227,12 +227,14 @@ export default class SearchPanes {
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach() {
-		// $(this.dom.options).appendTo(this.dom.container);
-		$(this.dom.title).appendTo(this.dom.container);
+		let titleRow = $('<div/>');
+		titleRow.addClass(this.classes.titleRow);
+		$(this.dom.title).appendTo(titleRow);
 		// If the hide button is permitted attach it
 		if (this.c.clear) {
-			$(this.dom.clearAll).appendTo(this.dom.container);
+			$(this.dom.clearAll).appendTo(titleRow);
 		}
+		$(titleRow).appendTo(this.dom.container);
 		for (let pane of this.panes) {
 			$(pane.dom.container).appendTo(this.dom.panes);
 		}

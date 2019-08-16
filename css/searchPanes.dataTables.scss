@@ -13,7 +13,7 @@ div.dt-searchPanes {
 		margin: 1em 0.5%;
 	}
 	
-	button.clear {
+	button.paneButton {
 		height: 20px;
 	}
 
@@ -128,6 +128,7 @@ div.panes {
 	border: 2px solid #f0f0f0;
 	border-radius: 10px;
 	margin: 5px;
+	clear: both;
 
 	div.dtsp-title {
 		float: left;
@@ -181,6 +182,10 @@ div.dt-searchPane {
 		flex: 1;
 		margin: 1em 0.5%;
 		margin-top: 0px;
+
+		div.dataTables_filter {
+			display: none;
+		}
 	}
 
 	div.topRow {
@@ -190,6 +195,40 @@ div.dt-searchPane {
 		justify-content: space-around;
 		align-content: flex-start;
 		align-items: flex-start;
+
+		div.searchCont{
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			flex-grow:1;
+			flex-shrink:0;
+			flex-basis: 0;
+
+			input.search{
+				flex-direction: row;
+				flex-wrap: nowrap;
+				flex-grow:1;
+				flex-shrink:0;
+				flex-basis: 90px;
+				min-height: 20px;
+				max-width: none;
+				min-width: 90px;
+				background: content(&#128269) no-repeat right top;
+				border: none;
+				&:focus{
+					border-bottom: 1px solid black;
+				}
+			}
+
+			div.searchButtonCont{
+				display: inline-block;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				flex-grow:0;
+				flex-shrink:0;
+				flex-basis: 0;
+			}
+		}
 
 	}
 
@@ -207,7 +246,7 @@ div.dt-searchPane {
 		width: 100%;
 	}
 	
-	input.clear, button.clear {
+	input.paneInputButton, button.paneButton {
 		height: 35px;
 		width: 35px;
 		max-width: 35px;
@@ -228,13 +267,21 @@ div.dt-searchPane {
 		flex-basis: 35px;
 	}
 
-	input.clear {
+	button.dull {
+		cursor: context-menu !important;
+		color: rgb(124, 124, 124);
+		&:hover{
+			background-color: transparent;
+		}
+	}
+
+	input.paneButton {
 		padding: 3px;
 		cursor: text !important;
 		padding-left:10px;
 	}
 
-	button.clear{
+	button.paneButton{
 		opacity: 0.6;
 	}
 
@@ -248,22 +295,6 @@ div.dt-searchPane {
 		border-radius: 4px;
 		&:hover{
 			border: 2px solid #cfcfcf !important;
-		}
-	}
-
-	input.search{
-		flex-direction: row;
-		flex-wrap: nowrap;
-		flex-grow:1;
-		flex-shrink:0;
-		flex-basis: 90px;
-		min-height: 20px;
-		max-width: none;
-		background: content(&#128269) no-repeat right top;
-		border: none;
-	
-		&:focus{
-			border-bottom: 1px solid black;
 		}
 	}
 

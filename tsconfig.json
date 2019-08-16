@@ -6,8 +6,8 @@
         "allowUnreachableCode": true,
         "allowSyntheticDefaultImports": true,
         "pretty": true,
-        "declaration": true,
-    },
+        "declaration": true
+        },
     "exclude": [
         "./node_modules/**/*"
     ]

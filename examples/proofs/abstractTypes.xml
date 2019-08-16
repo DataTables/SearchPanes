@@ -8,6 +8,9 @@
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
+        searchPanes:{
+            threshold: 1,
+        },
         dom: 'Sfrtip',
         columnDefs: [
             { type: 'ip-address', targets:1 }

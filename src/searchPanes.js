@@ -13,7 +13,7 @@ var SearchPanes = /** @class */ (function () {
         }
         var table = new DataTable.Api(paneSettings);
         this.panes = [];
-        this.classes = $.extend(true, {}, SearchPanes["class"]);
+        this.classes = $.extend(true, {}, SearchPanes.classes);
         // Get options from user
         this.c = $.extend(true, {}, SearchPanes.defaults, opts);
         // Add extra elements to DOM object including clear and hide buttons
@@ -160,12 +160,14 @@ var SearchPanes = /** @class */ (function () {
      * Attach the panes, buttons and title to the document
      */
     SearchPanes.prototype._attach = function () {
-        // $(this.dom.options).appendTo(this.dom.container);
-        $(this.dom.title).appendTo(this.dom.container);
+        var titleRow = $('<div/>');
+        titleRow.addClass(this.classes.titleRow);
+        $(this.dom.title).appendTo(titleRow);
         // If the hide button is permitted attach it
         if (this.c.clear) {
-            $(this.dom.clearAll).appendTo(this.dom.container);
+            $(this.dom.clearAll).appendTo(titleRow);
         }
+        $(titleRow).appendTo(this.dom.container);
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
             $(pane.dom.container).appendTo(this.dom.panes);
@@ -173,7 +175,7 @@ var SearchPanes = /** @class */ (function () {
         $(this.dom.panes).appendTo(this.dom.container);
     };
     SearchPanes.version = '0.0.2';
-    SearchPanes["class"] = {
+    SearchPanes.classes = {
         arrayCols: [],
         clear: 'clear',
         clearAll: 'clearAll',

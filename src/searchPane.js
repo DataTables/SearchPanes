@@ -19,17 +19,19 @@ var SearchPane = /** @class */ (function () {
             throw new Error('SearchPane requires Select');
         }
         var table = new DataTable.Api(paneSettings);
-        // table.one('init', () => {
-        // 	this.rebuildPane();
-        // });
-        this.classes = $.extend(true, {}, SearchPane["class"]);
+        if (table.ajax.url() !== undefined && table.ajax.url() !== null) {
+            table.one('init', function () {
+                _this.rebuildPane();
+            });
+        }
+        this.classes = $.extend(true, {}, SearchPane.classes);
         if (Object.keys(panes).length > 0) {
             this.customPaneSettings = panes;
         }
         // Add extra elements to DOM object including clear and hide buttons
         this.displayColumns = displayColumns;
         this.dom = {
-            container: $('<div/>').addClass(this.classes.container).addClass('displayColumns-' +
+            container: $('<div/>').addClass(this.classes.container).addClass(this.classes.displayColumns +
                 (displayColumns < 7 ? displayColumns : 6)),
             topRow: $('<div/>').addClass(this.classes.topRow)
         };
@@ -50,9 +52,9 @@ var SearchPane = /** @class */ (function () {
         this.colExists = idx < rowLength;
         this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions(rowLength);
         var colOpts = this.s.colOpts;
-        var clear = $('<button class="clear" type="button">X</button>');
-        var nameButton = $('<button class="clear" type="button">Name</button>');
-        var countButton = $('<button class="clear" type="button">Count</button>');
+        var clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
+        var nameButton = $('<button type="button">Name</button>').addClass(this.classes.paneButton);
+        var countButton = $('<button type="button">Count</button>').addClass(this.classes.paneButton);
         clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
         this.s.index = idx;
         // Custom search function for table
@@ -124,6 +126,7 @@ var SearchPane = /** @class */ (function () {
      */
     SearchPane.prototype.rebuildPane = function () {
         this.dom.container.empty();
+        this.dom.container.removeClass('hidden');
         this.buildPane();
     };
     /**
@@ -177,16 +180,21 @@ var SearchPane = /** @class */ (function () {
         var table = this.s.dt;
         var column = table.column(this.colExists ? this.s.index : 0);
         var colOpts = this.s.colOpts;
-        var searchBox = $('<input class="clear search" type="search"></input>')
+        var searchBox = $('<input/>')
+            .addClass(this.classes.paneInputButton)
+            .addClass(this.classes.search)
             .attr('placeholder', this.colExists ? $(table.column(this.s.index).header()).text() : this.customPaneSettings.header);
-        var clear = $('<button class="clear exit" type="button">&#215;</button>');
-        var nameButton = $('<button class="clear" type="button">&#128475;↕</button>');
-        var countButton = $('<button class="clear" type="button">#↕</button>');
-        var searchButton = $('<button class="clear" type = "button"><span class ="searchIcon">⚲</span></button>');
+        var clear = $('<button type="button">&#215;</button>').addClass(this.classes.dull).addClass(this.classes.paneButton).addClass(this.classes.exit);
+        var nameButton = $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton);
+        var countButton = $('<button type="button">#↕</button>').addClass(this.classes.paneButton);
+        var searchButton = $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>').addClass(this.classes.paneButton).addClass(this.classes.searchLabel);
+        var buttonGroup = $('<div/>').addClass(this.classes.buttonGroup);
         var rowLength = table.columns().eq(0).toArray().length;
         var dtP = $('<table><thead><tr><th>' + (this.colExists ?
             $(column.header()).text() :
             this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
+        var searchLabelCont = $('<div/>').addClass(this.classes.searchLabelCont);
+        var searchCont = $('<div/>').addClass(this.classes.searchCont);
         var countMessage = table.i18n('searchPanes.count', '{total}');
         var filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
         var arrayFilter = [];
@@ -216,15 +224,18 @@ var SearchPane = /** @class */ (function () {
                 || colOpts.show === false
                 || (colOpts.show !== undefined && colOpts.show !== true)
                 || (colOpts.show !== true && Object.keys(bins).length <= 1)) {
-                this.dom.container.addClass('hidden');
+                this.dom.container.addClass(this.classes.hidden);
                 return;
             }
             // Don't show the pane if there are too few rows for it to qualify,
             // assuming it is not a custom pane or containing custom options
             if (Object.keys(bins).length < this.c.minRows && (colOpts.options === undefined
                 && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
-                this.dom.container.addClass('hidden');
+                this.dom.container.addClass(this.classes.hidden);
                 return;
+            }
+            else {
+                this.dom.container.addClass(this.classes.show);
             }
         }
         // If the varaince is accceptable then display the search pane
@@ -232,28 +243,38 @@ var SearchPane = /** @class */ (function () {
         $(this.dom.topRow).empty();
         $(this.dom.topRow).addClass(this.classes.topRow);
         if (this.displayColumns > 3) {
-            $(this.dom.container).addClass('smallGap');
-            $(this.dom.topRow).addClass('subRowsContainer');
-            var upper = $('<div/>').addClass('subRows');
-            var lower = $('<div/>').addClass('subRows');
+            $(this.dom.container).addClass(this.classes.smallGap);
+            $(this.dom.topRow).addClass(this.classes.subRowsContainer);
+            var upper = $('<div/>').addClass(this.classes.subRows);
+            var lower = $('<div/>').addClass(this.classes.subRows);
             $(upper).appendTo(this.dom.topRow);
             $(lower).appendTo(this.dom.topRow);
-            $(searchBox).appendTo(upper);
-            $(searchButton).appendTo(upper);
+            $(searchBox).appendTo(searchCont);
+            $(searchButton).appendTo(searchLabelCont);
+            $(searchLabelCont).appendTo(searchCont);
+            $(searchCont).appendTo(upper);
             if (this.c.clear) {
-                $(clear).appendTo(lower);
+                $(clear).appendTo(buttonGroup);
             }
-            $(nameButton).appendTo(lower);
-            $(countButton).appendTo(lower);
+            $(nameButton).appendTo(buttonGroup);
+            if (!this.c.hideCount && !colOpts.hideCount) {
+                $(countButton).appendTo(buttonGroup);
+            }
+            $(buttonGroup).appendTo(lower);
         }
         else {
-            $(searchBox).appendTo(this.dom.topRow);
-            $(searchButton).appendTo(this.dom.topRow);
+            $(searchBox).appendTo(searchCont);
+            $(searchButton).appendTo(searchLabelCont);
+            $(searchLabelCont).appendTo(searchCont);
+            $(searchCont).appendTo(this.dom.topRow);
             if (this.c.clear) {
-                $(clear).appendTo(this.dom.topRow);
+                $(clear).appendTo(buttonGroup);
             }
-            $(nameButton).appendTo(this.dom.topRow);
-            $(countButton).appendTo(this.dom.topRow);
+            $(nameButton).appendTo(buttonGroup);
+            if (!this.c.hideCount && !colOpts.hideCount) {
+                $(countButton).appendTo(buttonGroup);
+            }
+            $(buttonGroup).appendTo(this.dom.topRow);
         }
         $(this.dom.topRow).appendTo(this.dom.container);
         $(container).append(dtP);
@@ -280,7 +301,7 @@ var SearchPane = /** @class */ (function () {
                             ? message = filteredMessage.replace(/{total}/, row.total)
                             : message = countMessage.replace(/{total}/, row.total);
                         message = message.replace(/{shown}/, row.shown);
-                        return '<div class="pill">' + message + '</div>';
+                        return '<div class="' + _this.classes.pill + '">' + message + '</div>';
                     },
                     targets: 1,
                     width: this.c.countWidth
@@ -289,9 +310,9 @@ var SearchPane = /** @class */ (function () {
             info: false,
             paging: false,
             scrollY: '200px',
-            searching: false,
             select: true
         }, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}));
+        $(dtP).addClass(this.classes.table);
         // As the pane table is not in the document yet we must initialise select ourselves
         $.fn.dataTable.select.init(this.s.dtPane);
         $.fn.dataTable.ext.errMode = errMode;
@@ -357,6 +378,7 @@ var SearchPane = /** @class */ (function () {
         // Custom search will perform.
         this.s.dtPane.on('select.dt', function () {
             clearTimeout(t0);
+            $(clear).removeClass(_this.classes.dull);
             if (!_this.s.updating) {
                 _this._makeSelection(true);
             }
@@ -371,6 +393,13 @@ var SearchPane = /** @class */ (function () {
         });
         clear[0].addEventListener('click', function () {
             _this.clearPane();
+        });
+        searchButton[0].addEventListener('click', function () {
+            $(searchBox).focus();
+        });
+        $(searchBox).on('input', function () {
+            console.log("key", "hi", $(searchBox).val());
+            _this.s.dtPane.search($(searchBox).val()).draw();
         });
         // When saving the state store all of the selected rows for preselection next time around
         this.s.dt.on('stateSaveParams.dt', function (e, settings, data) {
@@ -390,6 +419,9 @@ var SearchPane = /** @class */ (function () {
         // which holds selected items. Custom search will be performed.
         this.s.dtPane.on('deselect.dt', function () {
             t0 = setTimeout(function () {
+                if (_this._getSelected(0)[0] === 0) {
+                    $(clear).addClass(_this.classes.dull);
+                }
                 _this._makeSelection(false);
             }, 50);
         });
@@ -728,10 +760,10 @@ var SearchPane = /** @class */ (function () {
         }
         // If a filter has been applied then outline the respective pane, remove it when it no longer is.
         if (filters.length > 0) {
-            container.addClass('selected');
+            container.addClass(this.classes.selected);
         }
         else if (filters.length === 0) {
-            container.removeClass('selected');
+            container.removeClass(this.classes.selected);
         }
         this.s.updating = updating;
     };
@@ -932,7 +964,7 @@ var SearchPane = /** @class */ (function () {
         this.s.updating = false;
     };
     SearchPane.version = '0.0.2';
-    SearchPane["class"] = {
+    SearchPane.classes = {
         arrayCols: [],
         clear: 'clear',
         clearAll: 'clearAll',
@@ -950,7 +982,22 @@ var SearchPane = /** @class */ (function () {
             title: 'title'
         },
         title: 'dtsp-title',
-        topRow: 'topRow'
+        topRow: 'topRow',
+        displayColumns: 'displayColumns-',
+        dull: 'dull',
+        hidden: 'hidden',
+        smallGap: 'smallGap',
+        subRowsContainer: 'subRowsContainer',
+        subRows: 'subRows',
+        selected: 'selected',
+        paneButton: 'paneButton',
+        paneInputButton: 'paneInputButton',
+        exit: 'exit',
+        pill: 'pill',
+        search: 'search',
+        searchIcon: 'searchIcon',
+        searchLabelCont: 'searchButtonCont',
+        searchCont: 'searchCont'
     };
     // Define SearchPanes default options
     SearchPane.defaults = {
