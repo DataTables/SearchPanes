@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="display nowrap" order="1">
+<dt-example table-type="html-wide" order="3" framework="foundation">
 
 <css lib="datatables searchpanes select"/>
-
+s
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        dom: 'Sfrtip'
+    let table = $('#example').DataTable({
+        dom:"S" + "<'row'<'small-6 columns'l><'small-6 columns'f>r>"+
+            "t"+
+            "<'row'<'small-6 columns'i><'small-6 columns'p>>",
     });
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Basic Pane Example</title>
+<title lib="searchPanes">Foundation Example</title>
 
 <info><![CDATA[
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+This example shows the foundation design.
 
 ]]></info>
 

@@ -1,4 +1,4 @@
-/*! Bootstrap integration for DataTables' SearchPanes
+/*! semantic ui integration for DataTables' SearchPanes
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 // Hack to allow TypeScript to compile our UMD
@@ -9,7 +9,7 @@ declare var define: {
 (function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD
-		define(['jquery', 'datatables.net-bs4', 'datatables.net-searchPanes'], function($) {
+		define(['jquery', 'datatables.net-se', 'datatables.net-searchpanes'], function($) {
 			return factory($, window, document);
 		});
 	}
@@ -21,11 +21,11 @@ declare var define: {
 			}
 
 			if (! $ || ! $.fn.dataTable) {
-				$ = require('datatables.net-bs4')(root, $).$;
+				$ = require('datatables.net-se')(root, $).$;
 			}
 
 			if (! $.fn.dataTable.searchPanes) {
-				require('datatables.net-searchPanes')(root, $);
+				require('datatables.net-searchpanes')(root, $);
 			}
 
 			return factory($, root, root.document);
@@ -40,27 +40,19 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-	paneButton: 'btn btn-light',
-	buttonGroup: 'btn-group col-',
-	dull: 'disabled',
-	pane:{
-		container: 'table',
-	},
-	table: 'table table-sm table-borderless',
-	show: 'col',
-	topRow: 'dtsp-topRow row',
-	search: 'col-sm form-control search',
-	searchLabelCont: 'input-group-append',
-	searchCont: 'input-group col-sm',
-	pill: 'pill badge badge-pill badge-secondary'
+    container: 'dtsp-searchPane column ui grid',
+    paneButton: 'ui button',
+    buttonGroup: 'right floated ui buttons column',
+    searchCont: 'ui icon input eight wide column',
+    paneInputButton: 'circular search link icon',
+    dull: 'disabled',
+    topRow: 'row dtsp-topRow'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	container:'dtsp-searchPanes row',
-	titleRow:'row',
-	clearAll:'dtsp-clearAll col-1 btn btn-light',
-	title:'dtsp-title col-10',
-	panes: 'dtsp-panes container'
-})
+    container: 'dtsp-searchPanes ui grid',
+    clearAll: 'dtsp-clearAll ui button'
+
+});
 return DataTable.searchPanes;
 }));

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" order="5" framework="semanticui">
+
+<css lib="datatables searchpanes select"/>
+s
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    let table = $('#example').DataTable({
+        dom:"<'ui stackable grid'"+
+                "<'row'"+
+                    "<'sixteen wide column' S>"+
+                ">"+
+                "<'row'"+
+                    "<'eight wide column'l>"+
+                    "<'right aligned eight wide column'f>"+
+                ">"+
+                "<'row dt-table'"+
+                    "<'sixteen wide column'tr>"+
+                ">"+
+                "<'row'"+
+                    "<'seven wide column'i>"+
+                    "<'right aligned nine wide column'p>"+
+                ">"+
+            ">"
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">semanticui Example</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows the semanticui design.
+
+]]></info>
+
+</dt-example>

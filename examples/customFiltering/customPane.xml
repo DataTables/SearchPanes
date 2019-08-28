@@ -11,11 +11,11 @@ $(document).ready(function() {
         searchPanes:{
             panes: [
                 {
-                    header:'custom',
+                    header:'Custom',
                     searchPanes:{
                         options:[
                             {
-                                label:'tokyian accountants',
+                                label:'Accountants from Tokyo',
                                 value: function(rowData, rowIdx){
                                     return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
                                 }
@@ -27,7 +27,8 @@ $(document).ready(function() {
                         order: [[1, 'desc']]
                     }
                 }
-            ]
+            ],
+            displayColumns: 4,
         },
         dom: 'Sfrtip',
     });

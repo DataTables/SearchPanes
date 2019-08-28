@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+<dt-example table-type="html-wide" table-class="display nowrap" order="1">
 
-<css lib="datatables searchpanes select"/>
+<css lib="datatables searchpanes select">
+    div.dt-searchPane div.dataTables_length{
+        float: none;
+        text-align: center;
+    }
+</css>
 
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
@@ -10,7 +15,8 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             dtOpts:{
-                paging: true, 
+                paging: true,
+                pagingType: 'numbers', 
             },
         },
         dom: 'Sfrtip',
@@ -31,13 +37,14 @@ $(document).ready(function() {
 ]]>
 </js>
 
+
 <title lib="SearchPanes">Pane Customisation</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the activation of paging the panes by setting the searchPanes dtOpts property for `-init paging` to have a value of true and allowing the `-init info` of the third columns pane to be true. The default for `-init searching` is false and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
+This example shows the activation of paging the panes by setting the searchPanes dtOpts property for `-init paging` to have a value of true and setting the `-init pagingType` to have a value of `'numbers'`. It is also allowing the `-init info` of the third columns pane to be true. The default for `-init searching` is false and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
 
 ]]></info>
 

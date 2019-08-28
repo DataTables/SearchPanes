@@ -1,0 +1,142 @@
+.ui.grid {
+    margin: 0px !important;
+    justify-content: space-evenly;
+}
+
+div.dtsp-panesContainer{
+    padding: 5px;
+    border: 2px solid #f0f0f0;
+    border-radius: 10px;
+    margin: 5px;
+
+    div.dtsp-searchPanes{
+
+        div.dtsp-hidden{
+            display: none !important;
+        }
+
+        div.dtsp-searchPane{
+            margin: 10px !important;
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
+            padding: 0px !important;
+
+            div.dtsp-topRow{
+                
+                .ui.button{
+                    max-width: 35px;
+                    min-width: 35px;
+                    padding: 0px;
+                    height: 35px;
+                }
+
+                .ui.icon {
+                    width: auto;
+                    padding: 0px;
+
+                    input.dtsp-search{
+                        padding: 0px !important;
+                        padding-left: 3px !important;
+                        min-height: 35px;
+                    }
+
+                    .dtsp-searchButtonCont{
+                        min-width: 35px;
+                        max-width: 35px;
+                        display: inline-block;
+                    }
+                }
+
+                .ui.buttons {
+                    min-width: 105px;
+                    padding: 0px;
+                }
+            }
+
+            div.dataTables_wrapper {
+                border-bottom: 2px solid #f0f0f0;
+				border: 2px solid #f0f0f0;
+                border-radius: 4px;
+                padding: 0px !important;
+				&:hover{
+					border: 2px solid #cfcfcf;
+                }
+
+                .sixteen.wide.column{
+                    padding: 0px !important;
+                }
+
+                div.row{
+                    padding: 0px !important;
+                }
+
+                table{
+                    border-collapse: collapse;
+                    tr{
+                        td{
+                            border-top: 0px solid transparent;
+                        }
+                    }
+                }
+
+                div.dataTables_filter {
+                    display: none;
+                }
+
+                div.dataTables_scrollHead {
+                    display: none !important;
+                }
+            }
+
+            tr > th,
+			tr > td{
+				padding: 5px 10px;
+			}
+
+        }
+    }
+
+    div.dtsp-title {
+		float: left;
+		margin: 20px;
+		margin-bottom: 0px;
+		margin-top: 10px;
+    }
+    
+    button.dtsp-clearAll{
+		float: right;
+		margin: 20px;
+		padding: 10px;
+		margin-bottom: 0px;
+		margin-top: 5px;
+    }
+    
+    div.dtsp-titleRow{
+        min-height: 40px;
+    }
+}
+
+div.dtsp-displayColumns-1{
+	min-width: 95%;
+	max-width: 95%;
+}
+div.dtsp-displayColumns-2{
+	min-width: 45%;
+	max-width: 45%;
+}
+div.dtsp-displayColumns-3{
+	min-width: 30%;
+	max-width: 30%;
+}
+div.dtsp-displayColumns-4{
+	min-width: 22%;
+	max-width: 22%;
+}
+div.dtsp-displayColumns-5{
+	min-width: 18%;
+	max-width: 18%;
+}
+div.dtsp-displayColumns-6{
+	min-width: 15%;
+	max-width: 15%;
+}

@@ -117,7 +117,6 @@ import SearchPanes from './searchPanes';
 
 	apiRegister('searchPanes.container()', function() {
 		let ctx = this.context[0];
-		console.log(ctx)
 		return ctx._searchPanes.getNode();
 	});
 
@@ -146,7 +145,7 @@ import SearchPanes from './searchPanes';
 		text: 'Search Panes',
 		init(dt, node, config) {
 			let panes = new $.fn.dataTable.SearchPanes(dt, {
-				filterChanged(count){
+				filterChanged(count) {
 					dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
 				}
 			});

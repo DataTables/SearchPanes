@@ -34,6 +34,10 @@ node_modules/typescript/bin/tsc src/searchPanes.ts --module ES6
 node_modules/typescript/bin/tsc src/searchPane.ts --module ES6
 node_modules/typescript/bin/tsc src/index.ts --module ES6
 node_modules/typescript/bin/tsc src/searchPanes.bootstrap4.ts --module ES6
+node_modules/typescript/bin/tsc src/searchPanes.bootstrap.ts --module ES6
+node_modules/typescript/bin/tsc src/searchPanes.foundation.ts --module ES6
+node_modules/typescript/bin/tsc src/searchPanes.jqueryui.ts --module ES6
+node_modules/typescript/bin/tsc src/searchPanes.semanticui.ts --module ES6
 
 
 # Copy JS

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" order="1">
+<dt-example table-type="html-wide" order="9">
 
 <css lib="datatables searchpanes select" />
 <js lib="jquery datatables searchpanes select">

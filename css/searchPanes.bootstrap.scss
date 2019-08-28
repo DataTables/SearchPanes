@@ -3,7 +3,7 @@ button.btn{
 }
 
 div.btn-group{
-    padding: 5px;
+    padding: 1px;
 
     button.btn{
         margin: 0;
@@ -12,13 +12,18 @@ div.btn-group{
 }
 
 div.dtsp-searchPanes{
-    button.dtsp-clearAll{
+    div.row{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    button.clearAll{
         max-width: 50px;
     }
 }
 
 div.dtsp-searchPane {
-    margin: 5px;
+    margin: 10px;
+    display: inline-block;
     thead{
         display: none;
     }
@@ -33,11 +38,23 @@ div.dtsp-searchPane {
 
     .input-group {
         height: 40px !important;
-        padding: 5px;
+        padding: 1px;
 
         .input-group-append{
             display: inline-block;
         }
+
+        .form-control{
+            min-height: 40px;
+        }
+
+        .input-group-btn{
+            min-height: 40px;
+            .btn{
+                min-height: 40px;
+            }
+        }
+
     }
 
     div.dataTables_scrollHead{
@@ -55,6 +72,7 @@ div.dtsp-searchPane {
         table{
             tbody{
                 tr{
+                    height: 20px;
                     div.badge{
                         min-width: 30px;
                         display: inline-block;
@@ -81,8 +99,8 @@ div.dtsp-searchPane {
     }
 }
 
-div.dtsp-panes {
-	padding: 5px;
+div.dtsp-panesContainer {
+	padding: 10px;
 	border: 2px solid #f0f0f0;
 	border-radius: 10px;
 	margin: 5px;
@@ -96,10 +114,40 @@ div.dtsp-panes {
 	}
 
 	button.dtsp-clearAll{
-		float: right;
+        float: right;
+        margin-right: 20px;
 	}
 }
 
-div.badge{
-    min-width:30px;
+div.dtsp-displayColumns-1{
+	min-width: 95%;
+	max-width: 95%;
+}
+div.dtsp-displayColumns-2{
+	min-width: 45%;
+	max-width: 45%;
+}
+div.dtsp-displayColumns-3{
+	min-width: 30%;
+	max-width: 30%;
+}
+div.dtsp-displayColumns-4{
+	min-width: 22%;
+	max-width: 22%;
+}
+div.dtsp-displayColumns-5{
+	min-width: 18%;
+	max-width: 18%;
+}
+div.dtsp-displayColumns-6{
+	min-width: 15%;
+	max-width: 15%;
+}
+
+div.dtsp-smallGap{
+	padding: 0px;
+}
+
+div.dtsp-hidden{
+	display: none;
 }

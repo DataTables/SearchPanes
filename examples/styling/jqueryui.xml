@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html-wide" order="4" framework="jqueryui">
+
+<css lib="datatables searchpanes select"/>
+s
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    let table = $('#example').DataTable({
+        dom:'S<"fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr"lfr>'+
+            't'+
+            '<"fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-bl ui-corner-br"ip>',
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">jqueryui Example</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows the jqueryui design.
+
+]]></info>
+
+</dt-example>

@@ -12,23 +12,24 @@ export default class SearchPanes {
 
 	private static classes = {
 		arrayCols: [],
-		clear: 'clear',
-		clearAll: 'clearAll',
-		container: 'dt-searchPanes',
-		hide: 'hide',
+		clear: 'dtsp-clear',
+		clearAll: 'dtsp-clearAll',
+		container: 'dtsp-searchPanes',
+		hide: 'dtsp-hide',
 		item: {
-			count: 'count',
-			label: 'label',
-			selected: 'selected'
+			count: 'dtsp-count',
+			label: 'dtsp-label',
+			selected: 'dtsp-selected'
 		},
 		pane: {
-			active: 'filtering',
-			container: 'pane',
-			scroller: 'scroller',
-			title: 'title',
+			active: 'dtsp-filtering',
+			container: 'dtsp-pane',
+			scroller: 'dtsp-scroller',
+			title: 'dtsp-title',
 		},
-		panes: 'panes',
+		panes: 'dtsp-panesContainer',
 		title: 'dtsp-title',
+		titleRow: 'dtsp-titleRow'
 	};
 
 	// Define SearchPanes default options
@@ -38,7 +39,9 @@ export default class SearchPanes {
 			return dt.table().container();
 		},
 		columns: undefined,
-		filterChanged(){},
+		filterChanged() {
+			return;
+		},
 		displayColumns: 3,
 	};
 
@@ -107,8 +110,9 @@ export default class SearchPanes {
 			.columns(this.c.columns)
 			.eq(0)
 			.each((idx) => {
-				if (this.panes[idx].s.colOpts.preSelect !== undefined) {
-					for (let i = 0; i < this.panes[idx].s.dtPane.rows().data().toArray().length; i++) {
+				if (this.panes[idx].s.dtPane !== undefined && this.panes[idx].s.colOpts.preSelect !== undefined) {
+					let tableLength = this.panes[idx].s.dtPane.rows().data().toArray().length;
+					for (let i = 0; i < tableLength; i++) {
 						if (this.panes[idx].s.colOpts.preSelect.indexOf(this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
 							this.panes[idx].s.dtPane.row(i).select();
 							this.panes[idx]._updateTable(true);
@@ -127,20 +131,17 @@ export default class SearchPanes {
 		this.panes[0]._updateFilterCount();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
+		let initDraw = true;
 		table.on('draw.dt', (e, settings, data) => {
-			if (!this.s.updating) {
-				let filterActive = true;
-				if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
-					filterActive = false;
-				}
-				for (let pane of this.panes) {
-					if (pane.s.dtPane !== undefined) {
-						pane._updatePane(false, filterActive, true);
-					}
-				}
-				this._updateFilterCount();
+			this._updateFilterCount();
+			if (initDraw) {
+				initDraw = false;
 			}
-
+			else {
+				if (this.c.cascadePanes || this.c.viewTotal) {
+					this.redrawPanes();
+				}
+			}
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
@@ -161,6 +162,22 @@ export default class SearchPanes {
 			if (pane.s.dtPane !== undefined) {
 				pane.adjust();
 			}
+		}
+	}
+
+	public redrawPanes() {
+		let table = this.s.dt;
+		if (!this.s.updating) {
+			let filterActive = true;
+			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
+				filterActive = false;
+			}
+			for (let pane of this.panes) {
+				if (pane.s.dtPane !== undefined) {
+					pane._updatePane(false, filterActive, true);
+				}
+			}
+			this._updateFilterCount();
 		}
 	}
 

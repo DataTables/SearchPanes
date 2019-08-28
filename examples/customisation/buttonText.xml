@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="display nowrap" order="2">
+<dt-example table-type="html-wide" table-class="display nowrap" order="6">
 
 <css lib="datatables searchpanes select buttons"/>
 
@@ -12,7 +12,6 @@ $(document).ready(function() {
             searchPanes: {
                 clearMessage: 'Obliterate Selections',
                 collapse: 'Filter',
-                clearPane: 'Clear Selection'
             }
         },
         buttons:[
@@ -25,7 +24,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Internationalisation</title>
+<title lib="SearchPanes">Button Text</title>
 
 <info><![CDATA[
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" order="1">
+<dt-example table-type="html-wide" order="8">
 
 <css lib="datatables searchpanes select" />
 <js lib="jquery datatables searchpanes select">
@@ -9,6 +9,7 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             threshold: 0.4,
+            displayColumns: 2,
         },
         dom: 'Sfrtip',
         columnDefs:[

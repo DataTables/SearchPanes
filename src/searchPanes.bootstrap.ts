@@ -9,7 +9,7 @@ declare var define: {
 (function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD
-		define(['jquery', 'datatables.net-bs4', 'datatables.net-searchPanes'], function($) {
+		define(['jquery', 'datatables.net-bs', 'datatables.net-searchPanes'], function($) {
 			return factory($, window, document);
 		});
 	}
@@ -21,7 +21,7 @@ declare var define: {
 			}
 
 			if (! $ || ! $.fn.dataTable) {
-				$ = require('datatables.net-bs4')(root, $).$;
+				$ = require('datatables.net-bs')(root, $).$;
 			}
 
 			if (! $.fn.dataTable.searchPanes) {
@@ -41,19 +41,21 @@ let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
 	paneButton: 'btn btn-light',
-	buttonGroup: 'btn-group col-',
+	buttonGroup: 'btn-group',
 	dull: 'disabled',
 	pane:{
 		container: 'table',
 	},
-	table: 'table table-sm table-borderless',
+	table: 'table table-condensed',
 	show: 'col',
 	topRow: 'dtsp-topRow row',
 	search: 'col-sm form-control search',
-	searchLabelCont: 'input-group-append',
-	searchCont: 'input-group col-sm',
-	pill: 'pill badge badge-pill badge-secondary'
+	searchLabelCont: 'input-group-btn',
+	searchCont: 'input-group col-sm-7',
+	pill: 'badge badge-pill badge-light pill'
 });
+
+console.log(DataTable.SearchPane.classes)
 
 $.extend(true, DataTable.SearchPanes.classes, {
 	container:'dtsp-searchPanes row',

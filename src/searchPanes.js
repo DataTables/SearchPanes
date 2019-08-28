@@ -51,8 +51,9 @@ var SearchPanes = /** @class */ (function () {
             .columns(this.c.columns)
             .eq(0)
             .each(function (idx) {
-            if (_this.panes[idx].s.colOpts.preSelect !== undefined) {
-                for (var i = 0; i < _this.panes[idx].s.dtPane.rows().data().toArray().length; i++) {
+            if (_this.panes[idx].s.dtPane !== undefined && _this.panes[idx].s.colOpts.preSelect !== undefined) {
+                var tableLength = _this.panes[idx].s.dtPane.rows().data().toArray().length;
+                for (var i = 0; i < tableLength; i++) {
                     if (_this.panes[idx].s.colOpts.preSelect.indexOf(_this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
                         _this.panes[idx].s.dtPane.row(i).select();
                         _this.panes[idx]._updateTable(true);
@@ -67,19 +68,16 @@ var SearchPanes = /** @class */ (function () {
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
         // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
+        var initDraw = true;
         table.on('draw.dt', function (e, settings, data) {
-            if (!_this.s.updating) {
-                var filterActive = true;
-                if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
-                    filterActive = false;
+            _this._updateFilterCount();
+            if (initDraw) {
+                initDraw = false;
+            }
+            else {
+                if (_this.c.cascadePanes || _this.c.viewTotal) {
+                    _this.redrawPanes();
                 }
-                for (var _i = 0, _a = _this.panes; _i < _a.length; _i++) {
-                    var pane = _a[_i];
-                    if (pane.s.dtPane !== undefined) {
-                        pane._updatePane(false, filterActive, true);
-                    }
-                }
-                _this._updateFilterCount();
             }
         });
         // When the clear All button has been pressed clear all of the selections in the panes
@@ -99,6 +97,22 @@ var SearchPanes = /** @class */ (function () {
             if (pane.s.dtPane !== undefined) {
                 pane.adjust();
             }
+        }
+    };
+    SearchPanes.prototype.redrawPanes = function () {
+        var table = this.s.dt;
+        if (!this.s.updating) {
+            var filterActive = true;
+            if (table.rows({ search: 'applied' }).data().toArray().length === table.rows().data().toArray().length) {
+                filterActive = false;
+            }
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                if (pane.s.dtPane !== undefined) {
+                    pane._updatePane(false, filterActive, true);
+                }
+            }
+            this._updateFilterCount();
         }
     };
     /**
@@ -177,23 +191,24 @@ var SearchPanes = /** @class */ (function () {
     SearchPanes.version = '0.0.2';
     SearchPanes.classes = {
         arrayCols: [],
-        clear: 'clear',
-        clearAll: 'clearAll',
-        container: 'dt-searchPanes',
-        hide: 'hide',
+        clear: 'dtsp-clear',
+        clearAll: 'dtsp-clearAll',
+        container: 'dtsp-searchPanes',
+        hide: 'dtsp-hide',
         item: {
-            count: 'count',
-            label: 'label',
-            selected: 'selected'
+            count: 'dtsp-count',
+            label: 'dtsp-label',
+            selected: 'dtsp-selected'
         },
         pane: {
-            active: 'filtering',
-            container: 'pane',
-            scroller: 'scroller',
-            title: 'title'
+            active: 'dtsp-filtering',
+            container: 'dtsp-pane',
+            scroller: 'dtsp-scroller',
+            title: 'dtsp-title'
         },
-        panes: 'panes',
-        title: 'dtsp-title'
+        panes: 'dtsp-panesContainer',
+        title: 'dtsp-title',
+        titleRow: 'dtsp-titleRow'
     };
     // Define SearchPanes default options
     SearchPanes.defaults = {
@@ -202,7 +217,9 @@ var SearchPanes = /** @class */ (function () {
             return dt.table().container();
         },
         columns: undefined,
-        filterChanged: function () { },
+        filterChanged: function () {
+            return;
+        },
         displayColumns: 3
     };
     return SearchPanes;

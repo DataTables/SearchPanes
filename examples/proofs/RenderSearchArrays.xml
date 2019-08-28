@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="ajax" order="1">
+<dt-example table-type="ajax" order="2">
 
 <css lib="datatables searchpanes select" />
 <js lib="jquery datatables searchpanes select">
@@ -9,7 +9,8 @@ $(document).ready(function() {
     let dt = $('#example').DataTable( {
         ajax: '../resources/arrayData.json',
         searchPanes:{
-            threshold:1
+            threshold:1,
+			displayColumns:4,
         },
 		dom: 'Sfrtip',
         columns: [

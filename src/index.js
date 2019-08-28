@@ -77,7 +77,6 @@ import SearchPanes from './searchPanes';
     });
     apiRegister('searchPanes.container()', function () {
         var ctx = this.context[0];
-        console.log(ctx);
         return ctx._searchPanes.getNode();
     });
     $.fn.dataTable.ext.buttons.searchPanesClear = {

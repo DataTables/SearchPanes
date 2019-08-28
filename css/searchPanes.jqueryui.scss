@@ -1,9 +1,9 @@
 div.dtsp-panesContainer {
 	padding: 5px;
-	border: 2px solid #f0f0f0;
+	border: 2px solid #dddddd;
 	border-radius: 10px;
+	background-color: #e9e9e9;
 	margin: 5px;
-	clear: both;
 
 	div.dtsp-searchPanes {
 		display:flex;
@@ -27,10 +27,12 @@ div.dtsp-panesContainer {
 			justify-content: space-around;
 			align-content: flex-start;
 			align-items: stretch;
+			padding: 10px;
 			padding-top: 0px;
 			padding-bottom: 0px;
+			min-width: 280px;
 			margin: 5px;
-			margin-top: 0px;
+			margin-top: 5px;
 			margin-bottom: 0px;
 			font-size: 0.9em;
 			
@@ -38,11 +40,9 @@ div.dtsp-panesContainer {
 				flex: 1;
 				margin: 1em 0.5%;
 				margin-top: 0px;
-				border-bottom: 2px solid #f0f0f0;
-				border: 2px solid #f0f0f0;
-				border-radius: 4px;
-				&:hover{
-					border: 2px solid #cfcfcf;
+				.ui-toolbar{
+					padding: 0px !important;
+					display: none;
 				}
 
 				div.dataTables_filter {
@@ -56,6 +56,13 @@ div.dtsp-panesContainer {
 				&:hover{
 					border: 2px solid #286092;
 				}
+			}
+
+			div.ui-state-default{
+				padding:3px;
+				padding-left: 2px;
+				border-radius: 4px;
+				margin-bottom: 1px solid #e9e9e9;
 			}
 		
 			div.dtsp-topRow {
@@ -83,7 +90,7 @@ div.dtsp-panesContainer {
 						min-height: 20px;
 						max-width: none;
 						min-width: 90px;
-						border: none;
+						padding: 2px;
 						&:focus{
 							border-bottom: 1px solid black;
 						}
@@ -133,22 +140,17 @@ div.dtsp-panesContainer {
 				min-width: 0;
 				display: inline-block;
 				margin: 2px;
-				border: 0px solid transparent;
-				background-color: transparent;
-				&:hover{
-					background-color: #f0f0f0;
-					border-radius: 2px;
-					cursor: pointer;
-				}
 				font-size: 16px;
 				margin-bottom: 0px;
 				flex-grow:0;
 				flex-shrink:0;
 				flex-basis: 35px;
-			}
+				padding: 0px;
+				padding-top: 1.6px;
+			}	
 		
-			button.dtsp-paneButton{
-				opacity: 0.6;
+			input.dtsp-paneInputButton{
+				height:27px;
 			}
 		
 			div.dataTables_scrollHead {
@@ -156,7 +158,13 @@ div.dtsp-panesContainer {
 			}
 		
 			div.dataTables_scrollBody {
-				border-bottom: none;
+				border: 2px solid #dddddd !important;
+				border-top: 1px solid #f6f6f6 !important;
+				border-radius: 4px;
+				&:hover{
+					border: 2px solid #cfcfcf !important;
+					border-top: 1px solid #f6f6f6 !important;
+				}
 
 				td.dtsp-countColumn {
 					text-align: right;
@@ -181,9 +189,7 @@ div.dtsp-panesContainer {
 				padding: 5px 10px;
 			}
 
-			td.dtsp-countColumn {
-				text-align: right;
-			}
+			
 		}
 	}
 
@@ -197,74 +203,44 @@ div.dtsp-panesContainer {
 	button.dtsp-clearAll{
 		float: right;
 		margin: 20px;
-		border: 1px solid transparent;
-		background-color: transparent;
 		padding: 10px;
-		&:hover{
-			background-color: #f0f0f0;
-			border-radius: 2px;
-		}
 		margin-bottom: 0px;
 		margin-top: 5px;
 	}
 }
 
 div.dt-button-collection{
-	div.panes{
+	div.dtsp-panesContainer{
 		padding: 0px;
-		border: none;
 		margin: 0px;
 	}
 }
 
 div.dtsp-displayColumns-1{
-	min-width: 98%;
-	max-width: 98%;
-	padding-left: 1%;
-	padding-right: 1%;
-	margin: 0px !important;
+	min-width: 95%;
+	max-width: 95%;
 }
 div.dtsp-displayColumns-2{
-	min-width: 48%;
-	max-width: 48%;
-	padding-left: 1%;
-	padding-right: 1%;
-	margin: 0px !important;
+	min-width: 45%;
+	max-width: 45%;
 }
 div.dtsp-displayColumns-3{
-	min-width: 31%;
-	max-width: 31%;
-	padding-left: 1%;
-	padding-right: 1%;
-	margin: 0px !important;
+	min-width: 30%;
+	max-width: 30%;
 }
 div.dtsp-displayColumns-4{
-	min-width: 23%;
-	max-width: 23%;
-	padding-left: 1%;
-	padding-right: 1%;
-	margin: 0px !important;
-	div.dtsp-topRow{
-		flex-direction: column !important;
-	}
+	min-width: 22%;
+	max-width: 22%;
 }
 div.dtsp-displayColumns-5{
 	min-width: 18%;
 	max-width: 18%;
-	padding-left: 1%;
-	padding-right: 1%;
-	margin: 0px !important;
-	div.dtsp-topRow{
-		flex-direction: column !important;
-	}
 }
 div.dtsp-displayColumns-6{
 	min-width: 15%;
 	max-width: 15%;
-	padding-left: 0.5%;
-	padding-right: 0.5%;
-	margin: 0px !important;
-	div.dtsp-topRow{
-		flex-direction: column !important;
-	}
+}
+
+div.dtsp-smallGap{
+	padding: 0px;
 }
