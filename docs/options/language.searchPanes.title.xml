@@ -14,11 +14,7 @@
         The default value for the `-init languages.searchPanes.title` paramater is `-type undefined`. When this is not in place the `-init i18n` function will use 'Filters Active - %d' as a default.
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'.
-
-        By overwriting this value in the initialisation, for whatever value, the relevant message will be shown. 
-
-		This is useful for customising the title to fit best with the webpage it is being applied to. 
+        As standard, SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'. This property allows that message to be configured.
         ]]>
 	</description>
 
