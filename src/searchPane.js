@@ -21,7 +21,6 @@ var SearchPane = /** @class */ (function () {
         var table = new DataTable.Api(paneSettings);
         if (table.ajax.url() !== undefined && table.ajax.url() !== null) {
             table.one('init', function () {
-                console.log("rebuild");
                 _this.rebuildPane();
             });
         }
@@ -126,9 +125,7 @@ var SearchPane = /** @class */ (function () {
      */
     SearchPane.prototype.rebuildPane = function () {
         this.dom.container.empty();
-        console.log(this.dom.container);
         this.dom.container.removeClass(this.classes.hidden);
-        console.log(this.dom.container);
         this.buildPane();
     };
     /**
@@ -211,7 +208,6 @@ var SearchPane = /** @class */ (function () {
             if (colOpts.show === false
                 || (colOpts.show !== undefined && colOpts.show !== true)) {
                 this.dom.container.addClass(this.classes.hidden);
-                console.log(colOpts);
                 return;
             }
             arrayFilter = this._populatePane();
@@ -224,7 +220,6 @@ var SearchPane = /** @class */ (function () {
                 uniqueRatio > this.c.threshold :
                 uniqueRatio > colOpts.threshold))
                 || (colOpts.show !== true && binLength <= 1)) {
-                console.log(uniqueRatio, this.c.threshold, colOpts.threshold);
                 this.dom.container.addClass(this.classes.hidden);
                 return;
             }
@@ -242,7 +237,6 @@ var SearchPane = /** @class */ (function () {
             if (binLength < this.c.minRows && (colOpts.options === undefined
                 && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
                 this.dom.container.addClass(this.classes.hidden);
-                console.log(binLength, this, colOpts);
                 return;
             }
             else {

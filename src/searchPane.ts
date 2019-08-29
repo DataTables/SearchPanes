@@ -84,7 +84,6 @@ export default class SearchPane {
 
 		if (table.ajax.url() !== undefined && table.ajax.url() !== null) {
 			table.one('init', () => {
-				console.log("rebuild")
 				this.rebuildPane();
 		   });
 		}
@@ -203,9 +202,7 @@ export default class SearchPane {
 	 */
 	public rebuildPane() {
 		this.dom.container.empty();
-		console.log(this.dom.container)
 		this.dom.container.removeClass(this.classes.hidden);
-		console.log(this.dom.container)
 		this.buildPane();
 	}
 
@@ -303,7 +300,6 @@ export default class SearchPane {
 				|| (colOpts.show !== undefined && colOpts.show !== true)
 			) {
 					this.dom.container.addClass(this.classes.hidden);
-					console.log(colOpts);
 					return;
 			}
 
@@ -320,7 +316,6 @@ export default class SearchPane {
 					uniqueRatio > colOpts.threshold))
 				|| (colOpts.show !== true  && binLength <= 1)
 			) {
-				console.log(uniqueRatio, this.c.threshold, colOpts.threshold)
 				this.dom.container.addClass(this.classes.hidden);
 				return;
 			}
@@ -340,7 +335,6 @@ export default class SearchPane {
 			if (binLength < this.c.minRows && (colOpts.options === undefined
 				&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
 					this.dom.container.addClass(this.classes.hidden);
-					console.log(binLength, this, colOpts)
 					return;
 			}
 			else {
