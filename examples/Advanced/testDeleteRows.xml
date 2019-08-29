@@ -19,10 +19,11 @@ $(document).ready(function() {
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 To demonstrate how the Panes deal with data being deleted mid search do the following...
 1. Search By 'A'
-2. In the console run the following command `$('#example').DataTable().row(0).remove().draw()` twice. This will remove both of the A entries in the table.
+2. In the console run the following command `$('#example').DataTable().row(0).remove().draw().searchPanes.repopulatePane(0)` twice. This will remove both of the A entries in the table.
 3. Press the clear button to remove the filtering on 'A' or select 'B' or 'C' and then deselect it.
 ]]></info>
     <custom-table>
+        <button>Delete Row</button>
         <table id="example" class="display" cellspacing="0" width="100%">
             <thead>
                 <tr>

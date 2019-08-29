@@ -108,7 +108,6 @@ var SearchPane = /** @class */ (function () {
         if (this.c.clear) {
             clear[0].addEventListener('click', function () {
                 var searches = _this.dom.container.getElementsByClassName(_this.classes.search);
-                console.log("cont", searches);
                 for (var i = 0; i < searches.length; i++) {
                     $(searches[i]).val('');
                     $(searches[i]).trigger('input');
@@ -366,7 +365,6 @@ var SearchPane = /** @class */ (function () {
         });
         clear[0].addEventListener('click', function () {
             var searches = _this.dom.container.find('.' + _this.classes.search);
-            console.log("cont", searches);
             for (var i = 0; i < searches.length; i++) {
                 $(searches[i]).val('');
                 $(searches[i]).trigger('input');
