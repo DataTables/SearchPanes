@@ -47,7 +47,6 @@ js_frameworks searchPanes $OUT_DIR/js
 
 ./node_modules/rollup/bin/rollup $OUT_DIR/js/index.js \
     --format iife \
-    --name"searchPanes Bundle" \
     --file $OUT_DIR/js/dataTables.searchPanes.js
 
 # Copy and build examples
