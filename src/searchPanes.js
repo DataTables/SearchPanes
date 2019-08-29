@@ -119,6 +119,11 @@ var SearchPanes = /** @class */ (function () {
      * Clear the selections of all of the panes
      */
     SearchPanes.prototype.clearSelections = function () {
+        var searches = document.getElementsByClassName('dtsp-search');
+        for (var i = 0; i < searches.length; i++) {
+            $(searches[i]).val('');
+            $(searches[i]).trigger('input');
+        }
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
             if (pane.s.dtPane !== undefined) {

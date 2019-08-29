@@ -107,6 +107,12 @@ var SearchPane = /** @class */ (function () {
         // If the clear button for this pane is clicked clear the selections
         if (this.c.clear) {
             clear[0].addEventListener('click', function () {
+                var searches = _this.dom.container.getElementsByClassName(_this.classes.search);
+                console.log("cont", searches);
+                for (var i = 0; i < searches.length; i++) {
+                    $(searches[i]).val('');
+                    $(searches[i]).trigger('input');
+                }
                 _this.clearPane();
             });
         }
@@ -183,6 +189,7 @@ var SearchPane = /** @class */ (function () {
             .addClass(this.classes.paneInputButton)
             .addClass(this.classes.search)
             .attr('placeholder', this.colExists ? $(table.column(this.s.index).header()).text() : this.customPaneSettings.header);
+        this.dom.searchBox = searchBox;
         var clear = $('<button type="button">&#215;</button>')
             .addClass(this.classes.dull)
             .addClass(this.classes.paneButton)
@@ -358,6 +365,12 @@ var SearchPane = /** @class */ (function () {
             _this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
         });
         clear[0].addEventListener('click', function () {
+            var searches = _this.dom.container.find('.' + _this.classes.search);
+            console.log("cont", searches);
+            for (var i = 0; i < searches.length; i++) {
+                $(searches[i]).val('');
+                $(searches[i]).trigger('input');
+            }
             _this.clearPane();
         });
         searchButton[0].addEventListener('click', function () {

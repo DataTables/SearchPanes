@@ -185,6 +185,11 @@ export default class SearchPanes {
 	 * Clear the selections of all of the panes
 	 */
 	public clearSelections() {
+		let searches = document.getElementsByClassName('dtsp-search');
+		for(let i = 0; i< searches.length; i++){
+			$(searches[i]).val('');
+			$(searches[i]).trigger('input');
+		}
 		for (let pane of this.panes) {
 			if (pane.s.dtPane !== undefined) {
 				pane.clearPane();

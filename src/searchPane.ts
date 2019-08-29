@@ -181,6 +181,11 @@ export default class SearchPane {
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
 			clear[0].addEventListener('click', () => {
+				let searches = this.dom.container.getElementsByClassName(this.classes.search);
+				for(let i = 0; i< searches.length; i++){
+					$(searches[i]).val('');
+					$(searches[i]).trigger('input');
+				}
 				this.clearPane();
 			});
 		}
@@ -271,6 +276,7 @@ export default class SearchPane {
 				'placeholder',
 				this.colExists ? $(table.column(this.s.index).header()).text() : this.customPaneSettings.header
 			);
+		this.dom.searchBox = searchBox;
 		let clear = $('<button type="button">&#215;</button>')
 			.addClass(this.classes.dull)
 			.addClass(this.classes.paneButton)
@@ -470,6 +476,11 @@ export default class SearchPane {
 		});
 
 		clear[0].addEventListener('click', () => {
+			let searches = this.dom.container.find('.' + this.classes.search);
+			for(let i = 0; i< searches.length; i++){
+				$(searches[i]).val('');
+				$(searches[i]).trigger('input');
+			}
 			this.clearPane();
 		});
 
