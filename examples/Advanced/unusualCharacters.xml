@@ -16,6 +16,12 @@ $(document).ready(function() {
     $('#example td').eq(57).html('€');
     $('#example td').eq(66).html('€');
     $('#example').DataTable( {
+        columnDefs:[{
+            searchPanes:{
+                show: true,
+            },
+            targets: [3],
+        }],
         dom: 'Sfrtip',
         paging: false
     });

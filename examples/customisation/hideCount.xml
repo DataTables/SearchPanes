@@ -15,7 +15,7 @@ $(document).ready(function() {
                 searchPanes: {
                     hideCount: true,
                 },
-                targets: [4]
+                targets: [3]
             }
         ]
     });

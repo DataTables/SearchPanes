@@ -15,7 +15,7 @@ $(document).ready(function() {
         columnDefs:[
             {
                 searchPanes:{
-                    threshold: 0.99,
+                    threshold: 1,
                 },
                 targets:[0]
             },
