@@ -8,15 +8,11 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../resources/objects.json',
+        searchPanes:{
+            columns: [5],
+            displayColumns: 1,
+        },
         dom: 'Sfrtip',
-        columnDefs:[
-            {
-                searchPanes:{
-                    show: true,
-                },
-                targets:[5],
-            },
-        ],
         columns: [
 			{ data: null, render: function ( data, type, row ) {
 				// Combine the first and last names into a single table field
@@ -56,7 +52,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on rendered data. The `threshold` is set to 1 so that the rendered columns will display their data.
+This example demonstrates searching on rendered data. The `columns` property is set to 5 so that only the Salary column is displayed as a pane.
 
 ]]></info>
 

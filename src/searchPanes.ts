@@ -93,6 +93,7 @@ export default class SearchPanes {
 			.eq(0)
 			.each((idx) => {
 				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.displayColumns));
+				console.log(idx)
 			});
 
 		// If there is any extra custom panes defined then create panes for them too
@@ -110,7 +111,7 @@ export default class SearchPanes {
 			.columns(this.c.columns)
 			.eq(0)
 			.each((idx) => {
-				if (this.panes[idx].s.dtPane !== undefined && this.panes[idx].s.colOpts.preSelect !== undefined) {
+				if (this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined && this.panes[idx].s.colOpts.preSelect !== undefined) {
 					let tableLength = this.panes[idx].s.dtPane.rows().data().toArray().length;
 					for (let i = 0; i < tableLength; i++) {
 						if (this.panes[idx].s.colOpts.preSelect.indexOf(this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {

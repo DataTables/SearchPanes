@@ -9,8 +9,15 @@ $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../resources/objects.json',
         searchPanes:{
-            threshold:1
+            columns:[2,5],
+			displayColumns: 2,
         },
+		columnDefs:[{
+			searchPanes:{
+				show: true
+			},
+			targets: [5]
+		}],
 		dom: 'Sfrtip',
         columns: [
 			{ data: null, render: function ( data, type, row ) {
@@ -38,7 +45,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on rendered data. The threshold is set to 1 so that the rendered columns will display their data.
+This example demonstrates searching on rendered data. The `columns` property is set to display panes for location and permissions
 
 ]]></info>
 

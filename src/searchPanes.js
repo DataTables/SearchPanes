@@ -36,6 +36,7 @@ var SearchPanes = /** @class */ (function () {
             .eq(0)
             .each(function (idx) {
             _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.displayColumns));
+            console.log(idx);
         });
         // If there is any extra custom panes defined then create panes for them too
         var rowLength = table.columns().eq(0).toArray().length;
@@ -51,7 +52,7 @@ var SearchPanes = /** @class */ (function () {
             .columns(this.c.columns)
             .eq(0)
             .each(function (idx) {
-            if (_this.panes[idx].s.dtPane !== undefined && _this.panes[idx].s.colOpts.preSelect !== undefined) {
+            if (_this.panes[idx] !== undefined && _this.panes[idx].s.dtPane !== undefined && _this.panes[idx].s.colOpts.preSelect !== undefined) {
                 var tableLength = _this.panes[idx].s.dtPane.rows().data().toArray().length;
                 for (var i = 0; i < tableLength; i++) {
                     if (_this.panes[idx].s.colOpts.preSelect.indexOf(_this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {

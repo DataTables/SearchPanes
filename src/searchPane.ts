@@ -306,8 +306,11 @@ export default class SearchPane {
 				|| (colOpts.show !== undefined && colOpts.show !== true)
 			) {
 					this.dom.container.addClass(this.classes.hidden);
+					console.log("309", colOpts, this.s.index)
 					return;
 			}
+
+			
 
 			arrayFilter = this._populatePane();
 
@@ -323,6 +326,7 @@ export default class SearchPane {
 				|| (colOpts.show !== true  && binLength <= 1)
 			) {
 				this.dom.container.addClass(this.classes.hidden);
+				console.log("327", colOpts, uniqueRatio, this.c, binLength, this.s.index)
 				return;
 			}
 
@@ -341,6 +345,7 @@ export default class SearchPane {
 			if (binLength < this.c.minRows && (colOpts.options === undefined
 				&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
 					this.dom.container.addClass(this.classes.hidden);
+					console.log("346", colOpts, this.c, binLength, this.s.index)
 					return;
 			}
 			else {
@@ -477,7 +482,7 @@ export default class SearchPane {
 
 		clear[0].addEventListener('click', () => {
 			let searches = this.dom.container.find('.' + this.classes.search);
-			for(let i = 0; i< searches.length; i++){
+			for (let i = 0; i< searches.length; i++) {
 				$(searches[i]).val('');
 				$(searches[i]).trigger('input');
 			}
