@@ -9,6 +9,7 @@ export default class SearchPane {
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPane',
+		disabledButton: 'dtsp-disabledButton',
 		displayColumns: 'dtsp-displayColumns-',
 		dull: 'dtsp-dull',
 		hidden: 'dtsp-hidden',
@@ -309,8 +310,6 @@ export default class SearchPane {
 					return;
 			}
 
-			
-
 			arrayFilter = this._populatePane();
 
 			bins = this._binData(this._flatten(arrayFilter));
@@ -558,6 +557,15 @@ export default class SearchPane {
 			$(buttonGroup).appendTo(this.dom.topRow);
 		}
 
+		if (
+			(this.c.dtOpts !== undefined &&
+			this.c.dtOpts.searching === false) ||
+			(colOpts.dtOpts !== undefined &&
+			colOpts.dtOpts.searching === false)
+		) {
+			$(searchBox).attr('disabled', 'disabled').removeClass(this.classes.paneInputButton).addClass(this.classes.disabledButton);
+		}
+
 		$(searchBox).appendTo(searchCont);
 
 		if (this.classes.searchCont === 'ui icon input eight wide column') {
@@ -565,7 +573,14 @@ export default class SearchPane {
 		}
 		else {
 			$(searchButton).appendTo(searchLabelCont);
-			$(searchLabelCont).appendTo(searchCont);
+			if (
+				!((this.c.dtOpts !== undefined &&
+				this.c.dtOpts.searching === false) ||
+				(colOpts.dtOpts !== undefined &&
+				colOpts.dtOpts.searching === false))
+			) {
+				$(searchLabelCont).appendTo(searchCont);
+			}
 		}
 
 		if (this.c.clear) {

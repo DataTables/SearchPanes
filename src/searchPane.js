@@ -436,13 +436,24 @@ var SearchPane = /** @class */ (function () {
             $(searchCont).appendTo(this.dom.topRow);
             $(buttonGroup).appendTo(this.dom.topRow);
         }
+        if ((this.c.dtOpts !== undefined &&
+            this.c.dtOpts.searching === false) ||
+            (colOpts.dtOpts !== undefined &&
+                colOpts.dtOpts.searching === false)) {
+            $(searchBox).attr('disabled', 'disabled').removeClass(this.classes.paneInputButton).addClass(this.classes.disabledButton);
+        }
         $(searchBox).appendTo(searchCont);
         if (this.classes.searchCont === 'ui icon input eight wide column') {
             $('<i class="' + this.classes.paneInputButton + '"></i>').appendTo(searchCont);
         }
         else {
             $(searchButton).appendTo(searchLabelCont);
-            $(searchLabelCont).appendTo(searchCont);
+            if (!((this.c.dtOpts !== undefined &&
+                this.c.dtOpts.searching === false) ||
+                (colOpts.dtOpts !== undefined &&
+                    colOpts.dtOpts.searching === false))) {
+                $(searchLabelCont).appendTo(searchCont);
+            }
         }
         if (this.c.clear) {
             $(clear).appendTo(buttonGroup);
@@ -999,6 +1010,7 @@ var SearchPane = /** @class */ (function () {
         clear: 'dtsp-clear',
         clearAll: 'dtsp-clearAll',
         container: 'dtsp-searchPane',
+        disabledButton: 'dtsp-disabledButton',
         displayColumns: 'dtsp-displayColumns-',
         dull: 'dtsp-dull',
         hidden: 'dtsp-hidden',
