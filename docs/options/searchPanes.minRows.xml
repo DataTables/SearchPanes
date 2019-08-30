@@ -26,7 +26,8 @@ $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPanes: {
             minRows:10
-        }
+        },
+        dom: 'Sfrtip',
     });
 });
 

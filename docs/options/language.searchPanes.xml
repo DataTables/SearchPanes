@@ -24,7 +24,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes: true,
+        dom: 'Sfrtip',
         language: {
             searchPanes: {
                 title:{
@@ -46,6 +46,7 @@ $(document).ready(function() {
         searchPanes:{
             viewTotal: true ,
         },
+        dom: 'Sfrtip',
         language:{
             searchPanes:{
                 count: '{total} found',
@@ -64,6 +65,7 @@ $(document).ready(function() {
         searchPanes:{
             viewTotal: true ,
         },
+        dom: 'Sfrtip',
         language:{
             searchPanes:{
                 count: '{total} found',

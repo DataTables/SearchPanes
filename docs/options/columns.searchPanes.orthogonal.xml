@@ -65,7 +65,8 @@
     },
     searchPanes: {
         orthogonal:'sp'
-    }
+    },
+    dom: 'Sfrtip'
 }
 ]]></example>
 

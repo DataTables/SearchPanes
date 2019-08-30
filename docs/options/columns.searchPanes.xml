@@ -24,7 +24,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes: true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 dtOpts:{
@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 searchPanes: {
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        searchPanes: true,
+        dom: 'Sfrtip',
         columnDefs:[ 
             {
                 searchPanes: {
@@ -130,7 +130,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 searchPanes: {
@@ -148,7 +148,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 searchPanes:{
@@ -172,7 +172,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes: true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 searchPanes:{

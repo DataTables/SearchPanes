@@ -31,7 +31,8 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             viewTotal: true ,
-        }
+        },
+        dom: 'Sfrtip',
     });
 });
 

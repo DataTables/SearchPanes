@@ -36,7 +36,6 @@ var SearchPanes = /** @class */ (function () {
             .eq(0)
             .each(function (idx) {
             _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.displayColumns));
-            console.log(idx);
         });
         // If there is any extra custom panes defined then create panes for them too
         var rowLength = table.columns().eq(0).toArray().length;

@@ -32,7 +32,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes: true,
+        dom: 'Sfrtip',
         columnDefs:[
             {
                 searchPanes:{

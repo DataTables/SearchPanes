@@ -17,7 +17,7 @@
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        searchPanes:true
+        dom: 'Sfrtip',
     });
 });
 $('#example').DataTable().row(0).remove();

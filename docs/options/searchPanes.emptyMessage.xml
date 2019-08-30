@@ -27,6 +27,7 @@
         searchPanes:{
             emptyMessage:"<i><b>EMPTY</b></i>",
         },
+		dom: 'Sfrtip',
     });
 });
 

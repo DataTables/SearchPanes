@@ -35,6 +35,7 @@ $(document).ready(function() {
         searchPanes:{
             threshold: 0.4,
         },
+        dom: 'Sfrtip',
     });
 });
 

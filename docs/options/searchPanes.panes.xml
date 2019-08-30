@@ -42,7 +42,8 @@ $(document).ready(function() {
                     }
                 }
             ]
-        }
+        },
+        dom: 'Sfrtip',
     });
 });
 
