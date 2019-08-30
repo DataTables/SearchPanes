@@ -140,10 +140,14 @@ var SearchPanes = /** @class */ (function () {
     /**
      * rebuilds all of the panes
      */
-    SearchPanes.prototype.rebuild = function () {
+    SearchPanes.prototype.rebuild = function (targetIdx) {
+        if (targetIdx === void 0) { targetIdx = false; }
         this.dom.container.empty();
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
+            if (targetIdx !== false && pane.s.index !== targetIdx) {
+                continue;
+            }
             pane.rebuildPane();
         }
         // Attach panes, clear buttons, hide button and title bar to the document

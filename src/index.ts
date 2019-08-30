@@ -115,6 +115,11 @@ import SearchPanes from './searchPanes';
 		ctx._searchPanes.rebuild();
 	});
 
+	apiRegister('searchPanes.rebuildPane()', function(targetIdx) {
+		let ctx = this.context[0];
+		ctx._searchPanes.rebuild(targetIdx);
+	})
+
 	apiRegister('searchPanes.container()', function() {
 		let ctx = this.context[0];
 		return ctx._searchPanes.getNode();

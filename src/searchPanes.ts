@@ -207,9 +207,12 @@ export default class SearchPanes {
 	/**
 	 * rebuilds all of the panes
 	 */
-	public rebuild() {
+	public rebuild(targetIdx = false) {
 		this.dom.container.empty();
 		for (let pane of this.panes) {
+			if (targetIdx !== false && pane.s.index !== targetIdx) {
+				continue;
+			}
 			pane.rebuildPane();
 		}
 		// Attach panes, clear buttons, hide button and title bar to the document
