@@ -477,7 +477,7 @@ export default class SearchPane {
 
 		clear[0].addEventListener('click', () => {
 			let searches = this.dom.container.find('.' + this.classes.search);
-			for(let i = 0; i< searches.length; i++){
+			for (let i = 0; i< searches.length; i++) {
 				$(searches[i]).val('');
 				$(searches[i]).trigger('input');
 			}

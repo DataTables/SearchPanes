@@ -51,7 +51,7 @@ var SearchPanes = /** @class */ (function () {
             .columns(this.c.columns)
             .eq(0)
             .each(function (idx) {
-            if (_this.panes[idx].s.dtPane !== undefined && _this.panes[idx].s.colOpts.preSelect !== undefined) {
+            if (_this.panes[idx] !== undefined && _this.panes[idx].s.dtPane !== undefined && _this.panes[idx].s.colOpts.preSelect !== undefined) {
                 var tableLength = _this.panes[idx].s.dtPane.rows().data().toArray().length;
                 for (var i = 0; i < tableLength; i++) {
                     if (_this.panes[idx].s.colOpts.preSelect.indexOf(_this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
