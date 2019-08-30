@@ -214,6 +214,7 @@ var SearchPane = /** @class */ (function () {
             if (colOpts.show === false
                 || (colOpts.show !== undefined && colOpts.show !== true)) {
                 this.dom.container.addClass(this.classes.hidden);
+                console.log("309", colOpts, this.s.index);
                 return;
             }
             arrayFilter = this._populatePane();
@@ -227,6 +228,7 @@ var SearchPane = /** @class */ (function () {
                 uniqueRatio > colOpts.threshold))
                 || (colOpts.show !== true && binLength <= 1)) {
                 this.dom.container.addClass(this.classes.hidden);
+                console.log("327", colOpts, uniqueRatio, this.c, binLength, this.s.index);
                 return;
             }
             // If the option viewTotal is true then find
@@ -243,6 +245,7 @@ var SearchPane = /** @class */ (function () {
             if (binLength < this.c.minRows && (colOpts.options === undefined
                 && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
                 this.dom.container.addClass(this.classes.hidden);
+                console.log("346", colOpts, this.c, binLength, this.s.index);
                 return;
             }
             else {

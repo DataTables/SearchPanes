@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.columns</name>
+	<summary>Select which columns should be considered when displaying panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="Array">
+		<description>
+            By setting the `-init searchPanes.columns` option to an array of integers, only the columns with index of those numbers will be considered when creating the searchPanes.
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init searchPanes.columns` paramater is `undefined`. When this default value is in place all of the columns will be considered when creating searchPanes.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will consider all of the columns when creating searchPanes. When `-init searchPanes.columns` is defined with an array of numbers, then only the columns with those indexes will be considered when creating panes.
+
+		The `-init searchPanes.clear` functionality is useful when wanting to restrict which columns will be considered when displaying panes. This may result in faster load times as there is not as much validation to be done. 
+        ]]>
+	</description>
+
+	<example title="Specify Columns for Consideration"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            columns:[1,3,5]
+        }
+    });
+});
+
+]]></example>
+
+</dt-option>

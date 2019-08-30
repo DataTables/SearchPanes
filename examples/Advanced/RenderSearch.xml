@@ -9,9 +9,15 @@ $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../resources/objects.json',
         searchPanes:{
-            columns[2,3],
+            columns:[2,5],
 			displayColumns: 2,
         },
+		columnDefs:[{
+			searchPanes:{
+				show: true
+			},
+			targets: [5]
+		}],
 		dom: 'Sfrtip',
         columns: [
 			{ data: null, render: function ( data, type, row ) {

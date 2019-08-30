@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="20">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            columns:[1,2,3],
+        },
+        dom: 'Sfrtip'
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Speed Optimisation</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to make use of searchPanes functionality in order to optimise load times.
+
+]]></info>
+
+</dt-example>

@@ -93,6 +93,7 @@ export default class SearchPanes {
 			.eq(0)
 			.each((idx) => {
 				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.displayColumns));
+				console.log(idx)
 			});
 
 		// If there is any extra custom panes defined then create panes for them too
