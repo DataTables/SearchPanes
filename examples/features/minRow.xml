@@ -5,7 +5,6 @@
 
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
-
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPanes: {
@@ -15,7 +14,7 @@ $(document).ready(function() {
         dom: 'Sfrtip',
     });
     $('#Reduce').click(function(){
-        dt.rows(":gt(7)").remove().searchPanes.rebuild().draw();
+        dt.rows(":gt(7)").remove().draw().searchPanes.rebuild();
     });
 });
 
@@ -30,6 +29,7 @@ This is the searchPanes extension for DataTables. It allows results to be filter
 
 This example shows the `-init searchPanes.minRows` feature. Here we are setting the `-init searchPanes.minRows` value to be 10, so any column with less than 10 unique values will cause the searchPane for that column to not show. The default value is 1, meaning that columns with only 1 value will not get a Pane.
 
+Press this button to reduce the number of rows in the table to 8 and observe how this affects the panes when `-init searchPanes.minRows` has a value of 10 <button id="Reduce">Reduce</button>
 ]]></info>
 
 </dt-example>
