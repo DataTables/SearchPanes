@@ -16,7 +16,7 @@ var SearchPanes = /** @class */ (function () {
         this.classes = $.extend(true, {}, SearchPanes.classes);
         // Get options from user
         this.c = $.extend(true, {}, SearchPanes.defaults, opts);
-        // Add extra elements to DOM object including clear and hide buttons
+        // Add extra elements to DOM object including clear
         this.dom = {
             clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
             container: $('<div/>').addClass(this.classes.panes),
@@ -61,7 +61,7 @@ var SearchPanes = /** @class */ (function () {
                 }
             }
         });
-        // Attach panes, clear buttons, hide button and title bar to the document
+        // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
         this._attach();
         DataTable.tables({ visible: true, api: true }).columns.adjust();
@@ -150,7 +150,7 @@ var SearchPanes = /** @class */ (function () {
             }
             pane.rebuildPane();
         }
-        // Attach panes, clear buttons, hide button and title bar to the document
+        // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
         this._attach();
         DataTable.tables({ visible: true, api: true }).columns.adjust();
@@ -186,7 +186,7 @@ var SearchPanes = /** @class */ (function () {
         var titleRow = $('<div/>');
         titleRow.addClass(this.classes.titleRow);
         $(this.dom.title).appendTo(titleRow);
-        // If the hide button is permitted attach it
+        // If the clear button is permitted attach it
         if (this.c.clear) {
             $(this.dom.clearAll).appendTo(titleRow);
         }
