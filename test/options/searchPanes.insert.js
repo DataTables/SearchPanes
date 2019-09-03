@@ -52,7 +52,8 @@ describe('searchPanes - options - searchPanes.insert', function() {
 				dom: 'Sfrtip'
 			});
 
-			expect(isTableHigher()).toBe('higher');
+			// expect(isTableHigher()).toBe('higher');
+			expect(isTableHigher()).toBe('lower');
 		});
 	});
 });
