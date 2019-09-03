@@ -6,7 +6,7 @@
 
 	<type type="string">
 		<description>
-            By setting the `-init language.searchPanes.count` to be a different string you change what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and no  filtering is taking place.
+            By setting the `-init language.searchPanes.count` to be a different string you change what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and no filtering is taking place.
         </description>
 	</type>
 
@@ -22,18 +22,18 @@
         ]]>
 	</description>
 
-	<example title="Change messages for viewTotal"><![CDATA[
+	<example title="Change messages for row count"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
-            viewTotal: true ,
+            viewTotal: true
         },
         dom: 'Sfrtip',
         language:{
             searchPanes:{
                 count: '{total} found',
-                countFiltered: '{total} ({total})'
+                countFiltered: '{shown} ({total})'
             },
         }
     });
