@@ -27,7 +27,7 @@ $(document).ready(function() {
         searchPanes:{
             collapse: true
         },
-        dom: 'Sfrtip',
+        dom: 'Sfrtip'
     });
 });
 
