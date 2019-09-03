@@ -20,8 +20,6 @@
 
         This is useful as it allows fine tuning of at what point it is useful to show the pane for the specified column. If you were to always show a pane for tables with lots of columns the searching may become confusing. This adjustment allows searchPanes to internally make the decisions to display a simpler, less cluttered user interface which may otherwise arise if this was absent.
 
-        The `-init columns.searchPanes.threshold` option is not the only option that affects pane displays, `-init searchPanes.minRows` also plays a part.
-
         The threshold of the uniqueness ratio can also be set for all of the columns by making use of the `-init searchPanes.threshold` option.
 
         If you desire to force specific panes to show and other specific panes to hide without having searchPanes automatically work it out, make use of the `-init columns.searchPanes.show` option.
