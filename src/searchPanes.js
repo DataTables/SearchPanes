@@ -22,7 +22,8 @@ var SearchPanes = /** @class */ (function () {
             container: $('<div/>').addClass(this.classes.panes),
             options: $('<div/>').addClass(this.classes.container),
             panes: $('<div/>').addClass(this.classes.container),
-            title: $('<div/>').addClass(this.classes.title)
+            title: $('<div/>').addClass(this.classes.title),
+            wrapper: $('<div/>')
         };
         this.s = {
             colOpts: [],
@@ -63,18 +64,7 @@ var SearchPanes = /** @class */ (function () {
         });
         // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
-        var showMSG = true;
-        for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
-            var pane = _a[_i];
-            if (pane.displayed === true) {
-                showMSG = false;
-                this._attach();
-                break;
-            }
-        }
-        if (showMSG) {
-            this._attachMessage();
-        }
+        this._attachPaneContainer();
         DataTable.tables({ visible: true, api: true }).columns.adjust();
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
@@ -146,7 +136,7 @@ var SearchPanes = /** @class */ (function () {
      * returns the container node for the searchPanes
      */
     SearchPanes.prototype.getNode = function () {
-        return this.dom.container;
+        return this._attachPaneContainer();
     };
     /**
      * rebuilds all of the panes
@@ -163,7 +153,7 @@ var SearchPanes = /** @class */ (function () {
         }
         // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
-        this._attach();
+        this._attachPaneContainer();
         DataTable.tables({ visible: true, api: true }).columns.adjust();
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
@@ -207,8 +197,36 @@ var SearchPanes = /** @class */ (function () {
             $(pane.dom.container).appendTo(this.dom.panes);
         }
         $(this.dom.panes).appendTo(this.dom.container);
+        $(this.dom.container.appendTo(this.dom.wrapper));
+        return this.dom.wrapper;
     };
     SearchPanes.prototype._attachMessage = function () {
+        var emptyMessage = $('<div/>');
+        var message = this.s.dt.i18n('searchPanes.noPanesMsg', '');
+        emptyMessage[0].innerHTML = message;
+        emptyMessage.appendTo(this.dom.container);
+        if (message === '') {
+            $(this.dom.container).remove();
+            return this.dom.wrapper;
+        }
+        $(this.dom.container).appendTo(this.dom.wrapper);
+        return this.dom.wrapper;
+    };
+    SearchPanes.prototype._attachPaneContainer = function () {
+        var showMSG = true;
+        if (this.panes !== undefined) {
+            for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+                var pane = _a[_i];
+                if (pane.displayed === true) {
+                    showMSG = false;
+                    return this._attach();
+                    break;
+                }
+            }
+        }
+        if (showMSG) {
+            return this._attachMessage();
+        }
     };
     SearchPanes.version = '0.0.2';
     SearchPanes.classes = {

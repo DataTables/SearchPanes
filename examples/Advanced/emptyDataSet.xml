@@ -9,6 +9,11 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
+        language:{
+            searchPanes:{
+                noPanesMsg: 'There are no panes to display. :/'
+            }
+        }
     });
 });
 
@@ -22,6 +27,8 @@ $(document).ready(function() {
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows that searchPanes is not visible when no records are present in the table as default.
+
+
 
 ]]></info>
 

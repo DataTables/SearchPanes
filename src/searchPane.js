@@ -30,7 +30,6 @@ var SearchPane = /** @class */ (function () {
         }
         // Add extra elements to DOM object including clear and hide buttons
         this.layout = layout;
-        console.log(layout);
         var layVal = parseInt(layout.split('-')[1], 10);
         this.dom = {
             container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
