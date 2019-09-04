@@ -6,7 +6,7 @@
 
 	<type type="array">
 		<description>
-            the `-init searchPanes.panes` array takes an object for each new pane as elements. Each object contains a `header` property which holds the title of the pane. There is also a searchPanes object which holds options in the same form as `-init columns.searchPanes.options`
+            The `-init searchPanes.panes` array contains object defining each pane. Each object contains a `header` property which holds the title of the pane. There is also a searchPanes object which holds options in the same form as `-init columns.searchPanes.options`.
         </description>
 	</type>
 
@@ -18,20 +18,20 @@
 
         It operates in a similair way to  the `options` array in `-init columns.searchPanes.options`. With the addition of a `header` property to hold the title of the pane.
 
-        This is useful when you want to make cross column searches. Technically this would be possible by just adding an option to an already existing Pane but that may be confusing to the end user as they may think that that option only applied to the corresponding column and not the table as a whole.
+        This is useful when you want to make searches across columns. Technically this would be possible by just adding an option to an already existing Pane but that may confuse the end user as they may think the option only applied to the corresponding column and not the table as a whole.
         ]]>
 	</description>
 
-	<example title="Define custom pane"><![CDATA[
+	<example title="Define custom pane:"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:{
+        searchPanes: {
             panes: [
                 {
                     header:'custom',
-                    searchPanes:{
-                        options:[
+                    searchPanes: {
+                        options: [
                             {
                                 label:'Accountants in Tokyo',
                                 value: function(rowData, rowIdx){
@@ -43,7 +43,7 @@ $(document).ready(function() {
                 }
             ]
         },
-        dom: 'Sfrtip',
+        dom: 'Sfrtip'
     });
 });
 
