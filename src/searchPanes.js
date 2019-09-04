@@ -63,7 +63,18 @@ var SearchPanes = /** @class */ (function () {
         });
         // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
-        this._attach();
+        var showMSG = true;
+        for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
+            var pane = _a[_i];
+            if (pane.displayed === true) {
+                showMSG = false;
+                this._attach();
+                break;
+            }
+        }
+        if (showMSG) {
+            this._attachMessage();
+        }
         DataTable.tables({ visible: true, api: true }).columns.adjust();
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
@@ -196,6 +207,8 @@ var SearchPanes = /** @class */ (function () {
             $(pane.dom.container).appendTo(this.dom.panes);
         }
         $(this.dom.panes).appendTo(this.dom.container);
+    };
+    SearchPanes.prototype._attachMessage = function () {
     };
     SearchPanes.version = '0.0.2';
     SearchPanes.classes = {

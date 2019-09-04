@@ -123,7 +123,19 @@ export default class SearchPanes {
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
-		this._attach();
+
+		let showMSG = true;
+		for(let pane of this.panes){
+			if (pane.displayed === true) {
+				showMSG = false;
+				this._attach();
+				break;
+			}
+		}
+
+		if (showMSG) {
+			this._attachMessage();
+		}
 
 		(DataTable as any).tables({visible: true, api: true}).columns.adjust();
 
@@ -264,5 +276,9 @@ export default class SearchPanes {
 			$(pane.dom.container).appendTo(this.dom.panes);
 		}
 		$(this.dom.panes).appendTo(this.dom.container);
+	}
+
+	private _attachMessage(){
+		
 	}
 }

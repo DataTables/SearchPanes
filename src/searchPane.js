@@ -30,10 +30,11 @@ var SearchPane = /** @class */ (function () {
         }
         // Add extra elements to DOM object including clear and hide buttons
         this.layout = layout;
+        console.log(layout);
         var layVal = parseInt(layout.split('-')[1], 10);
         this.dom = {
             container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
-                (layVal < 7 ? layVal : layout.split('-')[0] + '-6')),
+                (layVal < 7 ? layout : layout.split('-')[0] + '-6')),
             topRow: $('<div/>').addClass(this.classes.topRow)
         };
         // Get options from user
@@ -47,6 +48,7 @@ var SearchPane = /** @class */ (function () {
             redraw: false,
             updating: false
         };
+        this.displayed = false;
         table = this.s.dt;
         this.selections = this.s.columns;
         var rowLength = table.columns().eq(0).toArray().length;
@@ -241,6 +243,7 @@ var SearchPane = /** @class */ (function () {
                 binsTotal = bins;
             }
             this.dom.container.addClass(this.classes.show);
+            this.displayed = true;
         }
         // If the varaince is accceptable then display the search pane
         this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP);
@@ -259,7 +262,7 @@ var SearchPane = /** @class */ (function () {
                     targets: 0,
                     // Accessing the private datatables property to set type based on the original table.
                     // This is null if not defined by the user, meaning that automatic type detection would take place
-                    type: table.settings()[0].aoColumns[this.s.index]._sManualType
+                    type: table.settings()[0].aoColumns[this.s.index] !== undefined ? table.settings()[0].aoColumns[this.s.index]._sManualType : null
                 },
                 {
                     className: 'dtsp-countColumn ' + this.classes.badgePill,

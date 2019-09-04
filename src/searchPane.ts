@@ -62,6 +62,7 @@ export default class SearchPane {
 	public selections;
 	public customPaneSettings;
 	public layout;
+	public displayed;
 
 	/**
 	 * Creates the panes, sets up the search function
@@ -95,10 +96,11 @@ export default class SearchPane {
 		}
 		// Add extra elements to DOM object including clear and hide buttons
 		this.layout = layout;
+		console.log(layout)
 		let layVal = parseInt(layout.split('-')[1], 10);
 		this.dom = {
 			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
-			(layVal < 7 ? layVal : layout.split('-')[0] + '-6')),
+			(layVal < 7 ? layout : layout.split('-')[0] + '-6')),
 			topRow: $('<div/>').addClass(this.classes.topRow),
 		};
 
@@ -114,6 +116,8 @@ export default class SearchPane {
 			redraw: false,
 			updating: false,
 		};
+
+		this.displayed = false;
 
 		table = this.s.dt;
 		this.selections = this.s.columns;
@@ -338,6 +342,7 @@ export default class SearchPane {
 			}
 
 			this.dom.container.addClass(this.classes.show);
+			this.displayed = true;
 		}
 
 		// If the varaince is accceptable then display the search pane
@@ -358,7 +363,7 @@ export default class SearchPane {
 					targets: 0,
 					// Accessing the private datatables property to set type based on the original table.
 					// This is null if not defined by the user, meaning that automatic type detection would take place
-					type: table.settings()[0].aoColumns[this.s.index]._sManualType,
+					type: table.settings()[0].aoColumns[this.s.index] !== undefined ? table.settings()[0].aoColumns[this.s.index]._sManualType: null,
 				},
 				{
 					className: 'dtsp-countColumn ' + this.classes.badgePill,
