@@ -449,13 +449,14 @@ export default class SearchPane {
 		let loadedFilter;
 		if (table.state.loaded()) {
 			loadedFilter = table.state.loaded();
+
+			this._reloadSelect(loadedFilter);
+
+			$(searchBox).val(state.search.search);
+
+			this.s.dtPane.column(0).order(state.order[0][0]);
+			this.s.dtPane.column(1).order(state.order[0][1]);
 		}
-		this._reloadSelect(loadedFilter);
-
-		$(searchBox).val(state.search.search);
-
-		this.s.dtPane.column(0).order(state.order[0][0]);
-		this.s.dtPane.column(1).order(state.order[0][1]);
 
 		// Declare timeout Variable
 		let t0;

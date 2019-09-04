@@ -28,14 +28,15 @@
     'use strict';
     var DataTable = $.fn.dataTable;
     $.extend(true, DataTable.SearchPane.classes, {
-        paneButton: 'secondary button',
         buttonGroup: 'secondary button-group',
+        disabledButton: 'disabled',
         dull: 'disabled',
-        table: 'unstriped stack',
-        show: 'col',
+        paneButton: 'secondary button',
+        pill: 'badge secondary',
         search: 'search',
         searchLabelCont: 'searchCont',
-        pill: 'badge secondary'
+        show: 'col',
+        table: 'unstriped stack'
     });
     $.extend(true, DataTable.SearchPanes.classes, {
         clearAll: 'clearAll button secondary',
