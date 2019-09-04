@@ -42,7 +42,7 @@ export default class SearchPanes {
 		filterChanged() {
 			return;
 		},
-		displayColumns: 3,
+		layout: 'columns-3',
 	};
 
 	public classes;
@@ -92,7 +92,7 @@ export default class SearchPanes {
 			.columns(this.c.columns)
 			.eq(0)
 			.each((idx) => {
-				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.displayColumns));
+				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout));
 			});
 
 		// If there is any extra custom panes defined then create panes for them too
@@ -101,7 +101,7 @@ export default class SearchPanes {
 			let paneLength = this.c.panes.length;
 			for (let i = 0; i < paneLength; i++) {
 				let id = rowLength + i;
-				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.displayColumns, this.c.panes[i]));
+				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
 			}
 		}
 

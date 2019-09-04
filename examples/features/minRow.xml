@@ -9,7 +9,7 @@ $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPanes: {
             minRows:10,
-            displayColumns:2,
+            layout: 'columns-2',
         },
         dom: 'Sfrtip',
     });
