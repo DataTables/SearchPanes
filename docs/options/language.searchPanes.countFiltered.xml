@@ -27,15 +27,15 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:{
-            viewTotal: true ,
+        searchPanes: {
+            viewTotal: true
         },
         dom: 'Sfrtip',
-        language:{
-            searchPanes:{
+        language: {
+            searchPanes: {
                 count: '{total} found',
                 countFiltered: '{shown} ({total})'
-            },
+            }
         }
     });
 });

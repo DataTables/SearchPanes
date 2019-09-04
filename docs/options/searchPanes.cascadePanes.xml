@@ -6,7 +6,7 @@
 
 	<type type="boolean">
 		<description>
-            By setting the `-init searchPanes.cascadePanes` option to true, when a selection is made the options in the other panes which have no values currently being shown in the table will be hidden in the relevant pane.
+            By setting the `-init searchPanes.cascadePanes` option to true, when a selection is made the options in the other panes which have no values currently being shown in the table hidden.
         </description>
 	</type>
 
@@ -16,18 +16,18 @@
 		<![CDATA[
         As standard, SearchPanes will display all of the options for that column throughout its operation. When `-init searchPanes.cascadePanes` is set to `true`, the panes will remove options which are no longer present in the currently displayed DataTable. The cascade action will occur when a selection or a deselection is made in one of the panes.
 
-		This is useful when dealing with large data sets with many different options as they are narrowed down accordingly as operation proceeds.
+		This is useful when dealing with large data sets with many different options as they are narrowed down accordingly as selections proceeds.
         ]]>
 	</description>
 
-	<example title="Enable Cascade Panes"><![CDATA[
+	<example title="Enable cascading panes:"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             cascadePanes: true
         },
-		dom: 'Sfrtip',
+		dom: 'Sfrtip'
     });
 });
 
