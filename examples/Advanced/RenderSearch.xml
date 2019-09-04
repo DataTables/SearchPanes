@@ -10,7 +10,7 @@ $(document).ready(function() {
         ajax: '../resources/objects.json',
         searchPanes:{
             columns:[2,5],
-			displayColumns: 2,
+			layout: 'columns-2',
         },
 		columnDefs:[{
 			searchPanes:{

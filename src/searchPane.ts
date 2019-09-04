@@ -10,7 +10,7 @@ export default class SearchPane {
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPane',
 		disabledButton: 'dtsp-disabledButton',
-		displayColumns: 'dtsp-displayColumns-',
+		layout: 'dtsp-',
 		dull: 'dtsp-dull',
 		hidden: 'dtsp-hidden',
 		hide: 'dtsp-hide',
@@ -62,7 +62,7 @@ export default class SearchPane {
 	public colExists;
 	public selections;
 	public customPaneSettings;
-	public displayColumns;
+	public layout;
 
 	/**
 	 * Creates the panes, sets up the search function
@@ -71,7 +71,7 @@ export default class SearchPane {
 	 * @param idx the index of the column for this pane
 	 * @returns {object} the pane that has been created, including the table and the index of the pane
 	 */
-	constructor(paneSettings, opts, idx, displayColumns, panes = {}) {
+	constructor(paneSettings, opts, idx, layout, panes = {}) {
 		// Check that the required version of DataTables is included
 		if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 			throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -95,10 +95,11 @@ export default class SearchPane {
 			this.customPaneSettings = panes;
 		}
 		// Add extra elements to DOM object including clear and hide buttons
-		this.displayColumns = displayColumns;
+		this.layout = layout;
+		let layVal = parseInt(layout.split('-')[1], 10);
 		this.dom = {
-			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.displayColumns +
-			(displayColumns < 7 ? displayColumns : 6)),
+			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
+			(layVal < 7 ? layVal : layout.split('-')[0] + '-6')),
 			topRow: $('<div/>').addClass(this.classes.topRow),
 		};
 
@@ -552,8 +553,9 @@ export default class SearchPane {
 		let lower;
 		$(this.dom.topRow).empty();
 		$(this.dom.topRow).addClass(this.classes.topRow);
+		let layVal = parseInt(this.layout.split('-')[1], 10)
 
-		if (this.displayColumns > 3) {
+		if (layVal > 3) {
 			$(this.dom.container).addClass(this.classes.smallGap);
 			$(this.dom.topRow).addClass(this.classes.subRowsContainer);
 			upper = $('<div/>').addClass(this.classes.subRows);

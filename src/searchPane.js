@@ -7,7 +7,7 @@ var SearchPane = /** @class */ (function () {
      * @param idx the index of the column for this pane
      * @returns {object} the pane that has been created, including the table and the index of the pane
      */
-    function SearchPane(paneSettings, opts, idx, displayColumns, panes) {
+    function SearchPane(paneSettings, opts, idx, layout, panes) {
         var _this = this;
         if (panes === void 0) { panes = {}; }
         // Check that the required version of DataTables is included
@@ -29,10 +29,11 @@ var SearchPane = /** @class */ (function () {
             this.customPaneSettings = panes;
         }
         // Add extra elements to DOM object including clear and hide buttons
-        this.displayColumns = displayColumns;
+        this.layout = layout;
+        var layVal = parseInt(layout.split('-')[1], 10);
         this.dom = {
-            container: $('<div/>').addClass(this.classes.container).addClass(this.classes.displayColumns +
-                (displayColumns < 7 ? displayColumns : 6)),
+            container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
+                (layVal < 7 ? layVal : layout.split('-')[0] + '-6')),
             topRow: $('<div/>').addClass(this.classes.topRow)
         };
         // Get options from user
@@ -432,7 +433,8 @@ var SearchPane = /** @class */ (function () {
         var lower;
         $(this.dom.topRow).empty();
         $(this.dom.topRow).addClass(this.classes.topRow);
-        if (this.displayColumns > 3) {
+        var layVal = parseInt(this.layout.split('-')[1], 10);
+        if (layVal > 3) {
             $(this.dom.container).addClass(this.classes.smallGap);
             $(this.dom.topRow).addClass(this.classes.subRowsContainer);
             upper = $('<div/>').addClass(this.classes.subRows);
@@ -1024,7 +1026,7 @@ var SearchPane = /** @class */ (function () {
         clearAll: 'dtsp-clearAll',
         container: 'dtsp-searchPane',
         disabledButton: 'dtsp-disabledButton',
-        displayColumns: 'dtsp-displayColumns-',
+        layout: 'dtsp-',
         dull: 'dtsp-dull',
         hidden: 'dtsp-hidden',
         hide: 'dtsp-hide',

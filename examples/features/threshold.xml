@@ -9,7 +9,7 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             threshold: 0.4,
-            displayColumns: 2,
+            layout: 'columns-2',
         },
         dom: 'Sfrtip',
         columnDefs:[

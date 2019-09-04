@@ -35,7 +35,7 @@ var SearchPanes = /** @class */ (function () {
             .columns(this.c.columns)
             .eq(0)
             .each(function (idx) {
-            _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.displayColumns));
+            _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.layout));
         });
         // If there is any extra custom panes defined then create panes for them too
         var rowLength = table.columns().eq(0).toArray().length;
@@ -43,7 +43,7 @@ var SearchPanes = /** @class */ (function () {
             var paneLength = this.c.panes.length;
             for (var i = 0; i < paneLength; i++) {
                 var id = rowLength + i;
-                this.panes.push(new SearchPane(paneSettings, opts, id, this.c.displayColumns, this.c.panes[i]));
+                this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
             }
         }
         // PreSelect any selections which have been defined using the preSelect option
@@ -229,7 +229,7 @@ var SearchPanes = /** @class */ (function () {
         filterChanged: function () {
             return;
         },
-        displayColumns: 3
+        layout: 'columns-3'
     };
     return SearchPanes;
 }());
