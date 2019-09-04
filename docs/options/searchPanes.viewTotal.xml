@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.viewTotal</name>
-	<summary>Set the value of the count column to change when searching</summary>
+	<summary>Update the count column when searching to show visible count</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="boolean">
 		<description>
-            By setting the `-init searchPanes.viewTotal` to true, when as search is applied to the table, the message in the count columns of the panes will change to represent the currently visible entries.
+            By setting the `-init searchPanes.viewTotal` to true, when a search is applied to the table, the message in the count columns of the panes will change to represent the currently visible entries.
         </description>
 	</type>
 
@@ -16,9 +16,9 @@
 		<![CDATA[
         By setting the `-init searchPanes.viewTotal` parameter to true, the message displayed in the count column will change when a search is applied to the DataTable.
 
-        As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place. When filtering is taking place the count column will display the number of entries that satisfy this condition currently on display followed by the total in the table which satisfy the condition in brackets.
+        As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is applied. When filtering is active the count column will display the number of entries that satisfy this condition currently on display followed in brackets by the total in the table which satisfy the condition.
 
-        This is useful for keeping track of which options actually have entries present in the table when it has been searched upon.
+        This is useful for seeing which options actually have entries present in the table when it has been searched upon.
 
         It is possible to adjust the messages shown both when searching is taking place and when it isn't, by using the `-init language.seearchPanes.count` and `-init language.searchPanes.countFiltered` options.
 
@@ -30,9 +30,9 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
-            viewTotal: true ,
+            viewTotal: true
         },
-        dom: 'Sfrtip',
+        dom: 'Sfrtip'
     });
 });
 

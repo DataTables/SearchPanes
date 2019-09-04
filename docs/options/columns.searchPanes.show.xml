@@ -6,19 +6,19 @@
 
 	<type type="boolean">
 		<description>
-            By setting the `-init columns.searchPanes.show` option to true for a column, a pane for that column will be shown even if the default calculations would not normally have created one for that column.
+            By setting the `-init columns.searchPanes.show` option to true for a column, a pane for that column will be shown even if the threshold calculations would reject it.
 
-			Equally, by setting the `init columns.searchPanes.show` option to be false for a column, a pane for that column will not be shown even if the default calculations would normally have created one for that column. 
+			Equally, by setting the `init columns.searchPanes.show` option to be false for a column, a pane for that column will not be regardless of the threshold calculations.
         </description>
 	</type>
 
 	<default value="undefined">
-        The default value for the `-init searchPanes.show` paramater is `-type undefined`. When this default value is in place, the internal calculations and validation will decide whether a pane should be shown for that row or not. See `-init searchPanes.thershold`, `-init columns.searchPanes.threshold` and `-init searchPanes.minRows` to alter these calculations.
+        The default value for the `-init searchPanes.show` paramater is `-type undefined`. When this default value is in place, the internal calculations and validation will decide whether a pane should be shown for that column. See `-init searchPanes.thershold` and `-init columns.searchPanes.threshold` to alter these calculations.
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will decide which columns to display a pane for by calculating a simple uniqueness ratio of unique values in that column to total number of entries in the table. For example if there are 100 rows in a table, and in a certain column there are 10 unique options, then the ratio is 0.1.
+        As standard, SearchPanes will decide which columns to display a pane for by calculating a simple uniqueness ratio of unique values in that column to the total number of entries in the table. For example if there are 100 rows in a table, and in a certain column there are 10 unique options, then the ratio is 0.1.
 		
-		If the calculated value is less than the default threshold for all of the panes then this column will have a pane (assuming that the threshold has not been altered for all or an individual row by either `-init searchPanes.thershold` or `-init columns.searchPanes.threshold`).
+		If the calculated value is less than the default threshold for all of the panes then this column will have a pane (assuming that the threshold has not been altered for all or an individual row by either `-init searchPanes.threshold` or `-init columns.searchPanes.threshold`).
 
 		The `-init columns.searchPanes.show` option is useful for removing this calculation from the process and effectively forcing a pane to either be shown or hidden.
 
@@ -52,6 +52,5 @@ $(document).ready(function() {
 
 <related>-init searchPanes.threshold</related>
 <related>-init columns.searchPanes.threshold</related>
-<related>-init searchPanes.minRows</related>
 
 </dt-option>

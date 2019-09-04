@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.insert</name>
-	<summary>Select where the panes are positioned on the page</summary>
+	<summary>Select where the panes are positioned</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
@@ -10,24 +10,22 @@
         </description>
 	</type>
 
-	<default value="undefined">
+	<default value="prepend">
         The default value for the `-init searchPanes.insert` paramater is 'prepend'. Meaning that as standard the panes will appear at the top of the DataTable.
 	<description>
 		<![CDATA[
         As standard, SearchPanes will be displayed above the DataTable. However if the value of `-init searchPanes.insert` is set to 'append' then they will be displayed below the DataTable.
-
-		This is useful for customising the Location of the panes on the page if that is what the programmer should require. 
         ]]>
 	</description>
 
-	<example title="Append panes to Table"><![CDATA[
+	<example title="Append panes to the table"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
-            insert: 'append',
+            insert: 'append'
         },
-		dom: 'Sfrtip',
+		dom: 'Sfrtip'
     });
 });
 

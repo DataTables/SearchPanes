@@ -11,14 +11,12 @@
 	</type>
 
 	<default value="false">
-        The default value for the `-init columns.searchPanes.hideCount` paramater is `false`. Meaning that as standard the count column will be included in the pane.
+        The default value for the `-init columns.searchPanes.hideCount` paramater is `false`, meaning that as standard the count column will be included in the pane.
 	<description>
 		<![CDATA[
         As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init columns.searchPanes.hideCount` is set to 'true' then the count column will no longer be displayed.
 
-		This is useful as a styling option for those that do not want to include the count column. 
-
-        The count column can be hidden for all of the panes by making use of the `-init searchPanes.hideCount`.
+        The count column can be hidden for all of the panes by making use of `-init searchPanes.hideCount`.
         ]]>
 	</description>
 
