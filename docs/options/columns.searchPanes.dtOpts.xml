@@ -29,18 +29,19 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
-        columnDefs:[
+        columnDefs: [
+             
             {
-                dtOpts:{
-                    searching:false,
-                    info: true,
+                searchPanes:{
+                    dtOpts:{
+                        info: true,
+                    }
                 },
-                targets[2]
-            }
-        }
+                targets: [2]
+            },
+        ]
     });
 });
-
 ]]></example>
 
 <related>-init searchPane.dtOpts</related>

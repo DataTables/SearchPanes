@@ -25,19 +25,18 @@
 	</description>
 
 	<example title="Alter searching and info of the Panes"><![CDATA[
-
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             dtOpts:{
-                searching:false,
-                info: true,
+                paging: true,
+                pagingType: 'numbers',
+                searching: false,
             },
         },
         dom: 'Sfrtip',
     });
 });
-
 ]]></example>
 
 <related>-init columns.searchPane.dtOpts</related>
