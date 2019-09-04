@@ -6,7 +6,7 @@
 
 	<type type="string">
 		<description>
-            By setting the `-init searchPanes.countWidth` option to a html value for width, the count  columns width will be adjusted to this. 
+            By setting the `-init searchPanes.countWidth` option to a html value for width, the count columns width will be adjusted to this. 
         </description>
 	</type>
 
@@ -27,9 +27,9 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
-            countWidth: '100px',
+            countWidth: '100px'
         },
-		dom: 'Sfrtip',
+		dom: 'Sfrtip'
     });
 });
 
