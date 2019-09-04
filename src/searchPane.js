@@ -240,16 +240,7 @@ var SearchPane = /** @class */ (function () {
             else {
                 binsTotal = bins;
             }
-            // Don't show the pane if there are too few rows for it to qualify,
-            // assuming it is not a custom pane or containing custom options
-            if (binLength < this.c.minRows && (colOpts.options === undefined
-                && (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
-                this.dom.container.addClass(this.classes.hidden);
-                return;
-            }
-            else {
-                this.dom.container.addClass(this.classes.show);
-            }
+            this.dom.container.addClass(this.classes.show);
         }
         // If the varaince is accceptable then display the search pane
         this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP);
@@ -265,7 +256,10 @@ var SearchPane = /** @class */ (function () {
                             data.substr(0, _this.c.dataLength) + '...' :
                             data;
                     },
-                    targets: 0
+                    targets: 0,
+                    // Accessing the private datatables property to set type based on the original table.
+                    // This is null if not defined by the user, meaning that automatic type detection would take place
+                    type: table.settings()[0].aoColumns[this.s.index]._sManualType
                 },
                 {
                     className: 'dtsp-countColumn ' + this.classes.badgePill,
@@ -1026,7 +1020,6 @@ var SearchPane = /** @class */ (function () {
         clearAll: 'dtsp-clearAll',
         container: 'dtsp-searchPane',
         disabledButton: 'dtsp-disabledButton',
-        layout: 'dtsp-',
         dull: 'dtsp-dull',
         hidden: 'dtsp-hidden',
         hide: 'dtsp-hide',
@@ -1035,6 +1028,7 @@ var SearchPane = /** @class */ (function () {
             label: 'dtsp-label',
             selected: 'dtsp-selected'
         },
+        layout: 'dtsp-',
         pane: {
             active: 'dtsp-filtering',
             container: 'dtsp-pane',
@@ -1065,7 +1059,6 @@ var SearchPane = /** @class */ (function () {
         countWidth: '50px',
         dataLength: 30,
         emptyMessage: '<i>No Data</i>',
-        minRows: 1,
         threshold: 0.6,
         viewTotal: false
     };

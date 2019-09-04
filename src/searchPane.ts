@@ -10,7 +10,6 @@ export default class SearchPane {
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPane',
 		disabledButton: 'dtsp-disabledButton',
-		layout: 'dtsp-',
 		dull: 'dtsp-dull',
 		hidden: 'dtsp-hidden',
 		hide: 'dtsp-hide',
@@ -19,6 +18,7 @@ export default class SearchPane {
 			label: 'dtsp-label',
 			selected: 'dtsp-selected'
 		},
+		layout: 'dtsp-',
 		pane: {
 			active: 'dtsp-filtering',
 			container: 'dtsp-pane',
@@ -337,16 +337,7 @@ export default class SearchPane {
 				binsTotal = bins;
 			}
 
-			// Don't show the pane if there are too few rows for it to qualify,
-			// assuming it is not a custom pane or containing custom options
-			if (colOpts.options === undefined
-				&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined)) {
-					this.dom.container.addClass(this.classes.hidden);
-					return;
-			}
-			else {
-				this.dom.container.addClass(this.classes.show);
-			}
+			this.dom.container.addClass(this.classes.show);
 		}
 
 		// If the varaince is accceptable then display the search pane
@@ -365,6 +356,9 @@ export default class SearchPane {
 							data;
 					},
 					targets: 0,
+					// Accessing the private datatables property to set type based on the original table.
+					// This is null if not defined by the user, meaning that automatic type detection would take place
+					type: table.settings()[0].aoColumns[this.s.index]._sManualType,
 				},
 				{
 					className: 'dtsp-countColumn ' + this.classes.badgePill,
@@ -552,7 +546,7 @@ export default class SearchPane {
 		let lower;
 		$(this.dom.topRow).empty();
 		$(this.dom.topRow).addClass(this.classes.topRow);
-		let layVal = parseInt(this.layout.split('-')[1], 10)
+		let layVal = parseInt(this.layout.split('-')[1], 10);
 
 		if (layVal > 3) {
 			$(this.dom.container).addClass(this.classes.smallGap);
