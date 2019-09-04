@@ -50,7 +50,6 @@ export default class SearchPane {
 		countWidth: '50px',
 		dataLength: 30,
 		emptyMessage: '<i>No Data</i>',
-		minRows: 1,
 		threshold: 0.6,
 		viewTotal: false,
 	};
@@ -340,8 +339,8 @@ export default class SearchPane {
 
 			// Don't show the pane if there are too few rows for it to qualify,
 			// assuming it is not a custom pane or containing custom options
-			if (binLength < this.c.minRows && (colOpts.options === undefined
-				&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined))) {
+			if (colOpts.options === undefined
+				&& (colOpts.searchPanes === undefined || colOpts.searchPanes.options === undefined)) {
 					this.dom.container.addClass(this.classes.hidden);
 					return;
 			}
