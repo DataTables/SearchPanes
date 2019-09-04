@@ -183,9 +183,9 @@ export default class SearchPane {
 		if (this.c.clear) {
 			clear[0].addEventListener('click', () => {
 				let searches = this.dom.container.getElementsByClassName(this.classes.search);
-				for(let i = 0; i< searches.length; i++){
-					$(searches[i]).val('');
-					$(searches[i]).trigger('input');
+				for (let search of searches) {
+					$(search).val('');
+					$(search).trigger('input');
 				}
 				this.clearPane();
 			});
@@ -384,7 +384,9 @@ export default class SearchPane {
 			paging: false,
 			scrollY: '200px',
 			select: true,
+			stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 		}, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}));
+		let state = this.s.dtPane.state.loaded();
 		$(dtP).addClass(this.classes.table);
 		// As the pane table is not in the document yet we must initialise select ourselves
 		($.fn.dataTable as any).select.init(this.s.dtPane);
@@ -450,6 +452,11 @@ export default class SearchPane {
 		}
 		this._reloadSelect(loadedFilter);
 
+		$(searchBox).val(state.search.search);
+
+		this.s.dtPane.column(0).order(state.order[0][0]);
+		this.s.dtPane.column(1).order(state.order[0][1]);
+
 		// Declare timeout Variable
 		let t0;
 		this.s.dtPane.on('user-select.dt', (e, _dt, type, cell, originalEvent) => {
@@ -478,9 +485,9 @@ export default class SearchPane {
 
 		clear[0].addEventListener('click', () => {
 			let searches = this.dom.container.find('.' + this.classes.search);
-			for (let i = 0; i< searches.length; i++) {
-				$(searches[i]).val('');
-				$(searches[i]).trigger('input');
+			for (let search of searches) {
+				$(search).val('');
+				$(search).trigger('input');
 			}
 			this.clearPane();
 		});
@@ -496,14 +503,17 @@ export default class SearchPane {
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dt', (e, settings, data) => {
 			let paneColumns = [];
+			let searchTerm;
 			if (this.s.dtPane !== undefined) {
 				paneColumns = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
+				searchTerm = searchBox[0].innerHTML;
 			}
 			if (data.searchPanes === undefined) {
 				data.searchPanes = [];
 			}
 			data.searchPanes.push({
 				id: this.s.index,
+				searchTerm,
 				selected: paneColumns,
 			});
 		});
@@ -563,7 +573,9 @@ export default class SearchPane {
 			(colOpts.dtOpts !== undefined &&
 			colOpts.dtOpts.searching === false)
 		) {
-			$(searchBox).attr('disabled', 'disabled').removeClass(this.classes.paneInputButton).addClass(this.classes.disabledButton);
+			$(searchBox).attr('disabled', 'disabled')
+				.removeClass(this.classes.paneInputButton)
+				.addClass(this.classes.disabledButton);
 		}
 
 		$(searchBox).appendTo(searchCont);
@@ -930,6 +942,7 @@ export default class SearchPane {
 		if (idx !== undefined) {
 			let table = this.s.dtPane;
 			let rows = table.rows({order: 'index'}).data().pluck('filter').toArray();
+			this.dom.searchBox.innerHTML = loadedFilter.searchPanes[idx].searchTerm;
 			for (let filter of loadedFilter.searchPanes[idx].selected) {
 				let id = rows.indexOf(filter);
 				if (id > -1) {

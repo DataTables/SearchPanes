@@ -108,9 +108,10 @@ var SearchPane = /** @class */ (function () {
         if (this.c.clear) {
             clear[0].addEventListener('click', function () {
                 var searches = _this.dom.container.getElementsByClassName(_this.classes.search);
-                for (var i = 0; i < searches.length; i++) {
-                    $(searches[i]).val('');
-                    $(searches[i]).trigger('input');
+                for (var _i = 0, searches_1 = searches; _i < searches_1.length; _i++) {
+                    var search = searches_1[_i];
+                    $(search).val('');
+                    $(search).trigger('input');
                 }
                 _this.clearPane();
             });
@@ -282,8 +283,10 @@ var SearchPane = /** @class */ (function () {
             info: false,
             paging: false,
             scrollY: '200px',
-            select: true
+            select: true,
+            stateSave: table.settings()[0].oFeatures.bStateSave ? true : false
         }, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}));
+        var state = this.s.dtPane.state.loaded();
         $(dtP).addClass(this.classes.table);
         // As the pane table is not in the document yet we must initialise select ourselves
         $.fn.dataTable.select.init(this.s.dtPane);
@@ -341,6 +344,9 @@ var SearchPane = /** @class */ (function () {
             loadedFilter = table.state.loaded();
         }
         this._reloadSelect(loadedFilter);
+        $(searchBox).val(state.search.search);
+        this.s.dtPane.column(0).order(state.order[0][0]);
+        this.s.dtPane.column(1).order(state.order[0][1]);
         // Declare timeout Variable
         var t0;
         this.s.dtPane.on('user-select.dt', function (e, _dt, type, cell, originalEvent) {
@@ -365,9 +371,10 @@ var SearchPane = /** @class */ (function () {
         });
         clear[0].addEventListener('click', function () {
             var searches = _this.dom.container.find('.' + _this.classes.search);
-            for (var i = 0; i < searches.length; i++) {
-                $(searches[i]).val('');
-                $(searches[i]).trigger('input');
+            for (var _i = 0, searches_2 = searches; _i < searches_2.length; _i++) {
+                var search = searches_2[_i];
+                $(search).val('');
+                $(search).trigger('input');
             }
             _this.clearPane();
         });
@@ -380,14 +387,17 @@ var SearchPane = /** @class */ (function () {
         // When saving the state store all of the selected rows for preselection next time around
         this.s.dt.on('stateSaveParams.dt', function (e, settings, data) {
             var paneColumns = [];
+            var searchTerm;
             if (_this.s.dtPane !== undefined) {
                 paneColumns = _this.s.dtPane.rows({ selected: true }).data().pluck('filter').toArray();
+                searchTerm = searchBox[0].innerHTML;
             }
             if (data.searchPanes === undefined) {
                 data.searchPanes = [];
             }
             data.searchPanes.push({
                 id: _this.s.index,
+                searchTerm: searchTerm,
                 selected: paneColumns
             });
         });
@@ -440,7 +450,9 @@ var SearchPane = /** @class */ (function () {
             this.c.dtOpts.searching === false) ||
             (colOpts.dtOpts !== undefined &&
                 colOpts.dtOpts.searching === false)) {
-            $(searchBox).attr('disabled', 'disabled').removeClass(this.classes.paneInputButton).addClass(this.classes.disabledButton);
+            $(searchBox).attr('disabled', 'disabled')
+                .removeClass(this.classes.paneInputButton)
+                .addClass(this.classes.disabledButton);
         }
         $(searchBox).appendTo(searchCont);
         if (this.classes.searchCont === 'ui icon input eight wide column') {
@@ -771,6 +783,7 @@ var SearchPane = /** @class */ (function () {
         if (idx !== undefined) {
             var table = this.s.dtPane;
             var rows = table.rows({ order: 'index' }).data().pluck('filter').toArray();
+            this.dom.searchBox.innerHTML = loadedFilter.searchPanes[idx].searchTerm;
             for (var _i = 0, _a = loadedFilter.searchPanes[idx].selected; _i < _a.length; _i++) {
                 var filter = _a[_i];
                 var id = rows.indexOf(filter);
