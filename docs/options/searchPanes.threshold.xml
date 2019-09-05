@@ -6,15 +6,15 @@
 
 	<type type="Decimal">
 		<description>
-            By setting the `-init searchPanes.threshold` option to an decimal number of value less than one and greater than 0 it is possible to alter the point at which the panes are displayed.
+            By setting the `-init searchPanes.threshold` option to a decimal value between 0 and 1 it is possible to alter when the panes are displayed.
         </description>
 	</type>
 
 	<default value="0.6">
-        The default value for the `-init searchPanes.threshold` paramater is `0.6`. When this default value is in place it will mean that columns where the ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
+        The default value for the `-init searchPanes.threshold` paramater is `0.6`. This default value means that columns with a ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
 	<description>
 		<![CDATA[
-        As standard columns must have a uniqueness ratio of 0.6 (ratio of different values throughout the column to the number of total rows).
+        As standard, columns must have a uniqueness ratio of 0.6. This is the ratio of different values throughout the column to the number of total rows. If all rows are unique, this be 1; as the value drops towards 0, this means values are more often repeated.
 
         By setting the `-init searchPanes.threshold` option to a different decimal value, the uniqueness ratio must be less than this value to display the pane.
 
@@ -22,7 +22,7 @@
 
         The threshold of the uniqueness ratio can also be set for individual columns by making use of the `-init columns.searchPanes.threshold` option.
 
-        If you desire to force specific panes to show and other specific panes to hide without having searchPanes automatically work it out, make use of the `-init columns.searchPanes.show` option.
+        If you want to force specific panes to always be present, or to always be hidden, use the `-init columns.searchPanes.show` option.
         ]]>
 	</description>
 
@@ -30,10 +30,10 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:{
-            threshold: 0.4,
+        searchPanes: {
+            threshold: 0.4
         },
-        dom: 'Sfrtip',
+        dom: 'Sfrtip'
     });
 });
 

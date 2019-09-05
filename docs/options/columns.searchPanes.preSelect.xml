@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.preSelect</name>
-	<summary>Set values to be pre-selected in a pane</summary>
+	<summary>Pre-selected options in a pane</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="Array">
@@ -25,12 +25,12 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    preSelect:['Edinburgh','London']
+                    preSelect: ['Edinburgh','London']
                 },
-                targets:[3],
+                targets:[3]
             }
         ]
     });

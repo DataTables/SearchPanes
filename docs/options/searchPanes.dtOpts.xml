@@ -16,7 +16,7 @@
 		<![CDATA[
         As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`.
 
-        By overwriting this value in the initialisation, the panes can be customised fully as much as DataTables can be. 
+        By overwriting this value in the initialisation, the panes can be customised as much as a standard DataTables. 
 
 		This functionality is useful as it allows all of the standard DataTables options and API Methods to be available to the panes.
 
@@ -24,17 +24,17 @@
         ]]>
 	</description>
 
-	<example title="Alter searching and info of the Panes"><![CDATA[
+	<example title="Alter searching and info of the Panes:"><![CDATA[
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:{
-            dtOpts:{
+        searchPanes: {
+            dtOpts: {
                 paging: true,
                 pagingType: 'numbers',
-                searching: false,
+                searching: false
             },
         },
-        dom: 'Sfrtip',
+        dom: 'Sfrtip'
     });
 });
 ]]></example>
