@@ -121,12 +121,10 @@ var SearchPane = /** @class */ (function () {
         return this;
     }
     /**
-     * Adjusts the width of the columns if the countWidth property is not the default.
+     * Adjusts the width of the columns
      */
     SearchPane.prototype.adjust = function () {
-        if (this.c.countWidth !== SearchPane.defaults.countWidth) {
-            this.s.dtPane.columns.adjust();
-        }
+        this.s.dtPane.columns.adjust();
     };
     /**
      * Rebuilds the panes from the start having deleted the old ones
@@ -1058,7 +1056,6 @@ var SearchPane = /** @class */ (function () {
         container: function (dt) {
             return dt.table().container();
         },
-        countWidth: '50px',
         dataLength: 30,
         emptyMessage: '<i>No Data</i>',
         threshold: 0.6,

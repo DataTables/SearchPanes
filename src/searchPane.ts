@@ -1,3 +1,5 @@
+import SearchPanes from "./searchPanes";
+
 let DataTable = $.fn.dataTable;
 export default class SearchPane {
 
@@ -47,7 +49,6 @@ export default class SearchPane {
 		container(dt) {
 			return dt.table().container();
 		},
-		countWidth: '50px',
 		dataLength: 30,
 		emptyMessage: '<i>No Data</i>',
 		threshold: 0.6,
@@ -198,12 +199,10 @@ export default class SearchPane {
 	}
 
 	/**
-	 * Adjusts the width of the columns if the countWidth property is not the default.
+	 * Adjusts the width of the columns
 	 */
 	public adjust() {
-		if (this.c.countWidth !== SearchPane.defaults.countWidth) {
 			this.s.dtPane.columns.adjust();
-		}
 	}
 
 	/**

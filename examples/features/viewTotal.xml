@@ -14,8 +14,8 @@ $(document).ready(function() {
         dom: 'Sfrtip',
         language:{
             searchPanes:{
-                count: '{total}',
-                countFiltered: '{shown} ({total})'
+                count: '{total} found',
+                countFiltered: '{shown} / {total}'
             },
         }
     });
