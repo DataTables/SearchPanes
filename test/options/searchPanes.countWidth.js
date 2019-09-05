@@ -18,24 +18,25 @@ describe('searchPanes - options - searchPanes.countWidth', function() {
 	// 	});
 
 	// DD-1094 - conuntWidth doesn't seem to have any effect
-		// dt.html('basic');
-		// it('Give an width', function() {
-		// 	table = $('#example').DataTable({
-		// 		dom: 'Sfrtip',
-		// 		searchPanes: {
-		// 			countWidth: '900px',
-		// 		},
-		// 		language:{
-		// 			searchPanes:{
-		// 				count: '{total} found',
-		// 				countFiltered: '{shown} ({total})'
-		// 			}
-		// 		}		
-		// 	});
+		dt.html('basic');
+		it('Give an width', function() {
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: {
+					countWidth: '900px',
+					viewTotal: true
+				},
+				language:{
+					searchPanes:{
+						count: 'XX {total} found',
+						countFiltered: 'XX {shown} ({total})'
+					}
+				}		
+			});
 
-		// 	$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-		// 	expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
-		// });
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
+		});
 
 
 	});
