@@ -77,6 +77,19 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 			checkVisible([true, false, true, false, false, false]);
 		});
 
+		dt.html('basic');
+		it('Decrease threshhold so no panes present', function() {
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: {
+					threshold: 0.1
+				}
+			});
+
+			expect($('div.dtsp-panesContainer').length).toBe(0);
+			expect($('div.dtsp-searchPane').length).toBe(0);
+		});
+
 		dt.html('empty');
 		it('Some rows are all the same - before init', function() {
 			for (let i = 0; i < 10; i++) {
@@ -106,41 +119,6 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		});
 
 		dt.html('empty');
-		it('Some rows are all the same - before init, with show', function() {
-			for (let i = 0; i < 10; i++) {
-				$('#example tbody').append(
-					'<tr><td>AAA</td><td>' +
-						(i % 6) +
-						'</td><td>' +
-						(i % 5) +
-						'</td><td>' +
-						(i % 4) +
-						'</td><td>' +
-						(i % 3) +
-						'</td><td>' +
-						(i % 2) +
-						'</td></tr>'
-				);
-			}
-
-			table = $('#example').DataTable({
-				dom: 'Sfrtip',
-				searchPanes: {
-					threshold: 0.4
-				},
-				columnDefs: [{
-					targets: 0,
-					searchPanes: {
-						show: true
-					}
-				}]
-
-			});
-
-			checkVisible([true, false, false, true, true, true]);
-		});
-
-		dt.html('empty');
 		it('Some rows are all the same - after init', function() {
 			table = $('#example').DataTable({
 				dom: 'Sfrtip',
@@ -150,7 +128,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 			});
 
 			for (let i = 0; i < 10; i++) {
-				table.row.add(['AAA', i%6, i%5, i%4, i%3, i%2]);
+				table.row.add(['AAA', i % 6, i % 5, i % 4, i % 3, i % 2]);
 			}
 
 			table.draw().searchPanes.rebuild();
@@ -181,13 +159,41 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 				searchPanes: {
 					threshold: 0.4
 				},
-				columnDefs: [{
-					targets: 0,
-					searchPanes: {
-						show: true
+				columnDefs: [
+					{
+						targets: 0,
+						searchPanes: {
+							show: true
+						}
 					}
-				}]
+				]
 			});
+
+			checkVisible([true, false, false, true, true, true]);
+		});
+
+		dt.html('empty');
+		it('Some rows are all the same - after init, with show', function() {
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: {
+					threshold: 0.4
+				},
+				columnDefs: [
+					{
+						targets: 0,
+						searchPanes: {
+							show: true
+						}
+					}
+				]
+			});
+
+			for (let i = 0; i < 10; i++) {
+				table.row.add(['AAA', i % 6, i % 5, i % 4, i % 3, i % 2]);
+			}
+
+			table.draw().searchPanes.rebuild();
 
 			checkVisible([true, false, false, true, true, true]);
 		});

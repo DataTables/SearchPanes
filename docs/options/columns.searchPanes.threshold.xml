@@ -31,14 +31,14 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
-        columnDefs:[
+        columnDefs: [
             {
-                searchPanes:{
-                    threshold: 0.99,
+                searchPanes: {
+                    threshold: 0.99
                 },
                 targets:[0]
-            },
-        ],
+            }
+        ]
     });
 });
 
