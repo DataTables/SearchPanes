@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="2">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            panes: [
+                {
+                    header:'Custom',
+                    searchPanes:{
+                        options:[
+                            {
+                                label:'Accountants from Tokyo',
+                                value: function(rowData, rowIdx){
+                                    return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+                                }
+                            }
+                        ]
+                    },
+                    dtOpts:{
+                        searching: false,
+                        order: [[1, 'desc']]
+                    }
+                }
+            ],
+            layout: 'columns-1',
+        },
+        columnDefs:[{
+            searchPanes:{
+                show: false
+            },
+            targets: ['_all']
+        }],
+        dom: 'Sfrtip',
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPanes">Only Custom Panes</title>
+
+<info><![CDATA[
+
+This is the SearchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates how to only display the custom panes.
+
+]]></info>
+
+</dt-example>

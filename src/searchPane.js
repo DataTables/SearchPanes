@@ -80,7 +80,6 @@ var SearchPane = /** @class */ (function () {
                     }
                 }
                 // For each item selected in the pane, check if it is available in the cell
-                var allow = true;
                 for (var _i = 0, _a = _this.selections; _i < _a.length; _i++) {
                     var colSelect = _a[_i];
                     if (Array.isArray(filter)) {
@@ -93,10 +92,9 @@ var SearchPane = /** @class */ (function () {
                             if (!_this.s.redraw) {
                                 _this.repopulatePane();
                             }
+                            return true;
                         }
-                        else {
-                            allow = false;
-                        }
+                        return false;
                     }
                     else {
                         if (filter === colSelect.filter) {
@@ -104,10 +102,9 @@ var SearchPane = /** @class */ (function () {
                         }
                     }
                 }
-                return allow;
             }
             else {
-                var allow = false;
+                var allow = true;
                 for (var _b = 0, _c = _this.selections; _b < _c.length; _b++) {
                     var colSelect = _c[_b];
                     if (Array.isArray(filter)) {
@@ -120,7 +117,6 @@ var SearchPane = /** @class */ (function () {
                             if (!_this.s.redraw) {
                                 _this.repopulatePane();
                             }
-                            allow = true;
                         }
                         else {
                             allow = false;
@@ -248,16 +244,19 @@ var SearchPane = /** @class */ (function () {
                 this.dom.container.addClass(this.classes.hidden);
                 return;
             }
+            else if (colOpts.show === true) {
+                this.displayed = true;
+            }
             arrayFilter = this._populatePane();
             bins = this._binData(this._flatten(arrayFilter));
             // Don't show the pane if there isn't enough variance in the data
             // colOpts.options is checked incase the options to restrict the choices are selected
             var binLength = Object.keys(bins).length;
             var uniqueRatio = this._uniqueRatio(binLength, table.rows()[0].length);
-            if ((colOpts.show === undefined && (colOpts.threshold === undefined ?
+            if (this.displayed === false && ((colOpts.show === undefined && (colOpts.threshold === undefined ?
                 uniqueRatio > this.c.threshold :
                 uniqueRatio > colOpts.threshold))
-                || (colOpts.show !== true && binLength <= 1)) {
+                || (colOpts.show !== true && binLength <= 1))) {
                 this.dom.container.addClass(this.classes.hidden);
                 return;
             }
@@ -271,6 +270,9 @@ var SearchPane = /** @class */ (function () {
                 binsTotal = bins;
             }
             this.dom.container.addClass(this.classes.show);
+            this.displayed = true;
+        }
+        else {
             this.displayed = true;
         }
         // If the varaince is accceptable then display the search pane
@@ -290,7 +292,9 @@ var SearchPane = /** @class */ (function () {
                     targets: 0,
                     // Accessing the private datatables property to set type based on the original table.
                     // This is null if not defined by the user, meaning that automatic type detection would take place
-                    type: table.settings()[0].aoColumns[this.s.index] !== undefined ? table.settings()[0].aoColumns[this.s.index]._sManualType : null
+                    type: table.settings()[0].aoColumns[this.s.index] !== undefined ?
+                        table.settings()[0].aoColumns[this.s.index]._sManualType :
+                        null
                 },
                 {
                     className: 'dtsp-countColumn ' + this.classes.badgePill,
