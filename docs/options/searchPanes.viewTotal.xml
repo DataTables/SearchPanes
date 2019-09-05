@@ -20,7 +20,7 @@
 
         This is useful for seeing which options actually have entries present in the table when it has been searched upon.
 
-        It is possible to adjust the messages shown both when searching is taking place and when it isn't, by using the `-init language.seearchPanes.count` and `-init language.searchPanes.countFiltered` options.
+        It is possible to adjust the messages shown both when searching is taking place and when it isn't, by using the `-init language.seearchPanes.count` and `-init language.searchPanes.countFiltered` options. The `-init language.searchPanes.countFiltered` message will only be shown when `-init searchPanes.viewtotal` is set to true, otherwise only `-init language.seearchPanes.count` will be shown.
 
         ]]>
 	</description>

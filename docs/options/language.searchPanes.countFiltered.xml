@@ -20,6 +20,8 @@
 
         Both of the above strings can be included in the count message although they will be the same when no filtering is taking place.
 
+        This message will not be displayed if `-init searchPanes.viewTotal` is not set to be `true`.
+
         ]]>
 	</description>
 

@@ -19,6 +19,8 @@
 		The internals of searchPanes replace 2 strings when creating the output for the count column. The first is `{shown}`, this is the count for each different value that is currently being displayed in the DataTable. The other is `{total}`, this is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will both be replaced by the same value.
 
         Both of the above strings can be included in the count message although they will be the same when no filtering is taking place.
+
+        This message will be shown regardless of the value of `-init searchPanes.viewTotal`, although it will only change to the message in `-init language.searchPanes.countFiltered` when `-init searchPanes.viewTotal` is true.
         ]]>
 	</description>
 
