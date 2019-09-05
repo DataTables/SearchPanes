@@ -204,6 +204,7 @@ var SearchPanes = /** @class */ (function () {
         var emptyMessage = $('<div/>');
         var message = this.s.dt.i18n('searchPanes.noPanesMsg', '');
         emptyMessage[0].innerHTML = message;
+        $(this.dom.container).empty();
         emptyMessage.appendTo(this.dom.container);
         if (message === '') {
             $(this.dom.container).remove();

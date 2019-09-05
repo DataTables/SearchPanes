@@ -79,29 +79,60 @@ var SearchPane = /** @class */ (function () {
                         filter = filter.toArray();
                     }
                 }
-            }
-            // For each item selected in the pane, check if it is available in the cell
-            for (var _i = 0, _a = _this.selections; _i < _a.length; _i++) {
-                var colSelect = _a[_i];
-                if (Array.isArray(filter)) {
-                    if (filter.indexOf(colSelect.filter) !== -1) {
-                        return true;
-                    }
-                }
-                else if (typeof colSelect.filter === 'function') {
-                    if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
-                        if (!_this.s.redraw) {
-                            _this.repopulatePane();
+                // For each item selected in the pane, check if it is available in the cell
+                var allow = true;
+                for (var _i = 0, _a = _this.selections; _i < _a.length; _i++) {
+                    var colSelect = _a[_i];
+                    if (Array.isArray(filter)) {
+                        if (filter.indexOf(colSelect.filter) !== -1) {
+                            return true;
                         }
-                        return true;
                     }
-                    return false;
-                }
-                else {
-                    if (filter === colSelect.filter) {
-                        return true;
+                    else if (typeof colSelect.filter === 'function') {
+                        if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+                            if (!_this.s.redraw) {
+                                _this.repopulatePane();
+                            }
+                        }
+                        else {
+                            allow = false;
+                        }
+                    }
+                    else {
+                        if (filter === colSelect.filter) {
+                            return true;
+                        }
                     }
                 }
+                return allow;
+            }
+            else {
+                var allow = false;
+                for (var _b = 0, _c = _this.selections; _b < _c.length; _b++) {
+                    var colSelect = _c[_b];
+                    if (Array.isArray(filter)) {
+                        if (filter.indexOf(colSelect.filter) !== -1) {
+                            return true;
+                        }
+                    }
+                    else if (typeof colSelect.filter === 'function') {
+                        if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+                            if (!_this.s.redraw) {
+                                _this.repopulatePane();
+                            }
+                            allow = true;
+                        }
+                        else {
+                            allow = false;
+                        }
+                    }
+                    else {
+                        if (filter === colSelect.filter) {
+                            return true;
+                        }
+                    }
+                }
+                return allow;
             }
             return false;
         });

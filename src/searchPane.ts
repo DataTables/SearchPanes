@@ -153,30 +153,60 @@ export default class SearchPane {
 							filter = (filter as any).toArray();
 						}
 					}
-				}
-				// For each item selected in the pane, check if it is available in the cell
-				for (let colSelect of this.selections) {
-					if (Array.isArray(filter)) {
-						if (filter.indexOf(colSelect.filter) !== -1) {
-							return true;
-						}
-					}
-					else if (typeof colSelect.filter === 'function') {
-						if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
-							if (!this.s.redraw) {
-								this.repopulatePane();
+					// For each item selected in the pane, check if it is available in the cell
+					let allow = true;
+					for (let colSelect of this.selections) {
+						if (Array.isArray(filter)) {
+							if (filter.indexOf(colSelect.filter) !== -1) {
+								return true;
 							}
-							return true;
 						}
-						return false;
-					}
-					else {
-						if (filter === colSelect.filter) {
-							return true;
+						else if (typeof colSelect.filter === 'function') {
+							if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+								if (!this.s.redraw) {
+									this.repopulatePane();
+								}
+							}
+							else {
+								allow = false;
+							}
+						}
+						else {
+							if (filter === colSelect.filter) {
+								return true;
+							}
 						}
 					}
-
+					return allow;
 				}
+				else {
+					let allow = false;
+					for (let colSelect of this.selections) {
+						if (Array.isArray(filter)) {
+							if (filter.indexOf(colSelect.filter) !== -1) {
+								return true;
+							}
+						}
+						else if (typeof colSelect.filter === 'function') {
+							if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+								if (!this.s.redraw) {
+									this.repopulatePane();
+								}
+								allow = true;
+							}
+							else {
+								allow = false;
+							}
+						}
+						else {
+							if (filter === colSelect.filter) {
+								return true;
+							}
+						}
+					}
+					return allow;
+				}
+				
 				return false;
 			}
 		);
