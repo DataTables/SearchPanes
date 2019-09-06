@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="11">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        searchPanes:{
+            threshold: 1,
+            layout: 'columns-3',
+        },
+        dom: 'Sfrtip',
+        columnDefs: [
+            { type: 'ip-address', targets:1 }
+        ]
+    });
+
+});
+
+]]>
+</js>
+<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
+
+<title lib="searchPanes">Abstract Types</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates how to allow the panes to sort correctly for abstract data Types. Simply include the plugin 
+for the column in the main DataTable and the pane will use the same type for its column. 
+
+]]></info>
+
+<custom-table>
+	<table id="example" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>Server Name</th>
+				<th>IP Address</th>
+                <th>All the Same</th>
+			</tr>
+		</thead>
+        <tbody>
+            <tr>
+                <td>Zeus</td>
+                <td>90.4.3.2</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Hermes</td>
+                <td>90.321.1.6</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Hades</td>
+                <td>2.6.6.6</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Posiedon</td>
+                <td>0.1.2.3</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Athena</td>
+                <td>172.4.12.1111</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Bill</td>
+                <td>172.29.0.162</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Bob</td>
+                <td>172.29.0.162</td>
+                <td>All the Same</td>
+            </tr>
+            <tr>
+                <td>Ben</td>
+                <td>172.29.0.162</td>
+                <td>All the Same</td>
+            </tr>
+        </tbody>
+		<tfoot>
+			<tr>
+				<th>Server Name</th>
+				<th>IP Address</th>
+                <td>All the Same</td>
+			</tr>
+		</tfoot>
+	</table>
+</custom-table>
+
+</dt-example>

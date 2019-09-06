@@ -284,6 +284,12 @@ var SearchPane = /** @class */ (function () {
                 {
                     data: 'display',
                     render: function (data, type, row) {
+                        if (type === 'sort') {
+                            return row.sort;
+                        }
+                        else if (type === 'type') {
+                            return row.type;
+                        }
                         return !_this.c.dataLength ?
                             data : data.length > _this.c.dataLength ?
                             data.substr(0, _this.c.dataLength) + '...' :
@@ -345,7 +351,9 @@ var SearchPane = /** @class */ (function () {
                             display: dataFilter[i].display !== '' ? dataFilter[i].display : this.c.emptyMessage,
                             filter: dataFilter[i].filter,
                             shown: bins[dataFilter[i].filter],
-                            total: bins[dataFilter[i].filter]
+                            total: bins[dataFilter[i].filter],
+                            sort: dataFilter[i].sort,
+                            type: dataFilter[i].type
                         });
                         if (this.s.colOpts.preSelect !== undefined && this.s.colOpts.preSelect.indexOf(dataFilter[i].filter) !== -1) {
                             row.select();
@@ -570,7 +578,9 @@ var SearchPane = /** @class */ (function () {
             if (prev.indexOf(filterEl.filter) === -1) {
                 data.push({
                     display: filterEl.display,
-                    filter: filterEl.filter
+                    filter: filterEl.filter,
+                    sort: filterEl.sort,
+                    type: filterEl.type
                 });
                 prev.push(filterEl.filter);
             }
@@ -590,7 +600,9 @@ var SearchPane = /** @class */ (function () {
                 hideCount: false,
                 search: 'filter',
                 show: undefined,
-                threshold: undefined
+                sort: 'sort',
+                threshold: undefined,
+                type: 'type'
             },
             preSelect: undefined
         };
@@ -688,7 +700,9 @@ var SearchPane = /** @class */ (function () {
                 hideCount: false,
                 search: 'filter',
                 show: undefined,
-                threshold: undefined
+                sort: 'sort',
+                threshold: undefined,
+                type: 'type'
             },
             preSelect: undefined
         };
@@ -765,6 +779,12 @@ var SearchPane = /** @class */ (function () {
         var display = typeof (colOpts.orthogonal) === 'string'
             ? cell.render(colOpts.orthogonal)
             : cell.render(colOpts.orthogonal.display);
+        var sort = cell.render(colOpts.orthogonal) === 'string'
+            ? cell.render(colOpts.orthogonal)
+            : cell.render(colOpts.orthogonal.sort);
+        var type = cell.render(colOpts.orthogonal) === 'string'
+            ? cell.render(colOpts.orthogonal)
+            : cell.render(colOpts.orthogonal.type);
         // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
         if (Array.isArray(filter) || filter instanceof DataTable.Api) {
             if (classes.arrayCols.indexOf(idx) === -1) {
@@ -778,7 +798,9 @@ var SearchPane = /** @class */ (function () {
                 for (var i = 0; i < filter.length; i++) {
                     arrayFilter.push({
                         display: display[i],
-                        filter: filter[i]
+                        filter: filter[i],
+                        sort: sort,
+                        type: type
                     });
                 }
             }
@@ -789,7 +811,9 @@ var SearchPane = /** @class */ (function () {
         else {
             arrayFilter.push({
                 display: display,
-                filter: filter
+                filter: filter,
+                sort: sort,
+                type: type
             });
         }
     };
@@ -916,7 +940,9 @@ var SearchPane = /** @class */ (function () {
                                         : '0',
                                 total: this_1.c.viewTotal
                                     ? String(binsTotal[dataP.filter])
-                                    : bins[dataP.filter]
+                                    : bins[dataP.filter],
+                                sort: dataP.sort,
+                                type: dataP.type
                             });
                         }
                         // Find out if the filter was selected in the previous search, if so select it and remove from array.
@@ -992,7 +1018,9 @@ var SearchPane = /** @class */ (function () {
                         display: element.filter,
                         filter: element.filter,
                         shown: binsTotal[element.filter],
-                        total: binsTotal[element.filter]
+                        total: binsTotal[element.filter],
+                        sort: element.sort,
+                        type: element.type
                     });
                 }
             }

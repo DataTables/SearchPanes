@@ -383,6 +383,12 @@ export default class SearchPane {
 				{
 					data: 'display',
 					render: (data, type, row) => {
+						if (type === 'sort') {
+							return row.sort;
+						}
+						else if (type === 'type') {
+							return row.type;
+						}
 						return !this.c.dataLength ?
 							data : data.length > this.c.dataLength ?
 							data.substr(0, this.c.dataLength) + '...' :
@@ -448,6 +454,8 @@ export default class SearchPane {
 							filter: dataFilter[i].filter,
 							shown: bins[dataFilter[i].filter],
 							total: bins[dataFilter[i].filter],
+							sort: dataFilter[i].sort,
+							type: dataFilter[i].type
 						});
 						if (this.s.colOpts.preSelect !== undefined && this.s.colOpts.preSelect.indexOf(dataFilter[i].filter) !== -1) {
 							row.select();
@@ -704,7 +712,9 @@ export default class SearchPane {
 			if (prev.indexOf(filterEl.filter) === -1) {
 				data.push({
 					display: filterEl.display,
-					filter: filterEl.filter
+					filter: filterEl.filter,
+					sort: filterEl.sort,
+					type: filterEl.type
 				});
 				prev.push(filterEl.filter);
 			}
@@ -725,7 +735,9 @@ export default class SearchPane {
 				hideCount: false,
 				search: 'filter',
 				show: undefined,
+				sort: 'sort',
 				threshold: undefined,
+				type: 'type'
 			},
 			preSelect: undefined,
 		};
@@ -830,7 +842,9 @@ export default class SearchPane {
 				hideCount: false,
 				search: 'filter',
 				show: undefined,
+				sort: 'sort',
 				threshold: undefined,
+				type: 'type'
 			},
 			preSelect: undefined,
 		};
@@ -917,6 +931,14 @@ export default class SearchPane {
 		? cell.render(colOpts.orthogonal)
 		: cell.render(colOpts.orthogonal.display);
 
+		let sort = cell.render(colOpts.orthogonal) === 'string'
+		? cell.render(colOpts.orthogonal)
+		: cell.render(colOpts.orthogonal.sort);
+
+		let type = cell.render(colOpts.orthogonal) === 'string'
+		? cell.render(colOpts.orthogonal)
+		: cell.render(colOpts.orthogonal.type);
+
 		// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 		if (Array.isArray(filter) || filter instanceof DataTable.Api) {
 			if (classes.arrayCols.indexOf(idx) === -1) {
@@ -934,7 +956,9 @@ export default class SearchPane {
 					arrayFilter.push({
 
 						display: display[i],
-						filter: filter[i]
+						filter: filter[i],
+						sort,
+						type
 					});
 				}
 			}
@@ -947,7 +971,9 @@ export default class SearchPane {
 
 			arrayFilter.push({
 				display,
-				filter
+				filter,
+				sort,
+				type
 			});
 		}
 	}
@@ -1048,7 +1074,6 @@ export default class SearchPane {
 			// If it is not a custom pane
 			if (this.colExists) {
 				arrayFilter = this._populatePane();
-
 				bins = this._binData(this._flatten(arrayFilter));
 				this._findUnique(data, arrayFilter);
 				// If the viewTotal option is selected then find the totals for the table
@@ -1085,6 +1110,8 @@ export default class SearchPane {
 								total: this.c.viewTotal
 									? String(binsTotal[dataP.filter])
 									: bins[dataP.filter],
+								sort: dataP.sort,
+								type: dataP.type
 							});
 						}
 
@@ -1155,6 +1182,8 @@ export default class SearchPane {
 						filter: element.filter,
 						shown : binsTotal[element.filter],
 						total: binsTotal[element.filter],
+						sort: element.sort,
+						type: element.type
 					});
 				}
 			}

@@ -12,6 +12,13 @@ $(document).ready(function() {
             columns: [5],
             layout: 'columns-1',
         },
+        columnDefs:[
+            {
+                searchPanes:{
+                    show: true,
+                },
+                targets: [5],
+            }],
         dom: 'Sfrtip',
         columns: [
 			{ data: null, render: function ( data, type, row ) {
@@ -25,17 +32,17 @@ $(document).ready(function() {
 			{ 
 				data: "salary", 
 				render: function(data, type, row){
+                    if(type === 'sort' || type === 'type'){
+                        return row.salary;
+                    }
                     if(row.salary <= 200000){
                         return "Low";
                     }
                     else if (row.salary <=800000){
                         return "Medium";
                     }
-                    else if (row.salary > 800000){
+                    else{
                         return "High";
-                    }
-                    else {
-                        return "Other";
                     }
                 } 
 			}
