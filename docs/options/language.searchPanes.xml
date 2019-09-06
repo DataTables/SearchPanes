@@ -20,17 +20,17 @@
         ]]>
 	</description>
 
-	<example title="Alter title messages"><![CDATA[
+	<example title="Alter title messages:"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
         language: {
             searchPanes: {
-                title:{
+                title: {
                     _: 'Filters Selected - %d',
                     0: 'No Filters Selected',
-                    1: 'One Filter Selected',
+                    1: 'One Filter Selected'
                 }
             }
         }
@@ -39,38 +39,19 @@ $(document).ready(function() {
 
 ]]></example>
 
-<example title="Change messages for viewTotal"><![CDATA[
+<example title="Change messages for viewTotal:"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
-            viewTotal: true ,
+            viewTotal: true
         },
         dom: 'Sfrtip',
-        language:{
-            searchPanes:{
+        language: {
+            searchPanes: {
                 count: '{total} found',
                 countFiltered: '{shown} ({total})'
-            },
-        }
-    });
-});
-
-]]></example>
-
-<example title="Change messages for viewTotal"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            viewTotal: true ,
-        },
-        dom: 'Sfrtip',
-        language:{
-            searchPanes:{
-                count: '{total} found',
-                countFiltered: '{total} ({total})'
-            },
+            }
         }
     });
 });
