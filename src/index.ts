@@ -170,7 +170,6 @@ import SearchPanes from './searchPanes';
 	function _init(settings) {
 		let api = new DataTable.Api(settings);
 		let opts = api.init().searchPanes || DataTable.defaults.searchPanes;
-		console.log("_init")
 		return new SearchPanes(api, opts).getNode();
 	}
 

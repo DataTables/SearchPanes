@@ -14,13 +14,13 @@ $(document).ready(function() {
         dom: 'Sfrtip',
     });
 
+    dt.cell(2,2).data('');
+    dt.cell(4,2).data('Edi');
+    dt.cell(6,2).data('');
     dt.cell(2,3).data('');
-    dt.cell(4,3).data('Edi');
-    dt.cell(6,3).data('');
-    dt.cell(2,4).data('');
     console.log("rebuild")
     dt.searchPanes.repopulatePane(3);
-    dt.searchPanes.repopulatePane(4);
+    dt.searchPanes.repopulatePane(2);
 });
 
 ]]>

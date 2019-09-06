@@ -200,6 +200,29 @@ export default class SearchPane {
 					}
 					return allow;
 				}
+				else if (!this.colExists) {
+					for (let colSelect of this.selections) {
+						if (Array.isArray(filter)) {
+							if (filter.indexOf(colSelect.filter) !== -1) {
+								return true;
+							}
+						}
+						else if (typeof colSelect.filter === 'function') {
+							if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+								if (!this.s.redraw) {
+									this.repopulatePane();
+								}
+								return true;
+							}
+						}
+						else {
+							if (filter === colSelect.filter) {
+								return true;
+							}
+						}
+					}
+					return false;
+				}
 
 				return false;
 			}
@@ -1109,14 +1132,14 @@ export default class SearchPane {
 						// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 						// Do this also if the viewTotal option has been selected and cascadePanes has not
 						if ((bins[dataP.filter] !== undefined && this.c.cascadePanes) || !this.c.cascadePanes) {
-							this._addRow(
+							row = this._addRow(
 								dataP.display,
 								dataP.filter,
 								!this.c.viewTotal
 								? bins[dataP.filter]
 								: bins[dataP.filter] !== undefined
 									? bins[dataP.filter]
-									: '0', 
+									: '0',
 								this.c.viewTotal
 								? String(binsTotal[dataP.filter])
 								: bins[dataP.filter],
@@ -1251,13 +1274,13 @@ export default class SearchPane {
 		this.s.updating = false;
 	}
 
-	private _addRow(display, filter, shown, total, sort, type){
+	private _addRow(display, filter, shown, total, sort, type) {
 		return this.s.dtPane.row.add({
 			display: display !== '' ? display : this.c.emptyMessage,
 			filter,
 			shown,
 			total,
-			sort,
+			sort: sort !== '' ? sort : this.c.emptyMessage,
 			type
 		});
 	}

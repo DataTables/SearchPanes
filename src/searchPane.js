@@ -130,6 +130,30 @@ var SearchPane = /** @class */ (function () {
                 }
                 return allow;
             }
+            else if (!_this.colExists) {
+                for (var _d = 0, _e = _this.selections; _d < _e.length; _d++) {
+                    var colSelect = _e[_d];
+                    if (Array.isArray(filter)) {
+                        if (filter.indexOf(colSelect.filter) !== -1) {
+                            return true;
+                        }
+                    }
+                    else if (typeof colSelect.filter === 'function') {
+                        if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+                            if (!_this.s.redraw) {
+                                _this.repopulatePane();
+                            }
+                            return true;
+                        }
+                    }
+                    else {
+                        if (filter === colSelect.filter) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
             return false;
         });
         this.buildPane();
@@ -926,7 +950,7 @@ var SearchPane = /** @class */ (function () {
                         // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
                         // Do this also if the viewTotal option has been selected and cascadePanes has not
                         if ((bins[dataP.filter] !== undefined && this_1.c.cascadePanes) || !this_1.c.cascadePanes) {
-                            this_1._addRow(dataP.display, dataP.filter, !this_1.c.viewTotal
+                            row = this_1._addRow(dataP.display, dataP.filter, !this_1.c.viewTotal
                                 ? bins[dataP.filter]
                                 : bins[dataP.filter] !== undefined
                                     ? bins[dataP.filter]
@@ -1063,7 +1087,7 @@ var SearchPane = /** @class */ (function () {
             filter: filter,
             shown: shown,
             total: total,
-            sort: sort,
+            sort: sort !== '' ? sort : this.c.emptyMessage,
             type: type
         });
     };
