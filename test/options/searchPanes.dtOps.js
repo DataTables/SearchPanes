@@ -20,8 +20,8 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 			$('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').val('Developer');
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').val()).toBe('Developer');
 
-			// TK COLIN can't get the search happening, have asked out!
-			// expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Developer');
+			$($('div.dtsp-searchPane:eq(1) div.dtsp-topRow input')).trigger('input');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Developer');
 		});
 		it('... and you can search with API', function() {
 			$('div.dtsp-searchPane:eq(1) table')

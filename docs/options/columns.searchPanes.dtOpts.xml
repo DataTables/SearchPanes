@@ -30,15 +30,14 @@ $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
         columnDefs: [
-             
             {
-                searchPanes:{
-                    dtOpts:{
-                        info: true,
+                searchPanes: {
+                    dtOpts: {
+                        info: true
                     }
                 },
                 targets: [2]
-            },
+            }
         ]
     });
 });

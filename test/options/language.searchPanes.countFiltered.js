@@ -53,8 +53,7 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			// DD=1103
-			//expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 2 test 2');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 2 test 2');
 		});
 
 		dt.html('basic');
