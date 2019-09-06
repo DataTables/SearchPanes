@@ -139,7 +139,7 @@ export default class SearchPane {
 				}
 
 				let filter: string | string[] = '';
-				if (this.colExists) {
+				if (this.colExists && colOpts.combiner === 'or') {
 					// Get the current filtered data
 					filter = searchData[idx];
 					if (colOpts.orthogonal.filter !== 'filter') {
@@ -165,7 +165,6 @@ export default class SearchPane {
 								}
 								return true;
 							}
-							return false;
 						}
 						else {
 							if (filter === colSelect.filter) {
@@ -173,8 +172,9 @@ export default class SearchPane {
 							}
 						}
 					}
+					return false;
 				}
-				else {
+				else if (colOpts.combiner === 'and') {
 					let allow = true;
 					for (let colSelect of this.selections) {
 						if (Array.isArray(filter)) {
@@ -449,21 +449,21 @@ export default class SearchPane {
 			for (let i = 0, ien = dataFilter.length; i < ien; i++) {
 				if (dataFilter[i]) {
 					if (bins[dataFilter[i].filter] !== undefined || !this.c.cascadePanes) {
-						let row = this.s.dtPane.row.add({
-							display: dataFilter[i].display !== '' ? dataFilter[i].display : this.c.emptyMessage,
-							filter: dataFilter[i].filter,
-							shown: bins[dataFilter[i].filter],
-							total: bins[dataFilter[i].filter],
-							sort: dataFilter[i].sort,
-							type: dataFilter[i].type
-						});
+						let row = this._addRow(
+							dataFilter[i].display,
+							dataFilter[i].filter,
+							bins[dataFilter[i].filter],
+							bins[dataFilter[i].filter],
+							dataFilter[i].sort,
+							dataFilter[i].type
+						);
 						if (this.s.colOpts.preSelect !== undefined && this.s.colOpts.preSelect.indexOf(dataFilter[i].filter) !== -1) {
 							row.select();
 						}
 					}
 				}
 				else {
-					this.s.dtPane.row.add({filter: this.c.emptyMessage, shown: count, total: count, display: this.c.emptyMessage});
+					this._addRow(this.c.emptyMessage, count, count, this.c.emptyMessage, this.c.emptyMessage, this.c.emptyMessage);
 				}
 			}
 		}
@@ -781,6 +781,8 @@ export default class SearchPane {
 				filter: typeof comp.value === 'function' ? comp.value : [],
 				shown: 0,
 				total: 0,
+				sort: comp.label !== '' ? comp.label : this.c.emptyMessage,
+				type: comp.label !== '' ? comp.label : this.c.emptyMessage,
 			};
 			// If a custom function is in place
 			if (typeof comp.value === 'function') {
@@ -822,7 +824,14 @@ export default class SearchPane {
 			}
 			// If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
 			if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
-				rows.push(this.s.dtPane.row.add(comparisonObj));
+				rows.push(this._addRow(
+					comparisonObj.display,
+					comparisonObj.filter,
+					comparisonObj.shown,
+					comparisonObj.total,
+					comparisonObj.sort,
+					comparisonObj.type
+				));
 			}
 		}
 		return rows;
@@ -835,6 +844,7 @@ export default class SearchPane {
 	private _getOptions() {
 		let table = this.s.dt;
 		let defaults = {
+			combiner: 'or',
 			grouping: undefined,
 			orthogonal: {
 				comparison: undefined,
@@ -1099,20 +1109,20 @@ export default class SearchPane {
 						// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 						// Do this also if the viewTotal option has been selected and cascadePanes has not
 						if ((bins[dataP.filter] !== undefined && this.c.cascadePanes) || !this.c.cascadePanes) {
-							row = this.s.dtPane.row.add({
-								display: dataP.display !== '' ? dataP.display : this.c.emptyMessage,
-								filter: dataP.filter,
-								shown: !this.c.viewTotal
+							this._addRow(
+								dataP.display,
+								dataP.filter,
+								!this.c.viewTotal
+								? bins[dataP.filter]
+								: bins[dataP.filter] !== undefined
 									? bins[dataP.filter]
-									: bins[dataP.filter] !== undefined
-										? bins[dataP.filter]
-										: '0',
-								total: this.c.viewTotal
-									? String(binsTotal[dataP.filter])
-									: bins[dataP.filter],
-								sort: dataP.sort,
-								type: dataP.type
-							});
+									: '0', 
+								this.c.viewTotal
+								? String(binsTotal[dataP.filter])
+								: bins[dataP.filter],
+								dataP.sort,
+								dataP.type
+							);
 						}
 
 						// Find out if the filter was selected in the previous search, if so select it and remove from array.
@@ -1153,7 +1163,7 @@ export default class SearchPane {
 			// longer present in the resulting data set.
 			for (let selectedEl of selected) {
 				if ((draw && bins[selectedEl.filter] !== undefined) || !draw) {
-					let row = this.s.dtPane.row.add({filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display});
+					let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
 					row.select();
 				}
 				else {
@@ -1177,14 +1187,14 @@ export default class SearchPane {
 				this._findUnique(data, arrayTotals);
 
 				for (let element of data) {
-					this.s.dtPane.row.add({
-						display: element.filter,
-						filter: element.filter,
-						shown : binsTotal[element.filter],
-						total: binsTotal[element.filter],
-						sort: element.sort,
-						type: element.type
-					});
+					this._addRow(
+						element.filter,
+						element.filter,
+						binsTotal[element.filter],
+						binsTotal[element.filter],
+						element.sort,
+						element.type
+					);
 				}
 			}
 			this.s.dtPane.draw();
@@ -1239,6 +1249,17 @@ export default class SearchPane {
 		}
 		this._updateCommon(filterIdx, draw);
 		this.s.updating = false;
+	}
+
+	private _addRow(display, filter, shown, total, sort, type){
+		return this.s.dtPane.row.add({
+			display: display !== '' ? display : this.c.emptyMessage,
+			filter,
+			shown,
+			total,
+			sort,
+			type
+		});
 	}
 
 }

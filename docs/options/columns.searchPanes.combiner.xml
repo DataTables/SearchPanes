@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.combiner</name>
+	<summary>Set the type of logic to be implemented on the pane</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init columns.searchPanes.combiner` option to `and` when searching the pane will apply AND logic rather than the default OR Logic.
+        </description>
+	</type>
+
+	<default value="or">
+        The default value for the `-init columns.searchPanes.combiner` paramater is `or`, meaning that as standard the pane will search using OR logic.
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will perform searched when multiple selections have been made using OR Logic. However at times it may be desirable to implement AND Logic instead. For example when eliminating rows from the total dataSet rather than the opposite. 
+        ]]>
+	</description>
+
+	<example title="Set the Combiner Option to and Logic"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Sfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    combiner: 'and',
+                },
+                targets: [4]
+            }
+        ]
+    });
+});
+
+]]></example>
+
+<example title="Using the combiner option to eliminate rows"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        dom: 'Sfrtip',
+        columnDefs:[ 
+            {
+                searchPanes: {
+                    options:[
+                        {
+                            label: 'Not Edinburgh',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'Edinburgh';
+                            }
+                        },
+                        {
+                            label: 'Not London',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'London';
+                            }
+                        }
+                    ],
+                    combiner: 'and'
+                },
+                targets: [3]
+            }
+        ],
+        select: {
+			style:    'os',
+			selector: 'td:first-child'
+		},
+		order: [[ 1, 'asc' ]]
+    });
+});
+
+]]></example>
+
+</dt-option>

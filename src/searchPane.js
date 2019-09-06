@@ -67,7 +67,7 @@ var SearchPane = /** @class */ (function () {
                 return true;
             }
             var filter = '';
-            if (_this.colExists) {
+            if (_this.colExists && colOpts.combiner === 'or') {
                 // Get the current filtered data
                 filter = searchData[idx];
                 if (colOpts.orthogonal.filter !== 'filter') {
@@ -94,7 +94,6 @@ var SearchPane = /** @class */ (function () {
                             }
                             return true;
                         }
-                        return false;
                     }
                     else {
                         if (filter === colSelect.filter) {
@@ -102,8 +101,9 @@ var SearchPane = /** @class */ (function () {
                         }
                     }
                 }
+                return false;
             }
-            else {
+            else if (colOpts.combiner === 'and') {
                 var allow = true;
                 for (var _b = 0, _c = _this.selections; _b < _c.length; _b++) {
                     var colSelect = _c[_b];
@@ -347,21 +347,14 @@ var SearchPane = /** @class */ (function () {
             for (var i = 0, ien = dataFilter.length; i < ien; i++) {
                 if (dataFilter[i]) {
                     if (bins[dataFilter[i].filter] !== undefined || !this.c.cascadePanes) {
-                        var row = this.s.dtPane.row.add({
-                            display: dataFilter[i].display !== '' ? dataFilter[i].display : this.c.emptyMessage,
-                            filter: dataFilter[i].filter,
-                            shown: bins[dataFilter[i].filter],
-                            total: bins[dataFilter[i].filter],
-                            sort: dataFilter[i].sort,
-                            type: dataFilter[i].type
-                        });
+                        var row = this._addRow(dataFilter[i].display, dataFilter[i].filter, bins[dataFilter[i].filter], bins[dataFilter[i].filter], dataFilter[i].sort, dataFilter[i].type);
                         if (this.s.colOpts.preSelect !== undefined && this.s.colOpts.preSelect.indexOf(dataFilter[i].filter) !== -1) {
                             row.select();
                         }
                     }
                 }
                 else {
-                    this.s.dtPane.row.add({ filter: this.c.emptyMessage, shown: count_1, total: count_1, display: this.c.emptyMessage });
+                    this._addRow(this.c.emptyMessage, count_1, count_1, this.c.emptyMessage, this.c.emptyMessage, this.c.emptyMessage);
                 }
             }
         }
@@ -640,7 +633,9 @@ var SearchPane = /** @class */ (function () {
                 display: comp.label !== '' ? comp.label : this.c.emptyMessage,
                 filter: typeof comp.value === 'function' ? comp.value : [],
                 shown: 0,
-                total: 0
+                total: 0,
+                sort: comp.label !== '' ? comp.label : this.c.emptyMessage,
+                type: comp.label !== '' ? comp.label : this.c.emptyMessage
             };
             // If a custom function is in place
             if (typeof comp.value === 'function') {
@@ -681,7 +676,7 @@ var SearchPane = /** @class */ (function () {
             }
             // If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
             if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
-                rows.push(this.s.dtPane.row.add(comparisonObj));
+                rows.push(this._addRow(comparisonObj.display, comparisonObj.filter, comparisonObj.shown, comparisonObj.total, comparisonObj.sort, comparisonObj.type));
             }
         }
         return rows;
@@ -693,6 +688,7 @@ var SearchPane = /** @class */ (function () {
     SearchPane.prototype._getOptions = function () {
         var table = this.s.dt;
         var defaults = {
+            combiner: 'or',
             grouping: undefined,
             orthogonal: {
                 comparison: undefined,
@@ -930,20 +926,13 @@ var SearchPane = /** @class */ (function () {
                         // If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
                         // Do this also if the viewTotal option has been selected and cascadePanes has not
                         if ((bins[dataP.filter] !== undefined && this_1.c.cascadePanes) || !this_1.c.cascadePanes) {
-                            row = this_1.s.dtPane.row.add({
-                                display: dataP.display !== '' ? dataP.display : this_1.c.emptyMessage,
-                                filter: dataP.filter,
-                                shown: !this_1.c.viewTotal
+                            this_1._addRow(dataP.display, dataP.filter, !this_1.c.viewTotal
+                                ? bins[dataP.filter]
+                                : bins[dataP.filter] !== undefined
                                     ? bins[dataP.filter]
-                                    : bins[dataP.filter] !== undefined
-                                        ? bins[dataP.filter]
-                                        : '0',
-                                total: this_1.c.viewTotal
-                                    ? String(binsTotal[dataP.filter])
-                                    : bins[dataP.filter],
-                                sort: dataP.sort,
-                                type: dataP.type
-                            });
+                                    : '0', this_1.c.viewTotal
+                                ? String(binsTotal[dataP.filter])
+                                : bins[dataP.filter], dataP.sort, dataP.type);
                         }
                         // Find out if the filter was selected in the previous search, if so select it and remove from array.
                         var selectIndex = selected.findIndex(function (element) {
@@ -991,7 +980,7 @@ var SearchPane = /** @class */ (function () {
             for (var _b = 0, selected_1 = selected; _b < selected_1.length; _b++) {
                 var selectedEl = selected_1[_b];
                 if ((draw && bins[selectedEl.filter] !== undefined) || !draw) {
-                    var row = this.s.dtPane.row.add({ filter: selectedEl.filter, shown: 0, total: 0, display: selectedEl.display });
+                    var row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
                     row.select();
                 }
                 else {
@@ -1014,14 +1003,7 @@ var SearchPane = /** @class */ (function () {
                 this._findUnique(data, arrayTotals);
                 for (var _e = 0, data_2 = data; _e < data_2.length; _e++) {
                     var element = data_2[_e];
-                    this.s.dtPane.row.add({
-                        display: element.filter,
-                        filter: element.filter,
-                        shown: binsTotal[element.filter],
-                        total: binsTotal[element.filter],
-                        sort: element.sort,
-                        type: element.type
-                    });
+                    this._addRow(element.filter, element.filter, binsTotal[element.filter], binsTotal[element.filter], element.sort, element.type);
                 }
             }
             this.s.dtPane.draw();
@@ -1074,6 +1056,16 @@ var SearchPane = /** @class */ (function () {
         }
         this._updateCommon(filterIdx, draw);
         this.s.updating = false;
+    };
+    SearchPane.prototype._addRow = function (display, filter, shown, total, sort, type) {
+        return this.s.dtPane.row.add({
+            display: display !== '' ? display : this.c.emptyMessage,
+            filter: filter,
+            shown: shown,
+            total: total,
+            sort: sort,
+            type: type
+        });
     };
     SearchPane.version = '0.0.2';
     SearchPane.classes = {
