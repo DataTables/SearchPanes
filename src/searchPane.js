@@ -169,6 +169,32 @@ var SearchPane = /** @class */ (function () {
                 _this.clearPane();
             });
         }
+        this.s.dt.on('draw', function () {
+            var searches = document.getElementsByClassName(_this.classes.search);
+            var column = table.column(_this.colExists ? _this.s.index : 0);
+            var searchBox = $('<input/>')
+                .addClass(_this.classes.paneInputButton)
+                .addClass(_this.classes.search)
+                .attr('placeholder', _this.colExists ? $(table.column(_this.s.index).header()).text() : _this.customPaneSettings.header);
+            _this.dom.searchBox = searchBox;
+            var clear = $('<button type="button">&#215;</button>')
+                .addClass(_this.classes.dull)
+                .addClass(_this.classes.paneButton)
+                .addClass(_this.classes.exit);
+            var nameButton = $('<button type="button">&#128475;↕</button>').addClass(_this.classes.paneButton);
+            var countButton = $('<button type="button">#↕</button>').addClass(_this.classes.paneButton);
+            var searchButton = $('<button type = "button"><span class="' + _this.classes.searchIcon + '">⚲</span></button>')
+                .addClass(_this.classes.paneButton)
+                .addClass(_this.classes.searchLabel);
+            var dtP = $('<table><thead><tr><th>' + (_this.colExists ?
+                $(column.header()).text() :
+                _this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
+            for (var i = 0; i < searches.length; i++) {
+                if ($(searches[i]).width() <= 90) {
+                    _this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, true);
+                }
+            }
+        });
         return this;
     }
     /**
@@ -335,6 +361,12 @@ var SearchPane = /** @class */ (function () {
                             ? message = filteredMessage.replace(/{total}/, row.total)
                             : message = countMessage.replace(/{total}/, row.total);
                         message = message.replace(/{shown}/, row.shown);
+                        while (message.indexOf('{total}') !== -1) {
+                            message = message.replace(/{total}/, row.total);
+                        }
+                        while (message.indexOf('{shown}') !== -1) {
+                            message = message.replace(/{shown}/, row.shown);
+                        }
                         return '<div class="' + _this.classes.pill + '">' + message + '</div>';
                     },
                     targets: 1
@@ -477,7 +509,8 @@ var SearchPane = /** @class */ (function () {
      * @param countButton HTML element for the countButton
      * @param dtP HTML element for the DataTable
      */
-    SearchPane.prototype._displayPane = function (searchBox, searchButton, clear, nameButton, countButton, dtP) {
+    SearchPane.prototype._displayPane = function (searchBox, searchButton, clear, nameButton, countButton, dtP, tooSmall) {
+        if (tooSmall === void 0) { tooSmall = false; }
         var searchCont = $('<div/>').addClass(this.classes.searchCont);
         var searchLabelCont = $('<div/>').addClass(this.classes.searchLabelCont);
         var buttonGroup = $('<div/>').addClass(this.classes.buttonGroup);
@@ -486,9 +519,10 @@ var SearchPane = /** @class */ (function () {
         var upper;
         var lower;
         $(this.dom.topRow).empty();
+        $(this.dom.container).empty();
         $(this.dom.topRow).addClass(this.classes.topRow);
         var layVal = parseInt(this.layout.split('-')[1], 10);
-        if (layVal > 3) {
+        if (layVal > 3 || tooSmall) {
             $(this.dom.container).addClass(this.classes.smallGap);
             $(this.dom.topRow).addClass(this.classes.subRowsContainer);
             upper = $('<div/>').addClass(this.classes.subRows);
