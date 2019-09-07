@@ -2,7 +2,7 @@
 <dt-api library="Responsive">
 	<name>searchPanes.rebuildPane()</name>
 	<summary>Rebuild the pane, regathering options from the table.</summary>
-	<since>2.0.0</since>
+	<since>1.0.0</since>
 
 	<type type="function">
 		<signature>searchPanes.rebuildPane()</signature>
@@ -10,16 +10,16 @@
 	</type>
 
 	<description>
-		This method preovides the ability to rebuild the panes should a change be inflicted on the associated DataTable. As the method purely recreates the pane, it has no need for a return.
+		This method preovides the ability to rebuild the panes should a change occur on the associated DataTable. As the method purely recreates the pane, it has no need for a return.
 	</description>
 
-	<example title="Delete a Row and Redraw the first Pane"><![CDATA[
+	<example title="Delete a row and redraw the first pane:"><![CDATA[
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        dom: 'Sfrtip',
+        dom: 'Sfrtip'
     });
-});
+});,
 $('#example').DataTable().row(0).remove();
 $('#example').DataTable().row(0).remove();
 $('#example').DataTable().searchPanes.rebuildPane(0);
