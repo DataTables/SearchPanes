@@ -57,5 +57,19 @@ describe('searchPanes - options - searchPanes', function() {
 
 			expect($('div.dtsp-searchPane').length).toBe(0);
 		});
+
+
+		dt.html('basic');
+		it('Column visibility - pane remains visible', function() {
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: true
+			});
+
+			table.column(1).visible(false);
+			table.searchPanes.rebuildPane();
+
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+		});
 	});
 });
