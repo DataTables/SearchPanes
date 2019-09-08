@@ -45,5 +45,17 @@ describe('searchPanes - options - searchPanes', function() {
 			expect($('#example_one tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
 			expect($('#example_two tbody tr:eq(0) td:eq(0)').text()).toBe('Boston');
 		});
+
+		dt.html('basic');
+		it('Destroy removes searchPanes', function() {
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: true
+			});
+
+			table.destroy();
+
+			expect($('div.dtsp-searchPane').length).toBe(0);
+		});
 	});
 });
