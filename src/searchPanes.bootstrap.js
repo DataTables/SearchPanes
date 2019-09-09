@@ -32,6 +32,7 @@
         buttonGroup: 'btn-group',
         disabledButton: 'disabled',
         dull: 'disabled',
+        narrow: 'col narrow',
         pane: {
             container: 'table'
         },
@@ -41,9 +42,9 @@
         search: 'col-sm form-control search',
         searchLabelCont: 'input-group-btn',
         searchCont: 'input-group col-sm-7',
+        subRows: 'dtsp-subRows',
         pill: 'badge badge-pill badge-light pill'
     });
-    console.log(DataTable.SearchPane.classes);
     $.extend(true, DataTable.SearchPanes.classes, {
         container: 'dtsp-searchPanes row',
         titleRow: 'row',

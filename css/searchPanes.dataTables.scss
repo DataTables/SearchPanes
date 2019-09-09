@@ -284,3 +284,32 @@ div.dtsp-columns-6{
 		flex-direction: column !important;
 	}
 }
+
+div.dtsp-narrow {
+	flex-direction: column !important;
+	
+	div.dtsp-subRows{
+		width: 100%;
+		text-align: right;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	
+	div.dtsp-columns-4,
+	div.dtsp-columns-5,
+	div.dtsp-columns-6{
+		max-width: 31% !important;
+		min-width: 31% !important;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	div.dtsp-searchPanes {
+			flex-direction: column !important;
+	}
+	div.dtsp-searchPane{
+		max-width: 98% !important;
+		min-width: 98% !important;
+	}
+}

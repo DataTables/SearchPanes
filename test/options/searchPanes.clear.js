@@ -12,9 +12,9 @@ describe('searchPanes - options - searchPanes.clear', function() {
 			it('Individual panes: ' + JSON.stringify(config), function() {
 				table = $('#example').DataTable(config);
 
-				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton').length).toBe(4);
-				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton:eq(1)').text()).toBe('×');
-				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton:eq(1)').hasClass('dtsp-dull')).toBe(
+				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRows:eq(1) div.dtsp-buttonGroup button.dtsp-paneButton').length).toBe(3);
+				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRows:eq(1) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').text()).toBe('×');
+				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRows:eq(1) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').hasClass('dtsp-dull')).toBe(
 					true
 				);
 			});
@@ -22,7 +22,8 @@ describe('searchPanes - options - searchPanes.clear', function() {
 				$('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0)').click();
 				expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 
-				$('div.dtsp-searchPane:eq(2) div.dtsp-topRow button.dtsp-paneButton:eq(1)').click();
+				$('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').click();
+				console.log($('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').text())
 
 				await dt.sleep(100);
 

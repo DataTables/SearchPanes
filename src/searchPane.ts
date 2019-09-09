@@ -6,6 +6,8 @@ export default class SearchPane {
 	private static classes = {
 		arrayCols: [],
 		badgePill: '',
+		buttonGroup: 'dtsp-buttonGroup',
+		buttonSub: 'dtsp-buttonSub',
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPane',
@@ -19,6 +21,7 @@ export default class SearchPane {
 			selected: 'dtsp-selected'
 		},
 		layout: 'dtsp-',
+		narrow: 'dtsp-narrow',
 		pane: {
 			active: 'dtsp-filtering',
 			container: 'dtsp-pane',
@@ -243,37 +246,54 @@ export default class SearchPane {
 		}
 
 		this.s.dt.on('draw', () => {
-			let searches = document.getElementsByClassName(this.classes.search);
-			let column = table.column(this.colExists ? this.s.index : 0);
-			let searchBox = $('<input/>')
-				.addClass(this.classes.paneInputButton)
-				.addClass(this.classes.search)
-				.attr(
-					'placeholder',
-					this.colExists ? $(table.column(this.s.index).header()).text() : this.customPaneSettings.header
-				);
-			this.dom.searchBox = searchBox;
-			let clear = $('<button type="button">&#215;</button>')
-				.addClass(this.classes.dull)
-				.addClass(this.classes.paneButton)
-				.addClass(this.classes.exit);
-			let nameButton = $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton);
-			let countButton = $('<button type="button">#↕</button>').addClass(this.classes.paneButton);
-			let searchButton = $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>')
-				.addClass(this.classes.paneButton)
-				.addClass(this.classes.searchLabel);
-			let dtP = $('<table><thead><tr><th>' + (this.colExists ?
-				$(column.header()).text() :
-				this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
+			this._adjustTopRow();
+		});
 
-			for ( let i = 0; i< searches.length; i++) {
-				if ($(searches[i]).width() <= 90) {
-					this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, true)
-				}
-			}
-		})
+		$(window).on('resize.dtr', DataTable.util.throttle(() => {
+			this._adjustTopRow();
+		}));
 
 		return this;
+	}
+
+	/**
+	 * Adjusts the layout of the top row when the screen is resized
+	 */
+	private _adjustTopRow() {
+		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
+		let topRow = this.dom.container.find('.' + this.classes.topRow);
+		let column = this.s.dt.column(this.colExists ? this.s.index : 0);
+		let searchBox = $('<input/>')
+			.addClass(this.classes.paneInputButton)
+			.addClass(this.classes.search)
+			.attr(
+				'placeholder',
+				this.colExists ? $(this.s.dt.column(this.s.index).header()).text() : this.customPaneSettings.header
+			);
+		this.dom.searchBox = searchBox;
+		let clear = $('<button type="button">&#215;</button>')
+			.addClass(this.classes.paneButton)
+			.addClass(this.classes.exit);
+		if (this._getSelected(0)[0] === 0) {
+			$(clear).addClass(this.classes.dull);
+		}
+		let nameButton = $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton);
+		let countButton = $('<button type="button">#↕</button>').addClass(this.classes.paneButton);
+		let searchButton = $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>')
+			.addClass(this.classes.paneButton)
+			.addClass(this.classes.searchLabel);
+		let dtP = $('<table><thead><tr><th>' + (this.colExists ?
+			$(column.header()).text() :
+			this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
+
+		if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
+			$(subContainers[0]).addClass(this.classes.narrow);
+			//this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, true);
+		}
+		else {
+			$(subContainers[0]).removeClass(this.classes.narrow);
+			//this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, false);
+		}
 	}
 
 	/**
@@ -642,7 +662,7 @@ export default class SearchPane {
 	 * @param countButton HTML element for the countButton
 	 * @param dtP HTML element for the DataTable
 	 */
-	private _displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, tooSmall = false) {
+	private _displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP) {
 		let searchCont = $('<div/>').addClass(this.classes.searchCont);
 		let searchLabelCont = $('<div/>').addClass(this.classes.searchLabelCont);
 		let buttonGroup = $('<div/>').addClass(this.classes.buttonGroup);
@@ -651,24 +671,21 @@ export default class SearchPane {
 		let upper;
 		let lower;
 		$(this.dom.topRow).empty();
-		$(this.dom.container).empty();
+		$(dtP).empty();
 		$(this.dom.topRow).addClass(this.classes.topRow);
 		let layVal = parseInt(this.layout.split('-')[1], 10);
 
-		if (layVal > 3 || tooSmall) {
+		if (layVal > 3) {
 			$(this.dom.container).addClass(this.classes.smallGap);
-			$(this.dom.topRow).addClass(this.classes.subRowsContainer);
-			upper = $('<div/>').addClass(this.classes.subRows);
-			lower = $('<div/>').addClass(this.classes.subRows);
-			$(upper).appendTo(this.dom.topRow);
-			$(lower).appendTo(this.dom.topRow);
-			$(searchCont).appendTo(upper);
-			$(buttonGroup).appendTo(lower);
 		}
-		else {
-			$(searchCont).appendTo(this.dom.topRow);
-			$(buttonGroup).appendTo(this.dom.topRow);
-		}
+
+		$(this.dom.topRow).addClass(this.classes.subRowsContainer);
+		upper = $('<div/>').addClass(this.classes.subRows);
+		lower = $('<div/>').addClass(this.classes.subRows);
+		$(upper).appendTo(this.dom.topRow);
+		$(lower).appendTo(this.dom.topRow);
+		$(searchCont).appendTo(upper);
+		$(buttonGroup).appendTo(lower);
 
 		if (
 			(this.c.dtOpts !== undefined &&
@@ -708,7 +725,7 @@ export default class SearchPane {
 			$(countButton).appendTo(buttonGroup);
 		}
 
-		$(this.dom.topRow).appendTo(this.dom.container);
+		$(this.dom.topRow).prependTo(this.dom.container);
 		$(container).append(dtP);
 
 	}

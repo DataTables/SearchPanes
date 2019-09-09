@@ -52,6 +52,8 @@ $.extend(true, DataTable.SearchPane.classes, {
 	topRow: 'dtsp-topRow row',
 	search: 'col-sm form-control search',
 	searchLabelCont: 'input-group-append',
+	subRows: 'dtsp-subRows row',
+	narrow: 'col',
 	searchCont: 'input-group col-sm',
 	pill: 'pill badge badge-pill badge-secondary'
 });

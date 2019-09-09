@@ -170,33 +170,48 @@ var SearchPane = /** @class */ (function () {
             });
         }
         this.s.dt.on('draw', function () {
-            var searches = document.getElementsByClassName(_this.classes.search);
-            var column = table.column(_this.colExists ? _this.s.index : 0);
-            var searchBox = $('<input/>')
-                .addClass(_this.classes.paneInputButton)
-                .addClass(_this.classes.search)
-                .attr('placeholder', _this.colExists ? $(table.column(_this.s.index).header()).text() : _this.customPaneSettings.header);
-            _this.dom.searchBox = searchBox;
-            var clear = $('<button type="button">&#215;</button>')
-                .addClass(_this.classes.dull)
-                .addClass(_this.classes.paneButton)
-                .addClass(_this.classes.exit);
-            var nameButton = $('<button type="button">&#128475;↕</button>').addClass(_this.classes.paneButton);
-            var countButton = $('<button type="button">#↕</button>').addClass(_this.classes.paneButton);
-            var searchButton = $('<button type = "button"><span class="' + _this.classes.searchIcon + '">⚲</span></button>')
-                .addClass(_this.classes.paneButton)
-                .addClass(_this.classes.searchLabel);
-            var dtP = $('<table><thead><tr><th>' + (_this.colExists ?
-                $(column.header()).text() :
-                _this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
-            for (var i = 0; i < searches.length; i++) {
-                if ($(searches[i]).width() <= 90) {
-                    _this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, true);
-                }
-            }
+            _this._adjustTopRow();
         });
+        $(window).on('resize.dtr', DataTable.util.throttle(function () {
+            _this._adjustTopRow();
+        }));
         return this;
     }
+    /**
+     * Adjusts the layout of the top row when the screen is resized
+     */
+    SearchPane.prototype._adjustTopRow = function () {
+        var subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
+        var topRow = this.dom.container.find('.' + this.classes.topRow);
+        var column = this.s.dt.column(this.colExists ? this.s.index : 0);
+        var searchBox = $('<input/>')
+            .addClass(this.classes.paneInputButton)
+            .addClass(this.classes.search)
+            .attr('placeholder', this.colExists ? $(this.s.dt.column(this.s.index).header()).text() : this.customPaneSettings.header);
+        this.dom.searchBox = searchBox;
+        var clear = $('<button type="button">&#215;</button>')
+            .addClass(this.classes.paneButton)
+            .addClass(this.classes.exit);
+        if (this._getSelected(0)[0] === 0) {
+            $(clear).addClass(this.classes.dull);
+        }
+        var nameButton = $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton);
+        var countButton = $('<button type="button">#↕</button>').addClass(this.classes.paneButton);
+        var searchButton = $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>')
+            .addClass(this.classes.paneButton)
+            .addClass(this.classes.searchLabel);
+        var dtP = $('<table><thead><tr><th>' + (this.colExists ?
+            $(column.header()).text() :
+            this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
+        if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
+            $(subContainers[0]).addClass(this.classes.narrow);
+            //this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, true);
+        }
+        else {
+            $(subContainers[0]).removeClass(this.classes.narrow);
+            //this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, false);
+        }
+    };
     /**
      * Adjusts the width of the columns
      */
@@ -509,8 +524,7 @@ var SearchPane = /** @class */ (function () {
      * @param countButton HTML element for the countButton
      * @param dtP HTML element for the DataTable
      */
-    SearchPane.prototype._displayPane = function (searchBox, searchButton, clear, nameButton, countButton, dtP, tooSmall) {
-        if (tooSmall === void 0) { tooSmall = false; }
+    SearchPane.prototype._displayPane = function (searchBox, searchButton, clear, nameButton, countButton, dtP) {
         var searchCont = $('<div/>').addClass(this.classes.searchCont);
         var searchLabelCont = $('<div/>').addClass(this.classes.searchLabelCont);
         var buttonGroup = $('<div/>').addClass(this.classes.buttonGroup);
@@ -519,23 +533,19 @@ var SearchPane = /** @class */ (function () {
         var upper;
         var lower;
         $(this.dom.topRow).empty();
-        $(this.dom.container).empty();
+        $(dtP).empty();
         $(this.dom.topRow).addClass(this.classes.topRow);
         var layVal = parseInt(this.layout.split('-')[1], 10);
-        if (layVal > 3 || tooSmall) {
+        if (layVal > 3) {
             $(this.dom.container).addClass(this.classes.smallGap);
-            $(this.dom.topRow).addClass(this.classes.subRowsContainer);
-            upper = $('<div/>').addClass(this.classes.subRows);
-            lower = $('<div/>').addClass(this.classes.subRows);
-            $(upper).appendTo(this.dom.topRow);
-            $(lower).appendTo(this.dom.topRow);
-            $(searchCont).appendTo(upper);
-            $(buttonGroup).appendTo(lower);
         }
-        else {
-            $(searchCont).appendTo(this.dom.topRow);
-            $(buttonGroup).appendTo(this.dom.topRow);
-        }
+        $(this.dom.topRow).addClass(this.classes.subRowsContainer);
+        upper = $('<div/>').addClass(this.classes.subRows);
+        lower = $('<div/>').addClass(this.classes.subRows);
+        $(upper).appendTo(this.dom.topRow);
+        $(lower).appendTo(this.dom.topRow);
+        $(searchCont).appendTo(upper);
+        $(buttonGroup).appendTo(lower);
         if ((this.c.dtOpts !== undefined &&
             this.c.dtOpts.searching === false) ||
             (colOpts.dtOpts !== undefined &&
@@ -564,7 +574,7 @@ var SearchPane = /** @class */ (function () {
         if (!this.c.hideCount && !colOpts.hideCount) {
             $(countButton).appendTo(buttonGroup);
         }
-        $(this.dom.topRow).appendTo(this.dom.container);
+        $(this.dom.topRow).prependTo(this.dom.container);
         $(container).append(dtP);
     };
     /**
@@ -1129,6 +1139,8 @@ var SearchPane = /** @class */ (function () {
     SearchPane.classes = {
         arrayCols: [],
         badgePill: '',
+        buttonGroup: 'dtsp-buttonGroup',
+        buttonSub: 'dtsp-buttonSub',
         clear: 'dtsp-clear',
         clearAll: 'dtsp-clearAll',
         container: 'dtsp-searchPane',
@@ -1142,6 +1154,7 @@ var SearchPane = /** @class */ (function () {
             selected: 'dtsp-selected'
         },
         layout: 'dtsp-',
+        narrow: 'dtsp-narrow',
         pane: {
             active: 'dtsp-filtering',
             container: 'dtsp-pane',
