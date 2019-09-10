@@ -30,6 +30,7 @@
     $.extend(true, DataTable.SearchPane.classes, {
         paneButton: 'btn btn-light',
         buttonGroup: 'btn-group',
+        narrowButton: 'col col-lg-5',
         disabledButton: 'disabled',
         dull: 'disabled',
         narrow: 'col narrow',
@@ -41,8 +42,10 @@
         topRow: 'dtsp-topRow row',
         search: 'col-sm form-control search',
         searchLabelCont: 'input-group-btn',
-        searchCont: 'input-group col-sm-7',
-        subRows: 'dtsp-subRows',
+        searchCont: 'input-group',
+        subRows: 'dtsp-subRows text-right',
+        narrowSub: 'row',
+        narrowSearch: 'col col-lg-7',
         pill: 'badge badge-pill badge-light pill'
     });
     $.extend(true, DataTable.SearchPanes.classes, {

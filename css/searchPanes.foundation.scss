@@ -19,6 +19,7 @@ div.dtsp-searchPane{
 	margin-top: 0px;
 	margin-bottom: 10px;
 	font-size: 0.9em;
+
     div.dataTables_scrollHead{
         display: none;
     }
@@ -80,7 +81,10 @@ div.dtsp-searchPane{
     div.dtsp-searchCont{
         display: inline-block;
         height: 35px;
-        width:35px;
+		width:35px;
+		input.search{
+			width: 100%;
+		}
     }
 
     .dtsp-searchIcon{
@@ -96,7 +100,18 @@ div.dtsp-searchPane{
 				transform: rotate(45deg);
 		font-size: 16px;
 		margin-bottom: 0px;
-    }
+	}
+	
+	div.dtsp-narrow {
+		flex-direction: column !important;
+
+		div.dtsp-subRows {
+			width: 100%;
+			text-align: right;
+			justify-content: flex-end;
+			margin-top: 3px;
+		}
+	}
 
     div.dtsp-topRow {
 		display:flex;
@@ -105,6 +120,34 @@ div.dtsp-searchPane{
 		justify-content: space-around;
 		align-content: flex-start;
 		align-items: flex-start;
+
+		div.dtsp-subRows {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			flex-grow:1;
+			flex-shrink:0;
+			flex-basis: 0;
+		}
+
+		div.dtsp-narrowButton {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			flex-grow:0;
+			flex-shrink:0;
+			flex-basis: 105px;
+			margin-left: 3px;
+		}
+
+		div.dtsp-narrowSearch {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			flex-grow:1;
+			flex-shrink:1;
+			flex-basis: 90px;
+		}
 
 		div.dtsp-searchCont{
 			display: flex;
@@ -239,4 +282,24 @@ div.dtsp-columns-6{
 
 div.dtsp-smallGap{
 	padding: 0px;
+}
+
+@media screen and (max-width: 767px) {
+	
+	div.dtsp-columns-4,
+	div.dtsp-columns-5,
+	div.dtsp-columns-6{
+		max-width: 31% !important;
+		min-width: 31% !important;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	div.dtsp-searchPanes {
+			flex-direction: column !important;
+	}
+	div.dtsp-searchPane{
+		max-width: 98% !important;
+		min-width: 98% !important;
+	}
 }

@@ -41,7 +41,8 @@ let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
 	paneButton: 'btn btn-light',
-	buttonGroup: 'btn-group col-',
+	buttonGroup: 'btn-group col justify-content-end',
+	narrowButton: 'col-5',
 	disabledButton: 'disabled',
 	dull: 'disabled',
 	pane:{
@@ -52,17 +53,19 @@ $.extend(true, DataTable.SearchPane.classes, {
 	topRow: 'dtsp-topRow row',
 	search: 'col-sm form-control search',
 	searchLabelCont: 'input-group-append',
-	subRows: 'dtsp-subRows row',
+	subRows: 'dtsp-subRows',
 	narrow: 'col',
+	narrowSub: 'row justify-content-end',
+	narrowSearch: 'col',
 	searchCont: 'input-group col-sm',
 	pill: 'pill badge badge-pill badge-secondary'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	container:'dtsp-searchPanes row',
-	titleRow:'row',
-	clearAll:'dtsp-clearAll col-1 btn btn-light',
-	title:'dtsp-title col-10',
+	container: 'dtsp-searchPanes row',
+	titleRow: 'row',
+	clearAll: 'dtsp-clearAll col-1 btn btn-light',
+	title: 'dtsp-title col-10',
 	panes: 'dtsp-panes container'
 })
 return DataTable.searchPanes;

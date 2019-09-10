@@ -24,6 +24,14 @@ div.dtsp-searchPanes{
 div.dtsp-searchPane {
     margin: 10px;
     display: inline-block;
+
+    div.dtsp-topRow {
+        div.dtsp-subRows {
+            display: block;
+            padding: 0px !important;
+        }
+    }
+
     thead{
         display: none;
     }
@@ -104,7 +112,7 @@ div.dtsp-panesContainer {
 	border: 2px solid #f0f0f0;
 	border-radius: 10px;
 	margin: 5px;
-	clear: both;
+    clear: both;
 
 	div.dtsp-title {
 		float: left;
@@ -150,4 +158,24 @@ div.dtsp-smallGap{
 
 div.dtsp-hidden{
 	display: none;
+}
+
+@media screen and (max-width: 767px) {
+	
+	div.dtsp-columns-4,
+	div.dtsp-columns-5,
+	div.dtsp-columns-6{
+		max-width: 31% !important;
+		min-width: 31% !important;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	div.dtsp-searchPanes {
+			flex-direction: column !important;
+	}
+	div.dtsp-searchPane{
+		max-width: 98% !important;
+		min-width: 98% !important;
+	}
 }

@@ -40,18 +40,20 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-    container: 'dtsp-searchPane column ui grid',
-    paneButton: 'ui button',
-    buttonGroup: 'right floated ui buttons column',
-    searchCont: 'ui icon input eight wide column',
-    paneInputButton: 'circular search link icon',
-    dull: 'disabled',
-    topRow: 'row dtsp-topRow'
+	container: 'dtsp-searchPane column ui grid',
+	paneButton: 'ui button',
+	buttonGroup: 'right floated ui buttons column',
+	searchCont: 'ui icon input eight wide column',
+	narrowSub: 'dtsp-narrow',
+	narrowSearch: 'dtsp-narrowSearch',
+	paneInputButton: 'circular search link icon',
+	dull: 'disabled',
+	topRow: 'row dtsp-topRow'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-    container: 'dtsp-searchPanes ui grid',
-    clearAll: 'dtsp-clearAll ui button'
+	container: 'dtsp-searchPanes ui grid',
+	clearAll: 'dtsp-clearAll ui button'
 
 });
 return DataTable.searchPanes;

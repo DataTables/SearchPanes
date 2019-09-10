@@ -19,6 +19,18 @@ div.dtsp-searchPanes{
 
 div.dtsp-searchPane {
     margin: 5px;
+    div.dtsp-topRow{
+        padding: 0px !important;
+        margin: 0px !important;    
+        div.dtsp-subRows{
+            padding: 0px !important;
+            text-align: right;
+        }
+
+        div.row{
+            width: 100%;
+        }
+    }
     thead{
         display: none;
     }
@@ -102,4 +114,24 @@ div.dtsp-panes {
 
 div.badge{
     min-width:30px;
+}
+
+@media screen and (max-width: 767px) {
+	
+	div.dtsp-columns-4,
+	div.dtsp-columns-5,
+	div.dtsp-columns-6{
+		max-width: 31% !important;
+		min-width: 31% !important;
+	}
+}
+
+@media screen and (max-width: 640px) {
+	div.dtsp-searchPanes {
+			flex-direction: column !important;
+	}
+	div.dtsp-searchPane{
+		max-width: 98% !important;
+		min-width: 98% !important;
+	}
 }

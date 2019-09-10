@@ -182,34 +182,17 @@ var SearchPane = /** @class */ (function () {
      */
     SearchPane.prototype._adjustTopRow = function () {
         var subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
+        var subRows = this.dom.container.find('.dtsp-subRows');
         var topRow = this.dom.container.find('.' + this.classes.topRow);
-        var column = this.s.dt.column(this.colExists ? this.s.index : 0);
-        var searchBox = $('<input/>')
-            .addClass(this.classes.paneInputButton)
-            .addClass(this.classes.search)
-            .attr('placeholder', this.colExists ? $(this.s.dt.column(this.s.index).header()).text() : this.customPaneSettings.header);
-        this.dom.searchBox = searchBox;
-        var clear = $('<button type="button">&#215;</button>')
-            .addClass(this.classes.paneButton)
-            .addClass(this.classes.exit);
-        if (this._getSelected(0)[0] === 0) {
-            $(clear).addClass(this.classes.dull);
-        }
-        var nameButton = $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton);
-        var countButton = $('<button type="button">#↕</button>').addClass(this.classes.paneButton);
-        var searchButton = $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>')
-            .addClass(this.classes.paneButton)
-            .addClass(this.classes.searchLabel);
-        var dtP = $('<table><thead><tr><th>' + (this.colExists ?
-            $(column.header()).text() :
-            this.customPaneSettings.header) + '</th><th/></tr></thead></table>');
         if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
             $(subContainers[0]).addClass(this.classes.narrow);
-            //this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, true);
+            $(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
+            $(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
         }
         else {
             $(subContainers[0]).removeClass(this.classes.narrow);
-            //this._displayPane(searchBox, searchButton, clear, nameButton, countButton, dtP, false);
+            $(subRows[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
+            $(subRows[1]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
         }
     };
     /**
@@ -540,8 +523,8 @@ var SearchPane = /** @class */ (function () {
             $(this.dom.container).addClass(this.classes.smallGap);
         }
         $(this.dom.topRow).addClass(this.classes.subRowsContainer);
-        upper = $('<div/>').addClass(this.classes.subRows);
-        lower = $('<div/>').addClass(this.classes.subRows);
+        upper = $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowSearch);
+        lower = $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowButton);
         $(upper).appendTo(this.dom.topRow);
         $(lower).appendTo(this.dom.topRow);
         $(searchCont).appendTo(upper);

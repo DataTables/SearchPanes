@@ -32,6 +32,8 @@
         paneButton: 'ui button',
         buttonGroup: 'right floated ui buttons column',
         searchCont: 'ui icon input eight wide column',
+        narrowSub: 'dtsp-narrow',
+        narrowSearch: 'dtsp-narrowSearch',
         paneInputButton: 'circular search link icon',
         dull: 'disabled',
         topRow: 'row dtsp-topRow'
