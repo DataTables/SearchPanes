@@ -28,7 +28,7 @@
     'use strict';
     var DataTable = $.fn.dataTable;
     $.extend(true, DataTable.SearchPane.classes, {
-        disabledButton: 'dtsp-dull',
+        disabledButton: 'dtsp-paneInputButton dtsp-dull',
         paneButton: 'dtsp-paneButton ui-button',
         topRow: 'dtsp-topRow ui-state-default'
     });

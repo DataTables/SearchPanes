@@ -72,6 +72,15 @@ div.dtsp-panesContainer {
 				justify-content: space-around;
 				align-content: flex-start;
 				align-items: flex-start;
+
+				div.dtsp-subRows{
+					display: flex;
+					flex-direction: row;
+					flex-wrap: nowrap;
+					flex-grow:1;
+					flex-shrink:0;
+					flex-basis: 0;
+				}
 		
 				div.dtsp-searchCont{
 					display: flex;
@@ -98,6 +107,12 @@ div.dtsp-panesContainer {
 							color: black;
 							font-size: 16px;
 						}
+					}
+
+					input.dtsp-dull{
+						border: transparent;
+						background-color: transparent;
+						max-width: 50%;
 					}
 		
 					div.dtsp-searchButtonCont{
