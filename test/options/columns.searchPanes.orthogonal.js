@@ -33,49 +33,49 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 		});
 
 		// DD-1105
-		// dt.html('empty');
-		// it('Check defaults (undefined)', function() {
-		// 	let data = [
-		// 		{
-		// 			name: { first: 'Aaron', last: 'Aardvark' },
-		// 			position: 'Architect',
-		// 			office: [{ city: 'Atlanta' }, { city: 'Aspen' }],
-		// 			age: 99,
-		// 			start_date: '2018/05/06',
-		// 			salary: '$40,000'
-		// 		},
-		// 		{
-		// 			name: { first: 'Bertie', last: 'Bluster' },
-		// 			position: 'Architect',
-		// 			office: [{ city: 'Atlanta' }, { city: 'Boulder' }],
-		// 			age: 33,
-		// 			start_date: '2018/05/06',
-		// 			salary: '$40,000'
-		// 		},
-		// 		{
-		// 			name: { first: 'Bertie', last: 'Bluster' },
-		// 			position: 'Architect',
-		// 			office: [{ city: 'Atlanta' }, { city: 'Boulder' }],
-		// 			age: 33,
-		// 			start_date: '2018/05/06',
-		// 			salary: '$40,000'
-		// 		}
-		// 	];
+		dt.html('empty');
+		it('Check defaults (undefined)', function() {
+			let data = [
+				{
+					name: { first: 'Aaron', last: 'Aardvark' },
+					position: 'Architect',
+					office: [{ city: 'Atlanta' }, { city: 'Aspen' }],
+					age: 99,
+					start_date: '2018/05/06',
+					salary: '$40,000'
+				},
+				{
+					name: { first: 'Bertie', last: 'Bluster' },
+					position: 'Architect',
+					office: [{ city: 'Atlanta' }, { city: 'Boulder' }],
+					age: 33,
+					start_date: '2018/05/06',
+					salary: '$40,000'
+				},
+				{
+					name: { first: 'Bertie', last: 'Bluster' },
+					position: 'Architect',
+					office: [{ city: 'Atlanta' }, { city: 'Boulder' }],
+					age: 33,
+					start_date: '2018/05/06',
+					salary: '$40,000'
+				}
+			];
 
-		// 	let cols = dt.getTestColumns();
-		// 	console.log(cols)
+			let cols = dt.getTestColumns();
+			console.log(cols)
 
-		// 	cols[0].render = function(data) {return data.first + ' ' + data.last};
-		// 	cols[0].searchPane = {tolerance: 0, show: true}
-		// 	cols[2].render = '[; ].city';
+			cols[0].render = function(data) {return data.first + ' ' + data.last};
+			cols[0].searchPanes = {tolerance: 0, show: true}
+			cols[2].render = '[; ].city';
 
-		// 	table = $('#example').DataTable({
-		// 		dom: 'Sfrtip',
-		// 		data: data,
-		// 		columns: cols
-		// 	});
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				data: data,
+				columns: cols
+			});
 
-		// 	expect($('div.dtsp-searchPane:eq(1)').hasClass('dtsp-hidden')).toBe(false);
-		// });
+			expect($('div.dtsp-searchPane:eq(1)').hasClass('dtsp-hidden')).toBe(false);
+		});
 	});
 });
