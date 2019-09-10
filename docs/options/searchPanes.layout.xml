@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.layout</name>
+	<summary>Set the layout of how the panes are displayed on the page</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init searchPanes.layout` to `columns-%d` the searchPanes are displayed in columns, with %d panes in each column.
+
+            At the moment columns is the only layout option supported although more may be added in future.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init searchPanes.layout` paramater is `columns-3`. 
+	<description>
+		<![CDATA[
+        By setting the `-init searchPanes.layout` parameter to `columns-3`, the panes will be displayed in 3 columns.
+
+        There are 6 sizes supported from 1 pane in a row to 6 panes in a row. Altering the number at the end of `columns-` will alter the number of panes on a row.
+
+        ]]>
+	</description>
+
+	<example title="Set the number of panes in a row to 2"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            layout: 'columns-2'
+        },
+        dom: 'Sfrtip'
+    });
+});
+
+]]></example>
+
+</dt-option>
