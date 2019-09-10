@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="1">
+
+<css lib="datatables searchpanes select">
+div.dtsp-verticalContainer{
+	display: flex;
+	flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+	align-items: flex-start;
+}
+
+div.dtsp-verticalContainer div.dtsp-verticalPanes,
+div.dtsp-verticalContainer div.dtsp-dataTable{
+    width: 50%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 0;
+}
+
+div.dtsp-verticalContainer div.dtsp-verticalPanes{
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 30%;
+}
+
+div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes{
+    flex-direction: column;
+    flex-basis: 0px;
+}
+
+div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane{
+    flex-basis: 0px;
+}
+
+div.dtsp-verticalContainer div.dtsp-dataTable{
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 70%;
+}
+</css>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            layout: 'columns-1',
+            dataLength: 20
+        },
+        dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"S><"dtsp-dataTable"frtip>>',
+        pageLength: 20
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Example showing panes vertically next to DataTable</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to display the panes to the left of the DataTable instead of above it.
+
+]]></info>
+
+</dt-example>
