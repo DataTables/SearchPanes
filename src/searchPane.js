@@ -707,24 +707,6 @@ var SearchPane = /** @class */ (function () {
                 // Update the comparisonObj
                 comparisonObj = this._comparisonStatUpdate(comp, comparisonObj, count, total);
             }
-            // If not a custom option must be a predefined contition
-            else {
-                for (var _a = 0, vals_1 = vals; _a < vals_1.length; _a++) {
-                    var val = vals_1[_a];
-                    var condition = comp.condition;
-                    // If the condition is one of the predefined conditions and the value
-                    // of the rows filter meets the condition update the comparisonObj
-                    if ((condition === '==' && val.filter === comp.value) ||
-                        (condition === '!=' && val.filter !== comp.value) ||
-                        (condition === '<' && val.filter < comp.value) ||
-                        (condition === '>' && val.filter > comp.value) ||
-                        (condition === '<=' && val.filter <= comp.value) ||
-                        (condition === '>=' && val.filter >= comp.value) ||
-                        (condition === 'includes' && val.filter.indexOf(comp.value) !== -1)) {
-                        comparisonObj = this._comparisonStatUpdate(val, comparisonObj, bins[val.filter], binsTotal[val.filter]);
-                    }
-                }
-            }
             // If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
             if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
                 rows.push(this._addRow(comparisonObj.display, comparisonObj.filter, comparisonObj.shown, comparisonObj.total, comparisonObj.sort, comparisonObj.type));

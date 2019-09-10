@@ -41,18 +41,6 @@
         
         The function must return true if that row is to be included in the search results and false if it is not. By allowing the programmer to define their own functions they can make them as complicated as they so choose.
 
-        There are a handful of predefined comparisons that can be made by setting value to not be a function. When `columns.searchPanes.options.value` is not a function, the `columns.searchPanes.options.condition` comes into play. the following are options for the value of `columns.searchPanes.options.condition`
-
-        * `<`
-        * `>`
-        * `<=`
-        * `>=`
-        * `==`
-        * `!=`
-        * `includes`
-        
-        When this is the case, the value of `columns.searchPanes.options.value` is compared against the value of the cell in question using the predefined condition which has been selected.
-
         This is useful when you want to add an option to search for options which aren't just values in the column. For example, countries in europe, or cities which arent edinburgh, or age ranges.
         ]]>
 	</description>
@@ -61,68 +49,82 @@
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
+        searchPanes: {
+            viewTotal: true,
+            columns: [0, 3, 4],
+        },
         dom: 'Sfrtip',
-        columnDefs: [ 
+        columnDefs:[ 
             {
                 searchPanes: {
-                    options: [
+                    options:[
                         {
                             label: 'Under 20',
-                            value: 20,
-                            condition: '<'
+                            value: function(rowData, rowIdx){
+                                return rowData[4] < 20;
+                            }
                         },
                         {
                             label: '20 to 30',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 30 && rowData[4] >= 20;
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 30 && rowData[4] >=20;
                             }
                         },
-                        {
+                         {
                             label: '30 to 40',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 40 && rowData[4] >= 30;
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 40 && rowData[4] >=30;
                             }
                         },
-                        {
+                         {
                             label: '40 to 50',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 50 && rowData[4] >= 40;
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 50 && rowData[4] >=40;
                             }
                         },
-                        {
+                         {
                             label: '50 to 60',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 60 && rowData[4] >= 50;
+                            value: function(rowData, rowIdx){
+                                return rowData[4] <= 60 && rowData[4] >=50;
                             }
                         },
-                        {
+                         {
                             label: 'Over 60',
-                            value: 60,
-                            condition: '>'
-                        }
+                            value: function(rowData, rowIdx){
+                                return rowData[4] > 60;
+                            }
+                        },
                     ]
                 },
-                targets:[4]
+                targets:[4],
             },
             {
                 searchPanes: {
-                    options: [
+                    options:[
                         {
                             label: 'Not Edinburgh',
-                            value: 'Edinburgh',
-                            condition: '!='
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'Edinburgh';
+                            }
                         },
                         {
                             label: 'Not London',
-                            value: function(rowData, rowIdx) {
+                            value: function(rowData, rowIdx){
                                 return rowData[3] !== 'London';
                             }
                         }
                     ],
+                    combiner: 'and'
                 },
                 targets: [3]
             }
-        ]
+        ],
+        select: {
+			style:    'os',
+			selector: 'td:first-child'
+		},
+		order: [[ 1, 'asc' ]]
+    });
 });
 
 ]]></example>
