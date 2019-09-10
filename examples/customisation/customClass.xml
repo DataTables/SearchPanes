@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="4">
+
+<css lib="datatables searchpanes select">
+div.myCustomClass{
+    border: 2px solid red;
+}
+</css>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        dom: 'Sfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    className: 'myCustomClass',
+                },
+                targets: [3]
+            }
+        ]
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPanes">Add a custom class to a specific pane</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to add a custom class to a specific pane by setting the `-init className` property to be a string containing the custom classes.
+
+As you can see in the CSS section below the datatable, the border property of myCustomClass has been set to red. This is shown around the age pane.
+
+]]></info>
+
+</dt-example>

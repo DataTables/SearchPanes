@@ -25,6 +25,8 @@ var SearchPane = /** @class */ (function () {
             });
         }
         this.classes = $.extend(true, {}, SearchPane.classes);
+        // Get options from user
+        this.c = $.extend(true, {}, SearchPane.defaults, opts);
         if (Object.keys(panes).length > 0) {
             this.customPaneSettings = panes;
         }
@@ -36,8 +38,6 @@ var SearchPane = /** @class */ (function () {
                 (layVal < 7 ? layout : layout.split('-')[0] + '-6')),
             topRow: $('<div/>').addClass(this.classes.topRow)
         };
-        // Get options from user
-        this.c = $.extend(true, {}, SearchPane.defaults, opts);
         this.s = {
             colOpts: [],
             columns: [],
@@ -57,6 +57,7 @@ var SearchPane = /** @class */ (function () {
         var clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
         clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
         this.s.index = idx;
+        this.dom.container.addClass(colOpts.className);
         // Custom search function for table
         $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex, origData) {
             if (settings.nTable !== table.table(0).node()) {
