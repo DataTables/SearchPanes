@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html" table-class="display nowrap" order="11">
+<dt-example table-type="html" table-class="display nowrap" order="11" framework="jqueryui">
 
 <css lib="datatables searchpanes select"/>
 
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
+
 $(document).ready(function() {
-    table = $('#example').DataTable({
-        dom: 'Sfrtip',
-        searchPanes: {
-            panes: [
-                {
-                    header: 'unittest header',
-                    searchPanes: {
-                        options: [
-                            {
-                                label: 'unittest label',
-                                value: function(rowData, rowIdx) {
-                                    return rowData[2] === 'San Francisco' && rowData[3] === '66';
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        }
+    let table = $('#example').DataTable({
+        searchPanes:{
+            dtOpts:{
+                searching: false, 
+            },
+        },
+        dom:'S<"fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr"lfr>'+
+            't'+
+            '<"fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-bl ui-corner-br"ip>',
     });
 });
 
 ]]>
 </js>
+<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
 
-<title lib="searchPanes">Test Example</title>
+<title lib="searchPanes">Abstract Types</title>
 
 <info><![CDATA[
 

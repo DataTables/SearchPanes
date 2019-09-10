@@ -272,7 +272,7 @@ export default class SearchPanes {
 
 	private _attachMessage() {
 		let emptyMessage = $('<div/>');
-		let message = this.s.dt.i18n('searchPanes.noPanesMsg', '');
+		let message = this.s.dt.i18n('searchPanes.emptyPanes', '');
 		emptyMessage[0].innerHTML = message;
 		$(this.dom.container).empty();
 		emptyMessage.appendTo(this.dom.container);

@@ -202,7 +202,7 @@ var SearchPanes = /** @class */ (function () {
     };
     SearchPanes.prototype._attachMessage = function () {
         var emptyMessage = $('<div/>');
-        var message = this.s.dt.i18n('searchPanes.noPanesMsg', '');
+        var message = this.s.dt.i18n('searchPanes.emptyPanes', '');
         emptyMessage[0].innerHTML = message;
         $(this.dom.container).empty();
         emptyMessage.appendTo(this.dom.container);

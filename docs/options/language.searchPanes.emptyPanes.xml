@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>languages.searchPanes.emptyPanes</name>
+	<summary>Add internationalisation to the Message to be shown when no panes are to be displayed</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init languages.searchPanes.emptyPanes` option to a message, if there are no panes to be displayed then this message will be displayed in their place. 
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init languages.searchPanes.emptyPanes` paramater is `-type null`. 
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will hide the container that is meant to hold the panes if there are none to display. If a message has been declared then this will be shown in the place of the panes.
+        ]]>
+	</description>
+
+	<example title="Alter Empty Pane Message"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Sfrtip',
+        language: {
+            searchPanes: {
+                 emptyPanes: 'There are no panes to display. :/'
+            }
+        }
+    });
+});
+
+]]></example>
+
+</dt-option>
