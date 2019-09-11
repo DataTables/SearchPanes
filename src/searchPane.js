@@ -51,12 +51,11 @@ var SearchPane = /** @class */ (function () {
         table = this.s.dt;
         this.selections = this.s.columns;
         var rowLength = table.columns().eq(0).toArray().length;
-        this.colExists = idx < rowLength;
+        this.colExists = this.s.index < rowLength;
         this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions(rowLength);
         var colOpts = this.s.colOpts;
         var clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
         clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
-        this.s.index = idx;
         this.dom.container.addClass(colOpts.className);
         // Custom search function for table
         $.fn.dataTable.ext.search.push(function (settings, searchData, dataIndex, origData) {
@@ -70,9 +69,9 @@ var SearchPane = /** @class */ (function () {
             var filter = '';
             if (_this.colExists && colOpts.combiner === 'or') {
                 // Get the current filtered data
-                filter = searchData[idx];
+                filter = searchData[_this.s.index];
                 if (colOpts.orthogonal.filter !== 'filter') {
-                    var cell = table.cell(dataIndex, idx);
+                    var cell = table.cell(dataIndex, _this.s.index);
                     filter = typeof (colOpts.orthogonal) === 'string'
                         ? cell.render(colOpts.orthogonal)
                         : cell.render(colOpts.orthogonal.search);
@@ -172,6 +171,10 @@ var SearchPane = /** @class */ (function () {
         }
         this.s.dt.on('draw', function () {
             _this._adjustTopRow();
+        });
+        this.s.dt.on('column-reorder', function (e, settings, details) {
+            _this.s.index = details.mapping.indexOf(_this.s.index);
+            console.log(_this.s.index);
         });
         $(window).on('resize.dtr', DataTable.util.throttle(function () {
             _this._adjustTopRow();

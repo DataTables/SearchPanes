@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="1">
+
+<css lib="datatables searchpanes select colreorder"/>
+
+<js lib="jquery datatables searchpanes select colreorder">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Sfrtip',
+        colReorder: true
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">ColReorder Integration</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how searchPanes works with colReorder.
+
+]]></info>
+
+</dt-example>

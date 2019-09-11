@@ -123,12 +123,11 @@ export default class SearchPane {
 		table = this.s.dt;
 		this.selections = this.s.columns;
 		let rowLength = table.columns().eq(0).toArray().length;
-		this.colExists = idx < rowLength;
+		this.colExists = this.s.index < rowLength;
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions(rowLength);
 		let colOpts =  this.s.colOpts;
 		let clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
 		clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
-		this.s.index = idx;
 
 		this.dom.container.addClass(colOpts.className);
 
@@ -146,9 +145,9 @@ export default class SearchPane {
 				let filter: string | string[] = '';
 				if (this.colExists && colOpts.combiner === 'or') {
 					// Get the current filtered data
-					filter = searchData[idx];
+					filter = searchData[this.s.index];
 					if (colOpts.orthogonal.filter !== 'filter') {
-						let cell = table.cell(dataIndex, idx);
+						let cell = table.cell(dataIndex, this.s.index);
 						filter = typeof(colOpts.orthogonal) === 'string'
 							? cell.render(colOpts.orthogonal)
 							: cell.render(colOpts.orthogonal.search);
@@ -249,6 +248,11 @@ export default class SearchPane {
 
 		this.s.dt.on('draw', () => {
 			this._adjustTopRow();
+		});
+
+		this.s.dt.on('column-reorder', (e, settings, details) => {
+			this.s.index = details.mapping.indexOf(this.s.index);
+			console.log(this.s.index)
 		});
 
 		$(window).on('resize.dtr', DataTable.util.throttle(() => {
