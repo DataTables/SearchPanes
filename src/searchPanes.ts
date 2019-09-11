@@ -216,12 +216,14 @@ export default class SearchPanes {
 	 */
 	public rebuild(targetIdx = false) {
 		this.dom.container.empty();
+		let returnArray = [];
 		for (let pane of this.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
 				continue;
 			}
-			pane.rebuildPane();
+			returnArray.push(pane.rebuildPane());
 		}
+
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
 		this._attachPaneContainer();
@@ -230,6 +232,13 @@ export default class SearchPanes {
 
 		// Update the title bar to show how many filters have been selected
 		this.panes[0]._updateFilterCount();
+
+		if (returnArray.length === 1) {
+			return returnArray[0];
+		}
+		else {
+			return returnArray;
+		}
 	}
 
 	/**

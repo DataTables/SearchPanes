@@ -149,12 +149,13 @@ var SearchPanes = /** @class */ (function () {
     SearchPanes.prototype.rebuild = function (targetIdx) {
         if (targetIdx === void 0) { targetIdx = false; }
         this.dom.container.empty();
+        var returnArray = [];
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
             if (targetIdx !== false && pane.s.index !== targetIdx) {
                 continue;
             }
-            pane.rebuildPane();
+            returnArray.push(pane.rebuildPane());
         }
         // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
@@ -162,6 +163,12 @@ var SearchPanes = /** @class */ (function () {
         DataTable.tables({ visible: true, api: true }).columns.adjust();
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
+        if (returnArray.length === 1) {
+            return returnArray[0];
+        }
+        else {
+            return returnArray;
+        }
     };
     /**
      * repopulates the desired pane by extracting new data from the table. faster than doing a rebuild

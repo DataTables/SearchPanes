@@ -252,7 +252,6 @@ export default class SearchPane {
 
 		this.s.dt.on('column-reorder', (e, settings, details) => {
 			this.s.index = details.mapping.indexOf(this.s.index);
-			console.log(this.s.index)
 		});
 
 		$(window).on('resize.dtr', DataTable.util.throttle(() => {
@@ -260,26 +259,6 @@ export default class SearchPane {
 		}));
 
 		return this;
-	}
-
-	/**
-	 * Adjusts the layout of the top row when the screen is resized
-	 */
-	private _adjustTopRow() {
-		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
-		let subRows = this.dom.container.find('.dtsp-subRows');
-		let topRow = this.dom.container.find('.' + this.classes.topRow);
-
-		if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
-			$(subContainers[0]).addClass(this.classes.narrow);
-			$(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
-			$(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
-		}
-		else {
-			$(subContainers[0]).removeClass(this.classes.narrow);
-			$(subRows[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
-			$(subRows[1]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
-		}
 	}
 
 	/**
@@ -296,6 +275,7 @@ export default class SearchPane {
 		this.dom.container.empty();
 		this.dom.container.removeClass(this.classes.hidden);
 		this.buildPane();
+		return this;
 	}
 
 	/**
@@ -320,6 +300,26 @@ export default class SearchPane {
 		}
 		this._updateCommon(filterIdx);
 		this.s.updating = updating;
+	}
+
+		/**
+	 * Adjusts the layout of the top row when the screen is resized
+	 */
+	private _adjustTopRow() {
+		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
+		let subRows = this.dom.container.find('.dtsp-subRows');
+		let topRow = this.dom.container.find('.' + this.classes.topRow);
+
+		if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
+			$(subContainers[0]).addClass(this.classes.narrow);
+			$(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
+			$(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
+		}
+		else {
+			$(subContainers[0]).removeClass(this.classes.narrow);
+			$(subRows[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
+			$(subRows[1]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
+		}
 	}
 
 	/**

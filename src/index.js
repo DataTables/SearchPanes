@@ -74,10 +74,12 @@ import SearchPanes from './searchPanes';
     apiRegister('searchPanes.rebuild()', function () {
         var ctx = this.context[0];
         ctx._searchPanes.rebuild();
+        return this;
     });
     apiRegister('searchPanes.rebuildPane()', function (targetIdx) {
         var ctx = this.context[0];
         ctx._searchPanes.rebuild(targetIdx);
+        return this;
     });
     apiRegister('searchPanes.container()', function () {
         var ctx = this.context[0];

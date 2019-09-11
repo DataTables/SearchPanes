@@ -174,31 +174,12 @@ var SearchPane = /** @class */ (function () {
         });
         this.s.dt.on('column-reorder', function (e, settings, details) {
             _this.s.index = details.mapping.indexOf(_this.s.index);
-            console.log(_this.s.index);
         });
         $(window).on('resize.dtr', DataTable.util.throttle(function () {
             _this._adjustTopRow();
         }));
         return this;
     }
-    /**
-     * Adjusts the layout of the top row when the screen is resized
-     */
-    SearchPane.prototype._adjustTopRow = function () {
-        var subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
-        var subRows = this.dom.container.find('.dtsp-subRows');
-        var topRow = this.dom.container.find('.' + this.classes.topRow);
-        if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
-            $(subContainers[0]).addClass(this.classes.narrow);
-            $(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
-            $(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
-        }
-        else {
-            $(subContainers[0]).removeClass(this.classes.narrow);
-            $(subRows[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
-            $(subRows[1]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
-        }
-    };
     /**
      * Adjusts the width of the columns
      */
@@ -212,6 +193,7 @@ var SearchPane = /** @class */ (function () {
         this.dom.container.empty();
         this.dom.container.removeClass(this.classes.hidden);
         this.buildPane();
+        return this;
     };
     /**
      * Repopulates the options of the pane
@@ -232,6 +214,24 @@ var SearchPane = /** @class */ (function () {
         }
         this._updateCommon(filterIdx);
         this.s.updating = updating;
+    };
+    /**
+ * Adjusts the layout of the top row when the screen is resized
+ */
+    SearchPane.prototype._adjustTopRow = function () {
+        var subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
+        var subRows = this.dom.container.find('.dtsp-subRows');
+        var topRow = this.dom.container.find('.' + this.classes.topRow);
+        if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
+            $(subContainers[0]).addClass(this.classes.narrow);
+            $(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
+            $(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
+        }
+        else {
+            $(subContainers[0]).removeClass(this.classes.narrow);
+            $(subRows[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
+            $(subRows[1]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
+        }
     };
     /**
      * Caclulate the count for each different value in a column.

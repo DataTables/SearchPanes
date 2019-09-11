@@ -113,11 +113,13 @@ import SearchPanes from './searchPanes';
 	apiRegister('searchPanes.rebuild()', function() {
 		let ctx = this.context[0];
 		ctx._searchPanes.rebuild();
+		return this;
 	});
 
 	apiRegister('searchPanes.rebuildPane()', function(targetIdx) {
 		let ctx = this.context[0];
 		ctx._searchPanes.rebuild(targetIdx);
+		return this;
 	})
 
 	apiRegister('searchPanes.container()', function() {
