@@ -10,6 +10,12 @@
         </description>
 	</type>
 
+	<type type="boolean">
+		<description>
+			When false, don't truncate options for any length.
+		</description>
+	</type>
+
 	<default value="30">
         The default value for the `-init searchPanes.dataLength` option is `30`, after 30 characters the cell will cut off the end and append with '...'.
 	<description>
@@ -23,6 +29,17 @@
     $('#example').DataTable( {
         searchPanes: {
             dataLength: 15
+        },    
+		dom: 'Sfrtip'
+    });
+
+]]></example>
+
+<example title="Never truncate data"><![CDATA[
+
+    $('#example').DataTable( {
+        searchPanes: {
+            dataLength: false
         },    
 		dom: 'Sfrtip'
     });
