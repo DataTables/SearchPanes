@@ -491,9 +491,15 @@ export default class SearchPane {
 
 		let state = this.s.dtPane.state.loaded();
 		$(dtP).addClass(this.classes.table);
+
+		// This is hacky but necessary for when datatables is generating the column titles automatically
 		$(searchBox).attr(
 				'placeholder',
-				this.colExists ? table.settings()[0].aoColumns[this.s.index].sTitle : this.customPaneSettings.header
+				colOpts.header !== undefined
+				? colOpts.header
+				: this.colExists
+					? table.settings()[0].aoColumns[this.s.index].sTitle
+					: this.customPaneSettings.header
 			);
 
 		// As the pane table is not in the document yet we must initialise select ourselves

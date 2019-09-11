@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="4">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        dom: 'Sfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    header: 'Length of Life'
+                },
+                targets: [3]
+            }
+        ]
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPanes">Add a Custom Title to a Pane</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to add a custom title to a pane
+
+]]></info>
+
+</dt-example>

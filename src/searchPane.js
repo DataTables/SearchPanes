@@ -382,7 +382,12 @@ var SearchPane = /** @class */ (function () {
             ? this.customPaneSettings.searchPanes.dtOpts : {}));
         var state = this.s.dtPane.state.loaded();
         $(dtP).addClass(this.classes.table);
-        $(searchBox).attr('placeholder', this.colExists ? table.settings()[0].aoColumns[this.s.index].sTitle : this.customPaneSettings.header);
+        // This is hacky but necessary for when datatables is generating the column titles automatically
+        $(searchBox).attr('placeholder', colOpts.header !== undefined
+            ? colOpts.header
+            : this.colExists
+                ? table.settings()[0].aoColumns[this.s.index].sTitle
+                : this.customPaneSettings.header);
         // As the pane table is not in the document yet we must initialise select ourselves
         $.fn.dataTable.select.init(this.s.dtPane);
         $.fn.dataTable.ext.errMode = errMode;
