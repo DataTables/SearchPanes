@@ -498,6 +498,7 @@ export default class SearchPane {
 		// As the pane table is not in the document yet we must initialise select ourselves
 		($.fn.dataTable as any).select.init(this.s.dtPane);
 		$.fn.dataTable.ext.errMode = errMode;
+
 		// If it is not a custom pane
 		if (this.colExists) {
 			// On initialisation, do we need to set a filtering value from a
