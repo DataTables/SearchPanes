@@ -354,11 +354,7 @@ export default class SearchPane {
 		let colOpts =  this.s.colOpts;
 		let searchBox = $('<input/>')
 			.addClass(this.classes.paneInputButton)
-			.addClass(this.classes.search)
-			.attr(
-				'placeholder',
-				this.colExists ? $(table.column(this.s.index).header()).text() : this.customPaneSettings.header
-			);
+			.addClass(this.classes.search);
 		this.dom.searchBox = searchBox;
 		let clear = $('<button type="button">&#215;</button>')
 			.addClass(this.classes.dull)
@@ -495,6 +491,11 @@ export default class SearchPane {
 
 		let state = this.s.dtPane.state.loaded();
 		$(dtP).addClass(this.classes.table);
+		$(searchBox).attr(
+				'placeholder',
+				this.colExists ? table.settings()[0].aoColumns[this.s.index].sTitle : this.customPaneSettings.header
+			);
+
 		// As the pane table is not in the document yet we must initialise select ourselves
 		($.fn.dataTable as any).select.init(this.s.dtPane);
 		$.fn.dataTable.ext.errMode = errMode;
