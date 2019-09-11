@@ -11,6 +11,11 @@
 
 	<description>
 		This method preovides the ability to rebuild the panes should a change occur on the associated DataTable. As the method purely recreates the pane, it has no need for a return.
+
+		If no argument is provided to `-init searchPanes.rebuildPane()` then all of the panes will be rebuilt, in effect this is the same as running `-init searchPanes.rebuild()`.
+
+		Otherwise, the `-init searchPanes.rebuildPane()` function takes in the index of the pane. The index of the panes include hidden panes and custom panes. So to rebuild the second columns associated pane is done by running `searchPanes.rebuildPane(1)`. If you wanted to rebuild the first custom pane where a table has 5 columns then the command to run would be `searchPanes.rebuildPane(5)`.
+
 	</description>
 
 	<example title="Delete a row and redraw the first pane:"><![CDATA[
