@@ -485,7 +485,14 @@ export default class SearchPane {
 			scrollY: '200px',
 			select: true,
 			stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
-		}, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}));
+		}, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
+		this.customPaneSettings !== undefined && this.customPaneSettings.dtOpts !== undefined
+			? this.customPaneSettings.dtOpts : {},
+		this.customPaneSettings !== undefined &&
+		this.customPaneSettings.searchPanes !== undefined &&
+		this.customPaneSettings.searchPanes.dtOpts !== undefined
+			? this.customPaneSettings.searchPanes.dtOpts : {}));
+
 		let state = this.s.dtPane.state.loaded();
 		$(dtP).addClass(this.classes.table);
 		// As the pane table is not in the document yet we must initialise select ourselves
@@ -974,7 +981,6 @@ export default class SearchPane {
 		let colOpts = this.s.colOpts;
 		let table = this.s.dt;
 		let classes = this.classes;
-		let array = [];
 		let idx = this.s.index;
 		let cell = table.cell(rowIdx, idx);
 		// Retrieve the rendered data from the cell

@@ -127,7 +127,12 @@ export default class SearchPanes {
 
 		this._attachPaneContainer();
 
-		(DataTable as any).tables({visible: true, api: true}).columns.adjust();
+		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
+		table.columns(this.c.columns).eq(0).each((idx) => {
+			if( this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined){
+				this.panes[idx].s.dtPane.columns.adjust();
+			}
+		});
 
 		// Update the title bar to show how many filters have been selected
 		this.panes[0]._updateFilterCount();

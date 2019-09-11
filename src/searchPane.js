@@ -376,7 +376,11 @@ var SearchPane = /** @class */ (function () {
             scrollY: '200px',
             select: true,
             stateSave: table.settings()[0].oFeatures.bStateSave ? true : false
-        }, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}));
+        }, this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {}, this.customPaneSettings !== undefined && this.customPaneSettings.dtOpts !== undefined
+            ? this.customPaneSettings.dtOpts : {}, this.customPaneSettings !== undefined &&
+            this.customPaneSettings.searchPanes !== undefined &&
+            this.customPaneSettings.searchPanes.dtOpts !== undefined
+            ? this.customPaneSettings.searchPanes.dtOpts : {}));
         var state = this.s.dtPane.state.loaded();
         $(dtP).addClass(this.classes.table);
         // As the pane table is not in the document yet we must initialise select ourselves
@@ -799,7 +803,6 @@ var SearchPane = /** @class */ (function () {
         var colOpts = this.s.colOpts;
         var table = this.s.dt;
         var classes = this.classes;
-        var array = [];
         var idx = this.s.index;
         var cell = table.cell(rowIdx, idx);
         // Retrieve the rendered data from the cell

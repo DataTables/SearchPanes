@@ -65,7 +65,12 @@ var SearchPanes = /** @class */ (function () {
         // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
         this._attachPaneContainer();
-        DataTable.tables({ visible: true, api: true }).columns.adjust();
+        // (DataTable as any).tables({visible: true, api: true}).columns.adjust();
+        table.columns(this.c.columns).eq(0).each(function (idx) {
+            if (_this.panes[idx] !== undefined && _this.panes[idx].s.dtPane !== undefined) {
+                _this.panes[idx].s.dtPane.columns.adjust();
+            }
+        });
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
         // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
