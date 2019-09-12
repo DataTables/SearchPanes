@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="SearchPanes">
+	<name>searchPanes.rebuild()</name>
+	<summary>Rebuild all of the panes, regathering options from the table.</summary>
+	<since>1.0.0</since>
+
+	<type type="function">
+		<signature>searchPanes.rebuild()</signature>
+		<description>Rebuild all of the panes, regathering options from the table.</description>
+	</type>
+
+	<description>
+		This method preovides the ability to rebuild the panes should a change occur on the associated DataTable. As the method purely recreates the pane, it has no need for a return.
+
+		No arguments are to be provided to `-init searchPanes.rebuild()`. When this is called all of the panes will be rebuilt, in effect this is the same as running `-init searchPanes.rebuildPane()`.
+
+	</description>
+
+	<example title="Delete a row and rebuild all of the panes:"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        dom: 'Sfrtip'
+    });
+});,
+$('#example').DataTable().row(0).remove();
+$('#example').DataTable().row(0).remove();
+$('#example').DataTable().searchPanes.rebuild();
+]]></example>
+
+</dt-api>

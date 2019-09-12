@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="SearchPanes">
+	<name>searchPanes.container()</name>
+	<summary>Returns the node of the panes container.</summary>
+	<since>1.0.0</since>
+
+	<type type="function">
+		<signature>searchPanes.container()</signature>
+		<description>Returns the node of the panes container.</description>
+	</type>
+
+	<description>
+		This method provides the ability to return the node of the container that is storing all of the SearchPanes.
+
+        As it is a getter it does not take any arguments
+
+	</description>
+
+	<example title="Get the node of the Container of the panes:"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        dom: 'Sfrtip'
+    });
+});,
+$('#example').DataTable().searchPanes.container();
+]]></example>
+
+</dt-api>
