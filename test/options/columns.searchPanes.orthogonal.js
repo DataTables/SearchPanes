@@ -63,7 +63,6 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 			];
 
 			let cols = dt.getTestColumns();
-			console.log(cols)
 
 			cols[0].render = function(data) {return data.first + ' ' + data.last};
 			cols[0].searchPanes = {tolerance: 0, show: true}
