@@ -25,13 +25,13 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(1000);
 
 			// DD-1114 uncomment out this re-initialisation
-			// table = $('#example').DataTable({
-			// 	dom: 'Sfrtip',
-			// 	searchPanes: true,
-			// 	stateSave: true
-			// });
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: true,
+				stateSave: true
+			});
 
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
 		});
 		it('Tidy up', function() {
 			table.state.clear();

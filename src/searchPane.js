@@ -437,9 +437,17 @@ var SearchPane = /** @class */ (function () {
         if (colOpts.hideCount || this.c.hideCount) {
             this.s.dtPane.column(1).visible(false);
         }
-        var loadedFilter;
-        if (table.state.loaded()) {
-            loadedFilter = table.state.loaded();
+        // When an item is selected on the pane, add these to the array which holds selected items.
+        // Custom search will perform.
+        this.s.dtPane.on('select.dt', function () {
+            clearTimeout(t0);
+            $(clear).removeClass(_this.classes.dull);
+            if (!_this.s.updating) {
+                _this._makeSelection(true);
+            }
+        });
+        var loadedFilter = table.state.loaded();
+        if (loadedFilter && state) {
             this._reloadSelect(loadedFilter);
             $(searchBox).val(state.search.search);
             this.s.dtPane.column(0).order(state.order[0][0]);
@@ -449,15 +457,6 @@ var SearchPane = /** @class */ (function () {
         var t0;
         this.s.dtPane.on('user-select.dt', function (e, _dt, type, cell, originalEvent) {
             originalEvent.stopPropagation();
-        });
-        // When an item is selected on the pane, add these to the array which holds selected items.
-        // Custom search will perform.
-        this.s.dtPane.on('select.dt', function () {
-            clearTimeout(t0);
-            $(clear).removeClass(_this.classes.dull);
-            if (!_this.s.updating) {
-                _this._makeSelection(true);
-            }
         });
         nameButton[0].addEventListener('click', function () {
             var currentOrder = _this.s.dtPane.order()[0][1];

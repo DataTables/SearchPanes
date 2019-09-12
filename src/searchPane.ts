@@ -567,9 +567,19 @@ export default class SearchPane {
 			this.s.dtPane.column(1).visible(false);
 		}
 
-		let loadedFilter;
-		if (table.state.loaded()) {
-			loadedFilter = table.state.loaded();
+		// When an item is selected on the pane, add these to the array which holds selected items.
+		// Custom search will perform.
+		this.s.dtPane.on('select.dt', () => {
+			clearTimeout(t0);
+			$(clear).removeClass(this.classes.dull);
+			if (!this.s.updating) {
+				this._makeSelection(true);
+			}
+		});
+
+		let loadedFilter = table.state.loaded();
+
+		if (loadedFilter && state) {
 
 			this._reloadSelect(loadedFilter);
 
@@ -583,16 +593,6 @@ export default class SearchPane {
 		let t0;
 		this.s.dtPane.on('user-select.dt', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
-		});
-
-		// When an item is selected on the pane, add these to the array which holds selected items.
-		// Custom search will perform.
-		this.s.dtPane.on('select.dt', () => {
-			clearTimeout(t0);
-			$(clear).removeClass(this.classes.dull);
-			if (!this.s.updating) {
-				this._makeSelection(true);
-			}
 		});
 
 		nameButton[0].addEventListener('click', () => {
