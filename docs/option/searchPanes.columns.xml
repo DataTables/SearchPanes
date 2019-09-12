@@ -12,6 +12,7 @@
 
 	<default value="undefined">
         The default value for the `-init searchPanes.columns` paramater is `undefined`. When this default value is in place all of the columns will be considered when creating searchPanes.
+	</default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will consider all of the columns when creating searchPanes. When `-init searchPanes.columns` is defined with an array of numbers, then only the columns with those indexes will be considered when creating panes. Note they still may not be displayed based upon the calculations of `-init searchPanes.threshold` or `-init columns.searchPanes.threshold`.

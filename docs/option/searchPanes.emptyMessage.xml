@@ -10,8 +10,9 @@
         </description>
 	</type>
 
-	<default value="<i>No Data</i>">
-        The default value for the `-init searchPanes.emptyMessage` paramater is `<i>No Data</i>`.
+	<default value="&lt;/i&gt;No Data&lt;/i&gt;">
+        The default value for the `-init searchPanes.emptyMessage` paramater is `\&lt;i\&gt;No Data\&lt;/i\&gt;`.
+	</default>
 	<description>
 		<![CDATA[
         Empty cells will be represented in the panes by the option `-init searchPanes.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell.
@@ -23,7 +24,7 @@
  $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPanes:{
-            emptyMessage:"<i><b>EMPTY</b></i>"
+            emptyMessage:"</i></b>EMPTY</b></i>"
         },
 		dom: 'Sfrtip',
     });

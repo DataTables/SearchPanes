@@ -28,6 +28,7 @@
 
 	<default value="undefined">
         The default value of `-init columns.searchPanes.options` is undefined. If there are no custom options defined then none will be added to the panes.
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will not add any custom options to the panes.

@@ -12,6 +12,7 @@
 
 	<default value="0.6">
         The default value for the `-init searchPanes.threshold` paramater is `0.6`. This default value means that columns with a ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
+    </default>
 	<description>
 		<![CDATA[
         As standard, columns must have a uniqueness ratio of 0.6. This is the ratio of different values throughout the column to the number of total rows. If all rows are unique, this be 1; as the value drops towards 0, this means values are more often repeated.

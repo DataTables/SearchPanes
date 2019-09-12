@@ -18,6 +18,7 @@
 
 	<default value="30">
         The default value for the `-init searchPanes.dataLength` option is `30`, after 30 characters the cell will cut off the end and append with '...'.
+	</default>
 	<description>
 		<![CDATA[
 		This is useful as it prevents the searchPanes cells becoming mishapen and overpopulated.

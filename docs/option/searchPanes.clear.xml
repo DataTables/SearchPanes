@@ -12,6 +12,7 @@
 
 	<default value="true">
         The default value for the `-init searchPanes.clear` paramater is `true`. When this default value is in place the buttons which allow selections to be cleared will be visible.
+	</default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will display the buttons which allow selections to be cleared in individual panes and across all panes. When `-init searchPanes.clear` is set to `false`, the clear buttons will not be present.

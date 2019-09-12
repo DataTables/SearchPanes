@@ -27,6 +27,7 @@
         ```        
 
         This means that as standard the pane will display the same data as the DataTable, and search using the original data from the DataTable.
+    </default>
 	<description>
 		<![CDATA[
         `-init columns.searchPanes.orthogonal` is mainly used when the programmer is creating their own custom rendering function. By setting its value to a string it tells SearchPanes how to display and filter on the data it is provided from the DataTable.

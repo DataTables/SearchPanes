@@ -80,6 +80,9 @@ $(document).ready(function() {
             },
             {
                 searchPanes: {
+                    dtOpts:{
+                        info: true
+                    },
                     options:[
                         {
                             label: 'Not Edinburgh',

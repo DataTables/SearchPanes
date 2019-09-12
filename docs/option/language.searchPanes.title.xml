@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>languages.searchPanes.title</name>
+	<name>language.searchPanes.title</name>
 	<summary>Add internationalisation to the title showing how many panes are selected</summary>
 	<since>SearchPanes 1.0.0</since>
 
@@ -12,6 +12,7 @@
 
 	<default value="undefined">
         The default value for the `-init languages.searchPanes.title` paramater is `-type undefined`. When this is not in place the `-init i18n` function will use 'Filters Active - %d' as a default.
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'. This property allows that message to be configured.

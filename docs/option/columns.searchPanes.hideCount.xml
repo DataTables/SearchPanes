@@ -12,6 +12,7 @@
 
 	<default value="false">
         The default value for the `-init columns.searchPanes.hideCount` paramater is `false`, meaning that as standard the count column will be included in the pane.
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init columns.searchPanes.hideCount` is set to 'true' then the count column will no longer be displayed.

@@ -12,6 +12,7 @@
 
 	<default value="or">
         The default value for the `-init columns.searchPanes.combiner` paramater is `or`, meaning that as standard the pane will search using OR logic.
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will perform searched when multiple selections have been made using OR Logic. However at times it may be desirable to implement AND Logic instead. For example when eliminating rows from the total dataSet rather than the opposite. 

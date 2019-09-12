@@ -14,6 +14,7 @@
 
 	<default value="false">
         The default value for the `-init searchPanes.layout` paramater is `columns-3`. 
+    </default>
 	<description>
 		<![CDATA[
         By setting the `-init searchPanes.layout` parameter to `columns-3`, the panes will be displayed in 3 columns.

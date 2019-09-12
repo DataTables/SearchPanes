@@ -12,6 +12,7 @@
 
 	<default value="{total}">
         The default value for the `-init language.searchPanes.count` paramater is `{total}`. 
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place.

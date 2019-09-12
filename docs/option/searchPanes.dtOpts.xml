@@ -12,6 +12,7 @@
 
 	<default value="undefined">
         The default value for the `-init searchPanes.dtOpts` paramater is `-type undefined`. When this default value is in place the defaults for SearchPanes are applied.
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`.

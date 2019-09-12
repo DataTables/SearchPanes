@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>searchPanes.show</name>
+	<name>columns.searchPanes.show</name>
 	<summary>Force Panes to hide or show</summary>
 	<since>SearchPanes 1.0.0</since>
 
@@ -14,6 +14,7 @@
 
 	<default value="undefined">
         The default value for the `-init searchPanes.show` paramater is `-type undefined`. When this default value is in place, the internal calculations and validation will decide whether a pane should be shown for that column. See `-init searchPanes.thershold` and `-init columns.searchPanes.threshold` to alter these calculations.
+    </default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will decide which columns to display a pane for by calculating a simple uniqueness ratio of unique values in that column to the total number of entries in the table. For example if there are 100 rows in a table, and in a certain column there are 10 unique options, then the ratio is 0.1.

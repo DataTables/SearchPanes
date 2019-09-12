@@ -12,6 +12,7 @@
 
 	<default value="false">
         The default value for the `-init searchPanes.cascadePanes` paramater is `false`. When this default value is in place no action will be taken to cascade the panes.
+	</default>
 	<description>
 		<![CDATA[
         As standard, SearchPanes will display all of the options for that column throughout its operation. When `-init searchPanes.cascadePanes` is set to `true`, the panes will remove options which are no longer present in the currently displayed DataTable. The cascade action will occur when a selection or a deselection is made in one of the panes.

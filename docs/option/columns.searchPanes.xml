@@ -12,6 +12,7 @@
 
 	<default value="undefined">
         The default value for the `-init columns.searchPanes` object is `-type undefined` meaning the pane will use all the default settings.
+    </default>
 	<description>
 		<![CDATA[
         As standard, no custom options will be applied to the pane for the column if `-init columns.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object.

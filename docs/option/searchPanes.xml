@@ -20,6 +20,7 @@
 
 	<default value="false">
         The default value for the `-init searchPanes` paramater is `false`. When this default value is in place no panes will be displayed and you will display a standard DataTable along with any other extensions that are in use.
+    </default>
 	<description>
 		<![CDATA[
         SearchPanes is an extension that allows for clearer more accesible searching functionality. 

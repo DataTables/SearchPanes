@@ -12,6 +12,7 @@
 
 	<default value="false">
         The default value for the `-init searchPanes.viewTotal` paramater is `false`. 
+    </default>
 	<description>
 		<![CDATA[
         By setting the `-init searchPanes.viewTotal` parameter to true, the message displayed in the count column will change when a search is applied to the DataTable.
