@@ -995,22 +995,25 @@ export default class SearchPane {
 		let classes = this.classes;
 		let idx = this.s.index;
 		let cell = table.cell(rowIdx, idx);
+		let filter;
+		let display;
+		let sort;
+		let type;
+
 		// Retrieve the rendered data from the cell
-		let filter = typeof(colOpts.orthogonal) === 'string'
-		? cell.render(colOpts.orthogonal)
-		: cell.render(colOpts.orthogonal.search);
-
-		let display = typeof(colOpts.orthogonal) === 'string'
-		? cell.render(colOpts.orthogonal)
-		: cell.render(colOpts.orthogonal.display);
-
-		let sort = cell.render(colOpts.orthogonal) === 'string'
-		? cell.render(colOpts.orthogonal)
-		: cell.render(colOpts.orthogonal.sort);
-
-		let type = cell.render(colOpts.orthogonal) === 'string'
-		? cell.render(colOpts.orthogonal)
-		: cell.render(colOpts.orthogonal.type);
+		if (typeof colOpts.orthogonal === 'string') {
+			let rendered = cell.render(colOpts.orthogonal);
+			filter = rendered;
+			display = rendered;
+			sort = rendered;
+			type = rendered;
+		}
+		else {
+			filter = cell.render(colOpts.orthogonal.search);
+			display = cell.render(colOpts.orthogonal.display);
+			sort = cell.render(colOpts.orthogonal.sort);
+			type = cell.render(colOpts.orthogonal.type);
+		}
 
 		// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 		if (Array.isArray(filter) || filter instanceof DataTable.Api) {

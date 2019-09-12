@@ -812,19 +812,24 @@ var SearchPane = /** @class */ (function () {
         var classes = this.classes;
         var idx = this.s.index;
         var cell = table.cell(rowIdx, idx);
+        var filter;
+        var display;
+        var sort;
+        var type;
         // Retrieve the rendered data from the cell
-        var filter = typeof (colOpts.orthogonal) === 'string'
-            ? cell.render(colOpts.orthogonal)
-            : cell.render(colOpts.orthogonal.search);
-        var display = typeof (colOpts.orthogonal) === 'string'
-            ? cell.render(colOpts.orthogonal)
-            : cell.render(colOpts.orthogonal.display);
-        var sort = cell.render(colOpts.orthogonal) === 'string'
-            ? cell.render(colOpts.orthogonal)
-            : cell.render(colOpts.orthogonal.sort);
-        var type = cell.render(colOpts.orthogonal) === 'string'
-            ? cell.render(colOpts.orthogonal)
-            : cell.render(colOpts.orthogonal.type);
+        if (typeof colOpts.orthogonal === 'string') {
+            var rendered = cell.render(colOpts.orthogonal);
+            filter = rendered;
+            display = rendered;
+            sort = rendered;
+            type = rendered;
+        }
+        else {
+            filter = cell.render(colOpts.orthogonal.search);
+            display = cell.render(colOpts.orthogonal.display);
+            sort = cell.render(colOpts.orthogonal.sort);
+            type = cell.render(colOpts.orthogonal.type);
+        }
         // If the filter is an array then take a note of this, and add the elements to the arrayFilter array
         if (Array.isArray(filter) || filter instanceof DataTable.Api) {
             if (classes.arrayCols.indexOf(idx) === -1) {
