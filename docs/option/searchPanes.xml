@@ -30,6 +30,8 @@
         SearchPanes can be enabled by setting the dom property to `dom: 'Sfrtip'`, which will set the configuration options to be the defaults as defined by `$.fn.dataTable.SearchPanes.defaults` or an object with further properties to define operation which is different to the defaults. It can also be enabled through the API.
 
         Please note that as with all other configuration options for SearchPanes, this option is an extension to the [default set of DataTables options](/reference/option). This property should be set in the DataTables initialisation object.
+
+        Where speed is a concern, SearchPanes operates fairly normally on the client side for tables with less than 2,000 rows. If increasing above this level then performance hits will occur and it will take longer to both load and operate the panes.
         ]]>
 	</description>
 
