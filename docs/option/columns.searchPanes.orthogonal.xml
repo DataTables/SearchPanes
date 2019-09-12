@@ -22,7 +22,9 @@
         ```
         orthogonal: {
             display: 'display',
-            search: 'filter'
+            search: 'filter',
+            sort: 'sort',
+            type: 'type'
         }
         ```        
 
