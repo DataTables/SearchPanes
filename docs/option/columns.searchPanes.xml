@@ -68,8 +68,9 @@ $(document).ready(function() {
                     options:[
                         {
                             label: 'Under 20',
-                            value: 20,
-                            condition:'<',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] < 20;
+                            }
                         },
                         {
                             label: '20 to 30',
@@ -97,8 +98,9 @@ $(document).ready(function() {
                         },
                          {
                             label: 'Over 60',
-                            value: 60,
-                            condition:'>',
+                            value: function(rowData, rowIdx){
+                                return rowData[4] > 60;
+                            }
                         },
                     ]
                 },
@@ -109,8 +111,9 @@ $(document).ready(function() {
                     options:[
                         {
                             label: 'Not Edinburgh',
-                            value: 'Edinburgh',
-                            condition: '!=',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] !== 'Edinburgh';
+                            }
                         },
                         {
                             label: 'Not London',

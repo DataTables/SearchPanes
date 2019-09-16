@@ -8,7 +8,7 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 
 	describe('Functional tests', function() {
 		dt.html('basic');
-		it('Single pane - and condition', function() {
+		it('Single pane - "and" combiner', function() {
 			table = $('#example').DataTable({
 				dom: 'Sfrtip',
 				searchPanes: {
@@ -20,8 +20,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 							options: [
 								{
 									label: 'Under 20',
-									value: 20,
-									condition: '<'
+									value: function(rowData, rowIdx) {
+										return rowData[3] < 20;
+									}
 								},
 								{
 									label: '20 to 30',
@@ -49,8 +50,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 								},
 								{
 									label: 'Over 60',
-									value: 60,
-									condition: '>'
+									value: function(rowData, rowIdx) {
+										return rowData[3] > 60;
+									}
 								}
 							],
 							combiner: 'and'
@@ -63,39 +65,23 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 			expect($('div.dtsp-searchPane').length).toBe(1);
 			expect($('div.dtsp-searchPane tbody tr').length).toBe(6);
 		});
-		it('Check label of function based options', function() {
+		it('Check label of options', function() {
 			expect($('div.dtsp-searchPane tbody tr:eq(0) td:eq(0)').text()).toBe('20 to 30');
 			expect($('div.dtsp-searchPane tbody tr:eq(0) td:eq(1)').text()).toBe('16');
 		});
-		it('Check label of condition based options', function() {
-			expect($('div.dtsp-searchPane tbody tr:eq(4) td:eq(0)').text()).toBe('Over 60');
-			expect($('div.dtsp-searchPane tbody tr:eq(4) td:eq(1)').text()).toBe('12');
-		});
-		it('Check filter of function based options', function() {
+		it('Check filter of options', function() {
 			$('div.dtsp-searchPane tbody tr:eq(0) td:eq(0)').click();
 			expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 16 entries (filtered from 57 total entries)');
 		});
-		it('Check filter of function based options - second selection', function() {
+		it('Check filter of options - second selection', function() {
 			var clickEvent = $.Event('click');
 			clickEvent.shiftKey = true;
 			$('div.dtsp-searchPane tbody tr:eq(1) td:eq(0)').trigger(clickEvent);
 			expect($('div.dataTables_info').text()).toBe('Showing 1 to 3 of 3 entries (filtered from 57 total entries)');
 		});
-		it('Check filter of condition based options', function() {
-			$('div.dtsp-searchPane tbody tr:eq(4) td:eq(0)').click();
-			// DD-1107
-			// expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 12 entries (filtered from 57 total entries)')
-		});
-		it('Check filter of function based options - second selection', function() {
-			var clickEvent = $.Event('click');
-			clickEvent.shiftKey = true;
-			$('div.dtsp-searchPane tbody tr:eq(5) td:eq(0)').trigger(clickEvent);
-			// DD-1107
-			// expect($('div.dataTables_info').text()).toBe('Showing 0 to 0 of 0 entries (filtered from 57 total entries)')
-		});
 
 		dt.html('basic');
-		it('Single pane - or condition', function() {
+		it('Single pane - "or" combiner', function() {
 			table = $('#example').DataTable({
 				dom: 'Sfrtip',
 				searchPanes: {
@@ -107,8 +93,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 							options: [
 								{
 									label: 'Under 20',
-									value: 20,
-									condition: '<'
+									value: function(rowData, rowIdx) {
+										return rowData[3] < 20;
+									}
 								},
 								{
 									label: '20 to 30',
@@ -136,8 +123,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 								},
 								{
 									label: 'Over 60',
-									value: 60,
-									condition: '>'
+									value: function(rowData, rowIdx) {
+										return rowData[3] > 60;
+									}
 								}
 							],
 							combiner: 'or'
@@ -150,32 +138,19 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 			expect($('div.dtsp-searchPane').length).toBe(1);
 			expect($('div.dtsp-searchPane tbody tr').length).toBe(6);
 		});
-		it('Check filter of function based options', function() {
+		it('Check filter of options', function() {
 			$('div.dtsp-searchPane tbody tr:eq(0) td:eq(0)').click();
 			expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 16 entries (filtered from 57 total entries)');
 		});
-		it('Check filter of function based options - second selection', function() {
+		it('Check filter of options - second selection', function() {
 			var clickEvent = $.Event('click');
 			clickEvent.shiftKey = true;
 			$('div.dtsp-searchPane tbody tr:eq(1) td:eq(0)').trigger(clickEvent);
 			expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 25 entries (filtered from 57 total entries)');
 		});
-		it('Check filter of condition based options', function() {
-			$('div.dtsp-searchPane tbody tr:eq(4) td:eq(0)').click();
-			// DD-1107
-			// expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 12 entries (filtered from 57 total entries)')
-		});
-		it('Check filter of function based options - second selection', function() {
-			var clickEvent = $.Event('click');
-			clickEvent.shiftKey = true;
-			$('div.dtsp-searchPane tbody tr:eq(5) td:eq(0)').trigger(clickEvent);
-			// DD-1107
-			// expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 13 entries (filtered from 57 total entries)')
-		});
 
-		// DD-1108 TK COLIN performance here slows down hugely
 		dt.html('basic');
-		it('Two panes - and condition', function() {
+		it('Two panes - "and" combiner', function() {
 			table = $('#example').DataTable({
 				dom: 'Sfrtip',
 				searchPanes: {
@@ -187,8 +162,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 							options: [
 								{
 									label: 'Under 20',
-									value: 20,
-									condition: '<'
+									value: function(rowData, rowIdx) {
+										return rowData[3] < 20;
+									}
 								},
 								{
 									label: '20 to 30',
@@ -216,8 +192,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 								},
 								{
 									label: 'Over 60',
-									value: 60,
-									condition: '>'
+									value: function(rowData, rowIdx) {
+										return rowData[3] > 60;
+									}
 								}
 							],
 							combiner: 'and'
@@ -229,8 +206,9 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 							options: [
 								{
 									label: 'Not Edinburgh',
-									value: 'Edinburgh',
-									condition: '!='
+									value: function(rowData, rowIdx) {
+										return rowData[2] !== 'Edinburgh';
+									}
 								},
 								{
 									label: 'Not London',
@@ -248,36 +226,15 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 			expect($('div.dtsp-searchPane').length).toBe(2);
 			expect($('div.dtsp-searchPane tbody tr').length).toBe(8);
 		});
-		// TK COLIN complete these tests once dd-1107 completed.
-		// it('Check label of function based options', function() {
-		// 	expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').text()).toBe('20 to 30');
-		// 	expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(1)').text()).toBe('16');
-		// });
-		// it('Check label of condition based options', function() {
-		// 	expect($('div.dtsp-searchPanes tbody tr:eq(4) td:eq(0)').text()).toBe('Over 60');
-		// 	expect($('div.dtsp-searchPanes tbody tr:eq(4) td:eq(1)').text()).toBe('12');
-		// });
-		// it('Check filter of function based options', function() {
-		// 	$('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').click();
-		// 	expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 16 entries (filtered from 57 total entries)');
-		// });
-		// it('Check filter of function based options - second selection', function() {
-		// 	var clickEvent = $.Event('click');
-		// 	clickEvent.shiftKey = true;
-		// 	$('div.dtsp-searchPanes tbody tr:eq(1) td:eq(0)').trigger(clickEvent);
-		// 	expect($('div.dataTables_info').text()).toBe('Showing 1 to 3 of 3 entries (filtered from 57 total entries)');
-		// });
-		// it('Check filter of condition based options', function() {
-		// 	$('div.dtsp-searchPanes tbody tr:eq(4) td:eq(0)').click();
-		// 	// DD-1107
-		// 	// expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 12 entries (filtered from 57 total entries)')
-		// });
-		// it('Check filter of function based options - second selection', function() {
-		// 	var clickEvent = $.Event('click');
-		// 	clickEvent.shiftKey = true;
-		// 	$('div.dtsp-searchPanes tbody tr:eq(5) td:eq(0)').trigger(clickEvent);
-		// 	// DD-1107
-		// 	// expect($('div.dataTables_info').text()).toBe('Showing 0 to 0 of 0 entries (filtered from 57 total entries)')
-		// });
+		it('Check filter options', function() {
+			$('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').click();
+			expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 48 entries (filtered from 57 total entries)');
+		});
+		it('Check filter options - second selection', function() {
+			var clickEvent = $.Event('click');
+			clickEvent.shiftKey = true;
+			$('div.dtsp-searchPanes tbody tr:eq(1) td:eq(0)').trigger(clickEvent);
+			expect($('div.dataTables_info').text()).toBe('Showing 1 to 10 of 57 entries');
+		});
 	});
 });
