@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example order="0">
+<dt-example table-type="html" order="0">
 
-<title lib="Select">Select for DataTables</title>
+<title lib="SearchPanes">SearchPanes for DataTables</title>
 
+<js lib="jquery" />
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
