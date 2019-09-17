@@ -58,11 +58,9 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Example showing panes vertically next to DataTable</title>
+<title lib="searchPanes">Panes vertically stacked next to DataTable</title>
 
 <info><![CDATA[
-
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to display the panes to the left of the DataTable instead of above it.
 
