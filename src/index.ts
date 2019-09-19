@@ -120,7 +120,7 @@ import SearchPanes from './searchPanes';
 		let ctx = this.context[0];
 		ctx._searchPanes.rebuild(targetIdx);
 		return this;
-	})
+	});
 
 	apiRegister('searchPanes.container()', function() {
 		let ctx = this.context[0];
