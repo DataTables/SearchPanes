@@ -42,5 +42,9 @@
         container: 'dtsp-searchPanes ui grid',
         clearAll: 'dtsp-clearAll ui button'
     });
+    // This override is required for the integrated search Icon in sematic ui
+    DataTable.SearchPane.prototype._searchContSetup = function () {
+        $('<i class="' + this.classes.paneInputButton + '"></i>').appendTo(this.dom.searchCont);
+    };
     return DataTable.searchPanes;
 }));

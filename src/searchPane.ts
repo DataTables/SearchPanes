@@ -101,6 +101,19 @@ export default class SearchPane {
 			this.customPaneSettings = panes;
 		}
 
+		this.s = {
+			colOpts: [],
+			columns: [],
+			dt: table,
+			filteringActive: false,
+			index: idx,
+			redraw: false,
+			updating: false,
+		};
+
+		let rowLength = table.columns().eq(0).toArray().length;
+		this.colExists = this.s.index < rowLength;
+
 		// Add extra elements to DOM object including clear and hide buttons
 		this.layout = layout;
 		let layVal = parseInt(layout.split('-')[1], 10);
@@ -130,22 +143,10 @@ export default class SearchPane {
 			upper: $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowSearch),
 		};
 
-		this.s = {
-			colOpts: [],
-			columns: [],
-			dt: table,
-			filteringActive: false,
-			index: idx,
-			redraw: false,
-			updating: false,
-		};
-
 		this.displayed = false;
 
 		table = this.s.dt;
 		this.selections = this.s.columns;
-		let rowLength = table.columns().eq(0).toArray().length;
-		this.colExists = this.s.index < rowLength;
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions();
 		let colOpts =  this.s.colOpts;
 		let clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
@@ -229,6 +230,9 @@ export default class SearchPane {
 	 */
 	public rebuildPane(): this {
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
+		if (this.s.dtPane !== undefined) {
+			this.s.dtPane.clear().destroy();
+		}
 		this.dom.container.empty();
 		this.dom.container.removeClass(this.classes.hidden);
 		this._buildPane();
@@ -337,7 +341,7 @@ export default class SearchPane {
 	/**
 	 * Method to construct the actual pane.
 	 */
-	private _buildPane(): void {
+	private _buildPane(): boolean {
 		// Aliases
 		this.selections = this.s.columns;
 		let table = this.s.dt;
@@ -359,7 +363,7 @@ export default class SearchPane {
 				|| (colOpts.show !== undefined && colOpts.show !== true)
 			) {
 					this.dom.container.addClass(this.classes.hidden);
-					return;
+					return false;
 			}
 			else if (colOpts.show === true) {
 				this.displayed = true;
@@ -639,6 +643,8 @@ export default class SearchPane {
 		});
 
 		this.s.dtPane.state.save();
+
+		return true;
 	}
 
 	/**
@@ -786,6 +792,7 @@ export default class SearchPane {
 	 */
 	private _getBonusOptions(): {[keys: string]: any} {
 		let defaults = {
+			combiner: 'or',
 			grouping: undefined,
 			orthogonal: {
 				comparison: undefined,

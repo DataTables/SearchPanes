@@ -124,7 +124,7 @@ var SearchPanes = /** @class */ (function () {
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
             if (pane.s.dtPane !== undefined) {
-                pane.clearPane();
+                pane._clearPane();
             }
         }
     };

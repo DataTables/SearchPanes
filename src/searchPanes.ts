@@ -197,7 +197,7 @@ export default class SearchPanes {
 		// For every pane, clear the selections in the pane
 		for (let pane of this.panes) {
 			if (pane.s.dtPane !== undefined) {
-				pane.clearPane();
+				pane._clearPane();
 			}
 		}
 	}
