@@ -6,21 +6,12 @@
 
 	<type type="array">
 		<description>
-            The `-init columns.searchPanes.options` array takes objects in the following form. The `columns.searchPanes.options.label` property is a `-type string` that holds the value that will be displayed in the pane. The `columns.searchPanes.options.value` property can be either of type `-type function` or other for a comparison. The `columns.searchPanes.options.condition` property is a `-type string` that holds the condition from the predefined list to be compared against.
+            The `-init columns.searchPanes.options` array takes objects in the following form. The `columns.searchPanes.options.label` property is a `-type string` that holds the value that will be displayed in the pane. The `columns.searchPanes.options.value` is of type `-type function`.
 
-            This leads to the object being in one of two forms, either...
             ```
                 {
                     label: string,
                     value: function
-                }
-            ```
-            or ...
-            ```
-                {
-                    label: string,
-                    value: !function,
-                    condition: string,   
                 }
             ```
         </description>

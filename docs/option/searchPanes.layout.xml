@@ -8,7 +8,7 @@
 		<description>
             By setting the `-init searchPanes.layout` to `columns-%d` the searchPanes are displayed in columns, with %d panes in each column.
 
-            At the moment columns is the only layout option supported although more may be added in future.
+            Currently `columns-%d` is the only layout option supported though more may be added in the future.
         </description>
 	</type>
 
@@ -28,7 +28,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-2'
         },
         dom: 'Sfrtip'

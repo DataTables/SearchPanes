@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" order="0">
+
+<title lib="SearchPanes">Custom Filtering</title>
+
+<js lib="jquery" />
+<info><![CDATA[
+
+These examples demonstrate how custom panes can be added to the table.
+
+]]></info>
+
+</dt-example>

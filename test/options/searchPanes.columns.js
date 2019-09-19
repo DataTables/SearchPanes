@@ -38,7 +38,7 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 		});
 
 		dt.html('basic');
-		it('Check when last three columns specified with low tolerance', function() {
+		it('Check when last three columns specified with low threshold', function() {
 			table = $('#example').DataTable({
 				dom: 'Sfrtip',
 				paging: false,

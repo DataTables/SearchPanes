@@ -77,8 +77,37 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
-			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click()
+			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Financial Controller');
+		});
+
+		dt.html('basic');
+		it('Set on custom panes', function() {
+			table = $('#example').DataTable({
+				dom: 'Sfrtip',
+				searchPanes: {
+					panes: [
+						{
+							header: 'unittest header',
+							searchPanes: {
+								options: [
+									{
+										label: 'unittest label',
+										value: function(rowData, rowIdx) {
+											return rowData[2] === 'San Francisco' && rowData[3] === '66';
+										}
+									}
+								],
+								dtOpts: {
+									paging: true
+								}
+							}
+						}
+					]
+				}
+			});
+
+			expect($('div.dtsp-searchPane:eq(6) div.dataTables_length').length).toBe(1);
 		});
 	});
 });

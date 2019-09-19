@@ -11,7 +11,7 @@
 	</type>
 
 	<default value="undefined">
-        The default value for the `-init columns.searchPanes.combiner` paramater is undefined, meaning that as standard the pane use the title of the column for it's header.
+        The default value for the `-init columns.searchPanes.header` paramater is undefined. By default the pane will use the title of the column for its header.
     </default>
 	<description>
 		<![CDATA[
