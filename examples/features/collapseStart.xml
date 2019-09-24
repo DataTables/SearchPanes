@@ -18,13 +18,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Initialise panes as collapsed</title>
+<title lib="searchPanes">SearchPanes Button</title>
 
 <info><![CDATA[
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example allows the panes to be collapsed on start up rather than visible
+This example allows the searchpanes to be operated using a buttons button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focussed on.
 
 ]]></info>
 
