@@ -7,6 +7,10 @@
 	<type type="function">
 		<signature>searchPanes.container()</signature>
 		<description>Returns the node of the panes container.</description>
+		<returns type="jQuery">
+            jQuery instance that contains the container element for the searchPanes.
+        </returns>
+
 	</type>
 
 	<description>
@@ -16,14 +20,11 @@
 
 	</description>
 
-	<example title="Get the node of the Container of the panes:"><![CDATA[
-
-$(document).ready(function() {
+	<example title="Add a class to the searchPanes container:"><![CDATA[
     var dt = $('#example').DataTable( {
         dom: 'Sfrtip'
     });
-});,
-$('#example').DataTable().searchPanes.container();
+	dt.searchPanes.container().addClass('sp_class');
 ]]></example>
 
 </dt-api>

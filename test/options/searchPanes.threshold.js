@@ -131,7 +131,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 				table.row.add(['AAA', i % 6, i % 5, i % 4, i % 3, i % 2]);
 			}
 
-			table.draw().searchPanes.rebuild();
+			table.draw().searchPanes.rebuildPane();
 
 			checkVisible([false, false, false, true, true, true]);
 		});
@@ -193,7 +193,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 				table.row.add(['AAA', i % 6, i % 5, i % 4, i % 3, i % 2]);
 			}
 
-			table.draw().searchPanes.rebuild();
+			table.draw().searchPanes.rebuildPane();
 
 			checkVisible([true, false, false, true, true, true]);
 		});
