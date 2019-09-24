@@ -1,4 +1,4 @@
-describe('searchPanes - api - searchPanes.clearSelections()', function() {
+describe('searchPanes - api - searchPanes.container()', function() {
 	let table;
 
 	dt.libs({
