@@ -21,7 +21,7 @@
 	<description>
 		This method provides the ability to rebuild the panes should a change occur on the associated DataTable.
 
-		If no argument is provided to `-init searchPanes.rebuildPane()` then all of the panes will be rebuilt, in effect this is the same as running `-init searchPanes.rebuild()`.
+		If no argument is provided to `-init searchPanes.rebuildPane()` then all of the panes will be rebuilt.
 
 		Otherwise, the `-init searchPanes.rebuildPane()` function takes in the index of the pane. The index of the panes include hidden panes and custom panes - to rebuild the second column's associated pane call `searchPanes.rebuildPane(1)`. As custom panes come after the column's panes, to rebuild the first custom pane where a table has five columns then the command to run would be `searchPanes.rebuildPane(5)` (note counting starts from zero).
 
@@ -36,6 +36,18 @@ $(document).ready(function() {
 
 	$('#example').DataTable().row(0).remove();
 	$('#example').DataTable().searchPanes.rebuildPane(0);
+});
+]]></example>
+
+<example title="Delete a row and redraw all of the panes:"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        dom: 'Sfrtip'
+    });
+
+	$('#example').DataTable().row(0).remove();
+	$('#example').DataTable().searchPanes.rebuildPane();
 });
 ]]></example>
 
