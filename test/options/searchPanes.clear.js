@@ -23,7 +23,6 @@ describe('searchPanes - options - searchPanes.clear', function() {
 				expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 
 				$('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').click();
-				console.log($('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').text())
 
 				await dt.sleep(100);
 
