@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-api library="SearchPanes">
 	<name>searchPanes.clearSelections()</name>
-	<summary>Clears the selections in all of the panes.</summary>
+	<summary>Clears the selections in all of the panes</summary>
 	<since>1.0.0</since>
 
 	<type type="function">
 		<signature>searchPanes.clearSelections()</signature>
 		<description>Clears the selections in all of the panes.</description>
+		<returns type="DataTables.Api">DataTables API instance.</returns>
 	</type>
 
 	<description>
-		This method provides the ability to clear all of the selections that have been made in the panes should a change occur on the associated DataTable. As the method purely clears the selections in the pane, it has no need for a return.
+		This method provides the ability to clear all of the selections that have been made in the panes should a change occur on the associated DataTable.
 
-		`-init searchPanes.clearSelections()` Takes no argument. It clears the selections in every pane.
+		`-init searchPanes.clearSelections()` takes no argument -  all selections are cleared in every pane.
 
 	</description>
 
 	<example title="Select a row in a pane and clear the selections:"><![CDATA[
-
-$(document).ready(function() {
     var dt = $('#example').DataTable( {
         dom: 'Sfrtip'
     });
-});,
-$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-$('#example').DataTable().searchPanes.clearSelections();
+    $('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+    $('#example').DataTable().searchPanes.clearSelections();
 ]]></example>
 
 </dt-api>
