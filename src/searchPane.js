@@ -492,6 +492,7 @@ var SearchPane = /** @class */ (function () {
         this.s.dtPane.rows({ selected: true }).deselect();
         this._updateTable(false);
         this._updateFilterCount();
+        return this;
     };
     /**
      * Get the bins for the custom options

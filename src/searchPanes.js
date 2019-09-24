@@ -120,13 +120,15 @@ var SearchPanes = /** @class */ (function () {
             $(searches[i]).val('');
             $(searches[i]).trigger('input');
         }
+        var returnArray = [];
         // For every pane, clear the selections in the pane
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
             if (pane.s.dtPane !== undefined) {
-                pane._clearPane();
+                returnArray.push(pane._clearPane());
             }
         }
+        return returnArray;
     };
     /**
      * returns the container node for the searchPanes

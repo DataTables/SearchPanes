@@ -65,6 +65,7 @@ import SearchPanes from './searchPanes';
     apiRegister('searchPanes.clearSelections()', function () {
         var ctx = this.context[0];
         ctx._searchPanes.clearSelections();
+        return this;
     });
     apiRegister('searchPanes.hidePanes()', function (section) {
         if (section === void 0) { section = 'search'; }

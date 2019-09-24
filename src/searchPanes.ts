@@ -183,7 +183,7 @@ export default class SearchPanes {
 	/**
 	 * Clear the selections of all of the panes
 	 */
-	public clearSelections(): void {
+	public clearSelections(): any[] {
 		// Load in all of the searchBoxes in the documents
 		let searches = document.getElementsByClassName(this.classes.search);
 
@@ -194,12 +194,14 @@ export default class SearchPanes {
 			$(searches[i]).trigger('input');
 		}
 
+		let returnArray = [];
 		// For every pane, clear the selections in the pane
 		for (let pane of this.panes) {
 			if (pane.s.dtPane !== undefined) {
-				pane._clearPane();
+				returnArray.push(pane._clearPane());
 			}
 		}
+		return returnArray;
 	}
 
 	/**

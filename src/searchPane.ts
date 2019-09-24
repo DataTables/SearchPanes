@@ -650,11 +650,12 @@ export default class SearchPane {
 	/**
 	 * Clear the selections in the pane
 	 */
-	private _clearPane(): void {
+	private _clearPane(): this {
 		// Deselect all rows which are selected and update the table and filter count.
 		this.s.dtPane.rows({selected: true}).deselect();
 		this._updateTable(false);
 		this._updateFilterCount();
+		return this;
 	}
 
 	/**
