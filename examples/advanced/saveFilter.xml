@@ -24,7 +24,7 @@ table = $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to keep selections in the pane consistent after reloads by setting the `stateSave` config option to true. The default is false.
+This example demonstrates how to keep selections in the pane consistent after page reloads by enabling `-init stateSave`.
 
 ]]></info>
 

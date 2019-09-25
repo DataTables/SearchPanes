@@ -36,9 +36,9 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example Demonstrates the `-init searchPanes.show` option for defining whether a column should show a searchPanes or not. Here we have set the first name Column to have a pane where it would not normally due to the variance, and have hidden the position column which would.
+This example demonstrates the `-init searchPanes.show` option for defining whether a column should show a pane or not. Here we have set the Name column to have a pane when it would normally be hidden due to the variance. Conversely, the Office column is hidden when it would normally be shown.
 
-The default value of `-init searchPanes.show` is undefined so that as standard the searchPaness will be decided on variance.
+The default value of `-init searchPanes.show` is `undefined` so that as standard visibility will be determined by variance.
 
 ]]></info>
 

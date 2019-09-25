@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows sorting on cells with no data present. The default for `-init searchPanes.emptyMessage` is "<i>No Data</i>".
+This example demonstrates sorting on cells with no data present. As an empty cell isn't very clear, a string can be used instead to denote the empty value. The default for `-init searchPanes.emptyMessage` is "<i>No Data</i>".
 
 ]]></info>
 

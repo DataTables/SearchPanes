@@ -17,12 +17,11 @@ $(document).ready(function() {
             dtOpts:{
                 paging: true,
                 pagingType: 'numbers',
-                searching: false, 
-            },
+                searching: false,
+            }
         },
         dom: 'Sfrtip',
         columnDefs: [
-            
             {
                 searchPanes:{
                     dtOpts:{
@@ -30,7 +29,7 @@ $(document).ready(function() {
                     }
                 },
                 targets: [2]
-            },
+            }
         ]
     });
 });
@@ -45,7 +44,9 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the activation of paging the panes by setting the searchPanes dtOpts property for `-init paging` to have a value of true and setting the `-init pagingType` to have a value of `'numbers'`. It is also allowing the `-init info` of the third columns pane to be true. The default for `-init searching` is true and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
+This example shows the activation of paging within the panes by enabling the searchPanes `-init searchPanes.dtOpts` property for `-init paging`, and setting the `-init pagingType` to `numbers`. It also enables `-init info` of the third column's pane.
+
+The default for `-init searching` is true and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
 
 ]]></info>
 

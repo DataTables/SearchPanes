@@ -36,7 +36,7 @@ $(document).ready(function() {
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the semanticui design.
+This example shows DataTables and the searchPanes extension being used with [Semantic UI](http://semantic-ui.com) providing the styling. The DataTables / Semantic UI integration provides seamless integration for DataTables to be used in a Semantic UI page.
 
 ]]></info>
 

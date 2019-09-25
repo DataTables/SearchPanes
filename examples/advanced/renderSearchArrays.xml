@@ -9,8 +9,8 @@ $(document).ready(function() {
     let dt = $('#example').DataTable( {
         ajax: '../resources/arrayData.json',
         searchPanes:{
-            threshold:1,
-			displayColumns:4,
+            threshold: 1,
+			columns: [ 3 ]
         },
 		dom: 'Sfrtip',
         columns: [
@@ -32,11 +32,12 @@ $(document).ready(function() {
 				searchPanes: {
 					orthogonal:'sp'
 				}
-			},
-		]
+			}
+		],
+		initComplete: function() {
+			this.api().searchPanes.rebuildPane();
+		}
     });
-	console.log("loaded")
-	dt.searchPanes.rebuild();
 });
 
 
@@ -49,7 +50,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on Arrays which are being rendered. The threshold is set to 1 so that the rendered columns will display their data.
+This example demonstrates searching on Arrays which are being rendered. The threshold is set to 1 so that the rendered columns will display their data. As the data is coming from an asynchronous Ajax call, the searchPanes need to be rebuilt upon table initialisation.
 
 ]]></info>
 

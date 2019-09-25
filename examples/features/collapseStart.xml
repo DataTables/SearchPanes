@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example allows the searchpanes to be operated using a buttons button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focussed on.
+This example demonstrates searchPanes being operated using a Buttons button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focussed on.
 
 ]]></info>
 

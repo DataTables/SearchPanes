@@ -7,14 +7,15 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example td').eq(2).html('&');
-    $('#example td').eq(11).html('&');
-    $('#example td').eq(21).html('<');
-    $('#example td').eq(30).html('<');
-    $('#example td').eq(40).html('>');
-    $('#example td').eq(49).html('>');
-    $('#example td').eq(57).html('€');
-    $('#example td').eq(66).html('€');
+    $('#example tr:eq(0) td:eq(1)').html('&');
+    $('#example tr:eq(0) td:eq(2)').html('&');
+    $('#example tr:eq(1) td:eq(1)').html('<');
+    $('#example tr:eq(1) td:eq(2)').html('<');
+    $('#example tr:eq(2) td:eq(1)').html('>');
+    $('#example tr:eq(2) td:eq(2)').html('>');
+    $('#example tr:eq(3) td:eq(1)').html('€');
+    $('#example tr:eq(3) td:eq(2)').html('€');
+
     $('#example').DataTable( {
         columnDefs:[{
             searchPanes:{

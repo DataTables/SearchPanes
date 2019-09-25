@@ -30,8 +30,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to allow the panes to sort correctly for abstract data Types. Simply include the plugin 
-for the column in the main DataTable and the pane will use the same type for its column. 
+This example demonstrates how to allow the panes to sort correctly for abstract data Types. Simply include the plugin for the column in the main DataTable and the pane will use the same type for its column. 
 
 ]]></info>
 

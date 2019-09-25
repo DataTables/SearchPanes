@@ -34,9 +34,9 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to add a custom class to a specific pane by setting the `-init className` property to be a string containing the custom classes.
+This example shows how to add a custom class to a specific pane by setting the `-init columns.searchPanes.className` property to be a string containing the custom classes.
 
-As you can see in the CSS section below the datatable, the border property of myCustomClass has been set to red. This is shown around the age pane.
+As you can see in the CSS section below the DataTable, the border property of `myCustomClass` has been set to red. This is shown around the Age pane.
 
 ]]></info>
 

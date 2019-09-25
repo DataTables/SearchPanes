@@ -25,7 +25,8 @@ $(document).ready(function() {
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to initialise the bootstrap3 design using the `-init dom` element.
+This example shows DataTables and the searchPanes extension being used with the [Bootstrap 3](http://getbootstrap.com) framework providing the styling. The [DataTables / Bootstrap integration](//datatables.net/manual/styling/bootstrap) provides seamless integration for DataTables to be used in a Bootstrap page.
+
 
 ]]></info>
 

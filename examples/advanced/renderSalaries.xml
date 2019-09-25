@@ -59,7 +59,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on rendered data. The `columns` property is set to 5 so that only the Salary column is displayed as a pane.
+This example demonstrates searching on rendered data. The `-init searchPanes.columns` property is set to 5 so that only the Salary column is displayed as a pane.
 
 ]]></info>
 

@@ -32,13 +32,13 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how the definition of the `-init searchPanes.threshold` config option allows the user to define the level of uniqueness for a pane to be displayed.
+This example shows how `-init searchPanes.threshold` allows the user to define the level of uniqueness for a pane to be displayed.
 
-The ratio of uniqueness is the number of different values throughout the table divided by the total number of values.
+The ratio of uniqueness is the number of different values throughout the table divided by the total number of values, i.e. the number approaches 1 the more unique the values are.
 
-Thresholds can also be set for individual columns using the `-init columns.searchPanes.threshold` option. Here we set the threshold of the firstname column to be 0.99.
+Thresholds can also be set for individual columns using the `-init columns.searchPanes.threshold` option. Here we set the threshold of the Name column to be 1, meaning even though the column consists entirely of unique values, the searchPane will still be displayed.
 
-The default of `threshold` is 0.6.
+The default for `-init searchPanes.threshold` is 0.6.
 
 ]]></info>
 

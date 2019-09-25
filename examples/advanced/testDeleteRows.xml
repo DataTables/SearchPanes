@@ -27,7 +27,7 @@ $(document).ready(function() {
 <info><![CDATA[
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-To demonstrate how the Panes deal with data being deleted mid search try some of the following...
+searchPanes can be refreshed when data is changed in the table. To demonstrate this, try some of the following.
 
 First select 'A' in the pane then play around with the following.
 

@@ -30,19 +30,17 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates the viewTotal option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
+This example demonstrates the `-init searchPanes.viewTotal` option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
 
 `-init language.searchPanes.count` - this is the format of the count column when no filters have been applied to the table.
 
 `-init language.searchPanes.countFiltered` - this is the format of the count column when filters have been applied to the table.
 
-"{total}" - This is the token which is replaced by the total count of that value in the table.
+`{total}` - This is the token which is replaced by the total count of that value in the table.
 
-"{shown}" - This is the token which is replaced by the count of each value where that row is being displayed currently. 
+`{shown}` - This is the token which is replaced by the count of each value where that row is being displayed currently. 
 
-The values of the messages shown in this example are the same as the defaults which will be used if only `-init searchPanes.viewTotal` is set to true and no custom messages are defined.
-
-The default for `init searchPanes.viewTotal` is false. 
+The default for `-init searchPanes.viewTotal` is `false`. 
 
 ]]></info>
 

@@ -23,7 +23,8 @@ $(document).ready(function() {
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the foundation design.
+This example shows searchPanes being used with the [Zurb Foundation](http://foundation.zurb.com/) CSS framework.
+
 
 ]]></info>
 
