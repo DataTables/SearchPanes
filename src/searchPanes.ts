@@ -279,8 +279,30 @@ export default class SearchPanes {
 	 * repopulates the desired pane by extracting new data from the table. faster than doing a rebuild
 	 * @param callerIndex the index of the pane to be rebuilt
 	 */
-	public repopulatePane(callerIndex): void {
-		this.panes[callerIndex].repopulatePane();
+	public repopulatePane(callerIndex = false): SearchPane | SearchPane[] {
+
+		let returnArray: SearchPane[] = [];
+		console.log("panes", this.panes)
+		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
+		for (let pane of this.panes) {
+			if (callerIndex !== false && pane.s.index !== callerIndex) {
+				continue;
+			}
+			console.log("push")
+			returnArray.push(pane.repopulatePane());
+		}
+
+		// If a single pane has been rebuilt then return only that pane
+		if (returnArray.length === 1) {
+			console.log("return single", returnArray);
+			console.log(returnArray[0])
+			return returnArray[0];
+		}
+		// Otherwise return all of the panes that have been rebuilt
+		else {
+			console.log("return all", returnArray);
+			return returnArray;
+		}
 	}
 
 	/**

@@ -242,7 +242,8 @@ export default class SearchPane {
 	/**
 	 * Repopulates the options of the pane
 	 */
-	public repopulatePane(): void {
+	public repopulatePane(): this {
+		console.log("repop")
 		// Store the value of updating at the start of this call so that it can be restored later.
 		let updating = this.s.updating;
 		this.s.updating = true;
@@ -266,6 +267,7 @@ export default class SearchPane {
 
 		// Reset the value of updating to the stored value at the start of the function
 		this.s.updating = updating;
+		return this;
 	}
 
 	/**
