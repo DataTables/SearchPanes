@@ -107,11 +107,6 @@ import SearchPanes from './searchPanes';
 		return this;
 	});
 
-	apiRegister('searchPanes.hidePanes()', function(section = 'search') {
-		let ctx = this.context[0];
-		ctx._searchPanes._hidePanes(section);
-	});
-
 	apiRegister('searchPanes.rebuildPane()', function(targetIdx) {
 		let ctx = this.context[0];
 		ctx._searchPanes.rebuild(targetIdx);
@@ -127,20 +122,6 @@ import SearchPanes from './searchPanes';
 		text: 'Clear Panes',
 		action(e, dt, node, config) {
 			dt.searchPanes.clearSelections();
-		}
-	};
-
-	$.fn.dataTable.ext.buttons.searchPanesCollapse = {
-		text: 'Search Panes',
-		action(e, dt, node, config) {
-			dt.searchPanes.hidePanes();
-		}
-	};
-
-	$.fn.dataTable.ext.buttons.customPanesCollapse = {
-		text: 'Custom Panes',
-		action(e, dt, node, config) {
-			dt.searchPanes.hidePanes('custom');
 		}
 	};
 
