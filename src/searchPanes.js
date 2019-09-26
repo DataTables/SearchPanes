@@ -233,8 +233,7 @@ var SearchPanes = /** @class */ (function () {
         }
         // Attach everything to the document
         $(this.dom.panes).appendTo(this.dom.container);
-        $(this.dom.container).appendTo(this.dom.wrapper);
-        return this.dom.wrapper;
+        return this.dom.container;
     };
     /**
      * If there are no panes to display then this method is called to either
@@ -248,14 +247,13 @@ var SearchPanes = /** @class */ (function () {
         //  therefore the pane container should be removed from the display
         if (message === '') {
             $(this.dom.container).remove();
-            return this.dom.wrapper;
+            return this.dom.container;
         }
         // Otherwise display the message
         emptyMessage[0].innerHTML = message;
         $(this.dom.container).empty();
         emptyMessage.appendTo(this.dom.container);
-        $(this.dom.container).appendTo(this.dom.wrapper);
-        return this.dom.wrapper;
+        return this.dom.container;
     };
     /**
      * Attaches the panes to the document and displays a message or hides if there are none
