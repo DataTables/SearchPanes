@@ -14,10 +14,9 @@ describe('searchPanes - api - searchPanes.repopulatePane()', function() {
 			});
 			expect(typeof table.searchPanes.repopulatePane).toBe('function');
 		});
-		// DD-1165 TK COLIN
-		// it('Returns an API instance', function() {
-		// 	expect(table.searchPanes.repopulatePane() instanceof $.fn.dataTable.Api).toBe(true);
-		// });
+		it('Returns an API instance', function() {
+			expect(table.searchPanes.repopulatePane() instanceof $.fn.dataTable.Api).toBe(true);
+		});
 	});
 
 	function checkTopRows(position, office, age, custom = undefined) {
