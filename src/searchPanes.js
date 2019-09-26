@@ -198,25 +198,20 @@ var SearchPanes = /** @class */ (function () {
     SearchPanes.prototype.repopulatePane = function (callerIndex) {
         if (callerIndex === void 0) { callerIndex = false; }
         var returnArray = [];
-        console.log("panes", this.panes);
         // Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
         for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
             var pane = _a[_i];
             if (callerIndex !== false && pane.s.index !== callerIndex) {
                 continue;
             }
-            console.log("push");
             returnArray.push(pane.repopulatePane());
         }
         // If a single pane has been rebuilt then return only that pane
         if (returnArray.length === 1) {
-            console.log("return single", returnArray);
-            console.log(returnArray[0]);
             return returnArray[0];
         }
         // Otherwise return all of the panes that have been rebuilt
         else {
-            console.log("return all", returnArray);
             return returnArray;
         }
     };

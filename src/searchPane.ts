@@ -243,7 +243,6 @@ export default class SearchPane {
 	 * Repopulates the options of the pane
 	 */
 	public repopulatePane(): this {
-		console.log("repop")
 		// Store the value of updating at the start of this call so that it can be restored later.
 		let updating = this.s.updating;
 		this.s.updating = true;

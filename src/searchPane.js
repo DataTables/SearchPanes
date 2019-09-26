@@ -153,7 +153,6 @@ var SearchPane = /** @class */ (function () {
      * Repopulates the options of the pane
      */
     SearchPane.prototype.repopulatePane = function () {
-        console.log("repop");
         // Store the value of updating at the start of this call so that it can be restored later.
         var updating = this.s.updating;
         this.s.updating = true;
