@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>language.searchPanes.emptyPanes</name>
-	<summary>Add internationalisation to the Message to be shown when no panes are to be displayed</summary>
+	<summary>Add internationalisation to the message shown when no panes are displayed</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
@@ -11,7 +11,7 @@
 	</type>
 
 	<default value="undefined">
-        The default value for the `-init languages.searchPanes.emptyPanes` paramater is `-type null`. 
+        The default value for the `-init languages.searchPanes.emptyPanes` parameter is `-type null`. 
     </default>
 	<description>
 		<![CDATA[
@@ -20,8 +20,6 @@
 	</description>
 
 	<example title="Alter Empty Pane Message"><![CDATA[
-
-$(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
         language: {
@@ -30,7 +28,6 @@ $(document).ready(function() {
             }
         }
     });
-});
 
 ]]></example>
 

@@ -9,8 +9,8 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Sfrtip',
-        language:{
-            searchPanes:{
+        language: {
+            searchPanes: {
                 emptyPanes: 'There are no panes to display. :/'
             }
         }
