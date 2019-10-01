@@ -66,7 +66,7 @@ var SearchPanes = /** @class */ (function () {
         };
         table.settings()[0]._searchPanes = this;
         this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
-        if (this.s.dt.settings()[0].bInitialised) {
+        if (this.s.dt.settings()[0]._bInitComplete) {
             console.log("92");
             console.log(this.s.dt.data().toArray());
             this._startup(table, paneSettings, opts);
@@ -117,84 +117,16 @@ var SearchPanes = /** @class */ (function () {
      */
     SearchPanes.prototype.getNode = function () {
         var _this = this;
-        if (this.s.dt.settings()[0].bInitialised) {
-            console.log("142");
+        if (this.s.dt.settings()[0]._bInitComplete) {
+            console.log("142", this._attachPaneContainer());
             return this._attachPaneContainer();
         }
         else {
             this.s.dt.one('init', function () {
-                console.log("147");
+                console.log("147", _this._attachPaneContainer());
                 return _this._attachPaneContainer();
             });
         }
-    };
-    SearchPanes.prototype._startup = function (table, paneSettings, opts) {
-        var _this = this;
-        // Create Panes
-        table
-            .columns(this.c.columns)
-            .eq(0)
-            .each(function (idx) {
-            _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.layout));
-        });
-        // If there is any extra custom panes defined then create panes for them too
-        var rowLength = table.columns().eq(0).toArray().length;
-        if (this.c.panes !== undefined) {
-            var paneLength = this.c.panes.length;
-            for (var i = 0; i < paneLength; i++) {
-                var id = rowLength + i;
-                this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
-            }
-        }
-        // PreSelect any selections which have been defined using the preSelect option
-        table
-            .columns(this.c.columns)
-            .eq(0)
-            .each(function (idx) {
-            if (_this.panes[idx] !== undefined &&
-                _this.panes[idx].s.dtPane !== undefined &&
-                _this.panes[idx].s.colOpts.preSelect !== undefined) {
-                var tableLength = _this.panes[idx].s.dtPane.rows().data().toArray().length;
-                for (var i = 0; i < tableLength; i++) {
-                    if (_this.panes[idx].s.colOpts.preSelect.indexOf(_this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
-                        _this.panes[idx].s.dtPane.row(i).select();
-                        _this.panes[idx]._updateTable(true);
-                    }
-                }
-            }
-        });
-        // Attach panes, clear buttons, and title bar to the document
-        this._updateFilterCount();
-        console.log("198");
-        this._attachPaneContainer();
-        // (DataTable as any).tables({visible: true, api: true}).columns.adjust();
-        table.columns(this.c.columns).eq(0).each(function (idx) {
-            if (_this.panes[idx] !== undefined && _this.panes[idx].s.dtPane !== undefined) {
-                _this.panes[idx].s.dtPane.columns.adjust();
-            }
-        });
-        // Update the title bar to show how many filters have been selected
-        this.panes[0]._updateFilterCount();
-        // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-        var initDraw = true;
-        table.on('draw.dt', function () {
-            _this._updateFilterCount();
-            if (initDraw) {
-                initDraw = false;
-            }
-            else {
-                if (_this.c.cascadePanes || _this.c.viewTotal) {
-                    _this.redrawPanes();
-                }
-            }
-        });
-        // When the clear All button has been pressed clear all of the selections in the panes
-        if (this.c.clear) {
-            this.dom.clearAll[0].addEventListener('click', function () {
-                _this.clearSelections();
-            });
-        }
-        table.settings()[0]._searchPanes = this;
     };
     /**
      * rebuilds all of the panes
@@ -325,7 +257,7 @@ var SearchPanes = /** @class */ (function () {
         // If the message is an empty string then searchPanes.emptyPanes is undefined,
         //  therefore the pane container should be removed from the display
         if (message === '') {
-            $(this.dom.container).remove();
+            $(this.dom.container).empty();
             return;
         }
         // Otherwise display the message
@@ -352,6 +284,74 @@ var SearchPanes = /** @class */ (function () {
         console.log("attach Message");
         // Otherwise attach the custom message or remove the container from the display
         return this._attachMessage();
+    };
+    SearchPanes.prototype._startup = function (table, paneSettings, opts) {
+        var _this = this;
+        // Create Panes
+        table
+            .columns(this.c.columns)
+            .eq(0)
+            .each(function (idx) {
+            _this.panes.push(new SearchPane(paneSettings, opts, idx, _this.c.layout));
+        });
+        // If there is any extra custom panes defined then create panes for them too
+        var rowLength = table.columns().eq(0).toArray().length;
+        if (this.c.panes !== undefined) {
+            var paneLength = this.c.panes.length;
+            for (var i = 0; i < paneLength; i++) {
+                var id = rowLength + i;
+                this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
+            }
+        }
+        // PreSelect any selections which have been defined using the preSelect option
+        table
+            .columns(this.c.columns)
+            .eq(0)
+            .each(function (idx) {
+            if (_this.panes[idx] !== undefined &&
+                _this.panes[idx].s.dtPane !== undefined &&
+                _this.panes[idx].s.colOpts.preSelect !== undefined) {
+                var tableLength = _this.panes[idx].s.dtPane.rows().data().toArray().length;
+                for (var i = 0; i < tableLength; i++) {
+                    if (_this.panes[idx].s.colOpts.preSelect.indexOf(_this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
+                        _this.panes[idx].s.dtPane.row(i).select();
+                        _this.panes[idx]._updateTable(true);
+                    }
+                }
+            }
+        });
+        // Attach panes, clear buttons, and title bar to the document
+        this._updateFilterCount();
+        console.log("198");
+        this._attachPaneContainer();
+        // (DataTable as any).tables({visible: true, api: true}).columns.adjust();
+        table.columns(this.c.columns).eq(0).each(function (idx) {
+            if (_this.panes[idx] !== undefined && _this.panes[idx].s.dtPane !== undefined) {
+                _this.panes[idx].s.dtPane.columns.adjust();
+            }
+        });
+        // Update the title bar to show how many filters have been selected
+        this.panes[0]._updateFilterCount();
+        // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
+        var initDraw = true;
+        table.on('draw.dt', function () {
+            _this._updateFilterCount();
+            if (initDraw) {
+                initDraw = false;
+            }
+            else {
+                if (_this.c.cascadePanes || _this.c.viewTotal) {
+                    _this.redrawPanes();
+                }
+            }
+        });
+        // When the clear All button has been pressed clear all of the selections in the panes
+        if (this.c.clear) {
+            this.dom.clearAll[0].addEventListener('click', function () {
+                _this.clearSelections();
+            });
+        }
+        table.settings()[0]._searchPanes = this;
     };
     /**
      * Updates the number of filters that have been applied in the title

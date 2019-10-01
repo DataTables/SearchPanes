@@ -186,7 +186,7 @@ var SearchPane = /** @class */ (function () {
                         }
                         this.dom.container.empty();
                         this.dom.container.removeClass(this.classes.hidden);
-                        if (!this.s.dt.settings()[0].bInitialised) return [3 /*break*/, 2];
+                        if (!this.s.dt.settings()[0]._bInitComplete) return [3 /*break*/, 2];
                         return [4 /*yield*/, this._buildPane()];
                     case 1:
                         _a.sent();

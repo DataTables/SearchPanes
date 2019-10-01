@@ -88,7 +88,7 @@ export default class SearchPanes {
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
 
-		if (this.s.dt.settings()[0].bInitialised) {
+		if (this.s.dt.settings()[0]._bInitComplete) {
 			console.log("92")
 			console.log(this.s.dt.data().toArray());
 			this._startup(table, paneSettings, opts);
@@ -141,98 +141,16 @@ export default class SearchPanes {
 	 * returns the container node for the searchPanes
 	 */
 	public getNode(): Node {
-		if (this.s.dt.settings()[0].bInitialised) {
-			console.log("142")
+		if (this.s.dt.settings()[0]._bInitComplete) {
+			console.log("142", this._attachPaneContainer())
 			return this._attachPaneContainer();
 		}
 		else {
 			this.s.dt.one('init', () => {
-				console.log("147")
+				console.log("147", this._attachPaneContainer())
 				return this._attachPaneContainer();
 			});
 		}
-	}
-
-	private _startup(table, paneSettings, opts){
-		// Create Panes
-		table
-		.columns(this.c.columns)
-		.eq(0)
-		.each((idx) => {
-			this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout));
-		});
-
-		// If there is any extra custom panes defined then create panes for them too
-		let rowLength = table.columns().eq(0).toArray().length;
-
-		if (this.c.panes !== undefined) {
-		let paneLength = this.c.panes.length;
-
-		for (let i = 0; i < paneLength; i++) {
-			let id = rowLength + i;
-			this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
-		}
-		}
-
-		// PreSelect any selections which have been defined using the preSelect option
-		table
-		.columns(this.c.columns)
-		.eq(0)
-		.each((idx) => {
-			if (
-				this.panes[idx] !== undefined &&
-				this.panes[idx].s.dtPane !== undefined &&
-				this.panes[idx].s.colOpts.preSelect !== undefined
-			) {
-				let tableLength = this.panes[idx].s.dtPane.rows().data().toArray().length;
-
-				for (let i = 0; i < tableLength; i++) {
-					if (this.panes[idx].s.colOpts.preSelect.indexOf(this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
-						this.panes[idx].s.dtPane.row(i).select();
-						this.panes[idx]._updateTable(true);
-					}
-				}
-			}
-		});
-
-		// Attach panes, clear buttons, and title bar to the document
-		this._updateFilterCount();
-		console.log("198")
-		this._attachPaneContainer();
-
-		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
-		table.columns(this.c.columns).eq(0).each((idx) => {
-		if (this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined) {
-			this.panes[idx].s.dtPane.columns.adjust();
-		}
-		});
-
-		// Update the title bar to show how many filters have been selected
-		this.panes[0]._updateFilterCount();
-
-		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-		let initDraw = true;
-		table.on('draw.dt', () => {
-		this._updateFilterCount();
-
-		if (initDraw) {
-			initDraw = false;
-		}
-		else {
-			if (this.c.cascadePanes || this.c.viewTotal) {
-				this.redrawPanes();
-			}
-		}
-		});
-
-		// When the clear All button has been pressed clear all of the selections in the panes
-		if (this.c.clear) {
-		this.dom.clearAll[0].addEventListener('click', () => {
-			this.clearSelections();
-		});
-		}
-
-		table.settings()[0]._searchPanes = this;
 	}
 
 	/**
@@ -361,7 +279,7 @@ export default class SearchPanes {
 		// If the message is an empty string then searchPanes.emptyPanes is undefined,
 		//  therefore the pane container should be removed from the display
 		if (message === '') {
-			$(this.dom.container).remove();
+			$(this.dom.container).empty();
 			return;
 		}
 
@@ -390,6 +308,88 @@ export default class SearchPanes {
 		console.log("attach Message")
 		// Otherwise attach the custom message or remove the container from the display
 		return this._attachMessage();
+	}
+
+	private _startup(table, paneSettings, opts){
+		// Create Panes
+		table
+		.columns(this.c.columns)
+		.eq(0)
+		.each((idx) => {
+			this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout));
+		});
+
+		// If there is any extra custom panes defined then create panes for them too
+		let rowLength = table.columns().eq(0).toArray().length;
+
+		if (this.c.panes !== undefined) {
+		let paneLength = this.c.panes.length;
+
+		for (let i = 0; i < paneLength; i++) {
+			let id = rowLength + i;
+			this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
+		}
+		}
+
+		// PreSelect any selections which have been defined using the preSelect option
+		table
+		.columns(this.c.columns)
+		.eq(0)
+		.each((idx) => {
+			if (
+				this.panes[idx] !== undefined &&
+				this.panes[idx].s.dtPane !== undefined &&
+				this.panes[idx].s.colOpts.preSelect !== undefined
+			) {
+				let tableLength = this.panes[idx].s.dtPane.rows().data().toArray().length;
+
+				for (let i = 0; i < tableLength; i++) {
+					if (this.panes[idx].s.colOpts.preSelect.indexOf(this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
+						this.panes[idx].s.dtPane.row(i).select();
+						this.panes[idx]._updateTable(true);
+					}
+				}
+			}
+		});
+
+		// Attach panes, clear buttons, and title bar to the document
+		this._updateFilterCount();
+		console.log("198")
+		this._attachPaneContainer();
+
+		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
+		table.columns(this.c.columns).eq(0).each((idx) => {
+		if (this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined) {
+			this.panes[idx].s.dtPane.columns.adjust();
+		}
+		});
+
+		// Update the title bar to show how many filters have been selected
+		this.panes[0]._updateFilterCount();
+
+		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
+		let initDraw = true;
+		table.on('draw.dt', () => {
+		this._updateFilterCount();
+
+		if (initDraw) {
+			initDraw = false;
+		}
+		else {
+			if (this.c.cascadePanes || this.c.viewTotal) {
+				this.redrawPanes();
+			}
+		}
+		});
+
+		// When the clear All button has been pressed clear all of the selections in the panes
+		if (this.c.clear) {
+		this.dom.clearAll[0].addEventListener('click', () => {
+			this.clearSelections();
+		});
+		}
+
+		table.settings()[0]._searchPanes = this;
 	}
 
 	/**

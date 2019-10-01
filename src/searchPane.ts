@@ -235,7 +235,7 @@ export default class SearchPane {
 		}
 		this.dom.container.empty();
 		this.dom.container.removeClass(this.classes.hidden);
-		if (this.s.dt.settings()[0].bInitialised) {
+		if (this.s.dt.settings()[0]._bInitComplete) {
 			await this._buildPane();
 		}
 		else {
