@@ -7,7 +7,7 @@
 	<type type="function">
 		<signature>searchPanes.rebuildPane()</signature>
 		<description>Rebuild all panes, regathering options from the table.</description>
-		<returns type="DataTables.Api">DataTables API instance</returns>
+		git add docs/api/searchPanes.hidePanes\(\).xml
 	</type>
 	<type type="function">
 		<signature>searchPanes.rebuildPane( index )</signature>

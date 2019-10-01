@@ -7,6 +7,12 @@
 	<type type="function">
 		<signature>searchPanes.repopulatePane()</signature>
 		<description>Repopulate the pane without rebuilding all of the HTML elements.</description>
+		<returns type="DataTables.Api">DataTables API instance</returns>
+	</type>
+	<type type="function">
+		<signature>searchPanes.repopulatePane(index)</signature>
+		<description>Repopulate the pane without rebuilding all of the HTML elements.</description>
+		<returns type="DataTables.Api">DataTables API instance</returns>
 	</type>
 
 	<description>

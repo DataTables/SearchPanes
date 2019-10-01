@@ -6,7 +6,7 @@
 
 	<type type="array">
 		<description>
-            The `-init searchPanes.panes` array contains object defining each pane. Each object contains a `header` property which holds the title of the pane. There is also a searchPanes object which holds options in the same form as `-init columns.searchPanes.options`.
+            The `-init searchPanes.panes` array contains object defining each pane. Each object contains a `header` property which holds the title of the pane. There is also a searchPanes object which holds options in the same form as `-init columns.searchPanes.options`. It is also possible to defined dtOpts within the searchPanes object.
         </description>
 	</type>
 

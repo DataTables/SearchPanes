@@ -228,14 +228,21 @@ export default class SearchPane {
 	/**
 	 * Rebuilds the panes from the start having deleted the old ones
 	 */
-	public rebuildPane(): this {
+	public async rebuildPane(): Promise<this> {
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
 			this.s.dtPane.clear().destroy();
 		}
 		this.dom.container.empty();
 		this.dom.container.removeClass(this.classes.hidden);
-		this._buildPane();
+		if (this.s.dt.settings()[0].bInitialised) {
+			await this._buildPane();
+		}
+		else {
+			this.s.dt.one('init', async () => {
+				await this._buildPane();
+			});
+		}
 		return this;
 	}
 
@@ -342,7 +349,7 @@ export default class SearchPane {
 	/**
 	 * Method to construct the actual pane.
 	 */
-	private _buildPane(): boolean {
+	private async _buildPane(): Promise<boolean> {
 		// Aliases
 		this.selections = this.s.columns;
 		let table = this.s.dt;
