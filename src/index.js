@@ -106,7 +106,9 @@ import SearchPanes from './searchPanes';
     function _init(settings) {
         var api = new DataTable.Api(settings);
         var opts = api.init().searchPanes || DataTable.defaults.searchPanes;
-        return new SearchPanes(api, opts).getNode();
+        var searchPanes = new SearchPanes(api, opts);
+        var node = searchPanes.getNode();
+        return node;
     }
     // DataTables `dom` feature option
     DataTable.ext.feature.push({

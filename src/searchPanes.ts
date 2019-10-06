@@ -89,13 +89,10 @@ export default class SearchPanes {
 		this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
 
 		if (this.s.dt.settings()[0]._bInitComplete) {
-			console.log("92")
-			console.log(this.s.dt.data().toArray());
 			this._startup(table, paneSettings, opts);
 		}
 		else {
 			this.s.dt.one('init', () => {
-				console.log("97")
 				this._startup(table, paneSettings, opts);
 			});
 		}
@@ -141,16 +138,7 @@ export default class SearchPanes {
 	 * returns the container node for the searchPanes
 	 */
 	public getNode(): Node {
-		if (this.s.dt.settings()[0]._bInitComplete) {
-			console.log("142", this._attachPaneContainer())
-			return this._attachPaneContainer();
-		}
-		else {
-			this.s.dt.one('init', () => {
-				console.log("147", this._attachPaneContainer())
-				return this._attachPaneContainer();
-			});
-		}
+		return this.dom.container;
 	}
 
 	/**
@@ -172,7 +160,6 @@ export default class SearchPanes {
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
-		console.log("235")
 		this._attachPaneContainer();
 
 		(DataTable as any).tables({visible: true, api: true}).columns.adjust();
@@ -299,13 +286,11 @@ export default class SearchPanes {
 		if (this.panes !== undefined) {
 			for (let pane of this.panes) {
 				if (pane.displayed === true) {
-					console.log("attach")
 					return this._attach();
 					break;
 				}
 			}
 		}
-		console.log("attach Message")
 		// Otherwise attach the custom message or remove the container from the display
 		return this._attachMessage();
 	}
@@ -354,7 +339,6 @@ export default class SearchPanes {
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
-		console.log("198")
 		this._attachPaneContainer();
 
 		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
@@ -384,9 +368,9 @@ export default class SearchPanes {
 
 		// When the clear All button has been pressed clear all of the selections in the panes
 		if (this.c.clear) {
-		this.dom.clearAll[0].addEventListener('click', () => {
-			this.clearSelections();
-		});
+			this.dom.clearAll[0].addEventListener('click', () => {
+				this.clearSelections();
+			});
 		}
 
 		table.settings()[0]._searchPanes = this;

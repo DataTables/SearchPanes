@@ -67,13 +67,10 @@ var SearchPanes = /** @class */ (function () {
         table.settings()[0]._searchPanes = this;
         this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
         if (this.s.dt.settings()[0]._bInitComplete) {
-            console.log("92");
-            console.log(this.s.dt.data().toArray());
             this._startup(table, paneSettings, opts);
         }
         else {
             this.s.dt.one('init', function () {
-                console.log("97");
                 _this._startup(table, paneSettings, opts);
             });
         }
@@ -116,17 +113,7 @@ var SearchPanes = /** @class */ (function () {
      * returns the container node for the searchPanes
      */
     SearchPanes.prototype.getNode = function () {
-        var _this = this;
-        if (this.s.dt.settings()[0]._bInitComplete) {
-            console.log("142", this._attachPaneContainer());
-            return this._attachPaneContainer();
-        }
-        else {
-            this.s.dt.one('init', function () {
-                console.log("147", _this._attachPaneContainer());
-                return _this._attachPaneContainer();
-            });
-        }
+        return this.dom.container;
     };
     /**
      * rebuilds all of the panes
@@ -160,7 +147,6 @@ var SearchPanes = /** @class */ (function () {
                     case 4:
                         // Attach panes, clear buttons, and title bar to the document
                         this._updateFilterCount();
-                        console.log("235");
                         this._attachPaneContainer();
                         DataTable.tables({ visible: true, api: true }).columns.adjust();
                         // Update the title bar to show how many filters have been selected
@@ -275,13 +261,11 @@ var SearchPanes = /** @class */ (function () {
             for (var _i = 0, _a = this.panes; _i < _a.length; _i++) {
                 var pane = _a[_i];
                 if (pane.displayed === true) {
-                    console.log("attach");
                     return this._attach();
                     break;
                 }
             }
         }
-        console.log("attach Message");
         // Otherwise attach the custom message or remove the container from the display
         return this._attachMessage();
     };
@@ -322,7 +306,6 @@ var SearchPanes = /** @class */ (function () {
         });
         // Attach panes, clear buttons, and title bar to the document
         this._updateFilterCount();
-        console.log("198");
         this._attachPaneContainer();
         // (DataTable as any).tables({visible: true, api: true}).columns.adjust();
         table.columns(this.c.columns).eq(0).each(function (idx) {
