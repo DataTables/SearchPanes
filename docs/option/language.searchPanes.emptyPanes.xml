@@ -10,12 +10,12 @@
         </description>
 	</type>
 
-	<default value="undefined">
-        The default value for the `-init languages.searchPanes.emptyPanes` parameter is `-type null`. 
+	<default type="string" value="No searchPanes">
+        The default value for the `-init languages.searchPanes.emptyPanes` parameter is `"No SearchPanes"`. This is so that it is easier for devs to realise when there are no SearchPanes to be shown rather than mistaking the lack of a div for an error. 
     </default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will hide the container that is meant to hold the panes if there are none to display. If a message has been declared then this will be shown in the place of the panes.
+        As standard, SearchPanes will display a message in the div that is meant to hold the panes if there are none to display. If a  custom message has been declared then this will be shown in the place of the default message. If the value of `-init languages.searchPanes.emptyPanes` is set to null then the div will not be shown.
         ]]>
 	</description>
 
@@ -29,6 +29,18 @@
         }
     });
 
-]]></example>
+    ]]></example>
+
+    <example title="Hide the div that is meant to contain the SearchPanes"><![CDATA[
+    $('#example').DataTable( {
+        dom: 'Sfrtip',
+        language: {
+            searchPanes: {
+                 emptyPanes: null
+            }
+        }
+    });
+
+    ]]></example>
 
 </dt-option>

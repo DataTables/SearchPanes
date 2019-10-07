@@ -163,6 +163,7 @@ var SearchPanes = /** @class */ (function () {
      * Attach the panes, buttons and title to the document
      */
     SearchPanes.prototype._attach = function () {
+        $(this.dom.container).removeClass(this.classes.hide);
         var titleRow = $('<div/>').addClass(this.classes.titleRow);
         $(this.dom.title).appendTo(titleRow);
         // If the clear button is permitted attach it
@@ -177,6 +178,9 @@ var SearchPanes = /** @class */ (function () {
         }
         // Attach everything to the document
         $(this.dom.panes).appendTo(this.dom.container);
+        if ($('div.' + this.classes.container).length === 0) {
+            $(this.dom.container).prependTo(this.s.dt);
+        }
         return this.dom.container;
     };
     /**
@@ -186,12 +190,21 @@ var SearchPanes = /** @class */ (function () {
     SearchPanes.prototype._attachMessage = function () {
         // Create a message to display on the screen
         var emptyMessage = $('<div/>');
-        var message = this.s.dt.i18n('searchPanes.emptyPanes', '');
+        var message;
+        try {
+            message = this.s.dt.i18n('searchPanes.emptyPanes', 'No SearchPanes');
+        }
+        catch (error) {
+            message = null;
+        }
         // If the message is an empty string then searchPanes.emptyPanes is undefined,
         //  therefore the pane container should be removed from the display
-        if (message === '') {
-            $(this.dom.container).empty();
+        if (message === null) {
+            $(this.dom.container).empty().addClass(this.classes.hide);
             return;
+        }
+        else {
+            $(this.dom.container).removeClass(this.classes.hide);
         }
         // Otherwise display the message
         emptyMessage[0].innerHTML = message;
@@ -300,7 +313,7 @@ var SearchPanes = /** @class */ (function () {
         clear: 'dtsp-clear',
         clearAll: 'dtsp-clearAll',
         container: 'dtsp-searchPanes',
-        hide: 'dtsp-hide',
+        hide: 'dtsp-hidden',
         item: {
             count: 'dtsp-count',
             label: 'dtsp-label',

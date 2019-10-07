@@ -15,7 +15,7 @@ div.dtsp-panesContainer {
 		clear: both;
 
 		div.dtsp-hidden{
-			display: none;
+			display: none !important;
 		}
 
 		div.dtsp-searchPane {
@@ -231,6 +231,10 @@ div.dt-button-collection{
 		border: none;
 		margin: 0px;
 	}
+}
+
+div.dtsp-hidden {
+	display: none !important;
 }
 
 div.dtsp-columns-1{

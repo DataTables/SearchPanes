@@ -11,7 +11,7 @@ $(document).ready(function() {
         dom: 'Sfrtip',
         language: {
             searchPanes: {
-                emptyPanes: 'There are no panes to display. :/'
+                emptyPanes: null
             }
         }
     });

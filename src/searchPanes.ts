@@ -15,7 +15,7 @@ export default class SearchPanes {
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPanes',
-		hide: 'dtsp-hide',
+		hide: 'dtsp-hidden',
 		item: {
 			count: 'dtsp-count',
 			label: 'dtsp-label',
@@ -234,6 +234,7 @@ export default class SearchPanes {
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach(): Node {
+		$(this.dom.container).removeClass(this.classes.hide);
 		let titleRow = $('<div/>').addClass(this.classes.titleRow);
 		$(this.dom.title).appendTo(titleRow);
 
@@ -251,6 +252,9 @@ export default class SearchPanes {
 
 		// Attach everything to the document
 		$(this.dom.panes).appendTo(this.dom.container);
+		if ($('div.' + this.classes.container).length === 0) {
+			$(this.dom.container).prependTo(this.s.dt);
+		}
 		return this.dom.container;
 	}
 
@@ -261,13 +265,23 @@ export default class SearchPanes {
 	private _attachMessage(): Node {
 		// Create a message to display on the screen
 		let emptyMessage = $('<div/>');
-		let message = this.s.dt.i18n('searchPanes.emptyPanes', '');
+		let message;
+
+		try {
+			message = this.s.dt.i18n('searchPanes.emptyPanes', 'No SearchPanes');
+		}
+		catch(error) {
+			message = null;
+		}
 
 		// If the message is an empty string then searchPanes.emptyPanes is undefined,
 		//  therefore the pane container should be removed from the display
-		if (message === '') {
-			$(this.dom.container).empty();
+		if (message === null) {
+			$(this.dom.container).empty().addClass(this.classes.hide);
 			return;
+		}
+		else {
+			$(this.dom.container).removeClass(this.classes.hide);
 		}
 
 		// Otherwise display the message
