@@ -316,16 +316,10 @@ var SearchPanes = /** @class */ (function () {
         // Update the title bar to show how many filters have been selected
         this.panes[0]._updateFilterCount();
         // When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-        var initDraw = true;
         table.on('draw.dt', function () {
             _this._updateFilterCount();
-            if (initDraw) {
-                initDraw = false;
-            }
-            else {
-                if (_this.c.cascadePanes || _this.c.viewTotal) {
-                    _this.redrawPanes();
-                }
+            if (_this.c.cascadePanes || _this.c.viewTotal) {
+                _this.redrawPanes();
             }
         });
         // When the clear All button has been pressed clear all of the selections in the panes

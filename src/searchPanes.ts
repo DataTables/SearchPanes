@@ -352,18 +352,12 @@ export default class SearchPanes {
 		this.panes[0]._updateFilterCount();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-		let initDraw = true;
 		table.on('draw.dt', () => {
-		this._updateFilterCount();
+			this._updateFilterCount();
 
-		if (initDraw) {
-			initDraw = false;
-		}
-		else {
 			if (this.c.cascadePanes || this.c.viewTotal) {
 				this.redrawPanes();
 			}
-		}
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
