@@ -158,30 +158,6 @@ var SearchPane = /** @class */ (function () {
         return this;
     };
     /**
-     * Repopulates the options of the pane
-     */
-    SearchPane.prototype.repopulatePane = function () {
-        // Store the value of updating at the start of this call so that it can be restored later.
-        var updating = this.s.updating;
-        this.s.updating = true;
-        var filterCount = 0;
-        var filterIdx;
-        // If the viewTotal option is active then it must be determined whether there is a filter in place already
-        if (this.c.viewTotal) {
-            // Check each pane to find how many filters are in place in each
-            var selectArray = this._getSelected(filterCount);
-            // If there is only one in place then find the index of the corresponding pane
-            if (filterCount === 1) {
-                filterIdx = selectArray.indexOf(1);
-            }
-        }
-        // Update the options within the pane
-        this._updateCommon(filterIdx);
-        // Reset the value of updating to the stored value at the start of the function
-        this.s.updating = updating;
-        return this;
-    };
-    /**
      * Adds a row to the panes table
      * @param display the value to be displayed to the user
      * @param filter the value to be filtered on when searchpanes is implemented
@@ -866,6 +842,30 @@ var SearchPane = /** @class */ (function () {
         }
     };
     /**
+     * Repopulates the options of the pane
+     */
+    SearchPane.prototype._repopulatePane = function () {
+        // Store the value of updating at the start of this call so that it can be restored later.
+        var updating = this.s.updating;
+        this.s.updating = true;
+        var filterCount = 0;
+        var filterIdx;
+        // If the viewTotal option is active then it must be determined whether there is a filter in place already
+        if (this.c.viewTotal) {
+            // Check each pane to find how many filters are in place in each
+            var selectArray = this._getSelected(filterCount);
+            // If there is only one in place then find the index of the corresponding pane
+            if (filterCount === 1) {
+                filterIdx = selectArray.indexOf(1);
+            }
+        }
+        // Update the options within the pane
+        this._updateCommon(filterIdx);
+        // Reset the value of updating to the stored value at the start of the function
+        this.s.updating = updating;
+        return this;
+    };
+    /**
      * This method decides whether a row should contribute to the pane or not
      * @param filter the value that the row is to be filtered on
      * @param dataIndex the row index
@@ -887,7 +887,7 @@ var SearchPane = /** @class */ (function () {
             else if (typeof colSelect.filter === 'function') {
                 if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
                     if (!this.s.redraw) {
-                        this.repopulatePane();
+                        this._repopulatePane();
                     }
                     if (colOpts.combiner === 'or') {
                         return true;

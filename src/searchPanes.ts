@@ -206,31 +206,6 @@ export default class SearchPanes {
 	}
 
 	/**
-	 * repopulates the desired pane by extracting new data from the table. faster than doing a rebuild
-	 * @param callerIndex the index of the pane to be rebuilt
-	 */
-	public repopulatePane(callerIndex = false): SearchPane | SearchPane[] {
-
-		let returnArray: SearchPane[] = [];
-		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
-		for (let pane of this.panes) {
-			if (callerIndex !== false && pane.s.index !== callerIndex) {
-				continue;
-			}
-			returnArray.push(pane.repopulatePane());
-		}
-
-		// If a single pane has been rebuilt then return only that pane
-		if (returnArray.length === 1) {
-			return returnArray[0];
-		}
-		// Otherwise return all of the panes that have been rebuilt
-		else {
-			return returnArray;
-		}
-	}
-
-	/**
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach(): Node {

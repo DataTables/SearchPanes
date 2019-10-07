@@ -58,11 +58,6 @@ import SearchPanes from './searchPanes';
     apiRegister('searchPanes()', function () {
         return this;
     });
-    apiRegister('searchPanes.repopulatePane()', function (callerIndex) {
-        var ctx = this.context[0];
-        ctx._searchPanes.repopulatePane(callerIndex);
-        return this;
-    });
     apiRegister('searchPanes.clearSelections()', function () {
         var ctx = this.context[0];
         ctx._searchPanes.clearSelections();
