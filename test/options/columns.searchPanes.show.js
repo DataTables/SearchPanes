@@ -2,8 +2,8 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 	let table;
 
 	dt.libs({
-		js: ['jquery', 'datatables', 'select', 'searchpanes'],
-		css: ['datatables', 'select', 'searchpanes']
+		js: ['jquery', 'datatables', 'scroller', 'select', 'searchpanes'],
+		css: ['datatables', 'scroller', 'select', 'searchpanes']
 	});
 
 	describe('Functional tests', function() {

@@ -82,11 +82,12 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 			table = $('#example').DataTable({
 				dom: 'Sfrtip',
 				searchPanes: {
-					threshold: 0.1
+					threshold: 0.1,
+					emptyPanes: 'fred'
 				}
 			});
 
-			expect($('div.dtsp-panesContainer').length).toBe(0);
+			expect($('div.dtsp-panesContainer div').text()).toBe('No SearchPanes');
 			expect($('div.dtsp-searchPane').length).toBe(0);
 		});
 
