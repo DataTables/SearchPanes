@@ -144,7 +144,7 @@ export default class SearchPanes {
 	/**
 	 * rebuilds all of the panes
 	 */
-	public async rebuild(targetIdx = false): Promise<SearchPane | SearchPane[]> {
+	public rebuild(targetIdx = false): SearchPane | SearchPane[] {
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		this.dom.container.empty();
 		let returnArray: SearchPane[] = [];
@@ -155,7 +155,7 @@ export default class SearchPanes {
 				continue;
 			}
 
-			returnArray.push(await pane.rebuildPane());
+			returnArray.push(pane.rebuildPane());
 		}
 
 		// Attach panes, clear buttons, and title bar to the document
