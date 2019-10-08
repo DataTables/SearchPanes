@@ -23,7 +23,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columnDefs:[
             {
                 searchPanes: {
@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columnDefs:[ 
             {
                 searchPanes: {

@@ -10,7 +10,7 @@ describe('searchPanes - api - searchPanes.clearSelections()', function() {
 		dt.html('basic');
 		it('Exists and is a function', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 			expect(typeof table.searchPanes.rebuildPane).toBe('function');
 		});
@@ -33,7 +33,7 @@ describe('searchPanes - api - searchPanes.clearSelections()', function() {
 		dt.html('basic');
 		it('Select single pane', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true
 			});
 

@@ -10,7 +10,7 @@ describe('searchPanes - api - searchPanes.container()', function() {
 		dt.html('basic');
 		it('Exists and is a function', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 			expect(typeof table.searchPanes.container).toBe('function');
 		});
@@ -23,7 +23,7 @@ describe('searchPanes - api - searchPanes.container()', function() {
 		dt.html('basic');
 		it('Select single pane', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true
 			});
 

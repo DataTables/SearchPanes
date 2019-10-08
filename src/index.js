@@ -107,7 +107,7 @@ import SearchPanes from './searchPanes';
     }
     // DataTables `dom` feature option
     DataTable.ext.feature.push({
-        cFeature: 'S',
+        cFeature: 'P',
         fnInit: _init
     });
     // DataTables 2 layout feature

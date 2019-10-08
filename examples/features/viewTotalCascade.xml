@@ -12,7 +12,7 @@ $(document).ready(function() {
             cascadePanes: true,
             viewTotal: true,
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
     });
 });
 

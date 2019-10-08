@@ -19,7 +19,7 @@ $(document).ready(function() {
                 },
                 targets: [5],
             }],
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columns: [
 			{ data: null, render: function ( data, type, row ) {
 				// Combine the first and last names into a single table field

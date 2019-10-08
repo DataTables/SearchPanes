@@ -50,7 +50,7 @@ $(document).ready(function() {
             layout: 'columns-1',
             dataLength: 20
         },
-        dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"S><"dtsp-dataTable"frtip>>',
+        dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',
         pageLength: 20
     });
 });

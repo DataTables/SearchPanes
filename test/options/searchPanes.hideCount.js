@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes.hideCount', function() {
 		dt.html('basic');
 		it('Check defaults (false)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('td.dtsp-countColumn').length).toBe(73);
@@ -19,7 +19,7 @@ describe('searchPanes - options - searchPanes.hideCount', function() {
 		dt.html('basic');
 		it('Check false', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					hideCount: false
 				}
@@ -31,7 +31,7 @@ describe('searchPanes - options - searchPanes.hideCount', function() {
 		dt.html('basic');
 		it('Check true', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					hideCount: true
 				}

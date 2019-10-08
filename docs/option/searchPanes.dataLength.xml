@@ -31,7 +31,7 @@
         searchPanes: {
             dataLength: 15
         },    
-		dom: 'Sfrtip'
+		dom: 'Pfrtip'
     });
 
 ]]></example>
@@ -42,7 +42,7 @@
         searchPanes: {
             dataLength: false
         },    
-		dom: 'Sfrtip'
+		dom: 'Pfrtip'
     });
 
 ]]></example>

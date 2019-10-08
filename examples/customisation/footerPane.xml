@@ -8,7 +8,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        dom: 'frtipS'
+        dom: 'frtipP'
     });
 });
 
@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to make the searchPanes appear at the base of the dataTable rather than the top by setting the `-init dom` config option of `S` for SearchPanes to be at the end of the string rather than the start.
+This example demonstrates how to make the searchPanes appear at the base of the dataTable rather than the top by setting the `-init dom` config option of `P` for SearchPanes to be at the end of the string rather than the start.
 
 ]]></info>
 

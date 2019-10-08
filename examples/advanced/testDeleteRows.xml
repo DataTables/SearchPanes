@@ -10,7 +10,7 @@ $(document).ready(function() {
         searchPanes: {
             layout: 'columns-2'
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
     });
     $('#rebuild').click(function(){
         $('#example').DataTable().row(0).remove().draw().searchPanes.rebuild();

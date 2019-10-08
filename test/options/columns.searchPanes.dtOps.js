@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Searching - disabled', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 1,
@@ -37,7 +37,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Paging - enabled', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 1,
@@ -61,7 +61,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Non-conflicting options (global and column)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 1,
@@ -90,7 +90,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Conflicting options (global and column) 1', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 1,
@@ -115,7 +115,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Conflicting options (global and column) 2', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 1,

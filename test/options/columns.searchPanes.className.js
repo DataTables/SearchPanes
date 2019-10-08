@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.className', function() {
 		dt.html('basic');
 		it('Confirm classes are present', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 0,

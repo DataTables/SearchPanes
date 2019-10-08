@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes.panes', function() {
 		dt.html('basic');
 		it('Single pane with existing panes', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					panes: [
 						{
@@ -51,7 +51,7 @@ describe('searchPanes - options - searchPanes.panes', function() {
 		dt.html('basic');
 		it('Single pane with no existing panes', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: ['_all'],

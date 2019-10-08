@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 		dt.html('basic');
 		it('Single pane - "and" combiner', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					columns: [3]
 				},
@@ -83,7 +83,7 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 		dt.html('basic');
 		it('Single pane - "or" combiner', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					columns: [3]
 				},
@@ -152,7 +152,7 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 		dt.html('basic');
 		it('Two panes - "and" combiner', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					columns: [2, 3]
 				},

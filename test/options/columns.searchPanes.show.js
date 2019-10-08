@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 		dt.html('basic');
 		it('Check defaults (undefined)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						searchPanes: {

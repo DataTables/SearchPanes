@@ -45,7 +45,7 @@ $(document).ready(function() {
             viewTotal: true,
             columns: [0, 3, 4],
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columnDefs:[ 
             {
                 searchPanes: {

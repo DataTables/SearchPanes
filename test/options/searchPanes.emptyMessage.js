@@ -11,7 +11,7 @@ describe('searchPanes - options - searchPanes.emptyMessage', function() {
 		it('Check default', function() {
 			$('#example tbody tr:eq(2) td:eq(2)').text('');
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0)').html()).toBe('<i>No Data</i>');
@@ -28,7 +28,7 @@ describe('searchPanes - options - searchPanes.emptyMessage', function() {
 				searchPanes: {
 					emptyMessage: '<i><b>EMPTY</b></i>'
 				},
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').html()).toBe('<i><b>EMPTY</b></i>');

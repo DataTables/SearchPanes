@@ -12,7 +12,7 @@ $(document).ready(function() {
             threshold: 1,
             layout: 'columns-2',
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columnDefs: [
             { type: 'ip-address', targets:1 }
         ]

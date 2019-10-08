@@ -10,7 +10,7 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 		dt.html('basic');
 		it('Check defaults', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true
 				}
@@ -23,7 +23,7 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 		dt.html('basic');
 		it('Single replacement', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true
 				},
@@ -41,7 +41,7 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 		dt.html('basic');
 		it('Double replacement', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true
 				},
@@ -59,7 +59,7 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 		dt.html('basic');
 		it('Two replacements', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true
 				},

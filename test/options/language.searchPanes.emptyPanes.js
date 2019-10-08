@@ -10,7 +10,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 		dt.html('empty');
 		it('Default message shown on empty table', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dtsp-searchPane').length).toBe(0);
@@ -21,7 +21,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 		dt.html('empty');
 		it('Can remove default message shown on empty table', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				language: {
 					searchPanes: {
 						emptyPanes: null
@@ -37,7 +37,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 		dt.html('empty');
 		it('Shown at start on empty table', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				language: {
 					searchPanes: {
 						emptyPanes: 'unittest'
@@ -53,7 +53,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 		dt.html('basic');
 		it('Not shown when panes displayed at start', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				language: {
 					searchPanes: {
 						emptyPanes: 'unittest'

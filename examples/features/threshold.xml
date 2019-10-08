@@ -11,7 +11,7 @@ $(document).ready(function() {
             threshold: 0.4,
             layout: 'columns-2',
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columnDefs:[
             {
                 searchPanes:{

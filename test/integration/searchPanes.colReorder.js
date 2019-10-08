@@ -10,7 +10,7 @@ describe('searchPanes - integrations - colReorder', function() {
 		dt.html('basic');
 		it('Standard position initially', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				colReorder: true
 			});
 

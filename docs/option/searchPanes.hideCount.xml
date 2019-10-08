@@ -26,10 +26,9 @@
 $(document).ready(function() {
     $('#example').DataTable( {
 		dom: 'Sfrtip',
-        searchPanes:{
+        searchPanes: {
             hideCount: true
-        },
-		dom: 'Sfrtip',
+        }
     });
 });
 

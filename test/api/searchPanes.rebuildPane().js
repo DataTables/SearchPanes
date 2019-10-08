@@ -10,7 +10,7 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 		dt.html('basic');
 		it('Exists and is a function', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 			expect(typeof table.searchPanes.rebuildPane).toBe('function');
 		});
@@ -33,7 +33,7 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 		dt.html('basic');
 		it('Check defaults', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true
 			});
 
@@ -61,7 +61,7 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 		dt.html('basic');
 		it('Table with a custom pane', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					panes: [
 						{
@@ -101,7 +101,7 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 		dt.html('empty');
 		it('Ajax call - no panes present initially', function(done) {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true,
 				columns: dt.getTestColumns(),
 				ajax: '/base/test/data/data.txt',

@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 		dt.html('basic');
 		it('Confirm header is present', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						targets: 0,
@@ -48,7 +48,7 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 		// 	columns[1].name = 'testposition';
 
 		// 	table = $('#example').DataTable({
-		// 		dom: 'Sfrtip',
+		// 		dom: 'Pfrtip',
 		// 		searchPanes: true,
 		// 		columns: columns,
 		// 		ajax: '/base/test/data/data.txt',

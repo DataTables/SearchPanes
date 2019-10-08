@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 		dt.html('basic');
 		it('Check defaults (false)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
@@ -20,7 +20,7 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 		dt.html('basic');
 		it('Check false', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: false
 				}
@@ -33,7 +33,7 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 		dt.html('basic');
 		it('Not shown if hideCount set', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true,
 					hideCount: true
@@ -47,7 +47,7 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 		dt.html('basic');
 		it('Check true when clicking in pane', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true
 				}

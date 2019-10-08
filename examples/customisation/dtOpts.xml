@@ -20,7 +20,7 @@ $(document).ready(function() {
                 searching: false,
             }
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         columnDefs: [
             {
                 searchPanes:{

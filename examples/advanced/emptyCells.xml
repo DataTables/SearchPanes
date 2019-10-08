@@ -11,7 +11,7 @@ $(document).ready(function() {
         searchPanes:{
             emptyMessage:"<i><b>EMPTY</b></i>",
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
     });
 
     dt.cell(2,2).data('');

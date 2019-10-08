@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 		dt.html('basic');
 		it('Check defaults (undefined)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('tr.selected').length).toBe(0);
@@ -19,7 +19,7 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 		dt.html('basic');
 		it('Setup some preSelects', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						searchPanes: {

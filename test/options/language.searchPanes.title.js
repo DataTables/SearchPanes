@@ -10,7 +10,7 @@ describe('searchPanes - options - language.searchPanes.title', function() {
 		dt.html('basic');
 		it('Check defaults - none', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dtsp-title').text()).toBe('Filters Active - 0');
@@ -27,7 +27,7 @@ describe('searchPanes - options - language.searchPanes.title', function() {
 		dt.html('basic');
 		it('Changed - none', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				language: {
 					searchPanes: {
 						title:{

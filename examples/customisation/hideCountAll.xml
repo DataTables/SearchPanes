@@ -11,7 +11,7 @@ $(document).ready(function() {
         searchPanes:{
             hideCount: true,
         },
-        dom: 'Sfrtip'
+        dom: 'Pfrtip'
     });
 });
 

@@ -11,7 +11,7 @@ describe('searchPanes - options - searchPanes.dataLength', function() {
 		it('Check defaults (30)', function() {
 			$('#example tbody tr:eq(2) td:eq(1)').text('1234567890123456789012345678901');
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').text()).toBe(
@@ -23,7 +23,7 @@ describe('searchPanes - options - searchPanes.dataLength', function() {
 		it('Custom value', function() {
 			$('#example tbody tr:eq(2) td:eq(1)').text('1234567890123456789012345678901');
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					dataLength: 15
 				}

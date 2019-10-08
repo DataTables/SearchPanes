@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 		dt.html('basic');
 		it('Check defaults (false)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					cascadePanes: false
 				}
@@ -23,7 +23,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 		dt.html('basic');
 		it('Check true', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					cascadePanes: false
 				}
@@ -36,7 +36,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 		dt.html('basic');
 		it('Check true', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					cascadePanes: true
 				}

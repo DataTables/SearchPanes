@@ -10,7 +10,7 @@ describe('searchPanes - integrations - Responsive', function() {
 		dt.html('basic_wide');
 		it('Can select visible columns', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				responsive: true
 			});
 

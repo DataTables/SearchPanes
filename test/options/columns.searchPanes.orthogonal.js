@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 		dt.html('basic');
 		it('Check render function', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				columnDefs: [
 					{
 						searchPanes: {
@@ -64,7 +64,7 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 
 
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				data: data,
 				columns: cols
 			});

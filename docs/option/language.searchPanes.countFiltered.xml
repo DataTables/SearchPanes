@@ -30,7 +30,7 @@ $(document).ready(function() {
         searchPanes: {
             viewTotal: true
         },
-        dom: 'Sfrtip',
+        dom: 'Pfrtip',
         language: {
             searchPanes: {
                 count: '{total} found',

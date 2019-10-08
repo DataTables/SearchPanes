@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('Check defaults (3)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			let first = $('div.dtsp-searchPane:eq(1)').position();
@@ -26,7 +26,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('1', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					layout: 'columns-1'
 				}
@@ -45,7 +45,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('2', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					layout: 'columns-2'
 				}
@@ -64,7 +64,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('3', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					layout: 'columns-3',
 					threshold: 1
@@ -87,7 +87,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('4', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					layout: 'columns-4',
 					threshold: 1
@@ -113,7 +113,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('5', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					layout: 'columns-5',
 					threshold: 1
@@ -142,7 +142,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		dt.html('basic');
 		it('5', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					layout: 'columns-6',
 					threshold: 1

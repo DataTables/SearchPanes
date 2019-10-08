@@ -31,7 +31,7 @@ $(document).ready(function() {
         searchPanes: {
             layout: 'columns-2'
         },
-        dom: 'Sfrtip'
+        dom: 'Pfrtip'
     });
 });
 

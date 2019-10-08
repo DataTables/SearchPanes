@@ -16,7 +16,7 @@ describe('searchPanes - options - columns.searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Increase threshold from global', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.1
 				},
@@ -37,7 +37,7 @@ describe('searchPanes - options - columns.searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Increase threshold from global for specific columns', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.1
 				},
@@ -58,7 +58,7 @@ describe('searchPanes - options - columns.searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Increase threshold from global for specific columns with different values', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.1
 				},

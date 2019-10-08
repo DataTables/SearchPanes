@@ -16,7 +16,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Check defaults (0.6)', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dtsp-searchPane').length).toBe(6);
@@ -26,7 +26,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Increase threshhold', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 1
 				}
@@ -39,7 +39,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Increased threshhold while forcing columns to be hidden', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 1
 				},
@@ -53,7 +53,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Decrease threshhold', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.2
 				}
@@ -66,7 +66,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Decreased threshhold while forcing columns to be visible', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.4
 				},
@@ -80,7 +80,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('basic');
 		it('Decrease threshhold so no panes present', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.1,
 					emptyPanes: 'fred'
@@ -110,7 +110,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 			}
 
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.4
 				}
@@ -122,7 +122,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('empty');
 		it('Some rows are all the same - after init', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.4
 				}
@@ -156,7 +156,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 			}
 
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.4
 				},
@@ -176,7 +176,7 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 		dt.html('empty');
 		it('Some rows are all the same - after init, with show', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 0.4
 				},

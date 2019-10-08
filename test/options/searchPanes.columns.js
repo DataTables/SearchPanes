@@ -10,7 +10,7 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 		dt.html('basic');
 		it('Check when first three columns specified', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					columns: [0, 1, 2]
 				}
@@ -25,7 +25,7 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 		dt.html('basic');
 		it('Check when last three columns specified', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					columns: [3, 4, 5]
 				}
@@ -40,7 +40,7 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 		dt.html('basic');
 		it('Check when last three columns specified with low threshold', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				paging: false,
 				searchPanes: {
 					columns: [3, 4, 5],
@@ -57,7 +57,7 @@ describe('searchPanes - options - columns.searchPanes.show', function() {
 		dt.html('basic');
 		it('Check when last three columns specified with show set', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				paging: false,
 				columnDefs: [
 					{

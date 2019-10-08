@@ -10,7 +10,7 @@ describe('searchPanes - integrations - stateSave', function() {
 		dt.html('basic');
 		it('Check selection', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true,
 				stateSave: true
 			});
@@ -27,7 +27,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(2000);
 
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true,
 				stateSave: true
 			});

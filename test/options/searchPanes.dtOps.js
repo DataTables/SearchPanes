@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Searching - default', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('span.dtsp-searchIcon').length).toBe(3);
@@ -34,7 +34,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Searching - disabled', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					dtOpts: {
 						searching: false
@@ -56,7 +56,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('PAging - default - disabled', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip'
+				dom: 'Pfrtip'
 			});
 
 			expect($('div.dataTables_length').length).toBe(0);
@@ -65,7 +65,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Paging - enabled', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					dtOpts: {
 						paging: true
@@ -84,7 +84,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 		dt.html('basic');
 		it('Set on custom panes', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					panes: [
 						{

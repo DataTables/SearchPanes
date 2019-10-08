@@ -30,7 +30,7 @@
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        dom: 'Sfrtip'
+        dom: 'Pfrtip'
     });
 
 	$('#example').DataTable().row(0).remove();
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        dom: 'Sfrtip'
+        dom: 'Pfrtip'
     });
 
 	$('#example').DataTable().row(0).remove();

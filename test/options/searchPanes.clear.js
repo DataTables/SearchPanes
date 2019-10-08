@@ -7,7 +7,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 	});
 
 	describe('Functional tests', function() {
-		[{ dom: 'Sfrtip' }, { dom: 'Sfrtip', searchPanes: { clear: true } }].forEach(function(config) {
+		[{ dom: 'Pfrtip' }, { dom: 'Pfrtip', searchPanes: { clear: true } }].forEach(function(config) {
 			dt.html('basic');
 			it('Individual panes: ' + JSON.stringify(config), function() {
 				table = $('#example').DataTable(config);
@@ -47,7 +47,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 		dt.html('basic');
 		it('Check false - individual panes', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					clear: false
 				}

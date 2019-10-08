@@ -10,7 +10,7 @@ describe('searchPanes - options - searchPanes', function() {
 		dt.html('basic');
 		it('Check defaults', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true
 			});
 
@@ -21,7 +21,7 @@ describe('searchPanes - options - searchPanes', function() {
 		it('Check defaults', function() {
 			$('#example tbody tr:eq(2) td:eq(1)').text('1234567890123456789012345678901');
 			table = $('table').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: {
 					threshold: 1
 				}
@@ -49,7 +49,7 @@ describe('searchPanes - options - searchPanes', function() {
 		dt.html('basic');
 		it('Destroy removes searchPanes', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true
 			});
 
@@ -62,7 +62,7 @@ describe('searchPanes - options - searchPanes', function() {
 		dt.html('basic');
 		it('Column visibility - pane remains visible', function() {
 			table = $('#example').DataTable({
-				dom: 'Sfrtip',
+				dom: 'Pfrtip',
 				searchPanes: true
 			});
 
