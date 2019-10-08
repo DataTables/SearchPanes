@@ -40,27 +40,27 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 			expect($('div.dtsp-searchPane:eq(0) div.dtsp-searchCont input').attr('placeholder')).toBe('testzero');
 		});
 
-		// disabled because of DD-1127
-		// dt.html('empty_no_header');
-		// it('Ajax call - no panes present initially', function(done) {
-		// 	let columns = dt.getTestColumns();
-		// 	columns[0].name = 'testname';
-		// 	columns[1].name = 'testposition';
+		dt.html('empty_no_header');
+		it('Ajax call - no panes present initially', function(done) {
+			let columns = dt.getTestColumns();
+			columns[0].searchPanes = { header: 'testname' };
+			columns[1].searchPanes = { header: 'testposition' };
 
-		// 	table = $('#example').DataTable({
-		// 		dom: 'Pfrtip',
-		// 		searchPanes: true,
-		// 		columns: columns,
-		// 		ajax: '/base/test/data/data.txt',
-		// 		initComplete: function(settings, json) {
-		// 			expect($('div.dtsp-searchPane').length).toBe(0);
-		// 			done();
-		// 		}
-		// 	});
-		// });
-		// it('Rebuild the panes', function() {
-		// 	table.searchPanes.rebuildPane();
-		// 	expect($('div.dtsp-searchPane').length).toBe(6);
-		// });
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true,
+				columns: columns,
+				ajax: '/base/test/data/data.txt',
+				initComplete: function(settings, json) {
+					expect($('div.dtsp-searchPane').length).toBe(0);
+					done();
+				}
+			});
+		});
+		it('Rebuild the panes', function() {
+			table.searchPanes.rebuildPane();
+			expect($('div.dtsp-searchPane').length).toBe(6);
+			expect($('div.dtsp-searchPane:eq(1) div.dtsp-searchCont input').attr('placeholder')).toBe('testposition');
+		});
 	});
 });
