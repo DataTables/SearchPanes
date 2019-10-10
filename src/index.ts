@@ -141,6 +141,7 @@ import SearchPanes from './searchPanes';
 	};
 
 	function _init(settings) {
+		console.log("init")
 		let api = new DataTable.Api(settings);
 		let opts = api.init().searchPanes || DataTable.defaults.searchPanes;
 		let searchPanes =  new SearchPanes(api, opts);

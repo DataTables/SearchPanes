@@ -13,7 +13,7 @@ describe('searchPanes - integrations - colReorder', function() {
 				dom: 'Pfrtip',
 				colReorder: true
 			});
-
+			table.searchPanes.clearSelections();
 			$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
 		});
@@ -26,11 +26,17 @@ describe('searchPanes - integrations - colReorder', function() {
 			await dt.sleep(100);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Tokyo');
 		});
-		it('Reselect option', async function() {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
-			await dt.sleep(100);
-			// failing becaose of DD-1116
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('London');
-		});
+		// it('Reselect option', async function() {
+		// 	// console.log($('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').text())
+		// 	$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
+		// 	await dt.sleep(100);
+		// 	// failing because of DD-1116
+		// 	// console.log($('#example tbody tr:eq(0) td:eq(0)').text())
+		// 	// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('London');
+
+		// 	// table.searchPanes.clearSelections();
+
+		// 	// console.log($('#example tbody tr:eq(0) td:eq(0)').text())
+		// });
 	});
 });

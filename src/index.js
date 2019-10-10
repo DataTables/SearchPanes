@@ -99,6 +99,7 @@ import SearchPanes from './searchPanes';
         }
     };
     function _init(settings) {
+        console.log("init");
         var api = new DataTable.Api(settings);
         var opts = api.init().searchPanes || DataTable.defaults.searchPanes;
         var searchPanes = new SearchPanes(api, opts);

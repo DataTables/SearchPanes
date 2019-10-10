@@ -297,12 +297,12 @@ export default class SearchPanes {
 		let rowLength = table.columns().eq(0).toArray().length;
 
 		if (this.c.panes !== undefined) {
-		let paneLength = this.c.panes.length;
+			let paneLength = this.c.panes.length;
 
-		for (let i = 0; i < paneLength; i++) {
-			let id = rowLength + i;
-			this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
-		}
+			for (let i = 0; i < paneLength; i++) {
+				let id = rowLength + i;
+				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
+			}
 		}
 
 		// PreSelect any selections which have been defined using the preSelect option

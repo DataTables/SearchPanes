@@ -130,7 +130,7 @@ export default class SearchPane {
 			dtP: $('<table><thead><tr><th>' +
 				(this.colExists
 					? $(table.column(this.colExists ? this.s.index : 0).header()).text()
-					: this.customPaneSettings.header) + '</th><th/></tr></thead></table>'),
+					: this.customPaneSettings.header || "Custom Pane") + '</th><th/></tr></thead></table>'),
 			lower: $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowButton),
 			nameButton: $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
@@ -460,7 +460,7 @@ export default class SearchPane {
 			? colOpts.header
 			: this.colExists
 				? table.settings()[0].aoColumns[this.s.index].sTitle
-				: this.customPaneSettings.header
+				: this.customPaneSettings.header || "Custom Pane"
 		);
 
 		// As the pane table is not in the document yet we must initialise select ourselves
