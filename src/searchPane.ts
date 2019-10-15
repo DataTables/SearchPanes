@@ -152,6 +152,23 @@ export default class SearchPane {
 		let clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
 		clear[0].innerHTML = table.i18n('searchPanes.clearPane', 'X');
 		this.dom.container.addClass(colOpts.className);
+		this.dom.container.addClass(
+			(
+				this.customPaneSettings !== undefined &&
+				this.customPaneSettings.searchPanes !== undefined &&
+				this.customPaneSettings.searchPanes.className !== undefined
+			)
+				? this.customPaneSettings.searchPanes.className
+				: {}
+		);
+		this.dom.container.addClass(
+			(
+				this.customPaneSettings !== undefined &&
+				this.customPaneSettings.className !== undefined
+			)
+				? this.customPaneSettings.className
+				: {}
+		);
 
 		// Custom search function for table
 		$.fn.dataTable.ext.search.push(
@@ -212,6 +229,7 @@ export default class SearchPane {
 		// When column-reorder is present and the columns are moved, it is necessary to
 		//  reassign all of the panes indexes to the new index of the column.
 		table.on('column-reorder', (e, settings, details) => {
+			console.log("reorder")
 			this.s.index = details.mapping.indexOf(this.s.index);
 		});
 

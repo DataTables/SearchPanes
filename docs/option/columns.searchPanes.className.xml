@@ -16,6 +16,8 @@
 	<description>
 		<![CDATA[
 		By setting a class name, specific panes can be targetted for custom styling.
+
+        Custom Panes can have custom classes applied in a similar way to how `-init columns.SearchPanes.dtOpts` are applied to panes. You can declare the `-init columns.SearchPanes.className` option within an object of the panes array, or within the SearchPanes object within that object. 
         ]]>
 	</description>
 
@@ -34,6 +36,38 @@
         ]
     });
 
+    ]]></example>
+
+    <example title="Setting a custom class on a custom pane"><![CDATA[
+        table = $('#example').DataTable({
+            dom: 'Pfrtip',
+            searchPanes: {
+                panes: [
+                    {
+                        header:'Custom',
+                        searchPanes:{
+                            options:[
+                                {
+                                    label:'Accountants from Tokyo',
+                                    value: function(rowData, rowIdx){
+                                        return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+                                    }
+                                }
+                            ],
+                            dtOpts:{
+                                info: true
+                            },
+                            className:"PaneSpecific"
+                        },
+                        dtOpts:{
+                            paging: true,
+                            order: [[1, 'desc']]
+                        },
+                        className:"AllCustom"
+                    }
+                ],
+            }
+        });
     ]]></example>
 
 </dt-option>
