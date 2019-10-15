@@ -66,16 +66,14 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 					panes: [
 						{
 							header: 'unittest header',
-							searchPanes: {
-								options: [
-									{
-										label: 'unittest',
-										value: function(rowData, rowIdx) {
-											return rowData[2] === 'San Francisco' && rowData[3] === '66';
-										}
+							options: [
+								{
+									label: 'unittest',
+									value: function(rowData, rowIdx) {
+										return rowData[2] === 'San Francisco' && rowData[3] === '66';
 									}
-								]
-							}
+								}
+							]
 						}
 					]
 				}

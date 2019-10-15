@@ -155,10 +155,9 @@ export default class SearchPane {
 		this.dom.container.addClass(
 			(
 				this.customPaneSettings !== undefined &&
-				this.customPaneSettings.searchPanes !== undefined &&
-				this.customPaneSettings.searchPanes.className !== undefined
+				this.customPaneSettings.className !== undefined
 			)
-				? this.customPaneSettings.searchPanes.className
+				? this.customPaneSettings.className
 				: {}
 		);
 		this.dom.container.addClass(
@@ -229,7 +228,6 @@ export default class SearchPane {
 		// When column-reorder is present and the columns are moved, it is necessary to
 		//  reassign all of the panes indexes to the new index of the column.
 		table.on('column-reorder', (e, settings, details) => {
-			console.log("reorder")
 			this.s.index = details.mapping.indexOf(this.s.index);
 		});
 
@@ -463,10 +461,9 @@ export default class SearchPane {
 				? this.customPaneSettings.dtOpts : {},
 			(
 				this.customPaneSettings !== undefined &&
-				this.customPaneSettings.searchPanes !== undefined &&
-				this.customPaneSettings.searchPanes.dtOpts !== undefined
+				this.customPaneSettings.dtOpts !== undefined
 			)
-				? this.customPaneSettings.searchPanes.dtOpts : {}
+				? this.customPaneSettings.dtOpts : {}
 		));
 
 		$(this.dom.dtP).addClass(this.classes.table);
@@ -530,7 +527,7 @@ export default class SearchPane {
 
 		// If there are custom options set or it is a custom pane then get them
 		if (colOpts.options !== undefined ||
-			(this.customPaneSettings !== undefined && this.customPaneSettings.searchPanes.options !== undefined)) {
+			(this.customPaneSettings !== undefined && this.customPaneSettings.options !== undefined)) {
 				this._getComparisonRows();
 		}
 
@@ -822,8 +819,8 @@ export default class SearchPane {
 		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
 		let options = colOpts.options !== undefined
 			? colOpts.options
-			: this.customPaneSettings.searchPanes !== undefined && this.customPaneSettings.searchPanes.options !== undefined
-				? this.customPaneSettings.searchPanes.options
+			: this.customPaneSettings !== undefined && this.customPaneSettings.options !== undefined
+				? this.customPaneSettings.options
 				: undefined;
 
 		if (options === undefined) {
@@ -1296,7 +1293,7 @@ export default class SearchPane {
 			}
 			if ((colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined) ||
 				colOpts.options !== undefined ||
-				(this.customPaneSettings !== undefined && this.customPaneSettings.searchPanes.options !== undefined)) {
+				(this.customPaneSettings !== undefined && this.customPaneSettings.options !== undefined)) {
 
 				let rows = this._getComparisonRows();
 				for (let row of rows) {

@@ -12,16 +12,14 @@ $(document).ready(function() {
             panes: [
                 {
                     header:'Custom',
-                    searchPanes:{
-                        options:[
-                            {
-                                label:'Accountants from Tokyo',
-                                value: function(rowData, rowIdx){
-                                    return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                                }
+                    options:[
+                        {
+                            label:'Accountants from Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
                             }
-                        ]
-                    },
+                        }
+                    ],
                     dtOpts:{
                         searching: false,
                         order: [[1, 'desc']]

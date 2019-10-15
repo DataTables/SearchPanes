@@ -15,16 +15,14 @@ describe('searchPanes - options - searchPanes.panes', function() {
 					panes: [
 						{
 							header: 'unittest header',
-							searchPanes: {
-								options: [
-									{
-										label: 'unittest label',
-										value: function(rowData, rowIdx) {
-											return rowData[2] === 'San Francisco' && rowData[3] === '66';
-										}
+							options: [
+								{
+									label: 'unittest label',
+									value: function(rowData, rowIdx) {
+										return rowData[2] === 'San Francisco' && rowData[3] === '66';
 									}
-								]
-							}
+								}
+							]
 						}
 					]
 				}
@@ -62,22 +60,20 @@ describe('searchPanes - options - searchPanes.panes', function() {
 					panes: [
 						{
 							header: 'unittest header',
-							searchPanes: {
-								options: [
-									{
-										label: 'test cox',
-										value: function(rowData, rowIdx) {
-											return rowData[2] === 'San Francisco' && rowData[3] === '66';
-										}
-									},
-									{
-										label: 'test london',
-										value: function(rowData, rowIdx) {
-											return rowData[2] === 'London';
-										}
+							options: [
+								{
+									label: 'test cox',
+									value: function(rowData, rowIdx) {
+										return rowData[2] === 'San Francisco' && rowData[3] === '66';
 									}
-								]
-							}
+								},
+								{
+									label: 'test london',
+									value: function(rowData, rowIdx) {
+										return rowData[2] === 'London';
+									}
+								}
+							]
 						}
 					]
 				}

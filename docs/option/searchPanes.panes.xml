@@ -6,7 +6,7 @@
 
 	<type type="array">
 		<description>
-            The `-init searchPanes.panes` array contains object defining each pane. Each object contains a `header` property which holds the title of the pane. There is also a searchPanes object which holds options in the same form as `-init columns.searchPanes.options`. It is also possible to defined dtOpts within the searchPanes object.
+            The `-init searchPanes.panes` array contains object defining each pane. Each object contains a `header` property which holds the title of the pane. There is also an options array in the same form as `-init columns.searchPanes.options`. It is also possible to defined dtOpts and custom classes within the object. See `-init columns.searchPanes.dtOpts` and `-init columns.searchPanes.className` for details on these.
         </description>
 	</type>
 
@@ -31,16 +31,14 @@ $(document).ready(function() {
             panes: [
                 {
                     header:'custom',
-                    searchPanes: {
-                        options: [
-                            {
-                                label:'Accountants in Tokyo',
-                                value: function(rowData, rowIdx){
-                                    return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-                                }
+                    options: [
+                        {
+                            label:'Accountants in Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
                             }
-                        ]
-                    }
+                        }
+                    ]
                 }
             ]
         },
@@ -51,5 +49,7 @@ $(document).ready(function() {
 ]]></example>
 
 <related>-init columns.searchPanes.options</related>
+<related>-init columns.searchPanes.dtOpts</related>
+<related>-init columns.searchPanes.className</related>
 
 </dt-option>

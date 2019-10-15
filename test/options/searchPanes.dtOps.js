@@ -89,18 +89,16 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 					panes: [
 						{
 							header: 'unittest header',
-							searchPanes: {
-								options: [
-									{
-										label: 'unittest label',
-										value: function(rowData, rowIdx) {
-											return rowData[2] === 'San Francisco' && rowData[3] === '66';
-										}
+							options: [
+								{
+									label: 'unittest label',
+									value: function(rowData, rowIdx) {
+										return rowData[2] === 'San Francisco' && rowData[3] === '66';
 									}
-								],
-								dtOpts: {
-									paging: true
 								}
+							],
+							dtOpts: {
+								paging: true
 							}
 						}
 					]
