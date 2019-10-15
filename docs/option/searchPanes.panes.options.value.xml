@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.options.value</name>
+	<summary>Define the value for an option of a custom pane</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            The `-init searchPanes.panes.value` is the string that will be displayed to the user for the custom option in the pane.
+        </description>
+	</type>
+
+	<default value="Undefined">
+        The default value of `-init searchPanes.panes.options.value` is undefined as custom panes must be externally defined.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, the value of the `value` is undefined.
+
+        Setting `-init searchPanes.panes.options.value` to function allows searchpanes to use that function to search for results from the DataTable. Returning `true` from the function will include that row in the results, conversely `false` will exclude the row.
+
+        Having the `value` property as a function means that comparisons can be made at a variety of different levels of complexity, all completely open to the developers needs.
+
+        The example below shows a very simple function which compares data from multiple columns.
+        ]]>
+	</description>
+
+	<example title="Define custom pane options"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: {
+            panes: [
+                {
+                    options: [
+                        {
+                            label:'Accountants in Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        dom: 'Pfrtip'
+    });
+});
+
+]]></example>
+
+<related>-init columns.searchPanes.options.value</related>
+<related>-init searchPanes.panes.options.label</related>
+<related>-init columns.searchPanes.options.label</related>
+
+</dt-option>

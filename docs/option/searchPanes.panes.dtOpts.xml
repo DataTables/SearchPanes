@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.dtOpts</name>
+	<summary>Define the DataTables options for a custom pane</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="object">
+		<description>
+            The pane can be customised in the same way as a standard DataTable, as it is also an instance of DataTables. The panes properties can be defined within the dtOpts object.
+        </description>
+	</type>
+
+    <default value="undefined">
+        The default value for the `-init columns.searchPanes.dtOpts` paramater is `-type undefined`. When this default value is in place the defaults for SearchPanes are applied.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will overwrite the options for that column defined by the SearchPanes code with the options defined in `-init columns.searchPanes.dtOpts`.
+
+        By overwriting this value in the initialisation, the pane can be customised fully as much as a DataTable can be. 
+
+		This functionality is useful as it allows all of the standard DataTables options and API Methods to be available to the panes.
+
+        All of the panes can be altered by using the `-init searchPanes.dtOpts` option.
+        ]]>
+	</description>
+
+	<example title="Define custom pane DataTable options"><![CDATA[
+
+    table = $('#example').DataTable({
+        dom: 'Pfrtip',
+        searchPanes: {
+            panes: [
+                {
+                    header:'Custom',
+                    options:[
+                        {
+                            label:'Accountants from Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+                            }
+                        }
+                    ],
+                    dtOpts:{
+                        paging: true,
+                        order: [[1, 'desc']]
+                    },
+                }
+            ],
+        }
+    });
+
+]]></example>
+
+<related>-init searchPanes.dtOpts</related>
+
+</dt-option>

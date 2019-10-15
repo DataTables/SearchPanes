@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>columns.searchPanes.className</name>
-	<summary>Add a custom class name to a pane</summary>
+	<name>searchPanes.panes.className</name>
+	<summary>Add a custom class for a custom pane</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
@@ -10,35 +10,19 @@
         </description>
 	</type>
 
-	<default value="undefined">
+    <default value="undefined">
         The default value for the `-init searchPanes.className` option is `-type undefined` as the standard should be without any custom classes.
     </default>
 	<description>
 		<![CDATA[
 		By setting a class name, specific panes can be targetted for custom styling.
 
-        Custom Panes can have custom classes applied in a similar way to how `-init columns.SearchPanes.dtOpts` are applied to panes. You can declare the `-init columns.SearchPanes.className` option within an object of the columnDefs array, this will apply the custom class to that pane.
+        Custom Panes can have custom classes applied in a similar way to how `-init columns.SearchPanes.dtOpts` are applied to panes. You can declare the `-init SearchPanes.panes.className` option within an object of the panes array, this will apply the custom class to that pane.
         ]]>
 	</description>
 
-	<example title="Setting a custom class on a pane"><![CDATA[
+	<example title="Define custom pane DataTable options"><![CDATA[
 
-    $('#example').DataTable( {
-        searchPanes:true,
-        dom: 'Pfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    className: 'myCustomClass'
-                },
-                targets: [3]
-            }
-        ]
-    });
-
-    ]]></example>
-
-    <example title="Setting a custom class on a custom pane"><![CDATA[
         table = $('#example').DataTable({
             dom: 'Pfrtip',
             searchPanes: {
@@ -58,6 +42,9 @@
                 ],
             }
         });
-    ]]></example>
+
+]]></example>
+
+<related>-init columns.searchPanes.className</related>
 
 </dt-option>
