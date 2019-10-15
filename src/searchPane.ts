@@ -228,7 +228,7 @@ export default class SearchPane {
 		// When column-reorder is present and the columns are moved, it is necessary to
 		//  reassign all of the panes indexes to the new index of the column.
 		table.on('column-reorder', (e, settings, details) => {
-			this.s.index = details.mapping.indexOf(this.s.index);
+			this.s.index = details.mapping[this.s.index];
 		});
 
 		return this;
