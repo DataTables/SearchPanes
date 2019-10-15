@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.header</name>
+	<summary>Define the header for custom panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            The `-init searchPanes.panes.header` string allows a custom header to be set for custom panes.
+        </description>
+	</type>
+
+	<default value="Custom Pane">
+        The default value of `-init searchPanes.panes.header` is the string `Custom Pane` to make it clear that it is a custom Pane for developers. In most cases this value will be overwritten to a more relevant value to the purpose.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, Custom panes will be titled with the string "Custom".
+
+        Setting `-init searchPanes.panes.header` to any other string value will cause that string to be displayed in the title of the Pane. In most cases it will be preferable to overwrite this value.
+        ]]>
+	</description>
+
+	<example title="Define custom pane header"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: {
+            panes: [
+                {
+                    header:'My Pane',
+                    options: [
+                        {
+                            label:'Accountants in Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        dom: 'Pfrtip'
+    });
+});
+
+]]></example>
+
+</dt-option>
