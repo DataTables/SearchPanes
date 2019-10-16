@@ -546,6 +546,7 @@ export default class SearchPane {
 		this.s.dtPane.on('select.dt', () => {
 			clearTimeout(t0);
 			$(this.dom.clear).removeClass(this.classes.dull);
+			this.s.selectPresent = true;
 			if (!this.s.updating) {
 				this._makeSelection(true);
 			}
@@ -629,6 +630,7 @@ export default class SearchPane {
 		this.s.dtPane.on('deselect.dt', () => {
 			t0 = setTimeout(() => {
 				if (this._getSelected(0)[0] === 0) {
+					this.s.selectPresent = false;
 					$(this.dom.clear).addClass(this.classes.dull);
 				}
 				this._makeSelection(false);
@@ -1223,7 +1225,7 @@ export default class SearchPane {
 	private _updateCommon(filterIdx, draw = false) {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
-		if (this.s.dtPane !== undefined && (!this.s.filteringActive || draw === true)) {
+		if (this.s.dtPane !== undefined && (!this.s.filteringActive || draw === true) && (this.c.cascadePanes !== true || this.s.selectPresent !== true)) {
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 			let scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
