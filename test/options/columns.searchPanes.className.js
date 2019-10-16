@@ -8,7 +8,7 @@ describe('searchPanes - options - columns.searchPanes.className', function() {
 
 	describe('Functional tests', function() {
 		dt.html('basic');
-		it('Confirm classes are present', function() {
+		it('Confirm classes are present for standard panes', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				columnDefs: [
@@ -30,12 +30,31 @@ describe('searchPanes - options - columns.searchPanes.className', function() {
 							className: 'testtwo'
 						}
 					}
-				]
+				],
+				searchPanes: {
+					panes: [
+						{
+							header: 'unittest header',
+							className: 'testcustom',
+							options: [
+								{
+									label: 'test cox',
+									value: function(rowData, rowIdx) {
+										return rowData[2] === 'San Francisco' && rowData[3] === '66';
+									}
+								}
+							]
+						}
+					]
+				}
 			});
 
 			expect($('div.dtsp-searchPane:eq(0)').hasClass('testzero')).toBe(true);
 			expect($('div.dtsp-searchPane:eq(1)').hasClass('testone')).toBe(true);
 			expect($('div.dtsp-searchPane:eq(2)').hasClass('testtwo')).toBe(true);
+		});
+		it('Confirm classes are present for custom panes', function() {
+			expect($('div.dtsp-searchPane:eq(6)').hasClass('testcustom')).toBe(true);
 		});
 	});
 });

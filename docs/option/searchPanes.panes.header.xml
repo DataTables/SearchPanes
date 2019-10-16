@@ -15,7 +15,7 @@
     </default>
 	<description>
 		<![CDATA[
-        As standard, Custom panes will be titled with the string "Custom".
+        As standard, Custom panes will be titled with the string "Custom Pane".
 
         Setting `-init searchPanes.panes.header` to any other string value will cause that string to be displayed in the title of the Pane. In most cases it will be preferable to overwrite this value.
         ]]>
