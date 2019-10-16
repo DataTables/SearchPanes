@@ -194,9 +194,16 @@ export default class SearchPanes {
 			}
 
 			// Update every pane with a table defined
+			let select = false;
+			for (let pane of this.panes){
+				if (pane.s.selectPresent){
+					select = true;
+					break;
+				}
+			}
 			for (let pane of this.panes) {
 				if (pane.s.dtPane !== undefined) {
-					pane._updatePane(false, filterActive, true);
+					pane._updatePane(select, filterActive, true);
 				}
 			}
 

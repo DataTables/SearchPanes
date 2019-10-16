@@ -956,10 +956,10 @@ export default class SearchPane {
 	 * Fill the array with the values that are currently being displayed in the table
 	 * @returns {array} arrayFilter The array containing all of the elements currently being shown in the table
 	 */
-	private _populatePane(selectedLength = 0): Array<{[keys: string]: any}> {
+	private _populatePane(selectedLength = 0, select = true): Array<{[keys: string]: any}> {
 		let table = this.s.dt;
 		let arrayFilter = [];
-		if (this.c.cascadePanes && selectedLength === 0 || this.c.viewTotal) {
+		if ((this.c.cascadePanes && (select || selectedLength === 0)) || this.c.viewTotal) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
@@ -1201,6 +1201,10 @@ export default class SearchPane {
 		this.s.updating = updating;
 	}
 
+	private _selectFalse() {
+		this.s.selectPresent = false;
+	}
+
 	/**
 	 * Finds the ratio of the number of different options in the table to the number of rows
 	 * @param bins the number of different options in the table
@@ -1221,7 +1225,7 @@ export default class SearchPane {
 	 * @param filterIdx the index of the postition of a sole selected option
 	 * @param draw a flag to define whether this has been called due to a draw event or not
 	 */
-	private _updateCommon(filterIdx, draw = false) {
+	private _updateCommon(filterIdx, draw = false, select = true) {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
 		if (this.s.dtPane !== undefined && (!this.s.filteringActive || draw === true) && (this.c.cascadePanes !== true || this.s.selectPresent !== true)) {
@@ -1240,7 +1244,7 @@ export default class SearchPane {
 
 			// If it is not a custom pane
 			if (this.colExists) {
-				arrayFilter = this._populatePane(selected.length);
+				arrayFilter = this._populatePane(selected.length, select);
 				bins = this._binData(this._flatten(arrayFilter));
 				this._findUnique(data, arrayFilter);
 				// If the viewTotal option is selected then find the totals for the table
@@ -1404,7 +1408,7 @@ export default class SearchPane {
 				filterIdx = selectArray.indexOf(1);
 			}
 		}
-		this._updateCommon(filterIdx, draw);
+		this._updateCommon(filterIdx, draw, select);
 		this.s.updating = false;
 	}
 }
