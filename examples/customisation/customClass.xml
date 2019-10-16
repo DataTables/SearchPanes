@@ -16,25 +16,19 @@ $(document).ready(function() {
             panes: [
                 {
                     header:'Custom',
-                    searchPanes:{
-                        options:[
-                            {
-                                label:'Accountants from Tokyo',
-                                value: function(rowData, rowIdx){
-                                    return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                                }
+                    options:[
+                        {
+                            label:'Accountants from Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
                             }
-                        ],
-                        dtOpts:{
-                            info: true
-                        },
-                        className:"PaneSpecific"
-                    },
+                        }
+                    ],
                     dtOpts:{
                         paging: true,
                         order: [[1, 'desc']]
                     },
-                    className:"AllCustom"
+                    className:"myCustomClass""
                 }
             ],
         },
@@ -61,7 +55,7 @@ This is the searchPanes extension for DataTables. It allows results to be filter
 
 This example shows how to add a custom class to a specific pane by setting the `-init columns.searchPanes.className` property to be a string containing the custom classes.
 
-This example also shows hot to add a custom class to custom panes. This can be applied to specific custom panes or individual custom panes. 
+This example also shows hot to add a custom class to custom panes using the `-init searchPanes.panes.className` property. 
 
 As you can see in the CSS section below the DataTable, the border property of `myCustomClass` has been set to red. This is shown around the Age pane.
 
