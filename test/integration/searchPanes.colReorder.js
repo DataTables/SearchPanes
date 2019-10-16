@@ -30,6 +30,7 @@ describe('searchPanes - integrations - colReorder', function() {
 			$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
 			await dt.sleep(100);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('London');
+			expect($('.dataTables_info').text()).toBe('Showing 1 to 10 of 12 entries (filtered from 57 total entries)');
 		});
 	});
 });
