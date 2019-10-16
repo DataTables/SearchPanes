@@ -956,11 +956,10 @@ export default class SearchPane {
 	 * Fill the array with the values that are currently being displayed in the table
 	 * @returns {array} arrayFilter The array containing all of the elements currently being shown in the table
 	 */
-	private _populatePane(): Array<{[keys: string]: any}> {
+	private _populatePane(selectedLength = 0): Array<{[keys: string]: any}> {
 		let table = this.s.dt;
 		let arrayFilter = [];
-
-		if (this.c.cascadePanes || this.c.viewTotal) {
+		if (this.c.cascadePanes && selectedLength === 0 || this.c.viewTotal) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
@@ -1241,7 +1240,7 @@ export default class SearchPane {
 
 			// If it is not a custom pane
 			if (this.colExists) {
-				arrayFilter = this._populatePane();
+				arrayFilter = this._populatePane(selected.length);
 				bins = this._binData(this._flatten(arrayFilter));
 				this._findUnique(data, arrayFilter);
 				// If the viewTotal option is selected then find the totals for the table
