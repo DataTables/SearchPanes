@@ -205,14 +205,12 @@ export default class SearchPanes {
 				for (let pane of this.panes) {
 					// Identify the pane where a selection or deselection has been made and add it to the list.
 					if (pane.s.selectPresent) {
-						console.log("push selection")
 						this.selectionList.push({index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).indexes()});
 						select = true;
 						break;
 					}
 					else if (pane.s.deselect) {
 						deselectIdx = pane.s.index;
-						console.log(deselectIdx, pane.s.deselect)
 					}
 				}
 				// Remove selections from the list from the pane where a deselect has taken place 
@@ -236,22 +234,21 @@ export default class SearchPanes {
 				if(newSelectionList.length > 0 && newSelectionList.length < this.selectionList.length){
 					// Set this to true so that the actions taken do not cause this to run until it is finished
 					this.regenerating = true;
-					console.log("regen true")
+
 					// Deselect everything in all of the panes
 					for(let pane of this.panes) {
+						pane.setCascadeRegen(true);
 						if(pane.s.dtPane !== undefined){
-							console.log("deselect pane", pane.s.index)
 							pane.s.dtPane.rows({selected: true}).deselect();
-							console.log("deselect pane", pane.s.index, pane.s.deselect)
 						}
 					}
-					console.log(newSelectionList)
 					// make selections in the order they were made previously, excluding those from the pane where a deselect was made
 					for(let selection of newSelectionList){
 						for(let pane of this.panes){
 							if(pane.s.index === selection.index && pane.s.dtPane !== undefined){
 								// select each row previously selected in the pane
 								for(let row of selection.rows) {
+									console.log(pane.s.index, "selecting", pane.s.dtPane.row(row).data(), row)
 									pane.s.dtPane.row(row).select();
 									// Update all of the other panes as you would just making a normal select
 									for (let paneUpdate of this.panes) {
@@ -269,8 +266,10 @@ export default class SearchPanes {
 					// Set the selection list property to be the list without the selections from the deselect pane
 					this.selectionList = newSelectionList;
 					// The regeneration of selections is over so set it back to false
+					for(let pane of this.panes){
+						pane.setCascadeRegen(false);
+					}
 					this.regenerating = false;
-					console.log("regen false")
 				}
 			}
 			else {

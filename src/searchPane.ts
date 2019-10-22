@@ -109,7 +109,8 @@ export default class SearchPane {
 			index: idx,
 			redraw: false,
 			updating: false,
-			deselect: false
+			deselect: false,
+			cascadeRegen: false
 		};
 
 		let rowLength = table.columns().eq(0).toArray().length;
@@ -630,21 +631,25 @@ export default class SearchPane {
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.on('deselect.dt', () => {
-			t0 = setTimeout(() => {
-				console.log("pane deselect", this.s.index, true)
-				this.s.deselect = true;
-				if (this._getSelected(0)[0] === 0) {
-					$(this.dom.clear).addClass(this.classes.dull);
-				}
-				this._makeSelection(false);
-				this.s.deselect = false;
-				console.log("pane deselect", this.s.index, false)
-			}, 50);
+			if(!this.s.cascadeRegen){
+				t0 = setTimeout(() => {
+					this.s.deselect = true;
+					if (this._getSelected(0)[0] === 0) {
+						$(this.dom.clear).addClass(this.classes.dull);
+					}
+					this._makeSelection(false);
+					this.s.deselect = false;
+				}, 50);
+			}
 		});
 
 		this.s.dtPane.state.save();
 
 		return true;
+	}
+
+	public setCascadeRegen(val: boolean): void {
+		this.s.cascadeRegen = val;
 	}
 
 	/**
