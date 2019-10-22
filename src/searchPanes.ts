@@ -51,6 +51,8 @@ export default class SearchPanes {
 	public c;
 	public s;
 	public panes;
+	public selectionList = [];
+	public regenerating = false;
 
 	constructor(paneSettings, opts) {
 		// Check that the required version of DataTables is included
@@ -191,25 +193,98 @@ export default class SearchPanes {
 			//  then there can't be any filtering taking place
 			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
 				filterActive = false;
+				this.selectionList = [];
 			}
 
 			// Update every pane with a table defined
 			let select = false;
-			for (let pane of this.panes){
-				if (pane.s.selectPresent){
-					select = true;
-					break;
+			let deselectIdx;
+			let newSelectionList = [];
+			// Don't run this if it is due to the panes regenerating
+			if(!this.regenerating){
+				for (let pane of this.panes) {
+					// Identify the pane where a selection or deselection has been made and add it to the list.
+					if (pane.s.selectPresent) {
+						console.log("push selection")
+						this.selectionList.push({index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).indexes()});
+						select = true;
+						break;
+					}
+					else if (pane.s.deselect) {
+						deselectIdx = pane.s.index;
+						console.log(deselectIdx, pane.s.deselect)
+					}
 				}
-			}
-			for (let pane of this.panes) {
-				if (pane.s.dtPane !== undefined) {
-					pane._updatePane(select, filterActive, true);
+				// Remove selections from the list from the pane where a deselect has taken place 
+				for (let selection of this.selectionList) {
+					if (selection.index !== deselectIdx) {
+						newSelectionList.push(selection);
+					}
 				}
-			}
 
-			// Update the label that shows how many filters are in place
-			this._updateFilterCount();
+				// Update all of the panes to reflect the current state of the filters
+				for (let pane of this.panes) {
+					if (pane.s.dtPane !== undefined) {
+						pane._updatePane(select, filterActive, true);
+					}
+				}
+	
+				// Update the label that shows how many filters are in place
+				this._updateFilterCount();
+
+				// If the length of the selections are different then some of them have been removed and a deselect has occured
+				if(newSelectionList.length > 0 && newSelectionList.length < this.selectionList.length){
+					// Set this to true so that the actions taken do not cause this to run until it is finished
+					this.regenerating = true;
+					console.log("regen true")
+					// Deselect everything in all of the panes
+					for(let pane of this.panes) {
+						if(pane.s.dtPane !== undefined){
+							console.log("deselect pane", pane.s.index)
+							pane.s.dtPane.rows({selected: true}).deselect();
+							console.log("deselect pane", pane.s.index, pane.s.deselect)
+						}
+					}
+					console.log(newSelectionList)
+					// make selections in the order they were made previously, excluding those from the pane where a deselect was made
+					for(let selection of newSelectionList){
+						for(let pane of this.panes){
+							if(pane.s.index === selection.index && pane.s.dtPane !== undefined){
+								// select each row previously selected in the pane
+								for(let row of selection.rows) {
+									pane.s.dtPane.row(row).select();
+									// Update all of the other panes as you would just making a normal select
+									for (let paneUpdate of this.panes) {
+										if (paneUpdate.s.dtPane !== undefined) {
+											paneUpdate._updatePane(select, filterActive, true);
+										}
+									}
+
+									// Update the label that shows how many filters are in place
+									this._updateFilterCount();
+								}
+							}
+						}
+					}
+					// Set the selection list property to be the list without the selections from the deselect pane
+					this.selectionList = newSelectionList;
+					// The regeneration of selections is over so set it back to false
+					this.regenerating = false;
+					console.log("regen false")
+				}
+			}
+			else {
+				for (let pane of this.panes) {
+					if (pane.s.dtPane !== undefined) {
+						pane._updatePane(select, filterActive, true);
+					}
+				}
+	
+				// Update the label that shows how many filters are in place
+				this._updateFilterCount();
+			}
 		}
+		
 	}
 
 	/**

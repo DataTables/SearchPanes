@@ -109,6 +109,7 @@ export default class SearchPane {
 			index: idx,
 			redraw: false,
 			updating: false,
+			deselect: false
 		};
 
 		let rowLength = table.columns().eq(0).toArray().length;
@@ -630,10 +631,14 @@ export default class SearchPane {
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.on('deselect.dt', () => {
 			t0 = setTimeout(() => {
+				console.log("pane deselect", this.s.index, true)
+				this.s.deselect = true;
 				if (this._getSelected(0)[0] === 0) {
 					$(this.dom.clear).addClass(this.classes.dull);
 				}
 				this._makeSelection(false);
+				this.s.deselect = false;
+				console.log("pane deselect", this.s.index, false)
 			}, 50);
 		});
 
@@ -1229,7 +1234,6 @@ export default class SearchPane {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
 		if (this.s.dtPane !== undefined && (!this.s.filteringActive || draw === true) && (this.c.cascadePanes !== true || this.s.selectPresent !== true)) {
-			
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 			let scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
