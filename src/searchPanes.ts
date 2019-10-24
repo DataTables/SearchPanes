@@ -205,7 +205,7 @@ export default class SearchPanes {
 				for (let pane of this.panes) {
 					// Identify the pane where a selection or deselection has been made and add it to the list.
 					if (pane.s.selectPresent) {
-						this.selectionList.push({index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).indexes()});
+						this.selectionList.push({index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray()});
 						select = true;
 						break;
 					}
@@ -236,10 +236,21 @@ export default class SearchPanes {
 					this.regenerating = true;
 
 					// Deselect everything in all of the panes
+
+					// Load in all of the searchBoxes in the documents
+					let searches = document.getElementsByClassName(this.classes.search);
+
+					// For each searchBox set the input text to be empty and then trigger
+					//  an input on them so that they no longer filter the panes
+					for (let i = 0; i < searches.length; i++) {
+						$(searches[i]).val('');
+						$(searches[i]).trigger('input');
+					}
+
 					for(let pane of this.panes) {
 						pane.setCascadeRegen(true);
 						if(pane.s.dtPane !== undefined){
-							pane.s.dtPane.rows({selected: true}).deselect();
+							pane._clearPane()
 						}
 					}
 					// make selections in the order they were made previously, excluding those from the pane where a deselect was made
@@ -247,18 +258,19 @@ export default class SearchPanes {
 						for(let pane of this.panes){
 							if(pane.s.index === selection.index && pane.s.dtPane !== undefined){
 								// select each row previously selected in the pane
+								let rowList = pane.s.dtPane.rows().toArray();
 								for(let row of selection.rows) {
-									console.log(pane.s.index, "selecting", pane.s.dtPane.row(row).data(), row)
-									pane.s.dtPane.row(row).select();
-									// Update all of the other panes as you would just making a normal select
-									for (let paneUpdate of this.panes) {
-										if (paneUpdate.s.dtPane !== undefined) {
-											paneUpdate._updatePane(select, filterActive, true);
+									for(let rowPoss of rowList[0]){
+										if(pane.s.dtPane.row(rowPoss).data().index === row.index){
+											pane.s.dtPane.row(rowPoss).select();
+											break;
 										}
 									}
-
-									// Update the label that shows how many filters are in place
-									this._updateFilterCount();
+									if(this.c.viewTotal){
+										// Update the label that shows how many filters are in place
+										this._updateFilterCount();
+									}
+									
 								}
 							}
 						}
@@ -270,6 +282,14 @@ export default class SearchPanes {
 						pane.setCascadeRegen(false);
 					}
 					this.regenerating = false;
+				}
+				else {
+					// Update all of the other panes as you would just making a normal
+					for (let paneUpdate of this.panes) {
+						if (paneUpdate.s.dtPane !== undefined) {
+							paneUpdate._updatePane(true, filterActive, true);
+						}
+					}
 				}
 			}
 			else {

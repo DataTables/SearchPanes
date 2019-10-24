@@ -110,7 +110,8 @@ export default class SearchPane {
 			redraw: false,
 			updating: false,
 			deselect: false,
-			cascadeRegen: false
+			cascadeRegen: false,
+			indexes:[]
 		};
 
 		let rowLength = table.columns().eq(0).toArray().length;
@@ -274,13 +275,24 @@ export default class SearchPane {
 	 * @param type the value of which the type is to be derived from
 	 */
 	private _addRow(display, filter, shown, total, sort, type): any {
+		let index = undefined;
+		for(let entry of this.s.indexes){
+			if(entry.filter === filter){
+				index = entry.index;
+			}
+		}
+		if (index === undefined) {
+			index = this.s.indexes.length;
+			this.s.indexes.push({filter, index});
+		}
 		return this.s.dtPane.row.add({
 			display: display !== '' ? display : this.c.emptyMessage,
 			filter,
 			shown,
 			sort: sort !== '' ? sort : this.c.emptyMessage,
 			total,
-			type
+			type,
+			index
 		});
 	}
 
@@ -969,7 +981,7 @@ export default class SearchPane {
 	private _populatePane(selectedLength = 0, select = true): Array<{[keys: string]: any}> {
 		let table = this.s.dt;
 		let arrayFilter = [];
-		if ((this.c.cascadePanes && (select || selectedLength === 0)) || this.c.viewTotal) {
+		if ((this.c.cascadePanes /*&& (select || selectedLength === 0)*/) || this.c.viewTotal) {		
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
@@ -1238,7 +1250,11 @@ export default class SearchPane {
 	private _updateCommon(filterIdx, draw = false, select = true) {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
-		if (this.s.dtPane !== undefined && (!this.s.filteringActive || draw === true) && (this.c.cascadePanes !== true || this.s.selectPresent !== true)) {
+		if (
+			this.s.dtPane !== undefined &&
+			(!this.s.filteringActive || draw === true) &&
+			(this.c.cascadePanes !== true || this.s.selectPresent !== true)
+		) {
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 			let scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
