@@ -33,17 +33,18 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 			expect($('td.dtsp-countColumn').length).toBe(73);
 		});
 
-		dt.html('basic');
-		it('Check true', function() {
-			table = $('#example').DataTable({
-				dom: 'Pfrtip',
-				searchPanes: {
-					cascadePanes: true
-				}
-			});
+		// DD-1199 - disabling these tests until issues resolved
+		// dt.html('basic');
+		// it('Check true', function() {
+		// 	table = $('#example').DataTable({
+		// 		dom: 'Pfrtip',
+		// 		searchPanes: {
+		// 			cascadePanes: true
+		// 		}
+		// 	});
 
-			$('div.dtsp-searchPane table tbody tr:eq(0) td').click();
-			expect($('td.dtsp-countColumn').length).toBe(4);
-		});
+		// 	$('div.dtsp-searchPane table tbody tr:eq(0) td').click();
+		// 	expect($('td.dtsp-countColumn').length).toBe(4);
+		// });
 	});
 });
