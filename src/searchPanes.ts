@@ -200,8 +200,9 @@ export default class SearchPanes {
 			let select = false;
 			let deselectIdx;
 			let newSelectionList = [];
+
 			// Don't run this if it is due to the panes regenerating
-			if(!this.regenerating){
+			if (!this.regenerating) {
 				for (let pane of this.panes) {
 					// Identify the pane where a selection or deselection has been made and add it to the list.
 					if (pane.s.selectPresent) {
@@ -213,7 +214,8 @@ export default class SearchPanes {
 						deselectIdx = pane.s.index;
 					}
 				}
-				// Remove selections from the list from the pane where a deselect has taken place 
+
+				// Remove selections from the list from the pane where a deselect has taken place
 				for (let selection of this.selectionList) {
 					if (selection.index !== deselectIdx) {
 						newSelectionList.push(selection);
@@ -226,16 +228,14 @@ export default class SearchPanes {
 						pane._updatePane(select, filterActive, true);
 					}
 				}
-	
+
 				// Update the label that shows how many filters are in place
 				this._updateFilterCount();
 
 				// If the length of the selections are different then some of them have been removed and a deselect has occured
-				if(newSelectionList.length > 0 && newSelectionList.length < this.selectionList.length){
+				if (newSelectionList.length > 0 && newSelectionList.length < this.selectionList.length) {
 					// Set this to true so that the actions taken do not cause this to run until it is finished
 					this.regenerating = true;
-
-					// Deselect everything in all of the panes
 
 					// Load in all of the searchBoxes in the documents
 					let searches = document.getElementsByClassName(this.classes.search);
@@ -247,44 +247,31 @@ export default class SearchPanes {
 						$(searches[i]).trigger('input');
 					}
 
-					for(let pane of this.panes) {
+					// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
+					//  and clear all of the previous selections in the pane
+					for (let pane of this.panes) {
 						pane.setCascadeRegen(true);
-						if(pane.s.dtPane !== undefined){
-							pane._clearPane()
+
+						if (pane.s.dtPane !== undefined) {
+							pane._clearPane();
 						}
 					}
-					// make selections in the order they were made previously, excluding those from the pane where a deselect was made
-					for(let selection of newSelectionList){
-						for(let pane of this.panes){
-							if(pane.s.index === selection.index && pane.s.dtPane !== undefined){
-								// select each row previously selected in the pane
-								let rowList = pane.s.dtPane.rows().toArray();
-								for(let row of selection.rows) {
-									for(let rowPoss of rowList[0]){
-										if(pane.s.dtPane.row(rowPoss).data().index === row.index){
-											pane.s.dtPane.row(rowPoss).select();
-											break;
-										}
-									}
-									if(this.c.viewTotal){
-										// Update the label that shows how many filters are in place
-										this._updateFilterCount();
-									}
-									
-								}
-							}
-						}
-					}
+
+					// Remake Selections
+					this._makeCascadeSelections(newSelectionList);
+
 					// Set the selection list property to be the list without the selections from the deselect pane
 					this.selectionList = newSelectionList;
+
 					// The regeneration of selections is over so set it back to false
-					for(let pane of this.panes){
+					for (let pane of this.panes) {
 						pane.setCascadeRegen(false);
 					}
+
 					this.regenerating = false;
 				}
 				else {
-					// Update all of the other panes as you would just making a normal
+					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
 							paneUpdate._updatePane(true, filterActive, true);
@@ -298,12 +285,37 @@ export default class SearchPanes {
 						pane._updatePane(select, filterActive, true);
 					}
 				}
-	
+
 				// Update the label that shows how many filters are in place
 				this._updateFilterCount();
 			}
 		}
-		
+	}
+
+	private _makeCascadeSelections(newSelectionList) {
+		// make selections in the order they were made previously, excluding those from the pane where a deselect was made
+		for (let selection of newSelectionList) {
+			for (let pane of this.panes) {
+				if (pane.s.index === selection.index && pane.s.dtPane !== undefined) {
+					// select each row previously selected in the pane
+					let rowList = pane.s.dtPane.rows().toArray();
+
+					for (let row of selection.rows) {
+						for (let rowPoss of rowList[0]) {
+							if (pane.s.dtPane.row(rowPoss).data().index === row.index) {
+								pane.s.dtPane.row(rowPoss).select();
+								break;
+							}
+						}
+
+						if (this.c.viewTotal) {
+							// Update the label that shows how many filters are in place
+							this._updateFilterCount();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -346,7 +358,7 @@ export default class SearchPanes {
 		try {
 			message = this.s.dt.i18n('searchPanes.emptyPanes', 'No SearchPanes');
 		}
-		catch(error) {
+		catch (error) {
 			message = null;
 		}
 
@@ -385,7 +397,7 @@ export default class SearchPanes {
 		return this._attachMessage();
 	}
 
-	private _startup(table, paneSettings, opts){
+	private _startup(table, paneSettings, opts) {
 		// Create Panes
 		table
 		.columns(this.c.columns)

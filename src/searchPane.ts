@@ -102,16 +102,16 @@ export default class SearchPane {
 		}
 
 		this.s = {
+			cascadeRegen: false,
 			colOpts: [],
 			columns: [],
+			deselect: false,
 			dt: table,
 			filteringActive: false,
 			index: idx,
+			indexes: [],
 			redraw: false,
 			updating: false,
-			deselect: false,
-			cascadeRegen: false,
-			indexes:[]
 		};
 
 		let rowLength = table.columns().eq(0).toArray().length;
@@ -133,7 +133,7 @@ export default class SearchPane {
 			dtP: $('<table><thead><tr><th>' +
 				(this.colExists
 					? $(table.column(this.colExists ? this.s.index : 0).header()).text()
-					: this.customPaneSettings.header || "Custom Pane") + '</th><th/></tr></thead></table>'),
+					: this.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
 			lower: $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowButton),
 			nameButton: $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
@@ -266,6 +266,14 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Sets the cascadeRegen property of the pane. Accessible from above because as SearchPanes.ts deals with the rebuilds.
+	 * @param val the boolean value that the cascadeRegen property is to be set to
+	 */
+	public setCascadeRegen(val: boolean): void {
+		this.s.cascadeRegen = val;
+	}
+
+	/**
 	 * Adds a row to the panes table
 	 * @param display the value to be displayed to the user
 	 * @param filter the value to be filtered on when searchpanes is implemented
@@ -275,9 +283,9 @@ export default class SearchPane {
 	 * @param type the value of which the type is to be derived from
 	 */
 	private _addRow(display, filter, shown, total, sort, type): any {
-		let index = undefined;
-		for(let entry of this.s.indexes){
-			if(entry.filter === filter){
+		let index;
+		for (let entry of this.s.indexes) {
+			if (entry.filter === filter) {
 				index = entry.index;
 			}
 		}
@@ -288,11 +296,11 @@ export default class SearchPane {
 		return this.s.dtPane.row.add({
 			display: display !== '' ? display : this.c.emptyMessage,
 			filter,
+			index,
 			shown,
 			sort: sort !== '' ? sort : this.c.emptyMessage,
 			total,
 			type,
-			index
 		});
 	}
 
@@ -489,7 +497,7 @@ export default class SearchPane {
 			? colOpts.header
 			: this.colExists
 				? table.settings()[0].aoColumns[this.s.index].sTitle
-				: this.customPaneSettings.header || "Custom Pane"
+				: this.customPaneSettings.header || 'Custom Pane'
 		);
 
 		// As the pane table is not in the document yet we must initialise select ourselves
@@ -643,12 +651,15 @@ export default class SearchPane {
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.on('deselect.dt', () => {
-			if(!this.s.cascadeRegen){
+			// Don't do this if it is due to a Cascade Regeneration
+			if (!this.s.cascadeRegen) {
 				t0 = setTimeout(() => {
 					this.s.deselect = true;
+
 					if (this._getSelected(0)[0] === 0) {
 						$(this.dom.clear).addClass(this.classes.dull);
 					}
+
 					this._makeSelection(false);
 					this.s.deselect = false;
 				}, 50);
@@ -658,10 +669,6 @@ export default class SearchPane {
 		this.s.dtPane.state.save();
 
 		return true;
-	}
-
-	public setCascadeRegen(val: boolean): void {
-		this.s.cascadeRegen = val;
 	}
 
 	/**
@@ -981,7 +988,8 @@ export default class SearchPane {
 	private _populatePane(selectedLength = 0, select = true): Array<{[keys: string]: any}> {
 		let table = this.s.dt;
 		let arrayFilter = [];
-		if ((this.c.cascadePanes) || this.c.viewTotal) {		
+
+		if ((this.c.cascadePanes) || this.c.viewTotal) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
