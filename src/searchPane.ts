@@ -981,7 +981,7 @@ export default class SearchPane {
 	private _populatePane(selectedLength = 0, select = true): Array<{[keys: string]: any}> {
 		let table = this.s.dt;
 		let arrayFilter = [];
-		if ((this.c.cascadePanes /*&& (select || selectedLength === 0)*/) || this.c.viewTotal) {		
+		if ((this.c.cascadePanes) || this.c.viewTotal) {		
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
@@ -1425,7 +1425,7 @@ export default class SearchPane {
 		// If the viewTotal option is active then it must be determined whether there is a filter in place already
 		if (this.c.viewTotal) {
 			// There is if select is true
-			if (select || filteringActive) {
+			if (filteringActive) {
 				this.s.filteringActive = true;
 			}
 			// If there is only one in place then find the index of the corresponding pane
