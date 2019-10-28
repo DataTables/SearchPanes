@@ -251,11 +251,13 @@ export default class SearchPanes {
 					//  and clear all of the previous selections in the pane
 					for (let pane of this.panes) {
 						pane.setCascadeRegen(true);
-
+						pane.setClear(true);
 						if (pane.s.dtPane !== undefined) {
 							pane._clearPane();
 						}
+						pane.setClear(false);
 					}
+
 
 					// Remake Selections
 					this._makeCascadeSelections(newSelectionList);

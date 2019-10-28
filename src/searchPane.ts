@@ -103,6 +103,7 @@ export default class SearchPane {
 
 		this.s = {
 			cascadeRegen: false,
+			clearing: false,
 			colOpts: [],
 			columns: [],
 			deselect: false,
@@ -271,6 +272,16 @@ export default class SearchPane {
 	 */
 	public setCascadeRegen(val: boolean): void {
 		this.s.cascadeRegen = val;
+	}
+
+	/**
+	 * This function allows the clearing property to be assigned. This is used when implementing cascadePane.
+	 * In setting this to true for the clearing of the panes selection on the deselects it forces the pane to
+	 * repopulate from the entire dataset not just the displayed values.
+	 * @param val the boolean value which the clearing property is to be assigned
+	 */
+	public setClear(val: boolean) {
+		this.s.clearing = val;
 	}
 
 	/**
@@ -651,19 +662,15 @@ export default class SearchPane {
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.on('deselect.dt', () => {
-			// Don't do this if it is due to a Cascade Regeneration
-			if (!this.s.cascadeRegen) {
-				t0 = setTimeout(() => {
-					this.s.deselect = true;
+			t0 = setTimeout(() => {
+				this.s.deselect = true;
 
-					if (this._getSelected(0)[0] === 0) {
-						$(this.dom.clear).addClass(this.classes.dull);
-					}
-
-					this._makeSelection(false);
-					this.s.deselect = false;
-				}, 50);
-			}
+				if (this._getSelected(0)[0] === 0) {
+					$(this.dom.clear).addClass(this.classes.dull);
+				}
+				this._makeSelection(false);
+				this.s.deselect = false;
+			}, 50);
 		});
 
 		this.s.dtPane.state.save();
@@ -989,7 +996,7 @@ export default class SearchPane {
 		let table = this.s.dt;
 		let arrayFilter = [];
 
-		if ((this.c.cascadePanes) || this.c.viewTotal) {
+		if ((this.c.cascadePanes && !this.s.clearing) || this.c.viewTotal) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
