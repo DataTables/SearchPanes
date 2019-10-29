@@ -1006,7 +1006,7 @@ export default class SearchPane {
 		let table = this.s.dt;
 		let arrayFilter = [];
 
-		if ((this.c.cascadePanes && !this.s.clearing) || this.c.viewTotal) {
+		if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.clearing) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
@@ -1277,7 +1277,7 @@ export default class SearchPane {
 		// update all of the panes except for the one causing the change
 		if (
 			this.s.dtPane !== undefined &&
-			(!this.s.filteringActive || draw === true) &&
+			((!this.s.filteringActive || this.c.cascadePanes) || draw === true) &&
 			(this.c.cascadePanes !== true || this.s.selectPresent !== true)
 		) {
 			let colOpts = this.s.colOpts;
@@ -1319,7 +1319,7 @@ export default class SearchPane {
 						let row;
 						// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 						// Do this also if the viewTotal option has been selected and cascadePanes has not
-						if ((bins[dataP.filter] !== undefined && this.c.cascadePanes) || !this.c.cascadePanes) {
+						if ((bins[dataP.filter] !== undefined && this.c.cascadePanes) || !this.c.cascadePanes || this.s.clearing) {
 							row = this._addRow(
 								dataP.display,
 								dataP.filter,
@@ -1373,7 +1373,7 @@ export default class SearchPane {
 			// Add search options which were previously selected but whos results are no
 			// longer present in the resulting data set.
 			for (let selectedEl of selected) {
-				if ((draw && bins[selectedEl.filter] !== undefined) || !draw || this.c.cascadePanes) {
+				if ((draw && bins[selectedEl.filter] !== undefined) || !draw ) {
 					let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
 					row.select();
 				}
