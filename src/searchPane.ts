@@ -1373,22 +1373,8 @@ export default class SearchPane {
 			// Add search options which were previously selected but whos results are no
 			// longer present in the resulting data set.
 			for (let selectedEl of selected) {
-				if ((draw && bins[selectedEl.filter] !== undefined) || !draw ) {
-					let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
-					row.select();
-				}
-				else {
-					let id;
-					for (let selection of this.s.columns[this.s.index]) {
-						if (selection.filter === selectedEl.filter) {
-							id = this.s.columns[this.s.index].indexOf(selection);
-							break;
-						}
-					}
-					if (id !== undefined) {
-						this.s.columns[this.s.index].splice(id, 1);
-					}
-				}
+				let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
+				row.select();
 			}
 			if (this.s.dtPane.rows().data().toArray().length === 0) {
 				arrayTotals = this._detailsPane();

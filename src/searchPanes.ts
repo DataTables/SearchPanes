@@ -206,26 +206,29 @@ export default class SearchPanes {
 				for (let pane of this.panes) {
 					// Identify the pane where a selection or deselection has been made and add it to the list.
 					if (pane.s.selectPresent) {
-						this.selectionList.push({index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray()});
+						this.selectionList.push({index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false});
 						select = true;
 						break;
 					}
 					else if (pane.s.deselect) {
 						deselectIdx = pane.s.index;
+						let selectedData = pane.s.dtPane.rows({selected: true}).data().toArray();
+						if(selectedData.length > 0){
+							this.selectionList.push({index: pane.s.index, rows: selectedData, protect: true})
+						}
 					}
 				}
 
 				// Remove selections from the list from the pane where a deselect has taken place
 				for (let selection of this.selectionList) {
-					if (selection.index !== deselectIdx) {
+					if (selection.index !== deselectIdx || selection.protect === true) {
 						newSelectionList.push(selection);
+						selection.protect = false;
 					}
 				}
-
 				// Update all of the panes to reflect the current state of the filters
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
-						//console.log(pane.s.index, 228)
 						pane._updatePane(select, filterActive, true);
 					}
 				}
@@ -270,7 +273,6 @@ export default class SearchPanes {
 					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
-							//console.log(paneUpdate.s.index, 280)
 							paneUpdate._updatePane(true, filterActive, true);
 						}
 					}
