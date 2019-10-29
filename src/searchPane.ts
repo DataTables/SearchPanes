@@ -1373,7 +1373,7 @@ export default class SearchPane {
 			// Add search options which were previously selected but whos results are no
 			// longer present in the resulting data set.
 			for (let selectedEl of selected) {
-				if ((draw && bins[selectedEl.filter] !== undefined) || !draw) {
+				if ((draw && bins[selectedEl.filter] !== undefined) || !draw || this.c.cascadePanes) {
 					let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
 					row.select();
 				}
