@@ -19,14 +19,14 @@ $(document).ready(function() {
                                 return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
                             }
                         }
-                    ]
+                    ],
                     dtOpts:{
                         searching: false,
                         order: [[1, 'desc']]
                     }
                 }
             ],
-            layout: 'columns-1',
+            layout: 'columns-1'
         },
         columnDefs:[{
             searchPanes:{
@@ -34,7 +34,7 @@ $(document).ready(function() {
             },
             targets: ['_all']
         }],
-        dom: 'Pfrtip',
+        dom: 'Pfrtip'
     });
 });
 

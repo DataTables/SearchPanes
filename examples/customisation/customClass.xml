@@ -24,11 +24,11 @@ $(document).ready(function() {
                             }
                         }
                     ],
-                    dtOpts:{
+                    dtOpts: {
                         paging: true,
                         order: [[1, 'desc']]
                     },
-                    className:"myCustomClass""
+                    className: 'myCustomClass'
                 }
             ],
         },
