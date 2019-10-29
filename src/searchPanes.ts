@@ -156,7 +156,7 @@ export default class SearchPanes {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
 				continue;
 			}
-
+			pane.clearData();
 			returnArray.push(pane.rebuildPane());
 		}
 
@@ -225,6 +225,7 @@ export default class SearchPanes {
 				// Update all of the panes to reflect the current state of the filters
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
+						//console.log(pane.s.index, 228)
 						pane._updatePane(select, filterActive, true);
 					}
 				}
@@ -239,13 +240,6 @@ export default class SearchPanes {
 
 					// Load in all of the searchBoxes in the documents
 					let searches = document.getElementsByClassName(this.classes.search);
-
-					// For each searchBox set the input text to be empty and then trigger
-					//  an input on them so that they no longer filter the panes
-					for (let i = 0; i < searches.length; i++) {
-						$(searches[i]).val('');
-						$(searches[i]).trigger('input');
-					}
 
 					// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
 					//  and clear all of the previous selections in the pane
@@ -272,10 +266,11 @@ export default class SearchPanes {
 
 					this.regenerating = false;
 				}
-				else {
+				else if(newSelectionList.length > 0) {
 					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
+							//console.log(paneUpdate.s.index, 280)
 							paneUpdate._updatePane(true, filterActive, true);
 						}
 					}
