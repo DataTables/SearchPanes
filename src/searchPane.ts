@@ -245,6 +245,16 @@ export default class SearchPane {
 		this.s.dtPane.columns.adjust();
 	}
 
+	public clearData() {
+		this.s.rowData = {
+			arrayFilter: [],
+			arrayTotals: [],
+			bins: {},
+			binsTotal: {},
+			dataFilter: []
+		}
+	}
+
 	/**
 	 * Rebuilds the panes from the start having deleted the old ones
 	 */
