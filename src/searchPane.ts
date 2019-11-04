@@ -252,7 +252,7 @@ export default class SearchPane {
 			bins: {},
 			binsTotal: {},
 			dataFilter: []
-		}
+		};
 	}
 
 	/**
@@ -1334,15 +1334,15 @@ export default class SearchPane {
 								dataP.sort,
 								dataP.type
 							);
-						}
 
-						// Find out if the filter was selected in the previous search, if so select it and remove from array.
-						let selectIndex = selected.findIndex(function(element) {
-							return element.filter === dataP.filter;
-						});
-						if (selectIndex !== -1) {
-							row.select();
-							selected.splice(selectIndex, 1);
+							// Find out if the filter was selected in the previous search, if so select it and remove from array.
+							let selectIndex = selected.findIndex(function(element) {
+								return element.filter === dataP.filter;
+							});
+							if (selectIndex !== -1) {
+								row.select();
+								selected.splice(selectIndex, 1);
+							}
 						}
 					}
 				}
