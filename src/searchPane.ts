@@ -112,6 +112,15 @@ export default class SearchPane {
 			index: idx,
 			indexes: [],
 			redraw: false,
+			rowData: {
+				arrayFilter: [],
+				arrayOriginal: [],
+				arrayTotals: [],
+				bins: {},
+				binsTotal: {},
+				data: [],
+				dataFilter: [],
+			},
 			updating: false,
 		};
 
@@ -246,12 +255,15 @@ export default class SearchPane {
 	}
 
 	public clearData() {
+		// If a rebuildPane is called then there is potentially new data included or data has been removed
+		//  so set all of the rowData to it's original state.
 		this.s.rowData = {
 			arrayFilter: [],
 			arrayTotals: [],
 			bins: {},
 			binsTotal: {},
-			dataFilter: []
+			data: [],
+			dataFilter: [],
 		};
 	}
 
@@ -259,6 +271,7 @@ export default class SearchPane {
 	 * Rebuilds the panes from the start having deleted the old ones
 	 */
 	public rebuildPane(): this {
+		this.clearData();
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
 			this.s.dtPane.clear().destroy();
@@ -384,14 +397,11 @@ export default class SearchPane {
 		let table = this.s.dt;
 		let column = table.column(this.colExists ? this.s.index : 0);
 		let colOpts =  this.s.colOpts;
+		let rowData = this.s.rowData;
 
 		// Other Variables
 		let countMessage = table.i18n('searchPanes.count', '{total}');
 		let filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
-		let arrayFilter: Array<{[keys: string]: any}> = [];
-		let arrayTotals: Array<{}> = [];
-		let bins = {};
-		let binsTotal = {};
 
 		// If it is not a custom pane in place
 		if (this.colExists) {
@@ -406,10 +416,14 @@ export default class SearchPane {
 				this.displayed = true;
 			}
 
-			arrayFilter = this._populatePane();
-			bins = this._binData(this._flatten(arrayFilter));
+			// Only run populatePane if the data has not been collected yet
+			if (rowData.arrayFilter.length === 0) {
+				rowData.arrayFilter = this._populatePane();
+				rowData.arrayOriginal = rowData.arrayFilter;
+				rowData.bins = this._binData(this._flatten(rowData.arrayFilter));
+			}
 
-			let binLength = Object.keys(bins).length;
+			let binLength = Object.keys(rowData.bins).length;
 			let uniqueRatio = this._uniqueRatio(binLength, table.rows()[0].length);
 
 			// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
@@ -424,12 +438,12 @@ export default class SearchPane {
 
 			// If the option viewTotal is true then find
 			// the total count for the whole table to display alongside the displayed count
-			if (this.c.viewTotal) {
-				arrayTotals = this._detailsPane();
-				binsTotal = this._binData(this._flatten(arrayTotals));
+			if (this.c.viewTotal && rowData.arrayTotals.length === 0) {
+				rowData.arrayTotals = this._detailsPane();
+				rowData.binsTotal = this._binData(this._flatten(rowData.arrayTotals));
 			}
 			else {
-				binsTotal = bins;
+				rowData.binsTotal = rowData.bins;
 			}
 
 			this.dom.container.addClass(this.classes.show);
@@ -534,30 +548,30 @@ export default class SearchPane {
 			let dataFilter = [];
 
 			// Make sure that the values stored are unique
-			this._findUnique(dataFilter, arrayFilter);
+			this._findUnique(rowData.dataFilter, rowData.arrayFilter);
 
 			// Count the number of empty cells
 			let count: number = 0;
-			arrayFilter.forEach(element => {
+			rowData.arrayFilter.forEach(element => {
 				if (element.filter === '') {
 					count++;
 				}
 			});
 
 			// Add all of the search options to the pane
-			for (let i = 0, ien = dataFilter.length; i < ien; i++) {
-				if (dataFilter[i]) {
-					if (bins[dataFilter[i].filter] !== undefined || !this.c.cascadePanes) {
+			for (let i = 0, ien = rowData.dataFilter.length; i < ien; i++) {
+				if (rowData.dataFilter[i]) {
+					if (rowData.bins[rowData.dataFilter[i].filter] !== undefined || !this.c.cascadePanes) {
 						let row = this._addRow(
-							dataFilter[i].display,
-							dataFilter[i].filter,
-							bins[dataFilter[i].filter],
-							bins[dataFilter[i].filter],
-							dataFilter[i].sort,
-							dataFilter[i].type
+							rowData.dataFilter[i].display,
+							rowData.dataFilter[i].filter,
+							rowData.bins[rowData.dataFilter[i].filter],
+							rowData.bins[rowData.dataFilter[i].filter],
+							rowData.dataFilter[i].sort,
+							rowData.dataFilter[i].type
 						);
 
-						if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(dataFilter[i].filter) !== -1) {
+						if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.dataFilter[i].filter) !== -1) {
 							row.select();
 						}
 					}
@@ -697,26 +711,6 @@ export default class SearchPane {
 		this._updateTable(false);
 		this._updateFilterCount();
 		return this;
-	}
-
-	/**
-	 * Get the bins for the custom options
-	 * @param val the data in a row
-	 * @param comparisonObj The data for the custom Option
-	 * @param bins The counts for each of the different options in the column
-	 * @param binsTotal The total counts for each of the different options in the column
-	 * @return {object} comparisonObj the same object as a parameter but with updated counts
-	 */
-	private _comparisonStatUpdate(val, comparisonObj, bins, binsTotal) {
-		// If the value of the filter is a function then it will throw an error if we try to push on to it
-		if (typeof comparisonObj.filter !== 'function') {
-			comparisonObj.filter.push(val.filter);
-		}
-
-		// Update the totals
-		bins !== undefined ? comparisonObj.shown += bins : comparisonObj.shown += 0;
-		binsTotal !== undefined ? comparisonObj.total += binsTotal : comparisonObj.total += 0;
-		return comparisonObj;
 	}
 
 	/**
@@ -897,25 +891,25 @@ export default class SearchPane {
 
 			// If a custom function is in place
 			if (typeof comp.value === 'function') {
-				let count = 0;
-				let total = 0;
 
 				// Count the number of times the function evaluates to true for the data currently being displayed
 				for (let tVal = 0; tVal < tableVals.length; tVal++) {
 					if (comp.value.call(this.s.dt, tableVals[tVal], appRows[0][tVal])) {
-						count++;
+						comparisonObj.shown++;
 					}
 				}
 
 				// Count the number of times the function evaluates to true for the original data in the Table
 				for (let i = 0; i < tableValsTotal.length; i++) {
 					if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
-						total++;
+						comparisonObj.total++;
 					}
 				}
 
 				// Update the comparisonObj
-				comparisonObj = this._comparisonStatUpdate(comp, comparisonObj, count, total);
+				if (typeof comparisonObj.filter !== 'function') {
+					comparisonObj.filter.push(comp.filter);
+				}
 			}
 
 			// If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
@@ -1016,7 +1010,6 @@ export default class SearchPane {
 				this._populatePaneArray(rowIdx, arrayFilter);
 			});
 		}
-
 		return arrayFilter;
 	}
 
@@ -1283,54 +1276,72 @@ export default class SearchPane {
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 			let scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
-			let arrayFilter = [];
-			let arrayTotals = [];
-			let data = [];
-			let bins = {};
-			let binsTotal = {};
+			let rowData = this.s.rowData;
 
 			// Clear the pane in preparation for adding the updated search options
 			this.s.dtPane.clear();
 
 			// If it is not a custom pane
 			if (this.colExists) {
-				arrayFilter = this._populatePane(selected.length, select);
-				bins = this._binData(this._flatten(arrayFilter));
-				this._findUnique(data, arrayFilter);
+				// Only run populatePane if the data has not been collected yet
+				if (rowData.arrayFilter.length === 0) {
+					rowData.arrayFilter = this._populatePane(selected.length, select);
+					rowData.bins = this._binData(this._flatten(rowData.arrayFilter));
+					this._findUnique(rowData.dataFilter, rowData.arrayFilter);
+				}
+				// If cascadePanes is active and the table has returned to its default state then
+				//  there is a need to update certain parts ofthe rowData.
+				else if (
+					this.c.cascadePanes
+					&& this.s.dt.rows().data().toArray().length === this.s.dt.rows({search: 'applied'}).data().toArray().length
+				) {
+					rowData.arrayFilter = rowData.arrayOriginal;
+					rowData.bins = this._binData(this._flatten(rowData.arrayFilter));
+				}
+				// Otherwise if viewTotal or cascadePanes is active then the data from the table must be read.
+				else if (this.c.viewTotal || this.c.cascadePanes) {
+					rowData.arrayFilter = this._populatePane(selected.length, select);
+					rowData.bins = this._binData(this._flatten(rowData.arrayFilter));
+				}
+
 				// If the viewTotal option is selected then find the totals for the table
 				if (this.c.viewTotal) {
-					data = [];
-					arrayTotals = this._detailsPane();
+						rowData.arrayTotals = this._detailsPane();
 
-					binsTotal = this._binData(this._flatten(arrayTotals));
+						rowData.binsTotal = this._binData(this._flatten(rowData.arrayTotals));
 
-					this._findUnique(data, arrayTotals);
+						this._findUnique(rowData.data, rowData.arrayTotals);
 				}
 				else {
-					binsTotal = bins;
+					rowData.binsTotal = rowData.bins;
 				}
 				// If a filter has been removed so that only one remains then the remaining filter should have
 				// the non filtered formatting, therefore set filteringActive to be false.
 				if (filterIdx !== undefined && filterIdx === this.s.index) {
 					this.s.filteringActive = false;
 				}
-				for (let dataP of data) {
+
+				for (let dataP of rowData.dataFilter) {
 					if (dataP) {
 						let row;
 						// If both view Total and cascadePanes have been selected and the count of the row is not 0 then add it to pane
 						// Do this also if the viewTotal option has been selected and cascadePanes has not
-						if ((bins[dataP.filter] !== undefined && this.c.cascadePanes) || !this.c.cascadePanes || this.s.clearing) {
+						if (
+							(rowData.bins[dataP.filter] !== undefined && rowData.bins[dataP.filter] !== 0 && this.c.cascadePanes)
+							|| !this.c.cascadePanes
+							|| this.s.clearing
+						) {
 							row = this._addRow(
 								dataP.display,
 								dataP.filter,
 								!this.c.viewTotal
-								? bins[dataP.filter]
-								: bins[dataP.filter] !== undefined
-									? bins[dataP.filter]
+								? rowData.bins[dataP.filter]
+								: rowData.bins[dataP.filter] !== undefined
+									? rowData.bins[dataP.filter]
 									: '0',
 								this.c.viewTotal
-								? String(binsTotal[dataP.filter])
-								: bins[dataP.filter],
+								? String(rowData.binsTotal[dataP.filter])
+								: rowData.bins[dataP.filter],
 								dataP.sort,
 								dataP.type
 							);
@@ -1376,19 +1387,20 @@ export default class SearchPane {
 				let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
 				row.select();
 			}
+
 			if (this.s.dtPane.rows().data().toArray().length === 0) {
-				arrayTotals = this._detailsPane();
+				if (rowData.arrayTotals.length === 0) {
+					rowData.arrayTotals = this._detailsPane();
+					rowData.binsTotal = this._binData(this._flatten(rowData.arrayTotals));
+					this._findUnique(rowData.dataFilter, rowData.arrayTotals);
+				}
 
-				binsTotal = this._binData(this._flatten(arrayTotals));
-
-				this._findUnique(data, arrayTotals);
-
-				for (let element of data) {
+				for (let element of rowData.dataFilter) {
 					this._addRow(
 						element.filter,
 						element.filter,
-						binsTotal[element.filter],
-						binsTotal[element.filter],
+						rowData.binsTotal[element.filter],
+						rowData.binsTotal[element.filter],
 						element.sort,
 						element.type
 					);
