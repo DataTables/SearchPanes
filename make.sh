@@ -27,7 +27,9 @@ DT_BUILT="${DT_SRC}/built/DataTables"
 rsync -r css $OUT_DIR
 css_frameworks searchPanes $OUT_DIR/css
 
-npm install
+if [ ! -d "node_modules" ]; then
+    npm install
+fi
 
 # Copy images
 #rsync -r images $OUT_DIR
