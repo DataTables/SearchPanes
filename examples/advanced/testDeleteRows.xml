@@ -13,7 +13,7 @@ $(document).ready(function() {
         dom: 'Pfrtip',
     });
     $('#rebuild').click(function(){
-        $('#example').DataTable().row(0).remove().draw().searchPanes.rebuild();
+        $('#example').DataTable().row(0).remove().draw().searchPanes.rebuildPane();
     });
 });
 ]]>
