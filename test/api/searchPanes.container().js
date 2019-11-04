@@ -30,9 +30,7 @@ describe('searchPanes - api - searchPanes.container()', function() {
 			table.searchPanes.container().addClass('unittest');
 
 			expect(table.searchPanes.container().hasClass('unittest')).toBe(true);
-
-			// TK COLIN DD-1164 - thought this would be main searchPanes container
-			// expect($('div.dtsp-panesContainer').hasClass('unittest')).toBe(true);
+			expect($('div.dtsp-panesContainer').hasClass('unittest')).toBe(true);
 		});
 	});
 });
