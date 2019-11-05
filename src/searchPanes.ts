@@ -221,10 +221,18 @@ export default class SearchPanes {
 					}
 				}
 				// Remove selections from the list from the pane where a deselect has taken place
-				for (let selection of this.selectionList) {
-					if (selection.index !== deselectIdx || selection.protect === true) {
-						newSelectionList.push(selection);
-						selection.protect = false;
+				for (let i = 0; i < this.selectionList.length; i++) {
+					if (this.selectionList[i].index !== deselectIdx || this.selectionList[i].protect === true) {
+						let further = false;
+						for (let j = i + 1; j < this.selectionList.length; j++) {
+							if (this.selectionList[j].index === this.selectionList[i].index) {
+								further = true;
+							}
+						}
+						if (!further) {
+							newSelectionList.push(this.selectionList[i]);
+							this.selectionList[i].protect = false;
+						}
 					}
 				}
 				// Update all of the panes to reflect the current state of the filters
@@ -294,10 +302,11 @@ export default class SearchPanes {
 	private _makeCascadeSelections(newSelectionList) {
 		// make selections in the order they were made previously, excluding those from the pane where a deselect was made
 		for (let selection of newSelectionList) {
+			// As the selections may have been made across the panes in a different order to the pane index we must identify
+			//  which pane has the index of the selection. This is also important for colreorder etc
 			for (let pane of this.panes) {
 				if (pane.s.index === selection.index && pane.s.dtPane !== undefined) {
-					// select each row previously selected in the pane
-					let rowList = pane.s.dtPane.rows().toArray();
+					// if there are any selections currently in the pane then deselect them as we are about to make our new selections
 					if (pane.s.dtPane.rows({selected: true}).data().toArray().length > 0) {
 						pane.setClear(true);
 						if (pane.s.dtPane !== undefined) {
@@ -305,20 +314,17 @@ export default class SearchPanes {
 						}
 						pane.setClear(false);
 					}
-
+					// select every row in the pane that was selected previously
 					for (let row of selection.rows) {
-						for (let rowPoss of rowList[0]) {
-							if (pane.s.dtPane.row(rowPoss).data().index === row.index) {
-								pane.s.dtPane.row(rowPoss).select();
-								break;
+						pane.s.dtPane.rows().every((rowIdx) => {
+							if (pane.s.dtPane.row(rowIdx).data().filter === row.filter) {
+								pane.s.dtPane.row(rowIdx).select();
 							}
-						}
-
-						if (this.c.viewTotal) {
-							// Update the label that shows how many filters are in place
-							this._updateFilterCount();
-						}
+						});
 					}
+
+					// Update the label that shows how many filters are in place
+					this._updateFilterCount();
 				}
 			}
 		}
