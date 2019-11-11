@@ -27,6 +27,13 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 		expect($('div.dtsp-searchPane:eq(3) td.dtsp-countColumn').length).toBe(age);
 	}
 
+	function getClickEvent() {
+		clickEvent = $.Event('click');
+		clickEvent.ctrlKey = true;
+
+		return clickEvent;
+	}
+
 	describe('Functional tests - single items', function() {
 		dt.html('basic');
 		it('Check defaults (false)', function() {
@@ -82,31 +89,29 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 			await dt.sleep(1000);
 			checkRowCounts(33, 7, 33);
 		});
+		// });
+
 		// DD-1232 affects this - can't reinitialise the table - needed more importantly for viewtotal tests
-		// });
-
+		// once fixed, have a specific test to validate reinitialiing the table after selections.
 		// describe('Functional tests - multiple items', function() {
-		// dt.html('basic');
-		// it('Check defaults (false)', function() {
-		// 	table = $('#example').DataTable({
-		// 		dom: 'Pfrtip',
-		// 		searchPanes: {
-		// 			cascadePanes: false
-		// 		}
-		// 	});
+		// 	dt.html('basic');
+		// 	it('Check defaults (false)', function() {
+		// 		table = $('#example').DataTable({
+		// 			dom: 'Pfrtip',
+		// 			searchPanes: {
+		// 				cascadePanes: false
+		// 			}
+		// 		});
 
-		// 	checkRowCounts(33, 7, 33);
-		// });
+		// 		checkRowCounts(33, 7, 33);
+		// 	});
 		it('Clicking on option in first column', function() {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').click();
 			checkRowCounts(33, 1, 2);
 			checkCounts([2], [2], [1, 1]);
 		});
 		it('... and second option in first column', function() {
-			clickEvent = $.Event('click');
-			clickEvent.ctrlKey = true;
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(1)').trigger(clickEvent);
-
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
 			checkRowCounts(33, 2, 3);
 			checkCounts([2, 1], [1, 2], [1, 1, 1]);
 		});
@@ -116,10 +121,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 			checkCounts([1, 0], [1], [1, 1, 1]);
 		});
 		it('... and second option in second column', function() {
-			clickEvent = $.Event('click');
-			clickEvent.ctrlKey = true;
-			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(1)').trigger(clickEvent);
-
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
 			checkRowCounts(2, 2, 3);
 			checkCounts([1, 1], [1, 1], [1, 1, 1]);
 		});
@@ -129,38 +131,182 @@ describe('searchPanes - options - searchPanes.cascadePanes', function() {
 			checkCounts([0, 1], [1, 1], [0, 1]);
 		});
 		it('... and second option in third column', function() {
-			clickEvent = $.Event('click');
-			clickEvent.ctrlKey = true;
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(1)').trigger(clickEvent);
-
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
 			checkRowCounts(2, 2, 2);
 			checkCounts([1, 1], [1, 1], [1, 1]);
 		});
 		it('... deselect second option in third column', async function() {
-			clickEvent = $.Event('click');
-			clickEvent.ctrlKey = true;
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(1)').trigger(clickEvent);
-
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
 			await dt.sleep(1000);
-
 			checkRowCounts(2, 2, 2);
 			checkCounts([0, 1], [1, 1], [0, 1]);
 		});
-		// DD-1231 test disabled due to failure
-		// it('... deselect first option in third column', async function() {
-		// 	clickEvent = $.Event('click');
-		// 	clickEvent.ctrlKey = true;
-		// 	$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').trigger(clickEvent);
-
-		// 	await dt.sleep(1000);
-
-		// 	checkRowCounts(2, 2, 3);
-		// 	checkCounts([1, 1], [1, 1], [1, 1, 1]);
-		// });
-		// Carry on once DD-1231 resolved
+		it('... deselect first option in third column', async function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(2, 2, 3);
+			checkCounts([1, 1], [1, 1], [1, 1, 1]);
+		});
+		it('... deselect second option in second column', async function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(2, 1, 3);
+			checkCounts([1, 0], [1], [1, 1, 1]);
+		});
+		it('... deselect first option in second column', async function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(33, 2, 3);
+			checkCounts([2, 1], [1, 2], [1, 1, 1]);
+		});
+		it('... deselect second option in first column', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(33, 1, 2);
+			checkCounts([2], [2], [1, 1]);
+		});
+		it('... deselect first option in first column', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(33, 7, 33);
+			checkCounts([2], [9], [1]);
+		});
 	});
 
-	// DD-1232 - viewtotal test - copy single and multiple from above.
-	// describe('Functional tests - viewtotal', function() {
-	// });
+	describe('Functional tests - viewtotal - single items', function() {
+		dt.html('basic');
+		it('Check true - basic single item selections', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true
+				}
+			});
+
+			checkRowCounts(33, 7, 33);
+			checkCounts([2], [9], [1]);
+		});
+		it('... clicking on row removes options', function() {
+			$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(1)').click();
+			checkRowCounts(33, 1, 2);
+			checkCounts([2], ['2 (5)'], ['1 (1)']);
+		});
+		it('... clicking on second pane', function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(1)').click();
+			checkRowCounts(1, 1, 2);
+			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
+		});
+		it('... clicking on third pane', function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').click();
+			checkRowCounts(1, 1, 1);
+			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
+		});
+		it('... unclick third pane', async function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(1, 1, 2);
+			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
+		});
+		it('... unclick second pane', async function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(33, 1, 2);
+			// DD-1234
+			// checkCounts([2], ['2 (5)'], ['1 (1)']);
+		});
+		it('... unclick first pane', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(33, 7, 33);
+			checkCounts([2], [9], [1]);
+		});
+	});
+
+	describe('Functional tests - viewtotal - multiple items', function() {
+		dt.html('basic');
+		it('Check defaults (false)', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true
+				}
+			});
+			checkRowCounts(33, 7, 33);
+			checkCounts([2], [9], [1]);
+		});
+		it('Clicking on option in first column', function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').click();
+			checkRowCounts(33, 1, 2);
+			checkCounts([2], ['2 (5)'], ['1 (1)']);
+		});
+		it('... and second option in first column', function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			checkRowCounts(33, 2, 3);
+			checkCounts([2], ['1 (12)'], ['1 (1)']);
+		});
+		it('... Clicking on option in second column', function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(1)').click();
+			checkRowCounts(2, 1, 3);
+			// DD-1235
+			// checkCounts(['1 (2)', '0 (0)'], ['1 (5)'], ['1 (1)']);
+		});
+		it('... and second option in second column', function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			checkRowCounts(2, 2, 3);
+			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
+		});
+		it('... Clicking on option in third column', function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').click();
+			checkRowCounts(2, 2, 2);
+			// DD-1235
+			// checkCounts(['0 (0)', '1 (1)'], ['1 (12)'], ['0 (0)']);
+		});
+		it('... and second option in third column', function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			checkRowCounts(2, 2, 2);
+			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
+		});
+		it('... deselect second option in third column', async function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(2, 2, 2);
+			// DD-1235
+			// checkCounts(['0 (0)', '1 (1)'], ['1 (12)'], ['0 (0)']);
+		});
+		it('... deselect first option in third column', async function() {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(2, 2, 3);
+			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
+		});
+		it('... deselect second option in second column', async function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(2, 1, 3);
+			// DD-1235
+			// checkCounts(['1 (2)', '0 (0)'], ['1 (5)'], ['1 (1)']);
+		});
+		it('... deselect first option in second column', async function() {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(33, 2, 3);
+			// DD-1234
+			// checkCounts([2], ['1 (12)'], ['1 (1)']);
+		});
+		it('... deselect second option in first column', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(1)').trigger(getClickEvent());
+			await dt.sleep(1000);
+			checkRowCounts(33, 1, 2);
+			// DD-1234
+			// checkCounts([2], ['2 (5)'], ['1 (1)']);
+		});
+		it('... deselect first option in first column', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').click();
+			await dt.sleep(1000);
+			checkRowCounts(33, 7, 33);
+			checkCounts([2], [9], [1]);
+		});
+	});
 });
