@@ -91,11 +91,17 @@ export default class SearchPanes {
 		this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
 
 		if (this.s.dt.settings()[0]._bInitComplete) {
+			let t0 = performance.now();
 			this._startup(table, paneSettings, opts);
+			let t1 = performance.now();
+			//console.log('searchpanes.startup()', t1-t0)
 		}
 		else {
 			this.s.dt.one('init', () => {
+				let t0 = performance.now();
 				this._startup(table, paneSettings, opts);
+				let t1 = performance.now();
+				//console.log('searchpanes.startup()', t1-t0)
 			});
 		}
 	}
@@ -165,9 +171,6 @@ export default class SearchPanes {
 		this._attachPaneContainer();
 
 		(DataTable as any).tables({visible: true, api: true}).columns.adjust();
-
-		// Update the title bar to show how many filters have been selected
-		this.panes[0]._updateFilterCount();
 
 		// If a single pane has been rebuilt then return only that pane
 		if (returnArray.length === 1) {
@@ -467,11 +470,18 @@ export default class SearchPanes {
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dt', () => {
+			let t0 = performance.now();
 			this._updateFilterCount();
-
+			let t1 = performance.now();
+			let redrawn = false;
 			if (this.c.cascadePanes || this.c.viewTotal) {
 				this.redrawPanes();
+				redrawn = true;
 			}
+			let t2 = performance.now();
+			//console.log('searchPanes.on(draw)');
+			//console.table([['updatefiltercount', t1-t0], ['redrawPanes', redrawn ? t2-t1 : 0]])
+			//console.log(" ")
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
