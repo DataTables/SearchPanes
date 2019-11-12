@@ -235,9 +235,9 @@ export default class SearchPane {
 			let t0 = performance.now();
 			this._adjustTopRow();
 			let t1 = performance.now();
-			console.log("searchPane.on(draw)")
-			console.log("searchPane._adjustTopRow", t1-t0);
-			console.log(" ")
+			// console.log("searchPane.on(draw)")
+			// console.log("searchPane._adjustTopRow", t1-t0);
+			// console.log(" ")
 		});
 
 		$(window).on('resize.dtr', DataTable.util.throttle(() => {
@@ -426,17 +426,16 @@ export default class SearchPane {
 
 			// Only run populatePane if the data has not been collected yet
 			if (rowData.arrayFilter.length === 0) {
-				let t0 = performance.now();
+				let time0 = performance.now();
 				this._populatePane();
 				rowData.arrayOriginal = rowData.arrayFilter;
 				rowData.binsOriginal = rowData.bins;
-				let t1 = performance.now();
-				//console.log("pop and bin: ", t1-t0);
+				let time1 = performance.now();
+				// console.log("pop and bin: ", time1-time0);
 			}
 
 			let binLength = Object.keys(rowData.bins).length;
 			let uniqueRatio = this._uniqueRatio(binLength, table.rows()[0].length);
-
 			// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
 			if (this.displayed === false && ((colOpts.show === undefined && (colOpts.threshold === undefined ?
 					uniqueRatio > this.c.threshold :
@@ -991,18 +990,18 @@ export default class SearchPane {
 	 * @param select Denotes whether a selection has been made or not
 	 */
 	private _makeSelection(select) {
-		var t0 = performance.now();
+		let t0 = performance.now();
 		this._updateTable(select);
-		var t1 = performance.now();
+		let t1 = performance.now();
 		this._updateFilterCount();
-		var t2 = performance.now();
+		let t2 = performance.now();
 		this.s.updating = true;
 		this.s.dt.draw();
 		this.s.updating = false;
-		var t3 = performance.now();
-		console.log('searchPane._makeSelection')
-		console.table([['updateTable', t1-t0], ['updateFilterCount', t2-t1], ['draw', t3-t2]]);
-		console.log(" ")
+		let t3 = performance.now();
+		// console.log('searchPane._makeSelection')
+		// console.table([['updateTable', t1-t0], ['updateFilterCount', t2-t1], ['draw', t3-t2]]);
+		// console.log(" ")
 	}
 
 	/**
@@ -1340,7 +1339,7 @@ export default class SearchPane {
 					let t0 = performance.now();
 					this._populatePane();
 					let t1 = performance.now();
-					//console.log("Pop process: ", t1-t0);
+					// console.log("Pop process: ", t1-t0);
 				}
 				// If cascadePanes is active and the table has returned to its default state then
 				//  there is a need to update certain parts ofthe rowData.

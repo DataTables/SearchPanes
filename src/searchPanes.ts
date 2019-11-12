@@ -94,14 +94,14 @@ export default class SearchPanes {
 			let t0 = performance.now();
 			this._startup(table, paneSettings, opts);
 			let t1 = performance.now();
-			//console.log('searchpanes.startup()', t1-t0)
+			// console.log('searchpanes.startup()', t1-t0)
 		}
 		else {
 			this.s.dt.one('init', () => {
 				let t0 = performance.now();
 				this._startup(table, paneSettings, opts);
 				let t1 = performance.now();
-				//console.log('searchpanes.startup()', t1-t0)
+				// console.log('searchpanes.startup()', t1-t0)
 			});
 		}
 	}
@@ -372,8 +372,7 @@ export default class SearchPanes {
 
 		try {
 			message = this.s.dt.i18n('searchPanes.emptyPanes', 'No SearchPanes');
-		}
-		catch (error) {
+		} catch (error) {
 			message = null;
 		}
 
@@ -479,9 +478,9 @@ export default class SearchPanes {
 				redrawn = true;
 			}
 			let t2 = performance.now();
-			console.log('searchPanes.on(draw)');
-			console.table([['updatefiltercount', t1-t0], ['redrawPanes', redrawn ? t2-t1 : 0]])
-			console.log(" ")
+			// console.log('searchPanes.on(draw)');
+			// console.table([['updatefiltercount', t1-t0], ['redrawPanes', redrawn ? t2-t1 : 0]])
+			// console.log(" ")
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
