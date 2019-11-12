@@ -185,11 +185,12 @@ export default class SearchPane {
 		// Custom search function for table
 		$.fn.dataTable.ext.search.push(
 			(settings, searchData, dataIndex, origData) => {
-				if (settings.nTable !== table.table(0).node()) {
-					return true;
-				}
 				// If no data has been selected then show all
 				if (this.selections.length === 0) {
+					return true;
+				}
+
+				if (settings.nTable !== table.table(0).node()) {
 					return true;
 				}
 
@@ -234,9 +235,9 @@ export default class SearchPane {
 			let t0 = performance.now();
 			this._adjustTopRow();
 			let t1 = performance.now();
-			//console.log("searchPane.on(draw)")
-			//console.log("searchPane._adjustTopRow", t1-t0);
-			//console.log(" ")
+			console.log("searchPane.on(draw)")
+			console.log("searchPane._adjustTopRow", t1-t0);
+			console.log(" ")
 		});
 
 		$(window).on('resize.dtr', DataTable.util.throttle(() => {
@@ -999,9 +1000,9 @@ export default class SearchPane {
 		this.s.dt.draw();
 		this.s.updating = false;
 		var t3 = performance.now();
-		//console.log('searchPane._makeSelection')
-		//console.table([['updateTable', t1-t0], ['updateFilterCount', t2-t1], ['draw', t3-t2]]);
-		//console.log(" ")
+		console.log('searchPane._makeSelection')
+		console.table([['updateTable', t1-t0], ['updateFilterCount', t2-t1], ['draw', t3-t2]]);
+		console.log(" ")
 	}
 
 	/**
@@ -1205,7 +1206,6 @@ export default class SearchPane {
 	private _Search(filter, dataIndex): boolean {
 		let colOpts = this.s.colOpts;
 		let table = this.s.dt;
-		let allow = true;
 
 		// For each item selected in the pane, check if it is available in the cell
 		for (let colSelect of this.selections) {
@@ -1226,8 +1226,10 @@ export default class SearchPane {
 						return true;
 					}
 				}
-				else {
-					allow = false;
+				// If the combiner is an "and" then we need to check against all possible selections
+				//  so if it fails here then the and is not met and return false
+				else if (colOpts.combiner === 'and') {
+					return false;
 				}
 			}
 			// otherwise if the two filter values are equal then return true
@@ -1237,9 +1239,9 @@ export default class SearchPane {
 		}
 
 		// If the combiner is an and then we need to check against all possible selections
-		//  so return allow here if it has passed
+		//  so return true here if so because it would have returned false earlier if it had failed
 		if (colOpts.combiner === 'and') {
-			return allow;
+			return true;
 		}
 		// Otherwise it hasn't matched with anything by this point so it must be false
 		else {

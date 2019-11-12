@@ -479,9 +479,9 @@ export default class SearchPanes {
 				redrawn = true;
 			}
 			let t2 = performance.now();
-			//console.log('searchPanes.on(draw)');
-			//console.table([['updatefiltercount', t1-t0], ['redrawPanes', redrawn ? t2-t1 : 0]])
-			//console.log(" ")
+			console.log('searchPanes.on(draw)');
+			console.table([['updatefiltercount', t1-t0], ['redrawPanes', redrawn ? t2-t1 : 0]])
+			console.log(" ")
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
