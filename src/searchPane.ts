@@ -51,6 +51,7 @@ export default class SearchPane {
 		},
 		dataLength: 30,
 		emptyMessage: '<i>No Data</i>',
+		orderable: true,
 		threshold: 0.6,
 		viewTotal: false,
 	};
@@ -782,10 +783,13 @@ export default class SearchPane {
 			$(this.dom.clear).appendTo(this.dom.buttonGroup);
 		}
 
-		$(this.dom.nameButton).appendTo(this.dom.buttonGroup);
+		if (this.c.orderable && colOpts.orderable) {
+			$(this.dom.nameButton).appendTo(this.dom.buttonGroup);
+		}
+		
 
 		// If the count column is hidden then don't display the ordering button for it
-		if (!this.c.hideCount && !colOpts.hideCount) {
+		if (!this.c.hideCount && !colOpts.hideCount && this.c.orderable && colOpts.orderable) {
 			$(this.dom.countButton).appendTo(this.dom.buttonGroup);
 		}
 

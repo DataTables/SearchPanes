@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="4">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            orderable: false
+        },
+        dom: 'Pfrtip',
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPanes">Hide Ordering Buttons on All Panes</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to hide the Ordering Buttons for all of the panes can be hidden by setting the `-init columns.searchPanes.orderable` config option to false.
+
+]]></info>
+
+</dt-example>
