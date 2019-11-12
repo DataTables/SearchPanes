@@ -849,6 +849,7 @@ export default class SearchPane {
 				threshold: undefined,
 				type: 'type'
 			},
+			orderable: true,
 			preSelect: undefined,
 		};
 		return $.extend(
@@ -956,6 +957,7 @@ export default class SearchPane {
 				threshold: undefined,
 				type: 'type'
 			},
+			orderable: true,
 			preSelect: undefined,
 		};
 		return $.extend(
