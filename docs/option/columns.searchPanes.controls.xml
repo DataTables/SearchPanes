@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.controls</name>
+	<summary>Hide the Control buttons and disable searching in the pane of a specific column</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init columns.searchPanes.controls` option to `false` the control buttons will be hidden in the pane and searching disabled for that specific column.
+        </description>
+	</type>
+
+	<default value="true">
+        The default value for the `-init columns.searchPanes.controls` paramater is `true`, meaning that as standard the control buttons will be included in the pane and searching will be enabled.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will be displayed with the control buttons included in the interface and searching will be enabled. However if the value of `-init columns.searchPanes.controls` is set to 'false' then the control buttons will no longer be displayed and searching will be disabled.
+
+        The control buttons can be hidden and searching disabled for all of the panes by making use of `-init searchPanes.controls`.
+        ]]>
+	</description>
+
+	<example title="Hide control buttons and disabled searching for the 5th columns pane"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    controls: false,
+                },
+                targets: [4]
+            }
+        ]
+    });
+});
+
+]]></example>
+
+<related>-init searchPanes.controls</related>
+
+</dt-option>

@@ -46,6 +46,7 @@ export default class SearchPane {
 	private static defaults = {
 		cascadePanes: false,
 		clear: true,
+		controls: true,
 		container(dt) {
 			return dt.table().container();
 		},
@@ -766,30 +767,37 @@ export default class SearchPane {
 			(this.c.dtOpts !== undefined &&
 			this.c.dtOpts.searching === false) ||
 			(colOpts.dtOpts !== undefined &&
-			colOpts.dtOpts.searching === false)
+			colOpts.dtOpts.searching === false) ||
+			(!this.c.controls || !colOpts.controls)
 		) {
 			$(this.dom.searchBox).attr('disabled', 'disabled')
 				.removeClass(this.classes.paneInputButton)
 				.addClass(this.classes.disabledButton);
 		}
-
 		$(this.dom.searchBox).appendTo(this.dom.searchCont);
 
 		// Create the contents of the searchCont div. Worth noting that this function will change when using semantic ui
 		this._searchContSetup();
 
 		// If the clear button is allowed to show then display it
-		if (this.c.clear) {
+		if (this.c.clear  && this.c.controls && colOpts.controls) {
 			$(this.dom.clear).appendTo(this.dom.buttonGroup);
 		}
 
-		if (this.c.orderable && colOpts.orderable) {
+		if (this.c.orderable && colOpts.orderable && this.c.controls && colOpts.controls) {
 			$(this.dom.nameButton).appendTo(this.dom.buttonGroup);
 		}
 		
 
 		// If the count column is hidden then don't display the ordering button for it
-		if (!this.c.hideCount && !colOpts.hideCount && this.c.orderable && colOpts.orderable) {
+		if (
+			!this.c.hideCount &&
+			!colOpts.hideCount &&
+			this.c.orderable &&
+			colOpts.orderable &&
+			this.c.controls &&
+			colOpts.controls
+		) {
 			$(this.dom.countButton).appendTo(this.dom.buttonGroup);
 		}
 
@@ -850,6 +858,7 @@ export default class SearchPane {
 				type: 'type'
 			},
 			orderable: true,
+			controls: true, 
 			preSelect: undefined,
 		};
 		return $.extend(
@@ -946,6 +955,7 @@ export default class SearchPane {
 		let table = this.s.dt;
 		let defaults = {
 			combiner: 'or',
+			controls: true,
 			grouping: undefined,
 			orthogonal: {
 				comparison: undefined,
@@ -1260,7 +1270,9 @@ export default class SearchPane {
 	 * NOTE This is overridden when semantic ui styling in order to integrate the search button into the text box.
 	 */
 	private _searchContSetup(): void {
-		$(this.dom.searchButton).appendTo(this.dom.searchLabelCont);
+		if (this.c.controls && this.s.colOpts.controls) {
+			$(this.dom.searchButton).appendTo(this.dom.searchLabelCont);
+		}
 
 		if (
 			!((this.c.dtOpts !== undefined &&

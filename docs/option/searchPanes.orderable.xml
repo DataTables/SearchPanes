@@ -25,7 +25,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-		dom: 'Sfrtip',
+		dom: 'Pfrtip',
         searchPanes: {
             orderable: false
         }
