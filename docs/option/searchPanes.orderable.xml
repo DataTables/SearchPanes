@@ -15,7 +15,7 @@
 	</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will be displayed with the ordering buttons included in the interface. However if the value of `-init searchPanes.orderable` is set to 'false' then the ordering buttons will no longer be displayed in any of the panes.
+        As standard, SearchPanes will be displayed with the ordering buttons included in the interface, allowing the user to change the order of the selections in each pane. However if the value of `-init searchPanes.orderable` is set to 'false' then the ordering buttons will no longer be displayed in any of the panes.
 
         The ordering buttons can be hidden for individual panes by the `-init columns.searchPanes.orderable` option.
         ]]>
