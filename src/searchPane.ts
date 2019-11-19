@@ -573,7 +573,7 @@ export default class SearchPane {
 							rowData.arrayFilter[i].display,
 							rowData.arrayFilter[i].filter,
 							rowData.bins[rowData.arrayFilter[i].filter],
-							rowData.bins[rowData.arrayFilter[i].filter],
+							rowData.binsTotal[rowData.arrayFilter[i].filter],
 							rowData.arrayFilter[i].sort,
 							rowData.arrayFilter[i].type
 						);
@@ -1451,7 +1451,15 @@ export default class SearchPane {
 			// Add search options which were previously selected but whos results are no
 			// longer present in the resulting data set.
 			for (let selectedEl of selected) {
-				let row = this._addRow(selectedEl.display, selectedEl.filter, 0, 0, selectedEl.filter, selectedEl.filter);
+				let row = this._addRow(
+					selectedEl.display,
+					selectedEl.filter,
+					0,
+					this.c.viewTotal
+						? selectedEl.total
+						: 0, selectedEl.filter,
+					selectedEl.filter
+				);
 				row.select();
 			}
 
@@ -1465,7 +1473,7 @@ export default class SearchPane {
 					this._addRow(
 						element.filter,
 						element.filter,
-						rowData.binsTotal[element.filter],
+						rowData.bins[element.filter],
 						rowData.binsTotal[element.filter],
 						element.sort,
 						element.type
