@@ -770,7 +770,9 @@ export default class SearchPane {
 			(colOpts.dtOpts !== undefined &&
 			colOpts.dtOpts.searching === false) ||
 			(!this.c.controls || !colOpts.controls) ||
-			(this.customPaneSettings.dtOpts.searching !== undefined &&
+			(this.customPaneSettings !== undefined &&
+			this.customPaneSettings.dtOpts !== undefined &&
+			this.customPaneSettings.dtOpts.searching !== undefined &&
 			!this.customPaneSettings.dtOpts.searching)
 		) {
 			$(this.dom.searchBox).attr('disabled', 'disabled')
@@ -1280,7 +1282,9 @@ export default class SearchPane {
 			this.c.dtOpts.searching === false) ||
 			(this.s.colOpts.dtOpts !== undefined &&
 			this.s.colOpts.dtOpts.searching === false) ||
-			(this.customPaneSettings.dtOpts.searching !== undefined &&
+			(this.customPaneSettings !== undefined &&
+				this.customPaneSettings.dtOpts !== undefined &&
+				this.customPaneSettings.dtOpts.searching !== undefined &&
 			!this.customPaneSettings.dtOpts.searching))
 		) {
 			$(this.dom.searchLabelCont).appendTo(this.dom.searchCont);
