@@ -300,6 +300,14 @@ export default class SearchPane {
 	}
 
 	/**
+	 * removes the pane from the page and sets the displayed property to false.
+	 */
+	public removePane() {
+		this.displayed = false;
+		$(this.dom.container).hide();
+	}
+
+	/**
 	 * Sets the cascadeRegen property of the pane. Accessible from above because as SearchPanes.ts deals with the rebuilds.
 	 * @param val the boolean value that the cascadeRegen property is to be set to
 	 */

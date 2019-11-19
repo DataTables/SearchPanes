@@ -156,13 +156,13 @@ export default class SearchPanes {
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		this.dom.container.empty();
 		let returnArray: SearchPane[] = [];
-
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
 		for (let pane of this.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
 				continue;
 			}
 			pane.clearData();
+			pane.removePane();
 			returnArray.push(pane.rebuildPane());
 		}
 
