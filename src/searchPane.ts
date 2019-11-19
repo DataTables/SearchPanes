@@ -710,11 +710,13 @@ export default class SearchPane {
 
 	/**
 	 * Clear the selections in the pane
+	 * @param filterIdx optional. Used when it is necessary to display the count message for a pane
+	 *   rather than the filtered message when using viewTotal.
 	 */
-	private _clearPane(): this {
+	private _clearPane(filterIdx = -1): this {
 		// Deselect all rows which are selected and update the table and filter count.
 		this.s.dtPane.rows({selected: true}).deselect();
-		this._updateTable(false);
+		this._updateTable(false, filterIdx);
 		this._updateFilterCount();
 		return this;
 	}
@@ -1488,14 +1490,16 @@ export default class SearchPane {
 	/**
 	 * Updates the panes if one of the options to do so has been set to true
 	 * @param select whether this has been triggered by a select event or not
+	 * @param filterIdx optional. Used when it is necessary to display the count message for a pane
+	 *   rather than the filtered message when using viewTotal.
 	 */
-	private _updateTable(select) {
+	private _updateTable(select, filterIdx = -1) {
 		let selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
 		this.selections = selectedRows;
 		this._searchExtras();
 		// If either of the options that effect how the panes are displayed are selected then update the Panes
 		if (this.c.cascadePanes || this.c.viewTotal) {
-			this._updatePane(select, true);
+			this._updatePane(select, true, filterIdx);
 		}
 	}
 
@@ -1511,25 +1515,22 @@ export default class SearchPane {
 	/**
 	 * Updates the values of all of the panes
 	 * @param select whether a select has been made in a pane or not
+	 * @param filterIdx optional. Used when it is necessary to display the count message for a pane
+	 *   rather than the filtered message when using viewTotal.
 	 * @param draw whether this has been triggered by a draw event or not
 	 */
-	private _updatePane(select, filteringActive, draw = false) {
+	private _updatePane(select, filteringActive, filterIdx, draw = false) {
 		this.s.updating = true;
 		this.s.filteringActive = false;
-		let selectArray = [];
-		let filterCount = 0;
-		let filterIdx;
+
 		// If the viewTotal option is active then it must be determined whether there is a filter in place already
 		if (this.c.viewTotal) {
 			// There is if select is true
 			if (filteringActive) {
 				this.s.filteringActive = true;
 			}
-			// If there is only one in place then find the index of the corresponding pane
-			if (filterCount === 1) {
-				filterIdx = selectArray.indexOf(1);
-			}
 		}
+
 		this._updateCommon(filterIdx, draw, select);
 		this.s.updating = false;
 	}

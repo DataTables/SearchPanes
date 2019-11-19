@@ -241,7 +241,7 @@ export default class SearchPanes {
 				// Update all of the panes to reflect the current state of the filters
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
-						pane._updatePane(select, filterActive, true);
+						pane._updatePane(select, filterActive, -1, true);
 					}
 				}
 
@@ -256,14 +256,26 @@ export default class SearchPanes {
 					// Load in all of the searchBoxes in the documents
 					let searches = document.getElementsByClassName(this.classes.search);
 
+					// if only one pane has been selected then take not of its index
+					let solePane = -1;
+					if (newSelectionList.length === 1) {
+						solePane = newSelectionList[0].index;
+					}
+
 					// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
 					//  and clear all of the previous selections in the pane
 					for (let pane of this.panes) {
 						pane.setCascadeRegen(true);
 						pane.setClear(true);
-						if (pane.s.dtPane !== undefined) {
+
+						// If this is the same as the pane with the only selection then pass it as a parameter into _clearPane
+						if (pane.s.dtPane !== undefined && pane.s.index === solePane) {
+							pane._clearPane(solePane);
+						}
+						else if (pane.s.dtPane !== undefined) {
 							pane._clearPane();
 						}
+
 						pane.setClear(false);
 					}
 
@@ -284,7 +296,7 @@ export default class SearchPanes {
 					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
-							paneUpdate._updatePane(true, filterActive, true);
+							paneUpdate._updatePane(true, filterActive, -1, true);
 						}
 					}
 				}
@@ -292,7 +304,7 @@ export default class SearchPanes {
 			else {
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
-						pane._updatePane(select, filterActive, true);
+						pane._updatePane(select, filterActive, -1, true);
 					}
 				}
 
@@ -309,11 +321,15 @@ export default class SearchPanes {
 			//  which pane has the index of the selection. This is also important for colreorder etc
 			for (let pane of this.panes) {
 				if (pane.s.index === selection.index && pane.s.dtPane !== undefined) {
+					let paneSelect = -1;
+					if (newSelectionList.length === 1) {
+						paneSelect = this.s.index;
+					}
 					// if there are any selections currently in the pane then deselect them as we are about to make our new selections
 					if (pane.s.dtPane.rows({selected: true}).data().toArray().length > 0) {
 						pane.setClear(true);
 						if (pane.s.dtPane !== undefined) {
-							pane._clearPane();
+							pane._clearPane(paneSelect);
 						}
 						pane.setClear(false);
 					}
