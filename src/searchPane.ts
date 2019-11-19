@@ -769,7 +769,9 @@ export default class SearchPane {
 			this.c.dtOpts.searching === false) ||
 			(colOpts.dtOpts !== undefined &&
 			colOpts.dtOpts.searching === false) ||
-			(!this.c.controls || !colOpts.controls)
+			(!this.c.controls || !colOpts.controls) ||
+			(this.customPaneSettings.dtOpts.searching !== undefined &&
+			!this.customPaneSettings.dtOpts.searching)
 		) {
 			$(this.dom.searchBox).attr('disabled', 'disabled')
 				.removeClass(this.classes.paneInputButton)
@@ -788,7 +790,6 @@ export default class SearchPane {
 		if (this.c.orderable && colOpts.orderable && this.c.controls && colOpts.controls) {
 			$(this.dom.nameButton).appendTo(this.dom.buttonGroup);
 		}
-		
 
 		// If the count column is hidden then don't display the ordering button for it
 		if (
@@ -1274,12 +1275,13 @@ export default class SearchPane {
 		if (this.c.controls && this.s.colOpts.controls) {
 			$(this.dom.searchButton).appendTo(this.dom.searchLabelCont);
 		}
-
 		if (
 			!((this.c.dtOpts !== undefined &&
 			this.c.dtOpts.searching === false) ||
 			(this.s.colOpts.dtOpts !== undefined &&
-			this.s.colOpts.dtOpts.searching === false))
+			this.s.colOpts.dtOpts.searching === false) ||
+			(this.customPaneSettings.dtOpts.searching !== undefined &&
+			!this.customPaneSettings.dtOpts.searching))
 		) {
 			$(this.dom.searchLabelCont).appendTo(this.dom.searchCont);
 		}
