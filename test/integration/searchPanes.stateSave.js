@@ -24,7 +24,7 @@ describe('searchPanes - integrations - stateSave', function() {
 		it('Still same after reload', async function() {
 			table.destroy();
 
-			await dt.sleep(2000);
+			await dt.sleep(500);
 
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -32,7 +32,7 @@ describe('searchPanes - integrations - stateSave', function() {
 				stateSave: true
 			});
 
-			await dt.sleep(2000);
+			await dt.sleep(500);
 
 			// DD-1145
 			// expect($('div.dtsp-searchPane:eq(2) table tbody tr.selected td:eq(0)').text()).toBe('Edinburgh');
@@ -44,8 +44,31 @@ describe('searchPanes - integrations - stateSave', function() {
 		});
 
 		// DD-1145
-		// one above fixed, test the ordering of the searchPane's columns. 
+		// one above fixed, test the ordering of the searchPane's columns.
+	});
 
+	describe('stateSave when searchPanes not enables originally', function() {
+		dt.html('basic');
+		it('No searchPanes originally', function() {
+			table = $('#example').DataTable({
+				stateSave: true
+			});
 
+			expect($('div.dtsp-searchPane').length).toBe(0);
+		});
+
+		dt.html('basic');
+		it('Add searchPanes', async function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true,
+				stateSave: true
+			});
+
+			expect($('div.dtsp-searchPane').length).toBe(6);
+		});
+		it('Tidy up', function() {
+			table.state.clear();
+		});
 	});
 });
