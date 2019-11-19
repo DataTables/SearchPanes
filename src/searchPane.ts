@@ -617,10 +617,9 @@ export default class SearchPane {
 			this.s.selectPresent = false;
 		});
 
-		let loadedFilter = table.state.loaded();
-
 		// Reload the selection, searchbox entry and ordering from the previous state
-		if (loadedFilter) {
+		let loadedFilter = table.state.loaded();
+		if (loadedFilter && loadedFilter.searchPanes) {
 			this._reloadSelect(loadedFilter);
 			$(this.dom.searchBox).val(loadedFilter.search.search);
 			this.s.dtPane.column(0).order(loadedFilter.order[0][0]);
