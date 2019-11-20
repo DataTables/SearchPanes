@@ -204,10 +204,10 @@ export default class SearchPane {
 					// Get the current filtered data
 					filter = searchData[this.s.index];
 					if (colOpts.orthogonal.filter !== 'filter') {
-						let cell = table.cell(dataIndex, this.s.index);
+						// Use the fnGetCellData function instead of API method cell.render() to optimise the code.
 						filter = typeof(colOpts.orthogonal) === 'string'
-							? cell.render(colOpts.orthogonal)
-							: cell.render(colOpts.orthogonal.search);
+							? settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal)
+							: settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal.search);
 						if ((filter as any) instanceof $.fn.dataTable.Api) {
 							filter = (filter as any).toArray();
 						}
