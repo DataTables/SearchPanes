@@ -184,6 +184,8 @@ export default class SearchPane {
 				: {}
 		);
 
+		let tableNode = table.table(0).node();
+
 		// Custom search function for table
 		$.fn.dataTable.ext.search.push(
 			(settings, searchData, dataIndex, origData) => {
@@ -192,7 +194,7 @@ export default class SearchPane {
 					return true;
 				}
 
-				if (settings.nTable !== table.table(0).node()) {
+				if (settings.nTable !== tableNode) {
 					return true;
 				}
 
