@@ -122,6 +122,7 @@ export default class SearchPane {
 				binsTotal: {},
 				data: [],
 				dataFilter: [],
+				filterMap: new Map()
 			},
 			updating: false,
 		};
@@ -205,15 +206,15 @@ export default class SearchPane {
 					filter = searchData[this.s.index];
 					if (colOpts.orthogonal.filter !== 'filter') {
 						// Use the fnGetCellData function instead of API method cell.render() to optimise the code.
-						filter = typeof(colOpts.orthogonal) === 'string'
-							? settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal)
-							: settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal.search);
+						// filter = typeof(colOpts.orthogonal) === 'string'
+						// 	? settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal)
+						// 	: settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal.search);
+						filter = this.s.rowData.filterMap.get(dataIndex);
 						if ((filter as any) instanceof $.fn.dataTable.Api) {
 							filter = (filter as any).toArray();
 						}
 					}
 				}
-
 				return this._Search(filter, dataIndex);
 			}
 		);
@@ -276,6 +277,7 @@ export default class SearchPane {
 			binsTotal: {},
 			data: [],
 			dataFilter: [],
+			filterMap: new Map()
 		};
 	}
 
@@ -738,8 +740,9 @@ export default class SearchPane {
 		let table = this.s.dt;
 		this.s.rowData.arrayTotals = [];
 		this.s.rowData.binsTotal = {};
+		let settings = this.s.dt.settings()[0];
 		table.rows().every((rowIdx, tableLoop, rowLoop) => {
-			this._populatePaneArray(rowIdx, this.s.rowData.arrayTotals, this.s.rowData.binsTotal);
+			this._populatePaneArray(rowIdx, this.s.rowData.arrayTotals, settings, this.s.rowData.binsTotal);
 		});
 	}
 
@@ -1042,16 +1045,17 @@ export default class SearchPane {
 		let table = this.s.dt;
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.bins = {};
+		let settings = this.s.dt.settings()[0];
 		// If cascadePanes or viewTotal are active it is necessary to get the data which is currently
 		//  being displayed for their functionality.
 		if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.clearing) {
 			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
-				this._populatePaneArray(rowIdx, this.s.rowData.arrayFilter);
+				this._populatePaneArray(rowIdx, this.s.rowData.arrayFilter, settings);
 			});
 		}
 		else {
 			table.rows().every((rowIdx, tableLoop, rowLoop) => {
-				this._populatePaneArray(rowIdx, this.s.rowData.arrayFilter);
+				this._populatePaneArray(rowIdx, this.s.rowData.arrayFilter, settings);
 			});
 		}
 	}
@@ -1062,24 +1066,25 @@ export default class SearchPane {
 	 * @param arrayFilter The array that is to be populated with row Details
 	 * @param bins The bins object that is to be populated with the row counts
 	 */
-	private _populatePaneArray(rowIdx, arrayFilter, bins = this.s.rowData.bins): void {
+	private _populatePaneArray(rowIdx, arrayFilter, settings, bins = this.s.rowData.bins): void {
 		let colOpts = this.s.colOpts;
-		let cell = this.s.dt.cell(rowIdx, this.s.index);
 
 		// Retrieve the rendered data from the cell
 		if (typeof colOpts.orthogonal === 'string') {
-			let rendered = cell.render(colOpts.orthogonal);
+			let rendered = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal);
+			this.s.rowData.filterMap.set(rowIdx, rendered);
 			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
 		}
 		else {
-			let filter = cell.render(colOpts.orthogonal.search);
+			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.search);
+			this.s.rowData.filterMap.set(rowIdx, filter);
 			if (!bins[filter]) {
 				bins[filter] = 1;
 				this._addOption(
 					filter,
-					cell.render(colOpts.orthogonal.display),
-					cell.render(colOpts.orthogonal.sort),
-					cell.render(colOpts.orthogonal.type),
+					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.display),
+					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.sort),
+					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.type),
 					arrayFilter,
 					bins
 				);
