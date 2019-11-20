@@ -25,7 +25,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				language: {
 					searchPanes: {
 						emptyPanes: null
-					}		
+					}
 				}
 			});
 
@@ -41,7 +41,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				language: {
 					searchPanes: {
 						emptyPanes: 'unittest'
-					}		
+					}
 				}
 			});
 
@@ -57,7 +57,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				language: {
 					searchPanes: {
 						emptyPanes: 'unittest'
-					}		
+					}
 				}
 			});
 
@@ -66,12 +66,15 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
 		it('Shown when rows removed', function() {
-			table.rows().remove().draw();
+			table
+				.rows()
+				.remove()
+				.draw();
 			table.searchPanes.rebuildPane();
 
-			// DD-1177 - panes still being displayed TK COLIN
-			// expect($('div.dtsp-searchPane').length).toBe(6);
-			// expect($('div.dtsp-panesContainer div').text()).not.toBe('unittest');
+			expect($('div.dtsp-searchPane').length).toBe(0);
+			expect($('div.dtsp-panesContainer div').text()).toBe('unittest');
+			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
 	});
 });
