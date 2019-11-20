@@ -499,6 +499,11 @@ export default class SearchPanes {
 			// console.log(" ")
 		});
 
+		// If the table is destroyed and restarted then clear the selections so that they do not persist.
+		table.on('destroy.dt', () => {
+			this.clearSelections();
+		});
+
 		// When the clear All button has been pressed clear all of the selections in the panes
 		if (this.c.clear) {
 			this.dom.clearAll[0].addEventListener('click', () => {
