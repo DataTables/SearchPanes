@@ -205,10 +205,7 @@ export default class SearchPane {
 					// Get the current filtered data
 					filter = searchData[this.s.index];
 					if (colOpts.orthogonal.filter !== 'filter') {
-						// Use the fnGetCellData function instead of API method cell.render() to optimise the code.
-						// filter = typeof(colOpts.orthogonal) === 'string'
-						// 	? settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal)
-						// 	: settings.oApi._fnGetCellData(settings, dataIndex, this.s.index, colOpts.orthogonal.search);
+						// get the filter value from the map
 						filter = this.s.rowData.filterMap.get(dataIndex);
 						if ((filter as any) instanceof $.fn.dataTable.Api) {
 							filter = (filter as any).toArray();
@@ -1069,7 +1066,8 @@ export default class SearchPane {
 	private _populatePaneArray(rowIdx, arrayFilter, settings, bins = this.s.rowData.bins): void {
 		let colOpts = this.s.colOpts;
 
-		// Retrieve the rendered data from the cell
+		// Retrieve the rendered data from the cell using the fnGetCellData function
+		//  rather than the cell().render API method for optimisation
 		if (typeof colOpts.orthogonal === 'string') {
 			let rendered = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal);
 			this.s.rowData.filterMap.set(rowIdx, rendered);
