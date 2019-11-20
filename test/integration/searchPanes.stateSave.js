@@ -35,9 +35,9 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			// DD-1145
-			// expect($('div.dtsp-searchPane:eq(2) table tbody tr.selected td:eq(0)').text()).toBe('Edinburgh');
-			// expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').text()).toBe('Edinburgh');
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr.selected td:eq(0)').text()).toBe('Edinburgh');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').text()).toBe('Edinburgh');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
 		});
 		it('Tidy up', function() {
 			table.state.clear();

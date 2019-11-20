@@ -626,13 +626,32 @@ export default class SearchPane {
 			this.s.selectPresent = false;
 		});
 
+		// When saving the state store all of the selected rows for preselection next time around
+		this.s.dt.on('stateSaveParams.dt', (e, settings, data) => {
+			let selected = [];
+			let searchTerm;
+			let order;
+			if (this.s.dtPane !== undefined) {
+				selected = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
+				searchTerm = this.dom.searchBox[0].innerHTML;
+				order = this.s.dtPane.order();
+			}
+			if (data.searchPanes === undefined) {
+				data.searchPanes = [];
+			}
+			data.searchPanes.push({
+				id: this.s.index,
+				order,
+				searchTerm,
+				selected,
+			});
+		});
+
 		// Reload the selection, searchbox entry and ordering from the previous state
 		let loadedFilter = table.state.loaded();
 		if (loadedFilter && loadedFilter.searchPanes) {
 			this._reloadSelect(loadedFilter);
 			$(this.dom.searchBox).val(loadedFilter.search.search);
-			this.s.dtPane.column(0).order(loadedFilter.order[0][0]);
-			this.s.dtPane.column(1).order(loadedFilter.order[0][1]);
 		}
 
 		this.s.dtPane.on('user-select.dt', (e, _dt, type, cell, originalEvent) => {
@@ -677,23 +696,7 @@ export default class SearchPane {
 			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
 		});
 
-		// When saving the state store all of the selected rows for preselection next time around
-		this.s.dt.on('stateSaveParams.dt', (e, settings, data) => {
-			let paneColumns = [];
-			let searchTerm;
-			if (this.s.dtPane !== undefined) {
-				paneColumns = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
-				searchTerm = this.dom.searchBox[0].innerHTML;
-			}
-			if (data.searchPanes === undefined) {
-				data.searchPanes = [];
-			}
-			data.searchPanes.push({
-				id: this.s.index,
-				searchTerm,
-				selected: paneColumns,
-			});
-		});
+		
 
 		// Declare timeout Variable
 		let t0;
@@ -1188,12 +1191,13 @@ export default class SearchPane {
 			let table = this.s.dtPane;
 			let rows = table.rows({order: 'index'}).data().pluck('filter').toArray();
 			this.dom.searchBox.innerHTML = loadedFilter.searchPanes[idx].searchTerm;
-
+			this.s.dt.order(loadedFilter.searchPanes[idx].order);
 			for (let filter of loadedFilter.searchPanes[idx].selected) {
 				let id = rows.indexOf(filter);
 
 				if (id > -1) {
 					table.row(id).select();
+					this.s.dt.state.save();
 				}
 			}
 
