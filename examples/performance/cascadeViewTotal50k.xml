@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="ajax" table-class="display nowrap" order="32">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+		searchPanes: {
+			cascadePanes: true,
+			viewTotal: true
+		},
+		ajax: '../../../../examples/ajax/data/data_50k.txt',
+		columns: [
+            { data: "name" },
+            { data: "position" },
+            { data: "office" },
+            { data: "extn" },
+            { data: "start_date" },
+            { data: "salary" }
+        ]
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Performance 50k with cascadePanes and viewTotal</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates the performance when large volumes of data are managed.
+
+]]></info>
+
+</dt-example>

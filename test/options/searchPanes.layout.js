@@ -140,7 +140,7 @@ describe('searchPanes - options - searchPanes.layout', function() {
 		});
 
 		dt.html('basic');
-		it('5', function() {
+		it('6', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
