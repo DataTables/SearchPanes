@@ -474,6 +474,7 @@ export default class SearchPane {
 		}
 
 		// If the variance is accceptable then display the search pane
+		console.log("Display Pane")
 		this._displayPane();
 
 		// Declare the datatable for the pane
@@ -696,8 +697,6 @@ export default class SearchPane {
 			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
 		});
 
-		
-
 		// Declare timeout Variable
 		let t0;
 
@@ -820,7 +819,7 @@ export default class SearchPane {
 
 		$(this.dom.topRow).prependTo(this.dom.container);
 		$(container).append(this.dom.dtP);
-
+		$(container).show();
 	}
 
 	/**
