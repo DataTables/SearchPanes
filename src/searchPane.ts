@@ -474,7 +474,6 @@ export default class SearchPane {
 		}
 
 		// If the variance is accceptable then display the search pane
-		console.log("Display Pane")
 		this._displayPane();
 
 		// Declare the datatable for the pane
