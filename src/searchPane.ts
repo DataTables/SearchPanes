@@ -445,7 +445,7 @@ export default class SearchPane {
 				// console.log("pop and bin: ", time1-time0);
 			}
 
-			let binLength = Object.keys(rowData.bins).length;
+			let binLength = Object.keys(rowData.binsOriginal).length;
 			let uniqueRatio = this._uniqueRatio(binLength, table.rows()[0].length);
 			// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
 			if (this.displayed === false && ((colOpts.show === undefined && (colOpts.threshold === undefined ?
