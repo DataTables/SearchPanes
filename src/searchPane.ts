@@ -216,7 +216,6 @@ export default class SearchPane {
 
 		$.fn.dataTable.ext.search.push(this.s.searchFunction);
 
-		console.log("build", this.s.index)
 		this._buildPane();
 
 		// If the clear button for this pane is clicked clear the selections
@@ -238,9 +237,6 @@ export default class SearchPane {
 			let t0 = performance.now();
 			this._adjustTopRow();
 			let t1 = performance.now();
-			// console.log("searchPane.on(draw)")
-			// console.log("searchPane._adjustTopRow", t1-t0);
-			// console.log(" ")
 		});
 
 		$(window).on('resize.dtsp', DataTable.util.throttle(() => {
@@ -294,7 +290,6 @@ export default class SearchPane {
 		while (searchIdx !== -1) {
 			$.fn.dataTable.ext.search.splice(searchIdx, 1);
 			searchIdx = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
-			console.log($.fn.dataTable.ext.search.length)
 		}
 		if (this.s.dtPane !== undefined) {
 			this.s.dtPane.destroy();
@@ -465,7 +460,6 @@ export default class SearchPane {
 				rowData.arrayOriginal = rowData.arrayFilter;
 				rowData.binsOriginal = rowData.bins;
 				let time1 = performance.now();
-				// console.log("pop and bin: ", time1-time0);
 			}
 
 			let binLength = Object.keys(rowData.binsOriginal).length;
@@ -1053,9 +1047,6 @@ export default class SearchPane {
 		this.s.dt.draw();
 		this.s.updating = false;
 		let t3 = performance.now();
-		// console.log('searchPane._makeSelection')
-		// console.table([['updateTable', t1-t0], ['updateFilterCount', t2-t1], ['draw', t3-t2]]);
-		// console.log(" ")
 	}
 
 	/**
@@ -1402,7 +1393,6 @@ export default class SearchPane {
 					let t0 = performance.now();
 					this._populatePane();
 					let t1 = performance.now();
-					// console.log("Pop process: ", t1-t0);
 				}
 				// If cascadePanes is active and the table has returned to its default state then
 				//  there is a need to update certain parts ofthe rowData.
