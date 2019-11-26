@@ -216,6 +216,7 @@ export default class SearchPane {
 
 		$.fn.dataTable.ext.search.push(this.s.searchFunction);
 
+		console.log("build", this.s.index)
 		this._buildPane();
 
 		// If the clear button for this pane is clicked clear the selections
@@ -276,6 +277,28 @@ export default class SearchPane {
 			dataFilter: [],
 			filterMap: new Map()
 		};
+	}
+
+	public destroy() {
+		$(this.s.dtPane).off('.dtsp');
+		$(this.s.dt).off('.dtsp');
+
+		$(this.dom.nameButton).off('.dtsp');
+		$(this.dom.countButton).off('.dtsp');
+		$(this.dom.clear).off('.dtsp');
+		$(this.dom.searchButton).off('.dtsp');
+
+		$(this.dom.container).remove();
+
+		let searchIdx = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
+		while (searchIdx !== -1) {
+			$.fn.dataTable.ext.search.splice(searchIdx, 1);
+			searchIdx = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
+			console.log($.fn.dataTable.ext.search.length)
+		}
+		if (this.s.dtPane !== undefined) {
+			this.s.dtPane.destroy();
+		}
 	}
 
 	/**
@@ -645,23 +668,6 @@ export default class SearchPane {
 				searchTerm,
 				selected,
 			});
-		});
-
-		this.s.dt.on('destroy.dtsp', () => {
-			this.s.dtPane.off('.dtsp');
-			this.s.dt.off('.dtsp');
-
-			$(this.dom.nameButton).off('.dtsp');
-			$(this.dom.countButton).off('.dtsp');
-			$(this.dom.clear).off('.dtsp');
-			$(this.dom.searchButton).off('.dtsp');
-
-			$(this.dom.container).remove();
-
-			let searchIdx = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
-			$.fn.dataTable.ext.search.splice(searchIdx, 1);
-
-			this.s.dtPane.destroy();
 		});
 
 		// Reload the selection, searchbox entry and ordering from the previous state

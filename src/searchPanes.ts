@@ -484,7 +484,7 @@ export default class SearchPanes {
 		this.panes[0]._updateFilterCount();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-		table.on('draw.dtsp', () => {
+		table.on('draw.dtsps', () => {
 			let t0 = performance.now();
 			this._updateFilterCount();
 			let t1 = performance.now();
@@ -500,16 +500,21 @@ export default class SearchPanes {
 		});
 
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
-		table.on('destroy.dtsp', () => {
-			table.off('.dtsp');
-			$(this.dom.clearAll).off('.dtsp');
+		table.on('destroy.dtsps', () => {
+			for (let pane of this.panes) {
+				if (pane !== undefined) {
+					pane.destroy();
+				}
+			}
+			table.off('.dtsps');
+			$(this.dom.clearAll).off('.dtsps');
 			$(this.dom.container).remove();
 			this.clearSelections();
 		});
 
 		// When the clear All button has been pressed clear all of the selections in the panes
 		if (this.c.clear) {
-			$(this.dom.clearAll).on('click.dtsp', () => {
+			$(this.dom.clearAll).on('click.dtsps', () => {
 				this.clearSelections();
 			});
 		}
