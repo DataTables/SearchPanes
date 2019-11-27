@@ -234,9 +234,7 @@ export default class SearchPane {
 		//  weird if the width of the panes is lower than expected, this fixes the design.
 		// Equally this may occur when the table is resized.
 		table.on('draw.dtsp', () => {
-			let t0 = performance.now();
 			this._adjustTopRow();
-			let t1 = performance.now();
 		});
 
 		$(window).on('resize.dtsp', DataTable.util.throttle(() => {
@@ -440,6 +438,8 @@ export default class SearchPane {
 		let countMessage = table.i18n('searchPanes.count', '{total}');
 		let filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
 
+		let loadedFilter = table.state.loaded();
+
 		// If it is not a custom pane in place
 		if (this.colExists) {
 			// Perform checks that do not require populate pane to run
@@ -455,11 +455,31 @@ export default class SearchPane {
 
 			// Only run populatePane if the data has not been collected yet
 			if (rowData.arrayFilter.length === 0) {
-				let time0 = performance.now();
 				this._populatePane();
-				rowData.arrayOriginal = rowData.arrayFilter;
-				rowData.binsOriginal = rowData.bins;
-				let time1 = performance.now();
+				if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
+					let idx;
+					for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
+						if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
+							idx = i;
+							break;
+						}
+					}
+					// If the index is not found then no data has been added to the state for this pane,
+					//  which will only occur if it has previously failed to meet the criteria to be
+					//  displayed, therefore we can just hide it again here
+					if (idx !== undefined) {
+						rowData.binsOriginal = loadedFilter.searchPanes.panes[idx].bins;
+						rowData.arrayOriginal = loadedFilter.searchPanes.panes[idx].arrayFilter;
+					}
+					else {
+						this.dom.container.addClass(this.classes.hidden);
+						return;
+					}
+				}
+				else {
+					rowData.arrayOriginal = rowData.arrayFilter;
+					rowData.binsOriginal = rowData.bins;
+				}
 			}
 
 			let binLength = Object.keys(rowData.binsOriginal).length;
@@ -648,15 +668,24 @@ export default class SearchPane {
 			let selected = [];
 			let searchTerm;
 			let order;
+			let bins;
+			let arrayFilter;
 			if (this.s.dtPane !== undefined) {
 				selected = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
 				searchTerm = this.dom.searchBox[0].innerHTML;
 				order = this.s.dtPane.order();
+				bins = rowData.binsOriginal;
+				arrayFilter = rowData.arrayOriginal;
 			}
 			if (data.searchPanes === undefined) {
-				data.searchPanes = [];
+				data.searchPanes = {};
 			}
-			data.searchPanes.push({
+			if (data.searchPanes.panes === undefined) {
+				data.searchPanes.panes = [];
+			}
+			data.searchPanes.panes.push({
+				arrayFilter,
+				bins,
 				id: this.s.index,
 				order,
 				searchTerm,
@@ -665,9 +694,10 @@ export default class SearchPane {
 		});
 
 		// Reload the selection, searchbox entry and ordering from the previous state
-		let loadedFilter = table.state.loaded();
-		if (loadedFilter && loadedFilter.searchPanes) {
-			this._reloadSelect(loadedFilter);
+		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
+			if (!this.c.cascadePanes) {
+				this._reloadSelect(loadedFilter);
+			}
 			$(this.dom.searchBox).val(loadedFilter.search.search);
 		}
 
@@ -727,6 +757,7 @@ export default class SearchPane {
 				}
 				this._makeSelection(false);
 				this.s.deselect = false;
+				this.s.dt.state.save();
 			}, 50);
 		});
 
@@ -878,7 +909,9 @@ export default class SearchPane {
 	private _getBonusOptions(): {[keys: string]: any} {
 		let defaults = {
 			combiner: 'or',
+			controls: true,
 			grouping: undefined,
+			orderable: true,
 			orthogonal: {
 				comparison: undefined,
 				display: 'display',
@@ -889,8 +922,6 @@ export default class SearchPane {
 				threshold: undefined,
 				type: 'type'
 			},
-			orderable: true,
-			controls: true, 
 			preSelect: undefined,
 		};
 		return $.extend(
@@ -989,6 +1020,7 @@ export default class SearchPane {
 			combiner: 'or',
 			controls: true,
 			grouping: undefined,
+			orderable: true,
 			orthogonal: {
 				comparison: undefined,
 				display: 'display',
@@ -999,7 +1031,6 @@ export default class SearchPane {
 				threshold: undefined,
 				type: 'type'
 			},
-			orderable: true,
 			preSelect: undefined,
 		};
 		return $.extend(
@@ -1038,15 +1069,11 @@ export default class SearchPane {
 	 * @param select Denotes whether a selection has been made or not
 	 */
 	private _makeSelection(select) {
-		let t0 = performance.now();
 		this._updateTable(select);
-		let t1 = performance.now();
 		this._updateFilterCount();
-		let t2 = performance.now();
 		this.s.updating = true;
 		this.s.dt.draw();
 		this.s.updating = false;
-		let t3 = performance.now();
 	}
 
 	/**
@@ -1192,8 +1219,8 @@ export default class SearchPane {
 
 		// For each pane, check that the loadedFilter list exists and is not null,
 		// find the id of each search item and set it to be selected.
-		for (let i = 0; i < loadedFilter.searchPanes.length; i++) {
-			if (loadedFilter.searchPanes[i].id === this.s.index) {
+		for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
+			if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
 				idx = i;
 				break;
 			}
@@ -1202,9 +1229,9 @@ export default class SearchPane {
 		if (idx !== undefined) {
 			let table = this.s.dtPane;
 			let rows = table.rows({order: 'index'}).data().pluck('filter').toArray();
-			this.dom.searchBox.innerHTML = loadedFilter.searchPanes[idx].searchTerm;
-			this.s.dt.order(loadedFilter.searchPanes[idx].order);
-			for (let filter of loadedFilter.searchPanes[idx].selected) {
+			this.dom.searchBox.innerHTML = loadedFilter.searchPanes.panes[idx].searchTerm;
+			this.s.dt.order(loadedFilter.searchPanes.panes[idx].order);
+			for (let filter of loadedFilter.searchPanes.panes[idx].selected) {
 				let id = rows.indexOf(filter);
 
 				if (id > -1) {
@@ -1390,9 +1417,7 @@ export default class SearchPane {
 			if (this.colExists) {
 				// Only run populatePane if the data has not been collected yet
 				if (rowData.arrayFilter.length === 0) {
-					let t0 = performance.now();
 					this._populatePane();
-					let t1 = performance.now();
 				}
 				// If cascadePanes is active and the table has returned to its default state then
 				//  there is a need to update certain parts ofthe rowData.
@@ -1417,7 +1442,10 @@ export default class SearchPane {
 				}
 				// If a filter has been removed so that only one remains then the remaining filter should have
 				// the non filtered formatting, therefore set filteringActive to be false.
-				if (filterIdx !== undefined && filterIdx === this.s.index) {
+				if (
+					(filterIdx !== undefined && filterIdx === this.s.index) ||
+					this.s.dt.rows({search: 'applied'}).data().toArray().length === this.s.dt.rows().data().toArray().length
+				) {
 					this.s.filteringActive = false;
 				}
 
@@ -1533,6 +1561,17 @@ export default class SearchPane {
 		this._searchExtras();
 		// If either of the options that effect how the panes are displayed are selected then update the Panes
 		if (this.c.cascadePanes || this.c.viewTotal) {
+			// If the viewTotal option is active then it must be determined whether there is a filter in place already
+			if (this.c.viewTotal) {
+				let filterCount = 0;
+				// Check each pane to find how many filters are in place in each
+				let selectArray = this._getSelected(filterCount);
+
+				// If there is only one in place then find the index of the corresponding pane
+				if (filterCount === 1) {
+					filterIdx = selectArray.indexOf(1);
+				}
+			}
 			this._updatePane(select, true, filterIdx);
 		}
 	}

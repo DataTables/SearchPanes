@@ -90,18 +90,14 @@ export default class SearchPanes {
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
 
+		this.getState();
+
 		if (this.s.dt.settings()[0]._bInitComplete) {
-			let t0 = performance.now();
 			this._startup(table, paneSettings, opts);
-			let t1 = performance.now();
-			// console.log('searchpanes.startup()', t1-t0)
 		}
 		else {
 			this.s.dt.one('init', () => {
-				let t0 = performance.now();
 				this._startup(table, paneSettings, opts);
-				let t1 = performance.now();
-				// console.log('searchpanes.startup()', t1-t0)
 			});
 		}
 	}
@@ -194,7 +190,10 @@ export default class SearchPanes {
 
 			// If the number of rows currently visible is equal to the number of rows in the table
 			//  then there can't be any filtering taking place
-			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
+			if (
+				table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length
+				|| this.selectionList === undefined
+			) {
 				filterActive = false;
 				this.selectionList = [];
 			}
@@ -212,6 +211,7 @@ export default class SearchPanes {
 						this.selectionList.push(
 							{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
 						);
+						table.state.save();
 						select = true;
 						break;
 					}
@@ -250,47 +250,7 @@ export default class SearchPanes {
 
 				// If the length of the selections are different then some of them have been removed and a deselect has occured
 				if (newSelectionList.length > 0 && newSelectionList.length < this.selectionList.length) {
-					// Set this to true so that the actions taken do not cause this to run until it is finished
-					this.regenerating = true;
-
-					// Load in all of the searchBoxes in the documents
-					let searches = document.getElementsByClassName(this.classes.search);
-
-					// if only one pane has been selected then take not of its index
-					let solePane = -1;
-					if (newSelectionList.length === 1) {
-						solePane = newSelectionList[0].index;
-					}
-
-					// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
-					//  and clear all of the previous selections in the pane
-					for (let pane of this.panes) {
-						pane.setCascadeRegen(true);
-						pane.setClear(true);
-
-						// If this is the same as the pane with the only selection then pass it as a parameter into _clearPane
-						if (pane.s.dtPane !== undefined && pane.s.index === solePane) {
-							pane._clearPane(solePane);
-						}
-						else if (pane.s.dtPane !== undefined) {
-							pane._clearPane();
-						}
-
-						pane.setClear(false);
-					}
-
-					// Remake Selections
-					this._makeCascadeSelections(newSelectionList);
-
-					// Set the selection list property to be the list without the selections from the deselect pane
-					this.selectionList = newSelectionList;
-
-					// The regeneration of selections is over so set it back to false
-					for (let pane of this.panes) {
-						pane.setCascadeRegen(false);
-					}
-
-					this.regenerating = false;
+					this._cascadeRegen(newSelectionList);
 				}
 				else if (newSelectionList.length > 0) {
 					// Update all of the other panes as you would just making a normal selection
@@ -312,6 +272,57 @@ export default class SearchPanes {
 				this._updateFilterCount();
 			}
 		}
+	}
+
+	private getState() {
+		let loadedFilter = this.s.dt.state.loaded();
+		if (loadedFilter && loadedFilter.searchPanes) {
+			this.selectionList = loadedFilter.searchPanes.selectionList;
+		}
+	}
+
+	private _cascadeRegen(newSelectionList) {
+			// Set this to true so that the actions taken do not cause this to run until it is finished
+			this.regenerating = true;
+
+			// Load in all of the searchBoxes in the documents
+			let searches = document.getElementsByClassName(this.classes.search);
+
+			// if only one pane has been selected then take not of its index
+			let solePane = -1;
+			if (newSelectionList.length === 1) {
+				solePane = newSelectionList[0].index;
+			}
+
+			// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
+			//  and clear all of the previous selections in the pane
+			for (let pane of this.panes) {
+				pane.setCascadeRegen(true);
+				pane.setClear(true);
+
+				// If this is the same as the pane with the only selection then pass it as a parameter into _clearPane
+				if (pane.s.dtPane !== undefined && pane.s.index === solePane) {
+					pane._clearPane(solePane);
+				}
+				else if (pane.s.dtPane !== undefined) {
+					pane._clearPane();
+				}
+
+				pane.setClear(false);
+			}
+
+			// Remake Selections
+			this._makeCascadeSelections(newSelectionList);
+
+			// Set the selection list property to be the list without the selections from the deselect pane
+			this.selectionList = newSelectionList;
+
+			// The regeneration of selections is over so set it back to false
+			for (let pane of this.panes) {
+				pane.setCascadeRegen(false);
+			}
+
+			this.regenerating = false;
 	}
 
 	private _makeCascadeSelections(newSelectionList) {
@@ -448,6 +459,30 @@ export default class SearchPanes {
 			}
 		}
 
+		// Attach panes, clear buttons, and title bar to the document
+		this._updateFilterCount();
+		this._attachPaneContainer();
+
+		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
+		table.columns(this.c.columns).eq(0).each((idx) => {
+		if (this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined) {
+			this.panes[idx].s.dtPane.columns.adjust();
+		}
+		});
+
+		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
+		table.on('draw.dtsps', () => {
+			this._updateFilterCount();
+			if (this.c.cascadePanes || this.c.viewTotal) {
+				this.redrawPanes();
+			}
+		});
+
+		// If cascadePanes is active then make the previous selections in the order they were previously
+		if (this.selectionList !== undefined) {
+			this._cascadeRegen(this.selectionList);
+		}
+
 		// PreSelect any selections which have been defined using the preSelect option
 		table
 		.columns(this.c.columns)
@@ -469,35 +504,8 @@ export default class SearchPanes {
 			}
 		});
 
-		// Attach panes, clear buttons, and title bar to the document
-		this._updateFilterCount();
-		this._attachPaneContainer();
-
-		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
-		table.columns(this.c.columns).eq(0).each((idx) => {
-		if (this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined) {
-			this.panes[idx].s.dtPane.columns.adjust();
-		}
-		});
-
 		// Update the title bar to show how many filters have been selected
 		this.panes[0]._updateFilterCount();
-
-		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-		table.on('draw.dtsps', () => {
-			let t0 = performance.now();
-			this._updateFilterCount();
-			let t1 = performance.now();
-			let redrawn = false;
-			if (this.c.cascadePanes || this.c.viewTotal) {
-				this.redrawPanes();
-				redrawn = true;
-			}
-			let t2 = performance.now();
-			// console.log('searchPanes.on(draw)');
-			// console.table([['updatefiltercount', t1-t0], ['redrawPanes', redrawn ? t2-t1 : 0]])
-			// console.log(" ")
-		});
 
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
 		table.on('destroy.dtsps', () => {
@@ -520,6 +528,13 @@ export default class SearchPanes {
 		}
 
 		table.settings()[0]._searchPanes = this;
+
+		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
+			if (data.searchPanes === undefined) {
+				data.searchPanes = {};
+			}
+			data.searchPanes.selectionList = this.selectionList;
+		});
 	}
 
 	/**
