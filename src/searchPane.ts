@@ -381,7 +381,9 @@ export default class SearchPane {
 		let subRows = this.dom.container.find('.dtsp-subRows');
 		let topRow = this.dom.container.find('.' + this.classes.topRow);
 
-		if ($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) {
+		// If the width is 0 then it is safe to assume that the pane has not yet been displayed.
+		//  Even if it has, if the width is 0 it won't make a difference if it has the narrow class or not
+		if (($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) && $(subContainers[0]).width() !== 0) {
 			$(subContainers[0]).addClass(this.classes.narrow);
 			$(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
 			$(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
@@ -442,32 +444,36 @@ export default class SearchPane {
 
 		// If it is not a custom pane in place
 		if (this.colExists) {
+			let idx = -1;
+			if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
+				for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
+					if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
+						idx = i;
+						break;
+					}
+				}
+			}
 			// Perform checks that do not require populate pane to run
-			if (colOpts.show === false
-				|| (colOpts.show !== undefined && colOpts.show !== true)
+			if ((colOpts.show === false
+				|| (colOpts.show !== undefined && colOpts.show !== true)) &&
+				idx === -1
 			) {
 					this.dom.container.addClass(this.classes.hidden);
 					return false;
 			}
-			else if (colOpts.show === true) {
+			else if (colOpts.show === true || idx !== -1) {
 				this.displayed = true;
 			}
 
 			// Only run populatePane if the data has not been collected yet
 			if (rowData.arrayFilter.length === 0) {
 				this._populatePane();
+
 				if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
-					let idx;
-					for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
-						if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
-							idx = i;
-							break;
-						}
-					}
 					// If the index is not found then no data has been added to the state for this pane,
 					//  which will only occur if it has previously failed to meet the criteria to be
 					//  displayed, therefore we can just hide it again here
-					if (idx !== undefined) {
+					if (idx !== -1) {
 						rowData.binsOriginal = loadedFilter.searchPanes.panes[idx].bins;
 						rowData.arrayOriginal = loadedFilter.searchPanes.panes[idx].arrayFilter;
 					}
@@ -671,8 +677,8 @@ export default class SearchPane {
 			let bins;
 			let arrayFilter;
 			if (this.s.dtPane !== undefined) {
-				selected = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
-				searchTerm = this.dom.searchBox[0].innerHTML;
+				selected = this.s.dtPane.rows({selected: true}).data().map(item => item.filter.toString()).toArray();
+				searchTerm = $(this.dom.searchBox).val();
 				order = this.s.dtPane.order();
 				bins = rowData.binsOriginal;
 				arrayFilter = rowData.arrayOriginal;
@@ -698,7 +704,12 @@ export default class SearchPane {
 			if (!this.c.cascadePanes) {
 				this._reloadSelect(loadedFilter);
 			}
-			$(this.dom.searchBox).val(loadedFilter.search.search);
+			for (let pane of loadedFilter.searchPanes.panes) {
+				if (pane.id === this.s.index) {
+					$(this.dom.searchBox).val(pane.searchTerm);
+					this.s.dt.order(pane.order);
+				}
+			}
 		}
 
 		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
@@ -741,6 +752,7 @@ export default class SearchPane {
 		// Doing it this way means that no button has to be clicked to trigger a search, it is done asynchronously
 		$(this.dom.searchBox).on('input.dtsp', () => {
 			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
+			this.s.dt.state.save();
 		});
 
 		// Declare timeout Variable
@@ -761,7 +773,7 @@ export default class SearchPane {
 			}, 50);
 		});
 
-		this.s.dtPane.state.save();
+		this.s.dt.state.save();
 
 		return true;
 	}
@@ -1228,11 +1240,14 @@ export default class SearchPane {
 
 		if (idx !== undefined) {
 			let table = this.s.dtPane;
-			let rows = table.rows({order: 'index'}).data().pluck('filter').toArray();
-			this.dom.searchBox.innerHTML = loadedFilter.searchPanes.panes[idx].searchTerm;
-			this.s.dt.order(loadedFilter.searchPanes.panes[idx].order);
+			let rows = table.rows({order: 'index'}).data().map(item => item.filter.toString()).toArray();
+
 			for (let filter of loadedFilter.searchPanes.panes[idx].selected) {
-				let id = rows.indexOf(filter);
+				let id = -1;
+
+				if (filter !== null) {
+					id = rows.indexOf(filter.toString());
+				}
 
 				if (id > -1) {
 					table.row(id).select();

@@ -358,6 +358,7 @@ export default class SearchPanes {
 				}
 			}
 		}
+		this.s.dt.state.save();
 	}
 
 	/**
@@ -478,6 +479,13 @@ export default class SearchPanes {
 			}
 		});
 
+		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
+			if (data.searchPanes === undefined) {
+				data.searchPanes = {};
+			}
+			data.searchPanes.selectionList = this.selectionList;
+		});
+
 		// If cascadePanes is active then make the previous selections in the order they were previously
 		if (this.selectionList !== undefined && this.c.cascadePanes) {
 			this._cascadeRegen(this.selectionList);
@@ -529,12 +537,7 @@ export default class SearchPanes {
 
 		table.settings()[0]._searchPanes = this;
 
-		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
-			if (data.searchPanes === undefined) {
-				data.searchPanes = {};
-			}
-			data.searchPanes.selectionList = this.selectionList;
-		});
+		
 	}
 
 	/**
