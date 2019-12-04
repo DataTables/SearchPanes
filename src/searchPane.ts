@@ -74,7 +74,7 @@ export default class SearchPane {
 	 * @param idx the index of the column for this pane
 	 * @returns {object} the pane that has been created, including the table and the index of the pane
 	 */
-	constructor(paneSettings, opts, idx, layout, panes = {}) {
+	constructor(paneSettings, opts, idx, layout, panesContainer, panes = {}) {
 		// Check that the required version of DataTables is included
 		if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 			throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -89,7 +89,7 @@ export default class SearchPane {
 
 		if (table.ajax.url() !== undefined && table.ajax.url() !== null) {
 			table.one('init.dtsp', () => {
-				this.rebuildPane();
+				// this.rebuildPane();
 		   });
 		}
 
@@ -185,6 +185,8 @@ export default class SearchPane {
 				: {}
 		);
 
+		$(panesContainer).append(this.dom.container);
+
 		let tableNode = table.table(0).node();
 
 		// Custom search function for table
@@ -216,7 +218,8 @@ export default class SearchPane {
 
 		$.fn.dataTable.ext.search.push(this.s.searchFunction);
 
-		this._buildPane();
+
+		// this._buildPane();
 
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
@@ -246,6 +249,15 @@ export default class SearchPane {
 		table.on('column-reorder.dtsp', (e, settings, details) => {
 			this.s.index = details.mapping[this.s.index];
 		});
+
+		if (this.s.dt.settings()[0]._bInitComplete) {
+			this.rebuildPane();
+		}
+		else {
+			this.s.dt.one('init.dtsp', () => {
+				this.rebuildPane();
+			});
+		}
 
 		return this;
 	}
@@ -303,16 +315,9 @@ export default class SearchPane {
 		if (this.s.dtPane !== undefined) {
 			this.s.dtPane.clear().destroy();
 		}
-		this.dom.container.empty();
+		// this.dom.container.empty();
 		this.dom.container.removeClass(this.classes.hidden);
-		if (this.s.dt.settings()[0]._bInitComplete) {
-			this._buildPane();
-		}
-		else {
-			this.s.dt.one('init.dtsp', () => {
-				this._buildPane();
-			});
-		}
+		this._buildPane();
 		return this;
 	}
 
@@ -522,6 +527,7 @@ export default class SearchPane {
 		// Declare the datatable for the pane
 		let errMode = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
+		let haveScroller = (DataTable as any).Scroller;
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
 			true,
 			{
@@ -552,7 +558,7 @@ export default class SearchPane {
 						data: 'count',
 						render: (data, type, row) => {
 							let message;
-							this.s.filteringActive
+							this.s.filteringActive && this.c.viewTotal
 								? message = filteredMessage.replace(/{total}/, row.total)
 								: message = countMessage.replace(/{total}/, row.total) ;
 							message = message.replace(/{shown}/, row.shown);
@@ -571,8 +577,10 @@ export default class SearchPane {
 					}
 				],
 				info: false,
-				paging: false,
+				paging: haveScroller ? true : false,
+				scroller: haveScroller ? true : false,
 				scrollY: '200px',
+				deferRender: true,
 				select: true,
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 			},

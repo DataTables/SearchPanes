@@ -79,6 +79,7 @@ export default class SearchPanes {
 			options: $('<div/>').addClass(this.classes.container),
 			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
+			titleRow: $('<div/>').addClass(this.classes.titleRow),
 			wrapper: $('<div/>'),
 		};
 
@@ -91,6 +92,31 @@ export default class SearchPanes {
 		this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
 
 		this.getState();
+
+		// Create Panes
+		table
+			.columns(this.c.columns)
+			.eq(0)
+			.each((idx) => {
+				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout, this.dom.panes));
+			});
+
+		// If there is any extra custom panes defined then create panes for them too
+		let rowLength = table.columns().eq(0).toArray().length;
+
+		if (this.c.panes !== undefined) {
+			let paneLength = this.c.panes.length;
+
+			for (let i = 0; i < paneLength; i++) {
+				let id = rowLength + i;
+				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
+			}
+		}
+
+		// Attach clear button and title bar to the document
+		this._attachExtras();
+		
+		$(this.dom.container).append(this.dom.panes)
 
 		if (this.s.dt.settings()[0]._bInitComplete) {
 			this._startup(table, paneSettings, opts);
@@ -150,7 +176,7 @@ export default class SearchPanes {
 	 */
 	public rebuild(targetIdx = false): SearchPane | SearchPane[] {
 		// As a rebuild from scratch is required, empty the searchpanes container.
-		this.dom.container.empty();
+		// this.dom.container.empty();
 		let returnArray: SearchPane[] = [];
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
 		for (let pane of this.panes) {
@@ -158,7 +184,7 @@ export default class SearchPanes {
 				continue;
 			}
 			pane.clearData();
-			pane.removePane();
+			// pane.removePane();
 			returnArray.push(pane.rebuildPane());
 		}
 
@@ -187,16 +213,29 @@ export default class SearchPanes {
 		// Only do this if the redraw isn't being triggered by the panes updating themselves
 		if (!this.s.updating) {
 			let filterActive = true;
+			let filterPane = -1;
 
 			// If the number of rows currently visible is equal to the number of rows in the table
 			//  then there can't be any filtering taking place
-			if (
-				table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length
-				|| this.selectionList === undefined
-			) {
+			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length
+				|| this.selectionList === undefined) {
 				filterActive = false;
 				this.selectionList = [];
 			}
+			else if (this.c.viewTotal) {
+				for (let pane of this.panes) {
+					if(pane.s.dtPane !== undefined){
+						let selectLength = pane.s.dtPane.rows({selected: true}).data().toArray().length;
+						if (selectLength > 0 && filterPane === -1) {
+							filterPane = pane.s.index;
+						}
+						else if (selectLength > 0) {
+							filterPane = null;
+						}
+					}
+				}
+			}
+
 
 			// Update every pane with a table defined
 			let select = false;
@@ -241,7 +280,11 @@ export default class SearchPanes {
 				// Update all of the panes to reflect the current state of the filters
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
-						pane._updatePane(select, filterActive, -1, true);
+						let tempFilter = true;
+						if ((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index) {
+							tempFilter = false;
+						}
+						pane._updatePane(select, !tempFilter ? false : filterActive, -1, true);
 					}
 				}
 
@@ -256,7 +299,11 @@ export default class SearchPanes {
 					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
-							paneUpdate._updatePane(true, filterActive, -1, true);
+							let tempFilter = true;
+							if ((filterPane !== -1 && filterPane !== null) && filterPane === paneUpdate.s.index){
+								tempFilter = false;
+							}
+							paneUpdate._updatePane(select, !tempFilter ? tempFilter : filterActive, -1, true);
 						}
 					}
 				}
@@ -264,7 +311,11 @@ export default class SearchPanes {
 			else {
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
-						pane._updatePane(select, filterActive, -1, true);
+						let tempFilter = true;
+						if ((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index){
+							tempFilter = false;
+						}
+						pane._updatePane(select, !tempFilter ? tempFilter : filterActive, -1, true);
 					}
 				}
 
@@ -366,15 +417,15 @@ export default class SearchPanes {
 	 */
 	private _attach(): Node {
 		$(this.dom.container).removeClass(this.classes.hide);
-		let titleRow = $('<div/>').addClass(this.classes.titleRow);
-		$(this.dom.title).appendTo(titleRow);
+		$(this.dom.titleRow).remove();
+		$(this.dom.title).appendTo(this.dom.titleRow);
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
-			$(this.dom.clearAll).appendTo(titleRow);
+			$(this.dom.clearAll).appendTo(this.dom.titleRow);
 		}
 
-		$(titleRow).appendTo(this.dom.container);
+		$(this.dom.titleRow).appendTo(this.dom.container);
 
 		// Attach the container for each individual pane to the overall container
 		for (let pane of this.panes) {
@@ -439,37 +490,38 @@ export default class SearchPanes {
 		return this._attachMessage();
 	}
 
-	private _startup(table, paneSettings, opts) {
-		// Create Panes
-		table
-		.columns(this.c.columns)
-		.eq(0)
-		.each((idx) => {
-			this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout));
-		});
-
-		// If there is any extra custom panes defined then create panes for them too
-		let rowLength = table.columns().eq(0).toArray().length;
-
-		if (this.c.panes !== undefined) {
-			let paneLength = this.c.panes.length;
-
-			for (let i = 0; i < paneLength; i++) {
-				let id = rowLength + i;
-				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.c.panes[i]));
+	private _checkMessage() {
+		// If a pane is to be displayed then attach the normal pane output
+		if (this.panes !== undefined) {
+			for (let pane of this.panes) {
+				if (pane.displayed === true) {
+					return;
+				}
 			}
 		}
+		// Otherwise attach the custom message or remove the container from the display
+		return this._attachMessage();
+	}
 
-		// Attach panes, clear buttons, and title bar to the document
-		this._updateFilterCount();
-		this._attachPaneContainer();
+	private _attachExtras(): Node {
+		$(this.dom.container).removeClass(this.classes.hide);
+		$(this.dom.titleRow).remove();
+		$(this.dom.title).appendTo(this.dom.titleRow);
 
-		// (DataTable as any).tables({visible: true, api: true}).columns.adjust();
-		table.columns(this.c.columns).eq(0).each((idx) => {
-		if (this.panes[idx] !== undefined && this.panes[idx].s.dtPane !== undefined) {
-			this.panes[idx].s.dtPane.columns.adjust();
+		// If the clear button is permitted attach it
+		if (this.c.clear) {
+			$(this.dom.clearAll).appendTo(this.dom.titleRow);
 		}
-		});
+
+		$(this.dom.titleRow).appendTo(this.dom.container);
+
+		return this.dom.container;
+	}
+
+	private _startup(table, paneSettings, opts) {
+
+		this._updateFilterCount();
+		this._checkMessage();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dtsps', () => {
@@ -536,8 +588,6 @@ export default class SearchPanes {
 		}
 
 		table.settings()[0]._searchPanes = this;
-
-		
 	}
 
 	/**
