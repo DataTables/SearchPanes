@@ -479,7 +479,7 @@ export default class SearchPanes {
 		});
 
 		// If cascadePanes is active then make the previous selections in the order they were previously
-		if (this.selectionList !== undefined) {
+		if (this.selectionList !== undefined && this.c.cascadePanes) {
 			this._cascadeRegen(this.selectionList);
 		}
 
