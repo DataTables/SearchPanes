@@ -65,16 +65,17 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-panesContainer div').text()).not.toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
-		it('Shown when rows removed', function() {
-			table
-				.rows()
-				.remove()
-				.draw();
-			table.searchPanes.rebuildPane();
+		// DD-1285
+		// it('Shown when rows removed', function() {
+		// 	table
+		// 		.rows()
+		// 		.remove()
+		// 		.draw();
+		// 	table.searchPanes.rebuildPane();
 
-			expect($('div.dtsp-searchPane').length).toBe(6);
-			expect($('div.dtsp-panesContainer div').text()).toBe('unittest');
-			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
-		});
+		// 	expect($('div.dtsp-searchPane').length).toBe(6);
+		// 	expect($('div.dtsp-panesContainer div').text()).toBe('unittest');
+		// 	expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+		// });
 	});
 });
