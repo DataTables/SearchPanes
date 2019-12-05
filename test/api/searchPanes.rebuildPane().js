@@ -97,14 +97,14 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 		});
 
 		dt.html('empty');
-		it('Ajax call - no panes present initially', function(done) {
+		it('Ajax call - panes present initially', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true,
 				columns: dt.getTestColumns(),
 				ajax: '/base/test/data/data.txt',
 				initComplete: function(settings, json) {
-					expect($('div.dtsp-searchPane').length).toBe(0);
+					expect($('div.dtsp-searchPane').length).toBe(6);
 					done();
 				}
 			});

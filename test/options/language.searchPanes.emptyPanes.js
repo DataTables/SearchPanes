@@ -72,7 +72,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				.draw();
 			table.searchPanes.rebuildPane();
 
-			expect($('div.dtsp-searchPane').length).toBe(0);
+			expect($('div.dtsp-searchPane').length).toBe(6);
 			expect($('div.dtsp-panesContainer div').text()).toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});

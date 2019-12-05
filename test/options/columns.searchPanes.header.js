@@ -41,7 +41,7 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 		});
 
 		dt.html('empty_no_header');
-		it('Ajax call - no panes present initially', function(done) {
+		it('Ajax call - panes present initially', function(done) {
 			let columns = dt.getTestColumns();
 			columns[0].searchPanes = { header: 'testname' };
 			columns[1].searchPanes = { header: 'testposition' };
@@ -52,7 +52,7 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 				columns: columns,
 				ajax: '/base/test/data/data.txt',
 				initComplete: function(settings, json) {
-					expect($('div.dtsp-searchPane').length).toBe(0);
+					expect($('div.dtsp-searchPane').length).toBe(6);
 					done();
 				}
 			});

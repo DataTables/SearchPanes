@@ -54,7 +54,8 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2 (2)');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').text()).toBe('0 (9)');
 		});
 		it('... and remove when deselected', async function() {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
