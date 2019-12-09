@@ -218,9 +218,6 @@ export default class SearchPane {
 
 		$.fn.dataTable.ext.search.push(this.s.searchFunction);
 
-
-		// this._buildPane();
-
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
 			$(clear).on('click', () => {
@@ -277,7 +274,7 @@ export default class SearchPane {
 			arrayOriginal: [],
 			arrayTotals: [],
 			bins: {},
-			binsOriginal: [],
+			binsOriginal: {},
 			binsTotal: {},
 			data: [],
 			dataFilter: [],
@@ -317,6 +314,7 @@ export default class SearchPane {
 		}
 		// this.dom.container.empty();
 		this.dom.container.removeClass(this.classes.hidden);
+		this.displayed = false;
 		this._buildPane();
 		return this;
 	}
@@ -464,6 +462,7 @@ export default class SearchPane {
 				idx === -1
 			) {
 					this.dom.container.addClass(this.classes.hidden);
+					this.displayed = false;
 					return false;
 			}
 			else if (colOpts.show === true || idx !== -1) {
@@ -484,6 +483,7 @@ export default class SearchPane {
 					}
 					else {
 						this.dom.container.addClass(this.classes.hidden);
+						this.displayed = false;
 						return;
 					}
 				}
@@ -502,6 +502,7 @@ export default class SearchPane {
 				|| (colOpts.show !== true  && binLength <= 1))
 			) {
 				this.dom.container.addClass(this.classes.hidden);
+				this.displayed = false;
 				return;
 			}
 
@@ -576,11 +577,11 @@ export default class SearchPane {
 						targets: 1,
 					}
 				],
+				deferRender: true,
 				info: false,
 				paging: haveScroller ? true : false,
-				scroller: haveScroller ? true : false,
 				scrollY: '200px',
-				deferRender: true,
+				scroller: haveScroller ? true : false,
 				select: true,
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 			},
@@ -1071,9 +1072,6 @@ export default class SearchPane {
 		// If the pane doesn't exist there are no filters in place on it
 		if (this.s.dtPane !== undefined) {
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray().length;
-			if (selected > 0) {
-				this.s.filteringActive = true;
-			}
 			// Push on the number of selected rows in this pane and update filterCount
 			selectArray.push(selected);
 			filterCount += selected;
@@ -1463,14 +1461,6 @@ export default class SearchPane {
 				else {
 					rowData.binsTotal = rowData.bins;
 				}
-				// If a filter has been removed so that only one remains then the remaining filter should have
-				// the non filtered formatting, therefore set filteringActive to be false.
-				if (
-					(filterIdx !== undefined && filterIdx === this.s.index) ||
-					this.s.dt.rows({search: 'applied'}).data().toArray().length === this.s.dt.rows().data().toArray().length
-				) {
-					this.s.filteringActive = false;
-				}
 
 				if (this.c.viewTotal && !this.c.cascadePanes) {
 					rowData.arrayFilter = rowData.arrayTotals;
@@ -1528,11 +1518,6 @@ export default class SearchPane {
 						selected.splice(selectIndex, 1);
 					}
 				}
-			}
-			// Set filtering Active to be again if it was previously set to false,
-			// so that succeeding panes have the correct formatting.
-			if (filterIdx !== undefined && filterIdx === this.s.index) {
-				this.s.filteringActive = true;
 			}
 
 			// Add search options which were previously selected but whos results are no
@@ -1595,7 +1580,7 @@ export default class SearchPane {
 					filterIdx = selectArray.indexOf(1);
 				}
 			}
-			this._updatePane(select, true, filterIdx);
+			this._updatePane(select, filterIdx);
 		}
 	}
 
@@ -1615,18 +1600,8 @@ export default class SearchPane {
 	 *   rather than the filtered message when using viewTotal.
 	 * @param draw whether this has been triggered by a draw event or not
 	 */
-	private _updatePane(select, filteringActive, filterIdx, draw = false) {
+	private _updatePane(select, filterIdx, draw = false) {
 		this.s.updating = true;
-		this.s.filteringActive = false;
-
-		// If the viewTotal option is active then it must be determined whether there is a filter in place already
-		if (this.c.viewTotal) {
-			// There is if select is true
-			if (filteringActive) {
-				this.s.filteringActive = true;
-			}
-		}
-
 		this._updateCommon(filterIdx, draw, select);
 		this.s.updating = false;
 	}

@@ -13,8 +13,8 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPane').length).toBe(0);
-			expect($('div.dtsp-panesContainer div').text()).toBe('No SearchPanes');
+			expect($('div.dtsp-searchPane:visible').length).toBe(0);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('No SearchPanes');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
 
@@ -29,8 +29,8 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane').length).toBe(0);
-			expect($('div.dtsp-panesContainer div').text()).toBe('');
+			expect($('div.dtsp-searchPane:visible').length).toBe(0);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(true);
 		});
 
@@ -45,8 +45,8 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane').length).toBe(0);
-			expect($('div.dtsp-panesContainer div').text()).toBe('unittest');
+			expect($('div.dtsp-searchPane:visible').length).toBe(0);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
 
@@ -61,21 +61,21 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane').length).toBe(6);
-			expect($('div.dtsp-panesContainer div').text()).not.toBe('unittest');
+			expect($('div.dtsp-searchPane:visible').length).toBe(3);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
 		// DD-1285
-		// it('Shown when rows removed', function() {
-		// 	table
-		// 		.rows()
-		// 		.remove()
-		// 		.draw();
-		// 	table.searchPanes.rebuildPane();
+		it('Shown when rows removed', function() {
+			table
+				.rows()
+				.remove()
+				.draw();
+			table.searchPanes.rebuildPane();
 
-		// 	expect($('div.dtsp-searchPane').length).toBe(6);
-		// 	expect($('div.dtsp-panesContainer div').text()).toBe('unittest');
-		// 	expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
-		// });
+			expect($('div.dtsp-searchPane:visible').length).toBe(0);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('unittest');
+			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+		});
 	});
 });

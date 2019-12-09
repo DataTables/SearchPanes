@@ -87,8 +87,8 @@ describe('searchPanes - options - searchPanes.threshold', function() {
 				}
 			});
 
-			expect($('div.dtsp-panesContainer div').text()).toBe('No SearchPanes');
-			expect($('div.dtsp-searchPane').length).toBe(0);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('No SearchPanes');
+			expect($('div.dtsp-searchPane:visible').length).toBe(0);
 		});
 
 		dt.html('empty');

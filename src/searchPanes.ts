@@ -15,6 +15,7 @@ export default class SearchPanes {
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPanes',
+		emptyMessage: 'dtsp-emptyMessage',
 		hide: 'dtsp-hidden',
 		item: {
 			count: 'dtsp-count',
@@ -86,6 +87,7 @@ export default class SearchPanes {
 		this.s = {
 			colOpts: [],
 			dt: table,
+			filterPane: -1
 		};
 
 		table.settings()[0]._searchPanes = this;
@@ -115,8 +117,7 @@ export default class SearchPanes {
 
 		// Attach clear button and title bar to the document
 		this._attachExtras();
-		
-		$(this.dom.container).append(this.dom.panes)
+		$(this.dom.container).append(this.dom.panes);
 
 		if (this.s.dt.settings()[0]._bInitComplete) {
 			this._startup(table, paneSettings, opts);
@@ -213,7 +214,7 @@ export default class SearchPanes {
 		// Only do this if the redraw isn't being triggered by the panes updating themselves
 		if (!this.s.updating) {
 			let filterActive = true;
-			let filterPane = -1;
+			let filterPane = this.s.filterPane;
 
 			// If the number of rows currently visible is equal to the number of rows in the table
 			//  then there can't be any filtering taking place
@@ -224,7 +225,7 @@ export default class SearchPanes {
 			}
 			else if (this.c.viewTotal) {
 				for (let pane of this.panes) {
-					if(pane.s.dtPane !== undefined){
+					if (pane.s.dtPane !== undefined) {
 						let selectLength = pane.s.dtPane.rows({selected: true}).data().toArray().length;
 						if (selectLength > 0 && filterPane === -1) {
 							filterPane = pane.s.index;
@@ -235,7 +236,6 @@ export default class SearchPanes {
 					}
 				}
 			}
-
 
 			// Update every pane with a table defined
 			let select = false;
@@ -281,10 +281,12 @@ export default class SearchPanes {
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let tempFilter = true;
-						if ((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index) {
+						pane.s.filteringActive = true;
+						if (((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index) || filterActive === false) {
 							tempFilter = false;
+							pane.s.filteringActive = false;
 						}
-						pane._updatePane(select, !tempFilter ? false : filterActive, -1, true);
+						pane._updatePane(select, !tempFilter ? false : filterActive, true);
 					}
 				}
 
@@ -300,10 +302,12 @@ export default class SearchPanes {
 					for (let paneUpdate of this.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
 							let tempFilter = true;
-							if ((filterPane !== -1 && filterPane !== null) && filterPane === paneUpdate.s.index){
+							paneUpdate.s.filteringActive = true;
+							if ((filterPane !== -1 && filterPane !== null && filterPane === paneUpdate.s.index) || filterActive === false) {
 								tempFilter = false;
+								paneUpdate.s.filteringActive = false;
 							}
-							paneUpdate._updatePane(select, !tempFilter ? tempFilter : filterActive, -1, true);
+							paneUpdate._updatePane(select, !tempFilter ? tempFilter : filterActive, true);
 						}
 					}
 				}
@@ -312,10 +316,12 @@ export default class SearchPanes {
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let tempFilter = true;
-						if ((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index){
+						pane.s.filteringActive = true;
+						if (((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index) || filterActive === false) {
 							tempFilter = false;
+							pane.s.filteringActive = false;
 						}
-						pane._updatePane(select, !tempFilter ? tempFilter : filterActive, -1, true);
+						pane._updatePane(select, !tempFilter ? tempFilter : filterActive, true);
 					}
 				}
 
@@ -446,7 +452,7 @@ export default class SearchPanes {
 	 */
 	private _attachMessage(): Node {
 		// Create a message to display on the screen
-		let emptyMessage = $('<div/>');
+		let emptyMessage = $('<div/>').addClass(this.classes.emptyMessage);
 		let message;
 
 		try {
@@ -458,16 +464,17 @@ export default class SearchPanes {
 		// If the message is an empty string then searchPanes.emptyPanes is undefined,
 		//  therefore the pane container should be removed from the display
 		if (message === null) {
-			$(this.dom.container).empty().addClass(this.classes.hide);
+			$(this.dom.container).addClass(this.classes.hide);
+			$(this.dom.titleRow).removeClass(this.classes.hide);
 			return;
 		}
 		else {
 			$(this.dom.container).removeClass(this.classes.hide);
+			$(this.dom.titleRow).addClass(this.classes.hide);
 		}
 
 		// Otherwise display the message
-		emptyMessage[0].innerHTML = message;
-		$(this.dom.container).empty();
+		$(emptyMessage).text(message);
 		emptyMessage.appendTo(this.dom.container);
 		return this.dom.container;
 	}
@@ -505,6 +512,7 @@ export default class SearchPanes {
 
 	private _attachExtras(): Node {
 		$(this.dom.container).removeClass(this.classes.hide);
+		$(this.dom.titleRow).removeClass(this.classes.hide);
 		$(this.dom.titleRow).remove();
 		$(this.dom.title).appendTo(this.dom.titleRow);
 
@@ -529,6 +537,7 @@ export default class SearchPanes {
 			if (this.c.cascadePanes || this.c.viewTotal) {
 				this.redrawPanes();
 			}
+			this.s.filterPane = -1;
 		});
 
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
