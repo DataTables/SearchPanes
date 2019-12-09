@@ -65,7 +65,6 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
-		// DD-1285
 		it('Shown when rows removed', function() {
 			table
 				.rows()
