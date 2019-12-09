@@ -525,6 +525,16 @@ export default class SearchPane {
 		// If the variance is accceptable then display the search pane
 		this._displayPane();
 
+		// Here, when the state is loaded if the data object on the original table is empty,
+		//  then a state.clear() must have occurred, so delete all of the panes tables state objects too.
+		this.dom.dtP.on('stateLoadParams.dt', (e, settings, data) => {
+			if ($.isEmptyObject(table.state.loaded())) {
+				$.each(data, (index, value) => {
+					delete data[index];
+				});
+			}
+		});
+
 		// Declare the datatable for the pane
 		let errMode = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
@@ -680,6 +690,11 @@ export default class SearchPane {
 
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
+			if ($.isEmptyObject(data)) {
+				this.s.dtPane.state.clear();
+				console.log("clear")
+				return;
+			}
 			let selected = [];
 			let searchTerm;
 			let order;
