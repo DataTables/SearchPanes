@@ -692,7 +692,6 @@ export default class SearchPane {
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
 			if ($.isEmptyObject(data)) {
 				this.s.dtPane.state.clear();
-				console.log("clear")
 				return;
 			}
 			let selected = [];
@@ -830,12 +829,6 @@ export default class SearchPane {
 
 	/**
 	 * Appends all of the HTML elements to their relevant parent Elements
-	 * @param searchBox HTML Element for the searchBox
-	 * @param searchButton HTML Element for the searchButton
-	 * @param clear HTML Element for the clearButton
-	 * @param nameButton HTML Element for the nameButton
-	 * @param countButton HTML element for the countButton
-	 * @param dtP HTML element for the DataTable
 	 */
 	private _displayPane() {
 		let container = this.dom.container;

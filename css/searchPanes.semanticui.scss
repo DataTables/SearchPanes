@@ -1,13 +1,15 @@
-.ui.grid {
-    margin: 0px !important;
-    justify-content: space-evenly;
-}
+
 
 div.dtsp-panesContainer{
     padding: 5px;
     border: 2px solid #f0f0f0;
     border-radius: 10px;
     margin: 5px;
+
+    .ui.grid {
+        margin: 0px !important;
+        justify-content: space-evenly;
+    }
 
     div.dtsp-searchPanes{
 

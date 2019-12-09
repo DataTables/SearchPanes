@@ -1,23 +1,22 @@
-button.btn{
-    margin: 1px;
-}
-
-div.btn-group{
-    padding: 5px;
-
-    button.btn{
-        margin: 0;
-        height: 40px;
-    }
-}
-
 div.dtsp-searchPanes{
+    button.btn{
+        margin: 1px;
+    }
+
     button.dtsp-clearAll{
         max-width: 50px;
     }
 }
 
 div.dtsp-searchPane {
+    div.btn-group{
+        padding: 0px;
+    
+        button.btn{
+            margin: 0;
+            height: 40px;
+        }
+    }
     margin: 5px;
     div.dtsp-topRow{
         padding: 0px !important;
@@ -45,7 +44,6 @@ div.dtsp-searchPane {
 
     .input-group {
         height: 40px !important;
-        padding: 5px;
 
         .input-group-append{
             display: inline-block;
@@ -91,6 +89,10 @@ div.dtsp-searchPane {
             display: none;
         }
     }
+
+    div.badge{
+        min-width:30px;
+    }
 }
 
 div.dtsp-panes {
@@ -112,9 +114,7 @@ div.dtsp-panes {
 	}
 }
 
-div.badge{
-    min-width:30px;
-}
+
 
 @media screen and (max-width: 767px) {
 	

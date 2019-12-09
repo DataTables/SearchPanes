@@ -189,10 +189,6 @@ div.dtsp-searchPane{
 	}
 }
 
-div.container{
-    margin-bottom: 20px;
-}
-
 div.dtsp-searchPanes{
     display:flex;
 	flex-direction: row;
@@ -217,19 +213,14 @@ div.dtsp-searchPanes{
         min-width: 35px !important;
         height: 35px !important;
     }
-
+	.row{
+		display:flex;
+	}
+		
 }
 
-.row{
-    display:flex;
-}
 
-.button{
-    padding: 5px;
-    flex-grow:0;
-		flex-shrink:0;
-		flex-basis: 35px;
-}
+
 
 div.dtsp-panesContainer {
 	padding: 5px;
@@ -238,6 +229,12 @@ div.dtsp-panesContainer {
 	margin: 5px !important;
 	margin-bottom: 20px !important;
 	clear: both;
+	.button{
+		padding: 5px;
+		flex-grow:0;
+			flex-shrink:0;
+			flex-basis: 35px;
+	}
 
 	div.dtsp-title {
 		float: left;

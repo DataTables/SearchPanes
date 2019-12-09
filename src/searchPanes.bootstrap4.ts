@@ -44,7 +44,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	buttonGroup: 'btn-group col justify-content-end',
 	narrowButton: 'col-5',
 	disabledButton: 'disabled',
-	dull: 'disabled',
+	dull: '',
 	pane:{
 		container: 'table',
 	},
@@ -66,7 +66,7 @@ $.extend(true, DataTable.SearchPanes.classes, {
 	titleRow: 'row',
 	clearAll: 'dtsp-clearAll col-1 btn btn-light',
 	title: 'dtsp-title col-10',
-	panes: 'dtsp-panes container'
+	panes: 'dtsp-panes dtsp-container'
 })
 return DataTable.searchPanes;
 }));
