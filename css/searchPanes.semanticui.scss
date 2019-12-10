@@ -1,4 +1,4 @@
-
+@import './common.scss';
 
 div.dtsp-panesContainer{
     padding: 5px;
@@ -31,7 +31,7 @@ div.dtsp-panesContainer{
                     margin-top: 3px;
 
                     .ui.icon{
-                        width: 100%;
+                        width: 98%;
                     }
                 }
                 
@@ -43,7 +43,7 @@ div.dtsp-panesContainer{
                 }
 
                 .ui.icon {
-                    width: auto;
+                    width: 98%;
                     padding: 0px;
 
                     input.dtsp-search{

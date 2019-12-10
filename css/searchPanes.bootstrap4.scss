@@ -1,4 +1,12 @@
+@import './common.scss';
 div.dtsp-searchPanes{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: flex-start;
+    align-items: stretch;
+    clear: both;
     button.btn{
         margin: 1px;
     }
@@ -9,6 +17,30 @@ div.dtsp-searchPanes{
 }
 
 div.dtsp-searchPane {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow:1;
+    flex-shrink:0;
+    flex-basis: 280px;
+    justify-content: space-around;
+    align-content: flex-start;
+    align-items: stretch;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 0.9em;
+    
+    div.dataTables_wrapper {
+        flex: 1;
+        margin: 1em 0.5%;
+        margin-top: 0px;
+
+        div.dataTables_filter {
+            display: none;
+        }
+    }
     div.btn-group{
         padding: 0px;
     
@@ -44,6 +76,7 @@ div.dtsp-searchPane {
 
     .input-group {
         height: 40px !important;
+        padding: 0px !important;
 
         .input-group-append{
             display: inline-block;
@@ -88,6 +121,10 @@ div.dtsp-searchPane {
         div.dataTables_filter {
             display: none;
         }
+        div.row {
+            margin-left: -7px;
+            margin-right: -7px;
+        }
     }
 
     div.badge{
@@ -100,7 +137,11 @@ div.dtsp-panes {
 	border: 2px solid #f0f0f0;
 	border-radius: 10px;
 	margin: 5px;
-	clear: both;
+    clear: both;
+    
+    div.dtsp-titleRow {
+        padding-bottom: 4px;
+    }
 
 	div.dtsp-title {
 		float: left;
@@ -114,7 +155,61 @@ div.dtsp-panes {
 	}
 }
 
+div.dtsp-columns-1{
+	min-width: 98%;
+	max-width: 98%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+}
+div.dtsp-columns-2{
+	min-width: 48%;
+	max-width: 48%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+}
+div.dtsp-columns-3{
+	min-width: 31%;
+	max-width: 31%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+}
+div.dtsp-columns-4{
+	min-width: 23%;
+	max-width: 23%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+	div.dtsp-topRow{
+		flex-direction: column !important;
+	}
+}
+div.dtsp-columns-5{
+	min-width: 18%;
+	max-width: 18%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+	div.dtsp-topRow{
+		flex-direction: column !important;
+	}
+}
+div.dtsp-columns-6{
+	min-width: 15%;
+	max-width: 15%;
+	padding-left: 0.5%;
+	padding-right: 0.5%;
+	margin: 0px !important;
+	div.dtsp-topRow{
+		flex-direction: column !important;
+	}
+}
 
+div.dtsp-hidden {
+	display: none !important;
+}
 
 @media screen and (max-width: 767px) {
 	

@@ -1,3 +1,4 @@
+@import './common.scss';
 div.dtsp-searchPanes{
     div.row{
         margin-left: 0px;
@@ -24,13 +25,6 @@ div.dtsp-searchPane {
     margin: 10px;
     display: inline-block;
 
-    div.dtsp-topRow {
-        div.dtsp-subRows {
-            display: block;
-            padding: 0px !important;
-        }
-    }
-
     thead{
         display: none;
     }
@@ -53,6 +47,7 @@ div.dtsp-searchPane {
 
         .form-control{
             min-height: 40px;
+            width: 90%;
         }
 
         .input-group-btn{
@@ -171,7 +166,7 @@ div.dtsp-hidden{
 
 @media screen and (max-width: 640px) {
 	div.dtsp-searchPanes {
-			flex-direction: column !important;
+        flex-direction: column !important;
 	}
 	div.dtsp-searchPane{
 		max-width: 98% !important;

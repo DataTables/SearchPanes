@@ -36,7 +36,8 @@ export default class SearchPane {
 		searchLabelCont: 'dtsp-searchButtonCont',
 		selected: 'dtsp-selected',
 		smallGap: 'dtsp-smallGap',
-		subRows: 'dtsp-subRows',
+		subRow1: 'dtsp-subRow1',
+		subRow2: 'dtsp-subRow2',
 		subRowsContainer: 'dtsp-subRowsContainer',
 		title: 'dtsp-title',
 		topRow: 'dtsp-topRow',
@@ -147,7 +148,7 @@ export default class SearchPane {
 				(this.colExists
 					? $(table.column(this.colExists ? this.s.index : 0).header()).text()
 					: this.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
-			lower: $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowButton),
+			lower: $('<div/>').addClass(this.classes.subRow2).addClass(this.classes.narrowButton),
 			nameButton: $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
 			searchButton: $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>')
@@ -156,7 +157,7 @@ export default class SearchPane {
 			searchCont: $('<div/>').addClass(this.classes.searchCont),
 			searchLabelCont: $('<div/>').addClass(this.classes.searchLabelCont),
 			topRow: $('<div/>').addClass(this.classes.topRow),
-			upper: $('<div/>').addClass(this.classes.subRows).addClass(this.classes.narrowSearch),
+			upper: $('<div/>').addClass(this.classes.subRow1).addClass(this.classes.narrowSearch),
 		};
 
 		this.displayed = false;
@@ -381,20 +382,21 @@ export default class SearchPane {
 	 */
 	private _adjustTopRow(): void {
 		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
-		let subRows = this.dom.container.find('.dtsp-subRows');
+		let subRow1 = this.dom.container.find('.dtsp-subRow1');
+		let subRow2 = this.dom.container.find('.dtsp-subRow2');
 		let topRow = this.dom.container.find('.' + this.classes.topRow);
 
 		// If the width is 0 then it is safe to assume that the pane has not yet been displayed.
 		//  Even if it has, if the width is 0 it won't make a difference if it has the narrow class or not
 		if (($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) && $(subContainers[0]).width() !== 0) {
 			$(subContainers[0]).addClass(this.classes.narrow);
-			$(subRows[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
-			$(subRows[1]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
+			$(subRow1[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
+			$(subRow2[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
 		}
 		else {
 			$(subContainers[0]).removeClass(this.classes.narrow);
-			$(subRows[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
-			$(subRows[1]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
+			$(subRow1[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
+			$(subRow2[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
 		}
 	}
 
