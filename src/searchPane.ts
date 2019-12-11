@@ -239,17 +239,6 @@ export default class SearchPane {
 			this.s.index = details.mapping[this.s.index];
 		});
 
-		// If the table has been initialised then build the pane using the rebuildPane Method
-		if (this.s.dt.settings()[0]._bInitComplete) {
-			this.rebuildPane();
-		}
-		// Otherwise wait for it to initialise then build it
-		else {
-			this.s.dt.one('init.dtsp', () => {
-				this.rebuildPane();
-			});
-		}
-
 		return this;
 	}
 

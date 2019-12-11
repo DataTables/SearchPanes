@@ -76,7 +76,7 @@ export default class SearchPanes {
 		// Add extra elements to DOM object including clear
 		this.dom = {
 			clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
-			container: $('<div/>').addClass(this.classes.panes),
+			container: $('<div/>').addClass(this.classes.panes).text('Loading...'),
 			options: $('<div/>').addClass(this.classes.container),
 			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
@@ -115,17 +115,16 @@ export default class SearchPanes {
 			}
 		}
 
-		// Attach clear button and title bar to the document
-		this._attachExtras();
-		$(this.dom.container).append(this.dom.panes);
-
+		// If this internal property is true then the DataTable has been initialised already
 		if (this.s.dt.settings()[0]._bInitComplete) {
-			this._startup(table);
+			this._paneStartup(table);
 		}
 		else {
-			this.s.dt.one('init', () => {
-				this._startup(table);
-			});
+			// Otherwise add the paneStartup function to the list of functions that are to be run when the table is initialised
+			// This will garauntee that the panes are initialised before the init event and init Complete callback is fired
+			this.s.dt.settings()[0].aoInitComplete.push({fn: () => {
+				this._paneStartup(table);
+			}});
 		}
 	}
 
@@ -578,6 +577,15 @@ export default class SearchPanes {
 	 * @param table the parent table for which the searchPanes are being created
 	 */
 	private _startup(table) {
+		$(this.dom.container).text('');
+
+		// Attach clear button and title bar to the document
+		this._attachExtras();
+		$(this.dom.container).append(this.dom.panes);
+
+		for (let pane of this.panes) {
+			pane.rebuildPane();
+		}
 
 		this._updateFilterCount();
 		this._checkMessage();
@@ -650,6 +658,18 @@ export default class SearchPanes {
 		}
 
 		table.settings()[0]._searchPanes = this;
+	}
+
+	private _paneStartup (table) {
+		// Magic number of 500 is a guess at what will be fast
+		if (this.s.dt.page.info().recordsTotal <= 500) {
+			this._startup(table);
+		}
+		else {
+			setTimeout(() => {
+				this._startup(table);
+			}, 100);
+		}
 	}
 
 	/**
