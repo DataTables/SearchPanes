@@ -97,36 +97,13 @@ export default class SearchPanes {
 
 		this.getState();
 
-		// Create Panes
-		table
-			.columns(this.c.columns)
-			.eq(0)
-			.each((idx) => {
-				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout, this.dom.panes));
-			});
-
-		// If there is any extra custom panes defined then create panes for them too
-		let rowLength = table.columns().eq(0).toArray().length;
-
-		if (this.c.panes !== undefined) {
-			let paneLength = this.c.panes.length;
-
-			for (let i = 0; i < paneLength; i++) {
-				let id = rowLength + i;
-				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
-			}
-		}
-
-		// If this internal property is true then the DataTable has been initialised already
 		if (this.s.dt.settings()[0]._bInitComplete) {
-			this._paneStartup(table);
+			this._paneDeclare(table, paneSettings, opts);
 		}
 		else {
-			// Otherwise add the paneStartup function to the list of functions that are to be run when the table is initialised
-			// This will garauntee that the panes are initialised before the init event and init Complete callback is fired
-			this.s.dt.settings()[0].aoInitComplete.push({fn: () => {
-				this._paneStartup(table);
-			}});
+			table.on('preInit.dt', () => {
+				this._paneDeclare(table, paneSettings, opts);
+			});
 		}
 	}
 
@@ -636,7 +613,7 @@ export default class SearchPanes {
 		});
 
 		// Update the title bar to show how many filters have been selected
-		this.panes[0]._updateFilterCount();
+		this._updateFilterCount();
 
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
 		table.on('destroy.dtsps', () => {
@@ -662,6 +639,52 @@ export default class SearchPanes {
 		table.settings()[0]._searchPanes = this;
 	}
 
+	/**
+	 * Declares the instances of individual searchpanes dependant on the number of columns.
+	 * It is necessary to run this once preInit has completed otherwise no panes will be
+	 *  created as the column count will be 0.
+	 * @param table the DataTable api for the parent table
+	 * @param paneSettings the settings passed into the constructor
+	 * @param opts the options passed into the constructor
+	 */
+	private _paneDeclare(table, paneSettings, opts) {
+		// Create Panes
+		table
+			.columns(this.c.columns)
+			.eq(0)
+			.each((idx) => {
+				this.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout, this.dom.panes));
+			});
+
+		// If there is any extra custom panes defined then create panes for them too
+		let rowLength = table.columns().eq(0).toArray().length;
+
+		if (this.c.panes !== undefined) {
+			let paneLength = this.c.panes.length;
+
+			for (let i = 0; i < paneLength; i++) {
+				let id = rowLength + i;
+				this.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
+			}
+		}
+
+		// If this internal property is true then the DataTable has been initialised already
+		if (this.s.dt.settings()[0]._bInitComplete) {
+			this._paneStartup(table);
+		}
+		else {
+			// Otherwise add the paneStartup function to the list of functions that are to be run when the table is initialised
+			// This will garauntee that the panes are initialised before the init event and init Complete callback is fired
+			this.s.dt.settings()[0].aoInitComplete.push({fn: () => {
+				this._paneStartup(table);
+			}});
+		}
+	}
+
+	/**
+	 * Runs the start up functions for the panes to enable listeners and populate panes
+	 * @param table the DataTable api for the parent Table
+	 */
 	private _paneStartup(table) {
 		// Magic number of 500 is a guess at what will be fast
 		if (this.s.dt.page.info().recordsTotal <= 500) {
@@ -683,7 +706,7 @@ export default class SearchPanes {
 		// Add the number of all of the filters throughout the panes
 		for (let pane of this.panes) {
 			if (pane.s.dtPane !== undefined) {
-				filterCount += pane._updateFilterCount();
+				filterCount += pane._getPaneCount();
 			}
 		}
 

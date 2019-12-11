@@ -786,7 +786,6 @@ export default class SearchPane {
 		// Deselect all rows which are selected and update the table and filter count.
 		this.s.dtPane.rows({selected: true}).deselect();
 		this._updateTable();
-		this._updateFilterCount();
 		return this;
 	}
 
@@ -1039,7 +1038,6 @@ export default class SearchPane {
 	 */
 	private _makeSelection() {
 		this._updateTable();
-		this._updateFilterCount();
 		this.s.updating = true;
 		this.s.dt.draw();
 		this.s.updating = false;
@@ -1495,7 +1493,7 @@ export default class SearchPane {
 	/**
 	 * Updates the number of filters that have been applied in the title
 	 */
-	private _updateFilterCount() {
+	private _getPaneCount() {
 		return this.s.dtPane !== undefined ?
 			this.s.dtPane.rows({selected: true}).data().toArray().length :
 			0;
