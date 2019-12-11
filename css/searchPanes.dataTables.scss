@@ -6,6 +6,7 @@ div.dtsp-panesContainer {
 	border-radius: 10px;
 	margin: 5px;
 	clear: both;
+	text-align: center;
 
 	div.dtsp-searchPanes {
 		display:flex;
@@ -15,6 +16,7 @@ div.dtsp-panesContainer {
 		align-content: flex-start;
 		align-items: stretch;
 		clear: both;
+		text-align: start;
 
 		div.dtsp-hidden{
 			display: none !important;

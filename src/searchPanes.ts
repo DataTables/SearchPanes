@@ -76,7 +76,9 @@ export default class SearchPanes {
 		// Add extra elements to DOM object including clear
 		this.dom = {
 			clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
-			container: $('<div/>').addClass(this.classes.panes).text('Loading...'),
+			container: $('<div/>').addClass(this.classes.panes).text(
+				table.i18n('searchPanes.loadMessage', 'Loading Search Panes...')
+			),
 			options: $('<div/>').addClass(this.classes.container),
 			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
@@ -660,7 +662,7 @@ export default class SearchPanes {
 		table.settings()[0]._searchPanes = this;
 	}
 
-	private _paneStartup (table) {
+	private _paneStartup(table) {
 		// Magic number of 500 is a guess at what will be fast
 		if (this.s.dt.page.info().recordsTotal <= 500) {
 			this._startup(table);
