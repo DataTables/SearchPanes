@@ -91,7 +91,7 @@ export default class SearchPanes {
 		};
 
 		table.settings()[0]._searchPanes = this;
-		this.dom.clearAll[0].innerHTML = table.i18n('searchPanes.clearMessage', 'Clear All');
+		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', 'Clear All'));
 
 		this.getState();
 
@@ -120,11 +120,11 @@ export default class SearchPanes {
 		$(this.dom.container).append(this.dom.panes);
 
 		if (this.s.dt.settings()[0]._bInitComplete) {
-			this._startup(table, paneSettings, opts);
+			this._startup(table);
 		}
 		else {
 			this.s.dt.one('init', () => {
-				this._startup(table, paneSettings, opts);
+				this._startup(table);
 			});
 		}
 	}
@@ -156,12 +156,16 @@ export default class SearchPanes {
 		}
 
 		let returnArray = [];
+
 		// For every pane, clear the selections in the pane
 		for (let pane of this.panes) {
 			if (pane.s.dtPane !== undefined) {
 				returnArray.push(pane._clearPane());
 			}
 		}
+
+		this.s.dt.draw();
+
 		return returnArray;
 	}
 
@@ -177,15 +181,17 @@ export default class SearchPanes {
 	 */
 	public rebuild(targetIdx = false): SearchPane | SearchPane[] {
 		// As a rebuild from scratch is required, empty the searchpanes container.
-		// this.dom.container.empty();
 		let returnArray: SearchPane[] = [];
+
+		this.clearSelections();
+
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
 		for (let pane of this.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
 				continue;
 			}
+
 			pane.clearData();
-			// pane.removePane();
 			returnArray.push(pane.rebuildPane());
 		}
 
@@ -218,18 +224,27 @@ export default class SearchPanes {
 
 			// If the number of rows currently visible is equal to the number of rows in the table
 			//  then there can't be any filtering taking place
-			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length
-				|| this.selectionList === undefined) {
+			if (
+				table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length
+				|| this.selectionList === undefined
+			) {
 				filterActive = false;
 				this.selectionList = [];
 			}
+			// Otherwise if viewTotal is active then it is necessary to determine which panes a select is present in.
+			//  If there is only one pane with a selection present then it should not show the filtered message as
+			//  more selections may be made in that pane.
 			else if (this.c.viewTotal) {
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let selectLength = pane.s.dtPane.rows({selected: true}).data().toArray().length;
+
+						// If filterPane === -1 then a pane with a selection has not been found yet, so set filterPane to that panes index
 						if (selectLength > 0 && filterPane === -1) {
 							filterPane = pane.s.index;
 						}
+						// Then if another pane is found with a selection then set filterPane to null to
+						//  show that multiple panes have selections present
 						else if (selectLength > 0) {
 							filterPane = null;
 						}
@@ -237,7 +252,6 @@ export default class SearchPanes {
 				}
 			}
 
-			// Update every pane with a table defined
 			let select = false;
 			let deselectIdx;
 			let newSelectionList = [];
@@ -262,31 +276,39 @@ export default class SearchPanes {
 						}
 					}
 				}
+
 				// Remove selections from the list from the pane where a deselect has taken place
 				for (let i = 0; i < this.selectionList.length; i++) {
 					if (this.selectionList[i].index !== deselectIdx || this.selectionList[i].protect === true) {
 						let further = false;
+
+						// Find out if this selection is the last one in the list for that pane
 						for (let j = i + 1; j < this.selectionList.length; j++) {
 							if (this.selectionList[j].index === this.selectionList[i].index) {
 								further = true;
 							}
 						}
+
+						// If there are no selections for this pane in the list then just push this one
 						if (!further) {
 							newSelectionList.push(this.selectionList[i]);
 							this.selectionList[i].protect = false;
 						}
 					}
 				}
+
 				// Update all of the panes to reflect the current state of the filters
 				for (let pane of this.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let tempFilter = true;
 						pane.s.filteringActive = true;
-						if (((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index) || filterActive === false) {
+
+						if ((filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) || filterActive === false) {
 							tempFilter = false;
 							pane.s.filteringActive = false;
 						}
-						pane._updatePane(select, !tempFilter ? false : filterActive, true);
+
+						pane._updatePane(!tempFilter ? false : filterActive, true);
 					}
 				}
 
@@ -303,11 +325,13 @@ export default class SearchPanes {
 						if (paneUpdate.s.dtPane !== undefined) {
 							let tempFilter = true;
 							paneUpdate.s.filteringActive = true;
+
 							if ((filterPane !== -1 && filterPane !== null && filterPane === paneUpdate.s.index) || filterActive === false) {
 								tempFilter = false;
 								paneUpdate.s.filteringActive = false;
 							}
-							paneUpdate._updatePane(select, !tempFilter ? tempFilter : filterActive, true);
+
+							paneUpdate._updatePane(!tempFilter ? tempFilter : filterActive, true);
 						}
 					}
 				}
@@ -317,11 +341,13 @@ export default class SearchPanes {
 					if (pane.s.dtPane !== undefined) {
 						let tempFilter = true;
 						pane.s.filteringActive = true;
-						if (((filterPane !== -1 && filterPane !== null) && filterPane === pane.s.index) || filterActive === false) {
+
+						if ((filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) || filterActive === false) {
 							tempFilter = false;
 							pane.s.filteringActive = false;
 						}
-						pane._updatePane(select, !tempFilter ? tempFilter : filterActive, true);
+
+						pane._updatePane(!tempFilter ? tempFilter : filterActive, true);
 					}
 				}
 
@@ -331,57 +357,66 @@ export default class SearchPanes {
 		}
 	}
 
+	/**
+	 * Gets the selection list from the previous state and stores it in the selectionList Property
+	 */
 	private getState() {
 		let loadedFilter = this.s.dt.state.loaded();
+
 		if (loadedFilter && loadedFilter.searchPanes) {
 			this.selectionList = loadedFilter.searchPanes.selectionList;
 		}
 	}
 
+	/**
+	 * Prepares the panes for selections to be made when cascade is active and a deselect has occured
+	 * @param newSelectionList the list of selections which are to be made
+	 */
 	private _cascadeRegen(newSelectionList) {
-			// Set this to true so that the actions taken do not cause this to run until it is finished
-			this.regenerating = true;
+		// Set this to true so that the actions taken do not cause this to run until it is finished
+		this.regenerating = true;
 
-			// Load in all of the searchBoxes in the documents
-			let searches = document.getElementsByClassName(this.classes.search);
+		// If only one pane has been selected then take note of its index
+		let solePane = -1;
+		if (newSelectionList.length === 1) {
+			solePane = newSelectionList[0].index;
+		}
 
-			// if only one pane has been selected then take not of its index
-			let solePane = -1;
-			if (newSelectionList.length === 1) {
-				solePane = newSelectionList[0].index;
+		// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
+		//  and clear all of the previous selections in the pane
+		for (let pane of this.panes) {
+			pane.setCascadeRegen(true);
+			pane.setClear(true);
+
+			// If this is the same as the pane with the only selection then pass it as a parameter into _clearPane
+			if (pane.s.dtPane !== undefined && pane.s.index === solePane) {
+				pane._clearPane(solePane);
+			}
+			else if (pane.s.dtPane !== undefined) {
+				pane._clearPane();
 			}
 
-			// Let the pane know that a cascadeRegen is taking place to avoid unexpected behaviour
-			//  and clear all of the previous selections in the pane
-			for (let pane of this.panes) {
-				pane.setCascadeRegen(true);
-				pane.setClear(true);
+			pane.setClear(false);
+		}
 
-				// If this is the same as the pane with the only selection then pass it as a parameter into _clearPane
-				if (pane.s.dtPane !== undefined && pane.s.index === solePane) {
-					pane._clearPane(solePane);
-				}
-				else if (pane.s.dtPane !== undefined) {
-					pane._clearPane();
-				}
+		// Remake Selections
+		this._makeCascadeSelections(newSelectionList);
 
-				pane.setClear(false);
-			}
+		// Set the selection list property to be the list without the selections from the deselect pane
+		this.selectionList = newSelectionList;
 
-			// Remake Selections
-			this._makeCascadeSelections(newSelectionList);
+		// The regeneration of selections is over so set it back to false
+		for (let pane of this.panes) {
+			pane.setCascadeRegen(false);
+		}
 
-			// Set the selection list property to be the list without the selections from the deselect pane
-			this.selectionList = newSelectionList;
-
-			// The regeneration of selections is over so set it back to false
-			for (let pane of this.panes) {
-				pane.setCascadeRegen(false);
-			}
-
-			this.regenerating = false;
+		this.regenerating = false;
 	}
 
+	/**
+	 * Makes all of the selections when cascade is active
+	 * @param newSelectionList the list of selections to be made, in the order they were originally selected
+	 */
 	private _makeCascadeSelections(newSelectionList) {
 		// make selections in the order they were made previously, excluding those from the pane where a deselect was made
 		for (let selection of newSelectionList) {
@@ -390,17 +425,18 @@ export default class SearchPanes {
 			for (let pane of this.panes) {
 				if (pane.s.index === selection.index && pane.s.dtPane !== undefined) {
 					let paneSelect = -1;
+
 					if (newSelectionList.length === 1) {
 						paneSelect = this.s.index;
 					}
+
 					// if there are any selections currently in the pane then deselect them as we are about to make our new selections
-					if (pane.s.dtPane.rows({selected: true}).data().toArray().length > 0) {
+					if (pane.s.dtPane.rows({selected: true}).data().toArray().length > 0 && pane.s.dtPane !== undefined) {
 						pane.setClear(true);
-						if (pane.s.dtPane !== undefined) {
-							pane._clearPane(paneSelect);
-						}
+						pane._clearPane(paneSelect);
 						pane.setClear(false);
 					}
+
 					// select every row in the pane that was selected previously
 					for (let row of selection.rows) {
 						pane.s.dtPane.rows().every((rowIdx) => {
@@ -415,6 +451,8 @@ export default class SearchPanes {
 				}
 			}
 		}
+
+		// Make sure that the state is saved after all of these selections
 		this.s.dt.state.save();
 	}
 
@@ -440,9 +478,11 @@ export default class SearchPanes {
 
 		// Attach everything to the document
 		$(this.dom.panes).appendTo(this.dom.container);
+
 		if ($('div.' + this.classes.container).length === 0) {
 			$(this.dom.container).prependTo(this.s.dt);
 		}
+
 		return this.dom.container;
 	}
 
@@ -457,7 +497,8 @@ export default class SearchPanes {
 
 		try {
 			message = this.s.dt.i18n('searchPanes.emptyPanes', 'No SearchPanes');
-		} catch (error) {
+		}
+		catch (error) {
 			message = null;
 		}
 
@@ -483,20 +524,22 @@ export default class SearchPanes {
 	 * Attaches the panes to the document and displays a message or hides if there are none
 	 */
 	private _attachPaneContainer(): Node {
-
 		// If a pane is to be displayed then attach the normal pane output
 		if (this.panes !== undefined) {
 			for (let pane of this.panes) {
 				if (pane.displayed === true) {
 					return this._attach();
-					break;
 				}
 			}
 		}
+
 		// Otherwise attach the custom message or remove the container from the display
 		return this._attachMessage();
 	}
 
+	/**
+	 * Attaches the message to the document but does not add any panes
+	 */
 	private _checkMessage() {
 		// If a pane is to be displayed then attach the normal pane output
 		if (this.panes !== undefined) {
@@ -506,10 +549,14 @@ export default class SearchPanes {
 				}
 			}
 		}
+
 		// Otherwise attach the custom message or remove the container from the display
 		return this._attachMessage();
 	}
 
+	/**
+	 * Attach the top row containing the filter count and clear all button
+	 */
 	private _attachExtras(): Node {
 		$(this.dom.container).removeClass(this.classes.hide);
 		$(this.dom.titleRow).removeClass(this.classes.hide);
@@ -526,7 +573,11 @@ export default class SearchPanes {
 		return this.dom.container;
 	}
 
-	private _startup(table, paneSettings, opts) {
+	/**
+	 * Initialises the tables previous/preset selections and initialises callbacks for events
+	 * @param table the parent table for which the searchPanes are being created
+	 */
+	private _startup(table) {
 
 		this._updateFilterCount();
 		this._checkMessage();
@@ -540,6 +591,7 @@ export default class SearchPanes {
 			this.s.filterPane = -1;
 		});
 
+		// Whenever a state save occurs store the selection list in the state object
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
 			if (data.searchPanes === undefined) {
 				data.searchPanes = {};
@@ -567,7 +619,7 @@ export default class SearchPanes {
 				for (let i = 0; i < tableLength; i++) {
 					if (this.panes[idx].s.colOpts.preSelect.indexOf(this.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
 						this.panes[idx].s.dtPane.row(i).select();
-						this.panes[idx]._updateTable(true);
+						this.panes[idx]._updateTable();
 					}
 				}
 			}
@@ -583,6 +635,7 @@ export default class SearchPanes {
 					pane.destroy();
 				}
 			}
+
 			table.off('.dtsps');
 			$(this.dom.clearAll).off('.dtsps');
 			$(this.dom.container).remove();
@@ -614,7 +667,7 @@ export default class SearchPanes {
 
 		// Run the message through the internationalisation method to improve readability
 		let message = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
-		this.dom.title[0].innerHTML = (message);
+		$(this.dom.title).text(message);
 		this.c.filterChanged(filterCount);
 	}
 }
