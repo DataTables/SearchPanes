@@ -31,7 +31,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				.DataTable()
 				.search('Ashton Cox')
 				.draw();
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
 		});
 
 		dt.html('basic');
@@ -53,9 +53,9 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 			expect($('div.dataTables_length').length).toBe(1);
 		});
 		it('... and you can page', function() {
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
 			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Financial Controller');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Financial Controller');
 		});
 
 		dt.html('basic');
@@ -82,9 +82,9 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 			expect($('div.dataTables_length').length).toBe(0);
 		});
 		it('... and you can page', function() {
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
 			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Financial Controller');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Financial Controller');
 		});
 
 		dt.html('basic');

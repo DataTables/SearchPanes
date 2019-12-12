@@ -27,13 +27,13 @@ describe('searchPanes - options - columns.searchPanes.hideCount', function() {
 				]
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) td.dtsp-countColumn').length).toBe(33);
+			expect($('div.dtsp-searchPane:eq(1) td.dtsp-nameColumn span.dtsp-pill').length).toBe(33);
 		});
 		it('Check false', function() {
-			expect($('div.dtsp-searchPane:eq(2) td.dtsp-countColumn').length).toBe(7);
+			expect($('div.dtsp-searchPane:eq(2) td.dtsp-nameColumn span.dtsp-pill').length).toBe(7);
 		});
 		it('Check true', function() {
-			expect($('div.dtsp-searchPane:eq(3) td.dtsp-countColumn').length).toBe(0);
+			expect($('div.dtsp-searchPane:eq(3) td.dtsp-nameColumn span.dtsp-pill').length).toBe(0);
 		});
 	});
 });

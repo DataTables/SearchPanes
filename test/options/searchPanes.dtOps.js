@@ -21,14 +21,14 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').val()).toBe('Developer');
 
 			$('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').trigger('input');
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Developer');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Developer');
 		});
 		it('... and you can search with API', function() {
 			$('div.dtsp-searchPane:eq(1) table')
 				.DataTable()
 				.search('Junior Technical Author')
 				.draw();
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Junior Technical Author');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Junior Technical Author');
 		});
 
 		dt.html('basic');
@@ -50,7 +50,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				.DataTable()
 				.search('Ashton Cox')
 				.draw();
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
 		});
 
 		dt.html('basic');
@@ -76,9 +76,9 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 			expect($('div.dataTables_length').length).toBe(3);
 		});
 		it('... and you can page', function() {
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
 			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
-			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Financial Controller');
+			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Financial Controller');
 		});
 
 		dt.html('basic');

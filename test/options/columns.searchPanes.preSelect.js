@@ -49,12 +49,12 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 		});
 		it('When all present values', function() {
 			expect($('div.dtsp-searchPane:eq(2) tr.selected').length).toBe(2);
-			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(0) td:eq(0)').text()).toBe('New York');
-			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(1) td:eq(0)').text()).toBe('San Francisco');
+			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('New York');
+			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(1) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('San Francisco');
 		});
 		it('When absent and present values', function() {
 			expect($('div.dtsp-searchPane:eq(3) tr.selected').length).toBe(1);
-			expect($('div.dtsp-searchPane:eq(3) tr.selected:eq(0) td:eq(0)').text()).toBe('66');
+			expect($('div.dtsp-searchPane:eq(3) tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('66');
 		});
 		it('Ensure search performed', function() {
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
@@ -62,7 +62,7 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 		it('Ensure selections not fixed', function() {
 			$('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').click();
 			expect($('div.dtsp-searchPane:eq(2) tr.selected').length).toBe(1);
-			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(0) td:eq(0)').text()).toBe('Edinburgh');
+			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Edinburgh');
 		});
 		it('Ensure search performed', function() {
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('No matching records found');

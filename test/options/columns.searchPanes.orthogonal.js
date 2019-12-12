@@ -24,8 +24,8 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 				]
 			});
 
-			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').text()).toBe('panes Edinburgh');
-			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(1)').text()).toBe('9');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('panes Edinburgh');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('9');
 		});
 		it('Check filter of rendered options', function() {
 			$('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').click();
@@ -72,8 +72,8 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 			expect($('div.dtsp-searchPane.dtsp-hidden').length).toBe(4);
 		});
 		it('Check contents as expected', function() {
-			expect($('div.dtsp-searchPane:eq(0) tbody tr:eq(0) td:eq(0)').text()).toBe('Aaron Aardvark');
-			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').text()).toBe('Atlanta; Aspen');
+			expect($('div.dtsp-searchPane:eq(0) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Aaron Aardvark');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Atlanta; Aspen');
 		});
 	});
 });

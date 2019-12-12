@@ -20,12 +20,12 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 	});
 
 	function checkTopRows(position, office, age, custom = undefined) {
-		expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(1)').text()).toBe(position);
-		expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(1)').text()).toBe(office);
-		expect($('div.dtsp-searchPane:eq(3) tbody tr:eq(0) td:eq(1)').text()).toBe(age);
+		expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(position);
+		expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(office);
+		expect($('div.dtsp-searchPane:eq(3) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(age);
 
 		if (custom !== undefined) {
-			expect($('div.dtsp-searchPane:eq(6) tbody tr:eq(0) td:eq(1)').text()).toBe(custom);
+			expect($('div.dtsp-searchPane:eq(6) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(custom);
 		}
 	}
 
@@ -80,7 +80,7 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			});
 
 			expect($('div.dtsp-searchPane').length).toBe(7);
-			expect($('div.dtsp-searchPane:eq(6) tbody tr:eq(0) td:eq(0)').text()).toBe('unittest');
+			expect($('div.dtsp-searchPane:eq(6) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('unittest');
 			checkTopRows('2', '9', '1', '1');
 		});
 		it('Add a row - no changed', function() {

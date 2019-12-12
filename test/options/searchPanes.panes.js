@@ -83,11 +83,11 @@ describe('searchPanes - options - searchPanes.panes', function() {
 			expect($('div.dtsp-searchPane table tbody tr').length).toBe(2);
 		});
 		it('... both have correct counts', function() {
-			expect($('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').text()).toBe('test cox');
-			expect($('div.dtsp-searchPane table tbody tr:eq(0) td:eq(1)').text()).toBe('1');
+			expect($('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('test cox');
+			expect($('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('1');
 
-			expect($('div.dtsp-searchPane table tbody tr:eq(1) td:eq(0)').text()).toBe('test london');
-			expect($('div.dtsp-searchPane table tbody tr:eq(1) td:eq(1)').text()).toBe('12');
+			expect($('div.dtsp-searchPane table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('test london');
+			expect($('div.dtsp-searchPane table tbody tr:eq(1) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('12');
 		});
 		it('... can perform search', function() {
 			$('div.dtsp-searchPane:not(.dtsp-hidden) table tbody tr:eq(0) td:eq(0)').click();

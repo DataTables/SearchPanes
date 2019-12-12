@@ -20,6 +20,7 @@ export default class SearchPane {
 			selected: 'dtsp-selected'
 		},
 		layout: 'dtsp-',
+		name: 'dtsp-name',
 		narrow: 'dtsp-narrow',
 		pane: {
 			active: 'dtsp-filtering',
@@ -240,13 +241,6 @@ export default class SearchPane {
 		});
 
 		return this;
-	}
-
-	/**
-	 * Adjusts the width of the columns
-	 */
-	public adjust(): void {
-		this.s.dtPane.columns.adjust();
 	}
 
 	/**
@@ -512,6 +506,7 @@ export default class SearchPane {
 			{
 				columnDefs: [
 					{
+						className: 'dtsp-nameColumn',
 						data: 'display',
 						render: (data, type, row) => {
 							if (type === 'sort') {
@@ -520,22 +515,7 @@ export default class SearchPane {
 							else if (type === 'type') {
 								return row.type;
 							}
-							return !this.c.dataLength ?
-								data : data.length > this.c.dataLength ?
-								data.substr(0, this.c.dataLength) + '...' :
-								data;
-						},
-						targets: 0,
-						// Accessing the private datatables property to set type based on the original table.
-						// This is null if not defined by the user, meaning that automatic type detection would take place
-						type: table.settings()[0].aoColumns[this.s.index] !== undefined ?
-							table.settings()[0].aoColumns[this.s.index]._sManualType :
-							null,
-					},
-					{
-						className: 'dtsp-countColumn ' + this.classes.badgePill,
-						data: 'count',
-						render: (data, type, row) => {
+
 							let message;
 							this.s.filteringActive && this.c.viewTotal
 								? message = filteredMessage.replace(/{total}/, row.total)
@@ -550,9 +530,42 @@ export default class SearchPane {
 								message = message.replace(/{shown}/, row.shown);
 							}
 
-							return '<div class="' + this.classes.pill + '">' + message + '</div>';
+							// We are displaying the count in the same columne as the name of the search option.
+							// This is so that there is not need to call columns.adjust(), which in turn speeds up the code
+							let displayMessage = '';
+							let pill = '<span class="' + this.classes.pill + '">' + message + '</span>';
+
+							if (this.c.hideCount || colOpts.hideCount) {
+								pill = '';
+							}
+
+							if (!this.c.dataLength) {
+								displayMessage = '<span class="' + this.classes.name + '">' + data + '</span>' + pill;
+							}
+							else if (data.length > this.c.dataLength) {
+								displayMessage = '<span class="' + this.classes.name + '">'
+												+ data.substr(0, this.c.dataLength) + '...'
+												+ '</span>'
+												+ pill;
+							}
+							else {
+								displayMessage = '<span class="' + this.classes.name + '">' + data  + '</span>' + pill;
+							}
+
+							return displayMessage;
 						},
+						targets: 0,
+						// Accessing the private datatables property to set type based on the original table.
+						// This is null if not defined by the user, meaning that automatic type detection would take place
+						type: table.settings()[0].aoColumns[this.s.index] !== undefined ?
+							table.settings()[0].aoColumns[this.s.index]._sManualType :
+							null,
+					},
+					{
+						className: 'dtsp-countColumn ' + this.classes.badgePill,
+						data: 'total',
 						targets: 1,
+						visible: false
 					}
 				],
 				deferRender: true,
@@ -637,11 +650,6 @@ export default class SearchPane {
 
 		// Display the pane
 		this.s.dtPane.draw();
-
-		// Hide the count column if that is desired
-		if (colOpts.hideCount || this.c.hideCount) {
-			this.s.dtPane.column(1).visible(false);
-		}
 
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.

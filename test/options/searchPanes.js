@@ -69,7 +69,7 @@ describe('searchPanes - options - searchPanes', function() {
 			table.column(1).visible(false);
 			table.searchPanes.rebuildPane();
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
 		});
 	});
 });

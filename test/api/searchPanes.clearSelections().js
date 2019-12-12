@@ -58,21 +58,21 @@ describe('searchPanes - api - searchPanes.clearSelections()', function() {
 		it('Change order', function() {
 			$('div.dtsp-searchPanes div.dtsp-buttonGroup button:eq(1)').click();
 
-			expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').text()).toBe('Technical Author');
+			expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Technical Author');
 		});
 		it('... and it remains', function() {
 			table.searchPanes.clearSelections();
-			expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').text()).toBe('Technical Author');
+			expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Technical Author');
 		});
 		it('Search in the pane', function() {
 			$('div.dtsp-searchPane:eq(2) input').val('London');
 			$('div.dtsp-searchPane:eq(2) input').trigger('input');
 
-			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').text()).toBe('London');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('London');
 		});
 		it('... and it remains', function() {
 			table.searchPanes.clearSelections();
-			expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').text()).toBe('Technical Author');
+			expect($('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Technical Author');
 		});
 	});
 });

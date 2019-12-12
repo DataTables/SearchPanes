@@ -14,7 +14,7 @@ describe('searchPanes - options - searchPanes.dataLength', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').text()).toBe(
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
 				'123456789012345678901234567890...'
 			);
 		});
@@ -29,7 +29,7 @@ describe('searchPanes - options - searchPanes.dataLength', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').text()).toBe('123456789012345...');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('123456789012345...');
 		});
 	});
 });

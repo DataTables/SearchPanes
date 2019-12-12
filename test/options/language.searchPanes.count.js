@@ -13,7 +13,7 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('2');
 		});
 
 		dt.html('basic');
@@ -27,7 +27,7 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 2');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2');
 		});
 
 		dt.html('basic');
@@ -41,7 +41,7 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 2 test 2');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2 test 2');
 		});
 
 		dt.html('basic');
@@ -55,7 +55,7 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 2 test 2');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2 test 2');
 		});
 
 		dt.html('basic');
@@ -70,7 +70,7 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 2');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2');
 		});
 	});
 });

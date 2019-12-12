@@ -108,18 +108,6 @@ export default class SearchPanes {
 	}
 
 	/**
-	 * Call the adjust function for all of the panes
-	 */
-	public adjust(): void {
-		// Adjust the width of the columns for all of the panes where the table is defined
-		for (let pane of this.panes) {
-			if (pane.s.dtPane !== undefined) {
-				pane.adjust();
-			}
-		}
-	}
-
-	/**
 	 * Clear the selections of all of the panes
 	 */
 	public clearSelections(): any[] {
@@ -176,8 +164,6 @@ export default class SearchPanes {
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
 		this._attachPaneContainer();
-
-		(DataTable as any).tables({visible: true, api: true}).columns.adjust();
 
 		// If a single pane has been rebuilt then return only that pane
 		if (returnArray.length === 1) {

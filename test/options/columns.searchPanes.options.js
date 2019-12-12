@@ -66,8 +66,8 @@ describe('searchPanes - options - columns.searchPanes.options', function() {
 			expect($('div.dtsp-searchPane tbody tr').length).toBe(6);
 		});
 		it('Check label of options', function() {
-			expect($('div.dtsp-searchPane tbody tr:eq(0) td:eq(0)').text()).toBe('20 to 30');
-			expect($('div.dtsp-searchPane tbody tr:eq(0) td:eq(1)').text()).toBe('16');
+			expect($('div.dtsp-searchPane tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('20 to 30');
+			expect($('div.dtsp-searchPane tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('16');
 		});
 		it('Check filter of options', function() {
 			$('div.dtsp-searchPane tbody tr:eq(0) td:eq(0)').click();

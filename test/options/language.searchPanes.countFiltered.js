@@ -17,8 +17,8 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').text()).toBe('0 (9)');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('2');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('0 (9)');
 		});
 
 		dt.html('basic');
@@ -36,8 +36,8 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 9');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('2');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 9');
 		});
 
 
@@ -56,8 +56,8 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 9 test 9');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('2');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 9 test 9');
 		});
 
 		dt.html('basic');
@@ -75,8 +75,8 @@ describe('searchPanes - options - language.searchPanes.countFiltered', function(
 			});
 
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(1)').text()).toBe('2');
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(1)').text()).toBe('unit 9 test 0');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('2');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 9 test 0');
 		});
 	});
 });

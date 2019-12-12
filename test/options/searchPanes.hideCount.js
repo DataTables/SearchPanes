@@ -13,7 +13,7 @@ describe('searchPanes - options - searchPanes.hideCount', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('td.dtsp-countColumn').length).toBe(73);
+			expect($('td.dtsp-nameColumn span.dtsp-pill').length).toBe(73);
 		});
 
 		dt.html('basic');
@@ -25,7 +25,7 @@ describe('searchPanes - options - searchPanes.hideCount', function() {
 				}
 			});
 
-			expect($('td.dtsp-countColumn').length).toBe(73);
+			expect($('td.dtsp-nameColumn span.dtsp-pill').length).toBe(73);
 		});
 
 		dt.html('basic');
@@ -37,7 +37,7 @@ describe('searchPanes - options - searchPanes.hideCount', function() {
 				}
 			});
 
-			expect($('td.dtsp-countColumn').length).toBe(0);
+			expect($('td.dtsp-nameColumn span.dtsp-pill').length).toBe(0);
 		});
 	});
 });
