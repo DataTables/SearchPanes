@@ -121,10 +121,6 @@ div.dtsp-panesContainer {
 							display: block;
 							top: -2px;
 							right: 0px;
-							-webkit-transform: rotate(45deg); 
-							-moz-transform: rotate(45deg); 
-								-o-transform: rotate(45deg);
-									transform: rotate(45deg);
 							font-size: 16px;
 							margin-bottom: 0px;
 						}
@@ -174,20 +170,21 @@ div.dtsp-panesContainer {
 				}
 
 				td.dtsp-countColumn {
-					text-align: right;
-		
-					div.dtsp-pill {
-						background-color: #cfcfcf;
-						text-align: center;
-						border: 1px solid #cfcfcf;
-						border-radius: 10px;
-						width: auto;
-						display: inline-block;
-						min-width: 30px;
-						color: black;
-						font-size: 0.9em;
-						padding: 0 4px;
-					}
+					text-align: right;					
+				}
+
+				span.dtsp-pill {
+					float: right;
+					background-color: #cfcfcf;
+					text-align: center;
+					border: 1px solid #cfcfcf;
+					border-radius: 10px;
+					width: auto;
+					display: inline-block;
+					min-width: 30px;
+					color: black;
+					font-size: 0.9em;
+					padding: 0 4px;
 				}
 			}
 		

@@ -23,7 +23,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				]
 			});
 
-			expect($('span.dtsp-searchIcon').length).toBe(2);
+			expect($('button.dtsp-searchIcon').length).toBe(2);
 		});
 		it('... and you cannot search', function() {
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').attr('disabled')).toBe('disabled');

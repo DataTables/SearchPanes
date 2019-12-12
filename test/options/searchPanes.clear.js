@@ -54,7 +54,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 			});
 
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton').length).toBe(3);
-			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton:eq(1)').html()).toBe('🗛↕');
+			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-clearButton').length).toBe(0);
 		});
 
 		it('Check false - global clear', function() {

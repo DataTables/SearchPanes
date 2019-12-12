@@ -95,14 +95,11 @@ div.dtsp-searchPane{
     .dtsp-searchIcon{
 		position: relative;
 		display: inline-block;
-		margin: 4px;
+		margin: 0px;
+    	margin-top: 2px;
 		display: block;
 		top: -2px;
 		right: 0px;
-		-webkit-transform: rotate(45deg); 
-		-moz-transform: rotate(45deg); 
-			-o-transform: rotate(45deg);
-				transform: rotate(45deg);
 		font-size: 16px;
 		margin-bottom: 0px;
 	}
@@ -176,6 +173,10 @@ div.dtsp-searchPane{
     
     td.dtsp-countColumn {
 		text-align: right;
+	}
+
+	span.badge{
+		float: right;
 	}
 }
 

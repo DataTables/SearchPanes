@@ -9,7 +9,9 @@ export default class SearchPane {
 		buttonSub: 'dtsp-buttonSub',
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
+		clearButton: 'clearButton',
 		container: 'dtsp-searchPane',
+		countButton:'dtsp-countButton',
 		disabledButton: 'dtsp-disabledButton',
 		dull: 'dtsp-dull',
 		hidden: 'dtsp-hidden',
@@ -21,6 +23,7 @@ export default class SearchPane {
 		},
 		layout: 'dtsp-',
 		name: 'dtsp-name',
+		nameButton: 'dtsp-nameButton',
 		narrow: 'dtsp-narrow',
 		pane: {
 			active: 'dtsp-filtering',
@@ -135,18 +138,19 @@ export default class SearchPane {
 			clear: $('<button type="button">&#215;</button>')
 					.addClass(this.classes.dull)
 					.addClass(this.classes.paneButton)
-					.addClass(this.classes.exit),
+					.addClass(this.classes.exit)
+					.addClass(this.classes.clearButton),
 			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
 					(layVal < 7 ? layout : layout.split('-')[0] + '-6')),
-			countButton:  $('<button type="button">#↕</button>').addClass(this.classes.paneButton),
+			countButton:  $('<button type="button"></button>').addClass(this.classes.paneButton).addClass(this.classes.countButton),
 			dtP: $('<table><thead><tr><th>' +
 				(this.colExists
 					? $(table.column(this.colExists ? this.s.index : 0).header()).text()
 					: this.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
 			lower: $('<div/>').addClass(this.classes.subRow2).addClass(this.classes.narrowButton),
-			nameButton: $('<button type="button">&#128475;↕</button>').addClass(this.classes.paneButton),
+			nameButton: $('<button type="button"></button>').addClass(this.classes.paneButton).addClass(this.classes.nameButton),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
-			searchButton: $('<button type = "button"><span class="' + this.classes.searchIcon + '">⚲</span></button>')
+			searchButton: $('<button type = "button" class="' + this.classes.searchIcon + '"></button>')
 					.addClass(this.classes.paneButton)
 					.addClass(this.classes.searchLabel),
 			searchCont: $('<div/>').addClass(this.classes.searchCont),

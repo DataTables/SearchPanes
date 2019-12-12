@@ -13,7 +13,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('span.dtsp-searchIcon').length).toBe(3);
+			expect($('button.dtsp-searchIcon').length).toBe(3);
 		});
 		it('... and you can search with input', function() {
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').attr('disabled')).toBe(undefined);

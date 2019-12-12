@@ -75,7 +75,8 @@ div.dtsp-searchPane {
             tbody{
                 tr{
                     height: 20px;
-                    div.badge{
+                    span.badge{
+                        float: right;
                         min-width: 30px;
                         display: inline-block;
                         line-height:1;
@@ -91,7 +92,6 @@ div.dtsp-searchPane {
     .dtsp-searchIcon{
         display: block;
         position: relative;
-        transform: rotate(45deg) !important;
     }
 
     div.dataTables_wrapper {

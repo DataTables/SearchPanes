@@ -1,6 +1,6 @@
-
 @import './common.scss';
 div.dtsp-panesContainer {
+	font-family: 'Roboto', sans-serif;
 	padding: 5px;
 	border: 2px solid #f0f0f0;
 	border-radius: 10px;
@@ -112,10 +112,6 @@ div.dtsp-panesContainer {
 							display: block;
 							top: -2px;
 							right: 0px;
-							-webkit-transform: rotate(45deg); 
-							-moz-transform: rotate(45deg); 
-								-o-transform: rotate(45deg);
-									transform: rotate(45deg);
 							font-size: 16px;
 							margin-bottom: 0px;
 						}

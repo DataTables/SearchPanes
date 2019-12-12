@@ -91,6 +91,19 @@ div.dtsp-panesContainer{
                         td.dtsp-countColumn {
                             text-align: right;
                         }
+
+                        span.dtsp-pill {
+                            float: right;
+                            background-color: #cfcfcf;
+                            text-align: center;
+                            border: 1px solid #cfcfcf;
+                            border-radius: 10px;
+                            width: auto;
+                            min-width: 30px;
+                            color: black;
+                            font-size: 0.9em;
+                            padding: 0 4px;
+                        }
                     }
                 }
 
