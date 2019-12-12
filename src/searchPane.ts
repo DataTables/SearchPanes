@@ -1067,15 +1067,12 @@ export default class SearchPane {
 
 		// If cascadePanes or viewTotal are active it is necessary to get the data which is currently
 		//  being displayed for their functionality.
-		if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.clearing) {
-			table.rows({search: 'applied'}).every((rowIdx, tableLoop, rowLoop) => {
-				this._populatePaneArray(rowIdx, this.s.rowData.arrayFilter, settings);
-			});
-		}
-		else {
-			table.rows().every((rowIdx, tableLoop, rowLoop) => {
-				this._populatePaneArray(rowIdx, this.s.rowData.arrayFilter, settings);
-			});
+		let indexArray = (this.c.cascadePanes || this.c.viewTotal) && !this.s.clearing ?
+			table.rows({search: 'applied'}).indexes() :
+			table.rows().indexes();
+
+		for (let index = 0; index < indexArray.length; index++) {
+			this._populatePaneArray(indexArray[index], this.s.rowData.arrayFilter, settings);
 		}
 	}
 
