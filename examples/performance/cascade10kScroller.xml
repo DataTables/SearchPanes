@@ -28,7 +28,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Performance 10k with Scroller</title>
+<title lib="searchPanes">Cascade 10k with Scroller</title>
 
 <info><![CDATA[
 
