@@ -79,6 +79,7 @@ export default class SearchPanes {
 			container: $('<div/>').addClass(this.classes.panes).text(
 				table.i18n('searchPanes.loadMessage', 'Loading Search Panes...')
 			),
+			emptyMessage: $('<div/>').addClass(this.classes.emptyMessage),
 			options: $('<div/>').addClass(this.classes.container),
 			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
@@ -146,6 +147,7 @@ export default class SearchPanes {
 	 * rebuilds all of the panes
 	 */
 	public rebuild(targetIdx = false): SearchPane | SearchPane[] {
+		$(this.dom.emptyMessage).remove();
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		let returnArray: SearchPane[] = [];
 
@@ -456,7 +458,7 @@ export default class SearchPanes {
 	 */
 	private _attachMessage(): Node {
 		// Create a message to display on the screen
-		let emptyMessage = $('<div/>').addClass(this.classes.emptyMessage);
+		
 		let message;
 
 		try {
@@ -479,8 +481,8 @@ export default class SearchPanes {
 		}
 
 		// Otherwise display the message
-		$(emptyMessage).text(message);
-		emptyMessage.appendTo(this.dom.container);
+		$(this.dom.emptyMessage).text(message);
+		this.dom.emptyMessage.appendTo(this.dom.container);
 		return this.dom.container;
 	}
 

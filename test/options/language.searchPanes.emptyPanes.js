@@ -51,14 +51,14 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 		});
 		it('Removed when rows added', function() {
 			for (let i = 0; i < 10; i++) {
-				table.row.add([1, 2, 3, 4, 5, i]);
+				table.row.add([i%1, i%2, i%3, i%4, i%5, i]);
 			}
 
 			table.draw().searchPanes.rebuildPane();
 
-			// expect($('div.dtsp-searchPane:visible').length).toBe(3);
-			// expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
-			// expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+			expect($('div.dtsp-searchPane:visible').length).toBe(4);
+			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
+			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 		});
 
 		dt.html('basic');

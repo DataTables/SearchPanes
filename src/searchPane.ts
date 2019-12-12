@@ -470,6 +470,7 @@ export default class SearchPane {
 				this.dom.container.addClass(this.classes.hidden);
 				this.displayed = false;
 				return;
+
 			}
 
 			// If the option viewTotal is true then find
