@@ -16,6 +16,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-searchPane:visible').length).toBe(0);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('No SearchPanes');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+			expect($('div.dtsp-title:visible').length).toBe(0);
 		});
 
 		dt.html('empty');
@@ -32,37 +33,46 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-searchPane:visible').length).toBe(0);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(true);
+			expect($('div.dtsp-title:visible').length).toBe(0);
 		});
 
 		dt.html('empty');
-		it('Shown at start on empty table', function() {
+		it('Setup', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				language: {
 					searchPanes: {
 						emptyPanes: 'unittest'
 					}
+				},
+				columns: dt.getTestColumns(),
+				ajax: '/base/test/data/empty.txt',
+				initComplete: function(settings, json) {
+					done();
 				}
 			});
-
+		});
+		it('Not shown at start on empty table', function() {
 			expect($('div.dtsp-searchPane:visible').length).toBe(0);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+			expect($('div.dtsp-title:visible').length).toBe(0);
 		});
-		it('Removed when rows added', function() {
-			for (let i = 0; i < 10; i++) {
-				table.row.add([i%1, i%2, i%3, i%4, i%5, i]);
-			}
+		it('Present when rows added', async function() {
+			table.ajax.url('/base/test/data/data.txt').load();
+			await dt.sleep(500);
 
 			table.draw().searchPanes.rebuildPane();
 
-			expect($('div.dtsp-searchPane:visible').length).toBe(4);
+			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+			// DD-1297
+			// expect($('div.dtsp-title:visible').length).toBe(1);
 		});
 
 		dt.html('basic');
-		it('Not shown when panes displayed at start', function() {
+		it('Shown when panes displayed at start', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				language: {
@@ -75,8 +85,9 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+			expect($('div.dtsp-title:visible').length).toBe(1);
 		});
-		it('Shown when rows removed', function() {
+		it('Not hown when rows removed', function() {
 			table
 				.rows()
 				.remove()
@@ -86,6 +97,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-searchPane:visible').length).toBe(0);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).toBe('unittest');
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
+			expect($('div.dtsp-title:visible').length).toBe(0);
 		});
 	});
 });
