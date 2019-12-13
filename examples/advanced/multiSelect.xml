@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="20">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        searchPanes:{
+            dtOpts: {
+				select: {
+					style: 'multi'
+				}
+			}
+        },
+        dom: 'Pfrtip',
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Selection style to work with mobile devices</title>
+
+<info><![CDATA[
+
+By default, the selections in the panes are optimised for standard desktops, i.e. ctrl+click adds to the list, and a single click deselects anything currently selected. While this is good for keyboard driven displays, it makes it impossible to select multiple items on a mobile device.
+
+This example demonstrates how the selection style can be changed to allow easy use on those mobile devices.
+
+]]></info>
+
+</dt-example>

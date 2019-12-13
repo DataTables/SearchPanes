@@ -14,6 +14,7 @@ describe('searchPanes - options - searchPanes', function() {
 				searchPanes: true
 			});
 
+			expect($('div.dtsp-panesContainer').text()).not.toBe('Loading Search Panes...');
 			expect($('div.dtsp-searchPane').length).toBe(6);
 		});
 
@@ -33,7 +34,7 @@ describe('searchPanes - options - searchPanes', function() {
 			$('#example_one_wrapper div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
 			expect($('#example_one tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
 		});
-		it('... and can filter on first table', function() {
+		it('... and can filter on second table', function() {
 			$('#example_two_wrapper div.dtsp-searchPane:eq(1) tbody tr:eq(2) td:eq(0)').click();
 			expect($('#example_two tbody tr:eq(0) td:eq(0)').text()).toBe('Milan');
 		});
@@ -58,7 +59,6 @@ describe('searchPanes - options - searchPanes', function() {
 			expect($('div.dtsp-searchPane').length).toBe(0);
 		});
 
-
 		dt.html('basic');
 		it('Column visibility - pane remains visible', function() {
 			table = $('#example').DataTable({
@@ -69,7 +69,31 @@ describe('searchPanes - options - searchPanes', function() {
 			table.column(1).visible(false);
 			table.searchPanes.rebuildPane();
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
+				'Accountant'
+			);
+		});
+
+		dt.html('empty');
+		it('Loading message displayed if more than 500 rows', function(done) {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				language: {
+					searchPanes: {
+						emptyPanes: 'unittest'
+					}
+				},
+				columns: dt.getTestColumns(),
+				ajax: '/base/test/data/large.txt',
+				initComplete: function(settings, json) {
+					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
+					done();
+				}
+			});
+		});
+		it('... and it will be removed once table loaded', async function() {
+			await dt.sleep(1000);
+			expect($('div.dtsp-panesContainer').text()).not.toBe('Loading Search Panes...');
 		});
 	});
 });
