@@ -427,6 +427,7 @@ export default class SearchPanes {
 	 */
 	private _attach(): Node {
 		$(this.dom.container).removeClass(this.classes.hide);
+		$(this.dom.titleRow).removeClass(this.classes.hide);
 		$(this.dom.titleRow).remove();
 		$(this.dom.title).appendTo(this.dom.titleRow);
 
