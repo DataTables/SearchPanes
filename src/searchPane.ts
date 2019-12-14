@@ -1,36 +1,25 @@
+import * as typeInterfaces from './paneType';
 let DataTable = $.fn.dataTable;
 export default class SearchPane {
 
 	private static version = '0.0.2';
 
-	private static classes = {
-		badgePill: '',
+	private static classes: typeInterfaces.IClasses = {
 		buttonGroup: 'dtsp-buttonGroup',
 		buttonSub: 'dtsp-buttonSub',
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		clearButton: 'clearButton',
 		container: 'dtsp-searchPane',
-		countButton:'dtsp-countButton',
+		countButton: 'dtsp-countButton',
 		disabledButton: 'dtsp-disabledButton',
 		dull: 'dtsp-dull',
 		hidden: 'dtsp-hidden',
 		hide: 'dtsp-hide',
-		item: {
-			count: 'dtsp-count',
-			label: 'dtsp-label',
-			selected: 'dtsp-selected'
-		},
 		layout: 'dtsp-',
 		name: 'dtsp-name',
 		nameButton: 'dtsp-nameButton',
 		narrow: 'dtsp-narrow',
-		pane: {
-			active: 'dtsp-filtering',
-			container: 'dtsp-pane',
-			scroller: 'dtsp-scroller',
-			title: 'dtsp-title',
-		},
 		paneButton: 'dtsp-paneButton',
 		paneInputButton: 'dtsp-paneInputButton',
 		pill: 'dtsp-pill',
@@ -48,29 +37,41 @@ export default class SearchPane {
 	};
 
 	// Define SearchPanes default options
-	private static defaults = {
+	private static defaults: typeInterfaces.IDefaults = {
 		cascadePanes: false,
 		clear: true,
+		combiner: 'or',
 		controls: true,
 		container(dt) {
 			return dt.table().container();
 		},
 		dataLength: 30,
+		dtOpts: {},
 		emptyMessage: '<i>No Data</i>',
+		hideCount: false,
+		layout: 'columns-3',
 		orderable: true,
+		orthogonal: {
+			display: 'display',
+			hideCount: false,
+			search: 'filter',
+			show: undefined,
+			sort: 'sort',
+			threshold: 0.6,
+			type: 'type'
+		},
+		preSelect: [],
 		threshold: 0.6,
 		viewTotal: false,
 	};
 
-	public classes;
-	public dom;
-	public c;
-	public s;
-	public colExists;
+	public classes: typeInterfaces.IClasses;
+	public dom: typeInterfaces.IDOM;
+	public c: typeInterfaces.IDefaults;
+	public s: typeInterfaces.IS;
+	public colExists: boolean;
 	public selections;
-	public customPaneSettings;
-	public layout;
-	public displayed;
+	public customPaneSettings: typeInterfaces.IConfigPaneItem;
 
 	/**
 	 * Creates the panes, sets up the search function
@@ -79,7 +80,7 @@ export default class SearchPane {
 	 * @param idx the index of the column for this pane
 	 * @returns {object} the pane that has been created, including the table and the index of the pane
 	 */
-	constructor(paneSettings, opts, idx, layout, panesContainer, panes = {}) {
+	constructor(paneSettings, opts, idx, layout, panesContainer, panes = null) {
 		// Check that the required version of DataTables is included
 		if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 			throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -97,17 +98,16 @@ export default class SearchPane {
 		// Get options from user
 		this.c = $.extend(true, {}, SearchPane.defaults, opts);
 
-		if (Object.keys(panes).length > 0) {
-			this.customPaneSettings = panes;
-		}
+		this.customPaneSettings = panes;
 
 		this.s = {
 			cascadeRegen: false,
 			clearing: false,
 			colOpts: [],
-			columns: [],
 			deselect: false,
+			displayed: false,
 			dt: table,
+			dtPane: undefined,
 			filteringActive: false,
 			index: idx,
 			indexes: [],
@@ -119,30 +119,31 @@ export default class SearchPane {
 				bins: {},
 				binsOriginal: {},
 				binsTotal: {},
-				data: [],
-				dataFilter: [],
 				filterMap: new Map()
 			},
+			searchFunction: undefined,
+			selectPresent: false,
 			updating: false,
 		};
 
-		let rowLength = table.columns().eq(0).toArray().length;
+		let rowLength: number = table.columns().eq(0).toArray().length;
 		this.colExists = this.s.index < rowLength;
 
 		// Add extra elements to DOM object including clear and hide buttons
-		this.layout = layout;
-		let layVal = parseInt(layout.split('-')[1], 10);
+		this.c.layout = layout;
+		let layVal: number = parseInt(layout.split('-')[1], 10);
 
 		this.dom = {
 			buttonGroup: $('<div/>').addClass(this.classes.buttonGroup),
 			clear: $('<button type="button">&#215;</button>')
 					.addClass(this.classes.dull)
 					.addClass(this.classes.paneButton)
-					.addClass(this.classes.exit)
 					.addClass(this.classes.clearButton),
 			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
 					(layVal < 7 ? layout : layout.split('-')[0] + '-6')),
-			countButton:  $('<button type="button"></button>').addClass(this.classes.paneButton).addClass(this.classes.countButton),
+			countButton:  $('<button type="button"></button>')
+							.addClass(this.classes.paneButton)
+							.addClass(this.classes.countButton),
 			dtP: $('<table><thead><tr><th>' +
 				(this.colExists
 					? $(table.column(this.colExists ? this.s.index : 0).header()).text()
@@ -151,35 +152,31 @@ export default class SearchPane {
 			nameButton: $('<button type="button"></button>').addClass(this.classes.paneButton).addClass(this.classes.nameButton),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
 			searchButton: $('<button type = "button" class="' + this.classes.searchIcon + '"></button>')
-					.addClass(this.classes.paneButton)
-					.addClass(this.classes.searchLabel),
+					.addClass(this.classes.paneButton),
 			searchCont: $('<div/>').addClass(this.classes.searchCont),
 			searchLabelCont: $('<div/>').addClass(this.classes.searchLabelCont),
 			topRow: $('<div/>').addClass(this.classes.topRow),
 			upper: $('<div/>').addClass(this.classes.subRow1).addClass(this.classes.narrowSearch),
 		};
 
-		this.displayed = false;
+		this.s.displayed = false;
 
 		table = this.s.dt;
-		this.selections = this.s.columns;
+		this.selections = [];
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions();
 		let colOpts =  this.s.colOpts;
-		let clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
+		let clear: JQuery<HTMLElement> = $('<button type="button">X</button>').addClass(this.classes.paneButton);
 		$(clear).text(table.i18n('searchPanes.clearPane', 'X'));
 		this.dom.container.addClass(colOpts.className);
 		this.dom.container.addClass(
-			(
-				this.customPaneSettings !== undefined &&
-				this.customPaneSettings.className !== undefined
-			)
+			(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
 				? this.customPaneSettings.className
 				: {}
 		);
 
 		$(panesContainer).append(this.dom.container);
 
-		let tableNode = table.table(0).node();
+		let tableNode: Node = table.table(0).node();
 
 		// Custom search function for table
 		this.s.searchFunction = (settings, searchData, dataIndex, origData) => {
@@ -208,7 +205,7 @@ export default class SearchPane {
 				}
 			}
 
-			return this._Search(filter, dataIndex);
+			return this._search(filter, dataIndex);
 		};
 
 		$.fn.dataTable.ext.search.push(this.s.searchFunction);
@@ -223,7 +220,7 @@ export default class SearchPane {
 					$(search).trigger('input');
 				}
 
-				this._clearPane();
+				this.clearPane();
 			});
 		}
 
@@ -251,7 +248,7 @@ export default class SearchPane {
 	 * In the case of a rebuild there is potential for new data to have been included or removed
 	 * so all of the rowData must be reset as a precaution.
 	 */
-	public clearData() {
+	public clearData(): void {
 		this.s.rowData = {
 			arrayFilter: [],
 			arrayOriginal: [],
@@ -259,16 +256,24 @@ export default class SearchPane {
 			bins: {},
 			binsOriginal: {},
 			binsTotal: {},
-			data: [],
-			dataFilter: [],
 			filterMap: new Map()
 		};
 	}
 
 	/**
+	 * Clear the selections in the pane
+	 */
+	public clearPane(): this {
+		// Deselect all rows which are selected and update the table and filter count.
+		this.s.dtPane.rows({selected: true}).deselect();
+		this.updateTable();
+		return this;
+	}
+
+	/**
 	 * Strips all of the SearchPanes elements from the document and turns all of the listeners for the buttons off
 	 */
-	public destroy() {
+	public destroy(): void {
 		$(this.s.dtPane).off('.dtsp');
 		$(this.s.dt).off('.dtsp');
 
@@ -279,7 +284,7 @@ export default class SearchPane {
 
 		$(this.dom.container).remove();
 
-		let searchIdx = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
+		let searchIdx: number = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
 
 		while (searchIdx !== -1) {
 			$.fn.dataTable.ext.search.splice(searchIdx, 1);
@@ -290,6 +295,15 @@ export default class SearchPane {
 		if (this.s.dtPane !== undefined) {
 			this.s.dtPane.destroy();
 		}
+	}
+
+	/**
+	 * Updates the number of filters that have been applied in the title
+	 */
+	public getPaneCount(): number {
+		return this.s.dtPane !== undefined ?
+			this.s.dtPane.rows({selected: true}).data().toArray().length :
+			0;
 	}
 
 	/**
@@ -304,7 +318,7 @@ export default class SearchPane {
 		}
 
 		this.dom.container.removeClass(this.classes.hidden);
-		this.displayed = false;
+		this.s.displayed = false;
 		this._buildPane();
 		return this;
 	}
@@ -312,8 +326,8 @@ export default class SearchPane {
 	/**
 	 * removes the pane from the page and sets the displayed property to false.
 	 */
-	public removePane() {
-		this.displayed = false;
+	public removePane(): void {
+		this.s.displayed = false;
 		$(this.dom.container).hide();
 	}
 
@@ -331,8 +345,108 @@ export default class SearchPane {
 	 * repopulate from the entire dataset not just the displayed values.
 	 * @param val the boolean value which the clearing property is to be assigned
 	 */
-	public setClear(val: boolean) {
+	public setClear(val: boolean): void {
 		this.s.clearing = val;
+	}
+
+	/**
+	 * Updates the values of all of the panes
+	 * @param draw whether this has been triggered by a draw event or not
+	 */
+	public updatePane(draw: boolean = false): void {
+		this.s.updating = true;
+		this._updateCommon(draw);
+		this.s.updating = false;
+	}
+
+	/**
+	 * Updates the panes if one of the options to do so has been set to true
+	 *   rather than the filtered message when using viewTotal.
+	 */
+	public updateTable(): void {
+		let selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+		this.selections = selectedRows;
+		this._searchExtras();
+
+		// If either of the options that effect how the panes are displayed are selected then update the Panes
+		if (this.c.cascadePanes || this.c.viewTotal) {
+			this.updatePane();
+		}
+	}
+
+	/**
+	 * Takes in potentially undetected rows and adds them to the array if they are not yet featured
+	 * @param filter the filter value of the potential row
+	 * @param display the display value of the potential row
+	 * @param sort the sort value of the potential row
+	 * @param type the type value of the potential row
+	 * @param arrayFilter the array to be populated
+	 * @param bins the bins to be populated
+	 */
+	private _addOption(
+		filter,
+		display,
+		sort,
+		type,
+		arrayFilter,
+		bins: {[keys: string]: number}
+	) {
+		// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
+		if (Array.isArray(filter) || filter instanceof DataTable.Api) {
+			// Convert to an array so that we can work with it
+			if (filter instanceof DataTable.Api) {
+				filter = filter.toArray();
+				display = display.toArray();
+			}
+
+			if (filter.length === display.length) {
+				for (let i: number = 0; i < filter.length; i++) {
+					// If we haven't seen this row before add it
+					if (!bins[filter[i]]) {
+						bins[filter[i]] = 1;
+						arrayFilter.push({
+							display: display[i],
+							filter: filter[i],
+							sort,
+							type
+						});
+					}
+					// Otherwise just increment the count
+					else {
+						bins[filter[i]]++;
+					}
+				}
+				return;
+			}
+			else {
+				throw new Error('display and filter not the same length');
+			}
+		}
+		// If the values were affected by othogonal data and are not an array then check if it is already present
+		else if (typeof this.s.colOpts.orthogonal === 'string') {
+			if (!bins[filter]) {
+				bins[filter] = 1;
+				arrayFilter.push({
+					display,
+					filter,
+					sort,
+					type
+				});
+			}
+			else {
+				bins[filter]++;
+				return;
+			}
+		}
+		// Otherwise we must just be adding an option
+		else {
+			arrayFilter.push({
+				display,
+				filter,
+				sort,
+				type
+			});
+		}
 	}
 
 	/**
@@ -344,8 +458,8 @@ export default class SearchPane {
 	 * @param sort the value to be sorted in the pane table
 	 * @param type the value of which the type is to be derived from
 	 */
-	private _addRow(display, filter, shown, total, sort, type): any {
-		let index;
+	private _addRow(display, filter, shown: number, total: number | string, sort, type): any {
+		let index: number;
 
 		for (let entry of this.s.indexes) {
 			if (entry.filter === filter) {
@@ -397,23 +511,23 @@ export default class SearchPane {
 	 */
 	private _buildPane(): boolean {
 		// Aliases
-		this.selections = this.s.columns;
+		this.selections = [];
 		let table = this.s.dt;
 		let column = table.column(this.colExists ? this.s.index : 0);
 		let colOpts =  this.s.colOpts;
 		let rowData = this.s.rowData;
 
 		// Other Variables
-		let countMessage = table.i18n('searchPanes.count', '{total}');
-		let filteredMessage = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
+		let countMessage: string = table.i18n('searchPanes.count', '{total}');
+		let filteredMessage: string = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
 		let loadedFilter = table.state.loaded();
 
 		// If it is not a custom pane in place
 		if (this.colExists) {
-			let idx = -1;
+			let idx: number = -1;
 
 			if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
-				for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
+				for (let i: number = 0; i < loadedFilter.searchPanes.panes.length; i++) {
 					if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
 						idx = i;
 						break;
@@ -427,11 +541,11 @@ export default class SearchPane {
 				idx === -1
 			) {
 					this.dom.container.addClass(this.classes.hidden);
-					this.displayed = false;
+					this.s.displayed = false;
 					return false;
 			}
 			else if (colOpts.show === true || idx !== -1) {
-				this.displayed = true;
+				this.s.displayed = true;
 			}
 
 			// Only run populatePane if the data has not been collected yet
@@ -448,7 +562,7 @@ export default class SearchPane {
 					}
 					else {
 						this.dom.container.addClass(this.classes.hidden);
-						this.displayed = false;
+						this.s.displayed = false;
 						return;
 					}
 				}
@@ -458,17 +572,17 @@ export default class SearchPane {
 				}
 			}
 
-			let binLength = Object.keys(rowData.binsOriginal).length;
-			let uniqueRatio = this._uniqueRatio(binLength, table.rows()[0].length);
+			let binLength: number = Object.keys(rowData.binsOriginal).length;
+			let uniqueRatio: number = this._uniqueRatio(binLength, table.rows()[0].length);
 
 			// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
-			if (this.displayed === false && ((colOpts.show === undefined && colOpts.threshold === undefined ?
+			if (this.s.displayed === false && ((colOpts.show === undefined && colOpts.threshold === null ?
 					uniqueRatio > this.c.threshold :
 					uniqueRatio > colOpts.threshold)
 				|| (colOpts.show !== true  && binLength <= 1))
 			) {
 				this.dom.container.addClass(this.classes.hidden);
-				this.displayed = false;
+				this.s.displayed = false;
 				return;
 
 			}
@@ -483,10 +597,10 @@ export default class SearchPane {
 			}
 
 			this.dom.container.addClass(this.classes.show);
-			this.displayed = true;
+			this.s.displayed = true;
 		}
 		else {
-			this.displayed = true;
+			this.s.displayed = true;
 		}
 
 		// If the variance is accceptable then display the search pane
@@ -503,7 +617,7 @@ export default class SearchPane {
 		});
 
 		// Declare the datatable for the pane
-		let errMode = $.fn.dataTable.ext.errMode;
+		let errMode: string = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
 		let haveScroller = (DataTable as any).Scroller;
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
@@ -521,7 +635,7 @@ export default class SearchPane {
 								return row.type;
 							}
 
-							let message;
+							let message: string;
 							this.s.filteringActive && this.c.viewTotal
 								? message = filteredMessage.replace(/{total}/, row.total)
 								: message = countMessage.replace(/{total}/, row.total) ;
@@ -537,8 +651,8 @@ export default class SearchPane {
 
 							// We are displaying the count in the same columne as the name of the search option.
 							// This is so that there is not need to call columns.adjust(), which in turn speeds up the code
-							let displayMessage = '';
-							let pill = '<span class="' + this.classes.pill + '">' + message + '</span>';
+							let displayMessage: string = '';
+							let pill: string = '<span class="' + this.classes.pill + '">' + message + '</span>';
 
 							if (this.c.hideCount || colOpts.hideCount) {
 								pill = '';
@@ -582,13 +696,9 @@ export default class SearchPane {
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
-			this.customPaneSettings !== undefined && this.customPaneSettings.dtOpts !== undefined
-				? this.customPaneSettings.dtOpts : {},
-			(
-				this.customPaneSettings !== undefined &&
-				this.customPaneSettings.dtOpts !== undefined
-			)
-				? this.customPaneSettings.dtOpts : {}
+			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
+			? this.customPaneSettings.dtOpts
+			: {}
 		));
 
 		$(this.dom.dtP).addClass(this.classes.table);
@@ -611,7 +721,7 @@ export default class SearchPane {
 		if (this.colExists) {
 			// On initialisation, do we need to set a filtering value from a
 			// saved state or init option?
-			let search: any = column.search();
+			let search = column.search();
 			search = search ? search.substr(1, search.length - 2).split('|') : [];
 
 			// Count the number of empty cells
@@ -623,7 +733,7 @@ export default class SearchPane {
 			});
 
 			// Add all of the search options to the pane
-			for (let i = 0, ien = rowData.arrayFilter.length; i < ien; i++) {
+			for (let i: number = 0, ien = rowData.arrayFilter.length; i < ien; i++) {
 				if (rowData.arrayFilter[i] && (rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)) {
 					let row = this._addRow(
 						rowData.arrayFilter[i].display,
@@ -646,8 +756,7 @@ export default class SearchPane {
 
 		// If there are custom options set or it is a custom pane then get them
 		if (colOpts.options !== undefined ||
-			(this.customPaneSettings !== undefined && this.customPaneSettings.options !== undefined)
-		) {
+			(this.customPaneSettings !== null && this.customPaneSettings.options !== undefined)) {
 				this._getComparisonRows();
 		}
 
@@ -677,7 +786,7 @@ export default class SearchPane {
 			}
 
 			let selected = [];
-			let searchTerm;
+			let searchTerm: string | number | string[];
 			let order;
 			let bins;
 			let arrayFilter;
@@ -752,7 +861,7 @@ export default class SearchPane {
 				$(search).trigger('input');
 			}
 
-			this._clearPane();
+			this.clearPane();
 		});
 
 		// When the search button is clicked then draw focus to the search box
@@ -768,7 +877,7 @@ export default class SearchPane {
 		});
 
 		// Declare timeout Variable
-		let t0;
+		let t0: NodeJS.Timeout;
 
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
@@ -793,19 +902,9 @@ export default class SearchPane {
 	}
 
 	/**
-	 * Clear the selections in the pane
-	 */
-	private _clearPane(): this {
-		// Deselect all rows which are selected and update the table and filter count.
-		this.s.dtPane.rows({selected: true}).deselect();
-		this._updateTable();
-		return this;
-	}
-
-	/**
 	 * Update the array which holds the display and filter values for the table
 	 */
-	private _detailsPane() {
+	private _detailsPane(): void {
 		let table = this.s.dt;
 		this.s.rowData.arrayTotals = [];
 		this.s.rowData.binsTotal = {};
@@ -818,10 +917,10 @@ export default class SearchPane {
 	/**
 	 * Appends all of the HTML elements to their relevant parent Elements
 	 */
-	private _displayPane() {
+	private _displayPane(): void {
 		let container = this.dom.container;
 		let colOpts =  this.s.colOpts;
-		let layVal = parseInt(this.layout.split('-')[1], 10);
+		let layVal: number = parseInt(this.c.layout.split('-')[1], 10);
 
 		//  Empty everything to start again
 		$(this.dom.topRow).empty();
@@ -840,16 +939,14 @@ export default class SearchPane {
 		$(this.dom.buttonGroup).appendTo(this.dom.lower);
 
 		// If no selections have been made in the pane then disable the clear button
-		if (
-			(this.c.dtOpts !== undefined &&
-			this.c.dtOpts.searching === false) ||
+		if (this.c.dtOpts.searching === false ||
 			(colOpts.dtOpts !== undefined &&
 			colOpts.dtOpts.searching === false) ||
 			(!this.c.controls || !colOpts.controls) ||
-			(this.customPaneSettings !== undefined &&
-			this.customPaneSettings.dtOpts !== undefined &&
-			this.customPaneSettings.dtOpts.searching !== undefined &&
-			!this.customPaneSettings.dtOpts.searching)
+			(this.customPaneSettings !== null &&
+				this.customPaneSettings.dtOpts !== undefined &&
+				this.customPaneSettings.dtOpts.searching !== undefined &&
+				!this.customPaneSettings.dtOpts.searching)
 		) {
 			$(this.dom.searchBox).attr('disabled', 'disabled')
 				.removeClass(this.classes.paneInputButton)
@@ -891,8 +988,8 @@ export default class SearchPane {
 	 * @param data empty array to populate with data which has not yet been found
 	 * @param arrayFilter the array of all of the display and filter values for the table
 	 */
-	private _findUnique(data, arrayFilter) {
-		let prev = [];
+	private _findUnique(data, arrayFilter): void {
+		let prev: number[] = [];
 
 		for (let filterEl of arrayFilter) {
 			// If the data has not already been processed then add it to the unique array and the previously processed array.
@@ -913,27 +1010,18 @@ export default class SearchPane {
 	 * @returns {object} The options for the row extended to include the options from the user.
 	 */
 	private _getBonusOptions(): {[keys: string]: any} {
-		let defaults = {
-			combiner: 'or',
-			controls: true,
-			grouping: undefined,
-			orderable: true,
+		// We need to reset the thresholds as if they have a value in colOpts then that value will be used
+		let defaultMutator = {
 			orthogonal: {
-				comparison: undefined,
-				display: 'display',
-				hideCount: false,
-				search: 'filter',
-				show: undefined,
-				sort: 'sort',
-				threshold: undefined,
-				type: 'type'
+				threshold: null
 			},
-			preSelect: undefined,
+			threshold: null
 		};
 		return $.extend(
 			true,
 			{},
-			defaults,
+			SearchPane.defaults,
+			defaultMutator,
 			this.c !== undefined ? this.c : {}
 		);
 	}
@@ -947,7 +1035,7 @@ export default class SearchPane {
 		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
 		let options = colOpts.options !== undefined
 			? colOpts.options
-			: this.customPaneSettings !== undefined && this.customPaneSettings.options !== undefined
+			: this.customPaneSettings !== null && this.customPaneSettings.options !== undefined
 				? this.customPaneSettings.options
 				: undefined;
 
@@ -965,7 +1053,7 @@ export default class SearchPane {
 
 		for (let comp of options) {
 			// Initialise the object which is to be placed in the row
-			let insert = comp.label !== '' ? comp.label : this.c.emptyMessage;
+			let insert: string = comp.label !== '' ? comp.label : this.c.emptyMessage;
 			let comparisonObj = {
 				display: insert,
 				filter: typeof comp.value === 'function' ? comp.value : [],
@@ -979,14 +1067,14 @@ export default class SearchPane {
 			if (typeof comp.value === 'function') {
 
 				// Count the number of times the function evaluates to true for the data currently being displayed
-				for (let tVal = 0; tVal < tableVals.length; tVal++) {
+				for (let tVal: number = 0; tVal < tableVals.length; tVal++) {
 					if (comp.value.call(this.s.dt, tableVals[tVal], appRows[0][tVal])) {
 						comparisonObj.shown++;
 					}
 				}
 
 				// Count the number of times the function evaluates to true for the original data in the Table
-				for (let i = 0; i < tableValsTotal.length; i++) {
+				for (let i: number = 0; i < tableValsTotal.length; i++) {
 					if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
 						comparisonObj.total++;
 					}
@@ -1018,29 +1106,20 @@ export default class SearchPane {
 	 * Gets the options for the row for the customPanes
 	 * @returns {object} The options for the row extended to include the options from the user.
 	 */
-	private _getOptions() {
+	private _getOptions(): {[keys: string]: any} {
 		let table = this.s.dt;
-		let defaults = {
-			combiner: 'or',
-			controls: true,
-			grouping: undefined,
-			orderable: true,
+		// We need to reset the thresholds as if they have a value in colOpts then that value will be used
+		let defaultMutator = {
 			orthogonal: {
-				comparison: undefined,
-				display: 'display',
-				hideCount: false,
-				search: 'filter',
-				show: undefined,
-				sort: 'sort',
-				threshold: undefined,
-				type: 'type'
+				threshold: null
 			},
-			preSelect: undefined,
+			threshold: null
 		};
 		return $.extend(
 			true,
 			{},
-			defaults,
+			SearchPane.defaults,
+			defaultMutator,
 			table.settings()[0].aoColumns[this.s.index].searchPanes
 		);
 	}
@@ -1050,7 +1129,7 @@ export default class SearchPane {
 	 * @param select Denotes whether a selection has been made or not
 	 */
 	private _makeSelection() {
-		this._updateTable();
+		this.updateTable();
 		this.s.updating = true;
 		this.s.dt.draw();
 		this.s.updating = false;
@@ -1058,9 +1137,8 @@ export default class SearchPane {
 
 	/**
 	 * Fill the array with the values that are currently being displayed in the table
-	 * @returns {array} arrayFilter The array containing all of the elements currently being shown in the table
 	 */
-	private _populatePane() {
+	private _populatePane(): void {
 		let table = this.s.dt;
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.bins = {};
@@ -1072,7 +1150,7 @@ export default class SearchPane {
 			table.rows({search: 'applied'}).indexes() :
 			table.rows().indexes();
 
-		for (let index = 0; index < indexArray.length; index++) {
+		for (let index: number = 0; index < indexArray.length; index++) {
 			this._populatePaneArray(indexArray[index], this.s.rowData.arrayFilter, settings);
 		}
 	}
@@ -1083,7 +1161,12 @@ export default class SearchPane {
 	 * @param arrayFilter The array that is to be populated with row Details
 	 * @param bins The bins object that is to be populated with the row counts
 	 */
-	private _populatePaneArray(rowIdx, arrayFilter, settings, bins = this.s.rowData.bins): void {
+	private _populatePaneArray(
+		rowIdx: number,
+		arrayFilter: typeInterfaces.IDataArray[],
+		settings,
+		bins: {[keys: string]: number} = this.s.rowData.bins
+	): void {
 		let colOpts = this.s.colOpts;
 
 		// Retrieve the rendered data from the cell using the fnGetCellData function
@@ -1117,74 +1200,6 @@ export default class SearchPane {
 	}
 
 	/**
-	 * Takes in potentially undetected rows and adds them to the array if they are not yet featured
-	 * @param filter the filter value of the potential row
-	 * @param display the display value of the potential row
-	 * @param sort the sort value of the potential row
-	 * @param type the type value of the potential row
-	 * @param arrayFilter the array to be populated
-	 * @param bins the bins to be populated
-	 */
-	private _addOption(filter, display, sort, type, arrayFilter, bins) {
-		// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
-		if (Array.isArray(filter) || filter instanceof DataTable.Api) {
-			// Convert to an array so that we can work with it
-			if (filter instanceof DataTable.Api) {
-				filter = filter.toArray();
-				display = display.toArray();
-			}
-
-			if (filter.length === display.length) {
-				for (let i = 0; i < filter.length; i++) {
-					// If we haven't seen this row before add it
-					if (!bins[filter[i]]) {
-						bins[filter[i]] = 1;
-						arrayFilter.push({
-							display: display[i],
-							filter: filter[i],
-							sort,
-							type
-						});
-					}
-					// Otherwise just increment the count
-					else {
-						bins[filter[i]]++;
-					}
-				}
-				return;
-			}
-			else {
-				throw new Error('display and filter not the same length');
-			}
-		}
-		// If the values were affected by othogonal data and are not an array then check if it is already present
-		else if (typeof this.s.colOpts.orthogonal === 'string') {
-			if (!bins[filter]) {
-				bins[filter] = 1;
-				arrayFilter.push({
-					display,
-					filter,
-					sort,
-					type
-				});
-			}
-			else {
-				bins[filter]++;
-				return;
-			}
-		}
-		// Otherwise we must just be adding an option
-		else {
-			arrayFilter.push({
-				display,
-				filter,
-				sort,
-				type
-			});
-		}
-	}
-
-	/**
 	 * Reloads all of the previous selects into the panes
 	 * @param loadedFilter The loaded filters from a previous state
 	 */
@@ -1198,7 +1213,7 @@ export default class SearchPane {
 
 		// For each pane, check that the loadedFilter list exists and is not null,
 		// find the id of each search item and set it to be selected.
-		for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
+		for (let i: number = 0; i < loadedFilter.searchPanes.panes.length; i++) {
 			if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
 				idx = i;
 				break;
@@ -1210,7 +1225,7 @@ export default class SearchPane {
 			let rows = table.rows({order: 'index'}).data().map(item => item.filter.toString()).toArray();
 
 			for (let filter of loadedFilter.searchPanes.panes[idx].selected) {
-				let id = -1;
+				let id: number = -1;
 
 				if (filter !== null) {
 					id = rows.indexOf(filter.toString());
@@ -1230,7 +1245,7 @@ export default class SearchPane {
 	 * @param filter the value that the row is to be filtered on
 	 * @param dataIndex the row index
 	 */
-	private _Search(filter, dataIndex): boolean {
+	private _search(filter, dataIndex: number): boolean {
 		let colOpts = this.s.colOpts;
 		let table = this.s.dt;
 
@@ -1246,7 +1261,7 @@ export default class SearchPane {
 			else if (typeof colSelect.filter === 'function') {
 				if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
 					if (!this.s.redraw) {
-						this._updatePane();
+						this.updatePane();
 					}
 
 					if (colOpts.combiner === 'or') {
@@ -1287,14 +1302,12 @@ export default class SearchPane {
 		}
 
 		if (
-			!((this.c.dtOpts !== undefined &&
-			this.c.dtOpts.searching === false) ||
-			(this.s.colOpts.dtOpts !== undefined &&
-			this.s.colOpts.dtOpts.searching === false) ||
-			(this.customPaneSettings !== undefined &&
+			!(this.c.dtOpts.searching === false ||
+			this.s.colOpts.dtOpts.searching === false ||
+			(this.customPaneSettings !== null &&
 				this.customPaneSettings.dtOpts !== undefined &&
 				this.customPaneSettings.dtOpts.searching !== undefined &&
-			!this.customPaneSettings.dtOpts.searching))
+				!this.customPaneSettings.dtOpts.searching))
 		) {
 			$(this.dom.searchLabelCont).appendTo(this.dom.searchCont);
 		}
@@ -1303,11 +1316,11 @@ export default class SearchPane {
 	/**
 	 * Adds outline to the pane when a selection has been made
 	 */
-	private _searchExtras() {
+	private _searchExtras(): void {
 		let updating = this.s.updating;
 		this.s.updating = true;
 		let filters = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
-		let nullIndex = filters.indexOf(this.c.emptyMessage);
+		let nullIndex: number = filters.indexOf(this.c.emptyMessage);
 		let container = $(this.s.dtPane.table().container());
 
 		// If null index is found then search for empty cells as a filter.
@@ -1332,7 +1345,7 @@ export default class SearchPane {
 	 * @param rowCount the total number of rows in the table
 	 * @returns {number} returns the ratio
 	 */
-	private _uniqueRatio(bins, rowCount) {
+	private _uniqueRatio(bins: number, rowCount: number): number {
 		if (rowCount > 0) {
 			return bins / rowCount;
 		}
@@ -1345,7 +1358,7 @@ export default class SearchPane {
 	 * updates the options within the pane
 	 * @param draw a flag to define whether this has been called due to a draw event or not
 	 */
-	private _updateCommon(draw = false) {
+	private _updateCommon(draw: boolean = false) {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
 		if (
@@ -1408,7 +1421,7 @@ export default class SearchPane {
 							? rowData.bins[dataP.filter]
 							: rowData.bins[dataP.filter] !== undefined
 								? rowData.bins[dataP.filter]
-								: '0',
+								: 0,
 							this.c.viewTotal
 							? String(rowData.binsTotal[dataP.filter])
 							: rowData.bins[dataP.filter],
@@ -1417,7 +1430,7 @@ export default class SearchPane {
 						);
 
 						// Find out if the filter was selected in the previous search, if so select it and remove from array.
-						let selectIndex = selected.findIndex(function(element) {
+						let selectIndex: number = selected.findIndex(function(element) {
 							return element.filter === dataP.filter;
 						});
 
@@ -1431,11 +1444,11 @@ export default class SearchPane {
 
 			if ((colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined) ||
 				colOpts.options !== undefined ||
-				(this.customPaneSettings !== undefined && this.customPaneSettings.options !== undefined)) {
+				(this.customPaneSettings !== null && this.customPaneSettings.options !== undefined)) {
 				let rows = this._getComparisonRows();
 
 				for (let row of rows) {
-					let selectIndex = selected.findIndex(function(element) {
+					let selectIndex: number = selected.findIndex(function(element) {
 						if (element.display === row.data().display) {
 							return true;
 						}
@@ -1485,37 +1498,4 @@ export default class SearchPane {
 		}
 	}
 
-	/**
-	 * Updates the panes if one of the options to do so has been set to true
-	 *   rather than the filtered message when using viewTotal.
-	 */
-	private _updateTable() {
-		let selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
-		this.selections = selectedRows;
-		this._searchExtras();
-
-		// If either of the options that effect how the panes are displayed are selected then update the Panes
-		if (this.c.cascadePanes || this.c.viewTotal) {
-			this._updatePane();
-		}
-	}
-
-	/**
-	 * Updates the number of filters that have been applied in the title
-	 */
-	private _getPaneCount() {
-		return this.s.dtPane !== undefined ?
-			this.s.dtPane.rows({selected: true}).data().toArray().length :
-			0;
-	}
-
-	/**
-	 * Updates the values of all of the panes
-	 * @param draw whether this has been triggered by a draw event or not
-	 */
-	private _updatePane(draw = false) {
-		this.s.updating = true;
-		this._updateCommon(draw);
-		this.s.updating = false;
-	}
 }

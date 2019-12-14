@@ -40,30 +40,31 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-	paneButton: 'btn btn-light',
 	buttonGroup: 'btn-group col justify-content-end',
 	disabledButton: 'disabled',
 	dull: '',
-	pane:{
+	narrow: 'col',
+	pane: {
 		container: 'table',
 	},
-	table: 'table table-sm table-borderless',
-	topRow: 'dtsp-topRow row',
+	paneButton: 'btn btn-light',
+	pill: 'pill badge badge-pill badge-secondary',
 	search: 'col-sm form-control search',
+	searchCont: 'input-group col-sm',
 	searchLabelCont: 'input-group-append',
 	subRow1: 'dtsp-subRow1',
 	subRow2: 'dtsp-subRow2',
-	narrow: 'col',
-	searchCont: 'input-group col-sm',
-	pill: 'pill badge badge-pill badge-secondary'
+	table: 'table table-sm table-borderless',
+	topRow: 'dtsp-topRow row',
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	container: 'dtsp-searchPanes',
-	titleRow: 'dtsp-titleRow row',
 	clearAll: 'dtsp-clearAll col-1 btn btn-light',
+	container: 'dtsp-searchPanes',
+	panes: 'dtsp-panes dtsp-container',
 	title: 'dtsp-title col-10',
-	panes: 'dtsp-panes dtsp-container'
-})
+	titleRow: 'dtsp-titleRow row',
+});
+
 return DataTable.searchPanes;
 }));

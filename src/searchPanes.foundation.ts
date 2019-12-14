@@ -40,24 +40,25 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
- buttonGroup: 'secondary button-group',
- narrowButton: 'dtsp-narrowButton',
- disabledButton: 'disabled',
- dull: 'disabled',
- paneButton: 'secondary button',
- pill: 'badge secondary',
- search: 'search',
- searchLabelCont: 'searchCont',
- narrowSearch: 'dtsp-narrowSearch',
- narrow: 'dtsp-narrow',
- show: 'col',
- table: 'unstriped',
+	buttonGroup: 'secondary button-group',
+	disabledButton: 'disabled',
+	dull: 'disabled',
+	narrow: 'dtsp-narrow',
+	narrowButton: 'dtsp-narrowButton',
+	narrowSearch: 'dtsp-narrowSearch',
+	paneButton: 'secondary button',
+	pill: 'badge secondary',
+	search: 'search',
+	searchLabelCont: 'searchCont',
+	show: 'col',
+	table: 'unstriped',
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll button secondary',
+	panes: 'panes dtsp-panesContainer',
 	title: 'dtsp-title',
-	panes: 'panes dtsp-panesContainer'
 });
+
 return DataTable.searchPanes;
 }));

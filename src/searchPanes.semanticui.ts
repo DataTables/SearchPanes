@@ -40,21 +40,20 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-	container: 'dtsp-searchPane column ui grid',
-	paneButton: 'ui button',
 	buttonGroup: 'right floated ui buttons column',
-	searchCont: 'ui icon input eight wide column',
-	narrowSub: 'dtsp-narrow',
-	narrowSearch: 'dtsp-narrowSearch',
-	paneInputButton: 'circular search link icon',
+	container: 'dtsp-searchPane column ui grid',
 	dull: 'disabled',
+	narrowSearch: 'dtsp-narrowSearch',
+	narrowSub: 'dtsp-narrow',
+	paneButton: 'ui button',
+	paneInputButton: 'circular search link icon',
+	searchCont: 'ui icon input eight wide column',
 	topRow: 'row dtsp-topRow'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
+	clearAll: 'dtsp-clearAll ui button',
 	container: 'dtsp-searchPanes ui grid',
-	clearAll: 'dtsp-clearAll ui button'
-
 });
 
 // This override is required for the integrated search Icon in sematic ui
