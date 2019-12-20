@@ -47,14 +47,14 @@ export interface IDataArray {
 	display: any;
 	filter: any;
 	sort: any;
-	type: any;
+	type: string;
 }
 
 export interface IDefaults {
 	cascadePanes: boolean;
 	clear: boolean;
 	combiner: string;
-	container: any; // Function?
+	container: (dt: any) => HTMLElement; // Function?
 	controls: boolean;
 	dataLength: number;
 	dtOpts: {[keys: string]: any}; // All dtOpts
@@ -71,7 +71,7 @@ export interface IDefaults {
 export interface IDOM {
 	buttonGroup: JQuery<HTMLElement>;
 	clear: JQuery<HTMLElement>;
-	container: any; // Container Method needs to return a JQuery
+	container: JQuery<HTMLElement>; // Container Method needs to return a JQuery
 	countButton: JQuery<HTMLElement>;
 	dtP: JQuery<HTMLElement>;
 	lower: JQuery<HTMLElement>;
@@ -91,7 +91,7 @@ export interface IIndexes {
 
 export interface IOption {
 	label: string;
-	values: any; // Function?
+	values: (rowData: any, rowIdx: string) => boolean;
 }
 
 export interface IOrthogonal {

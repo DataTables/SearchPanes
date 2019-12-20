@@ -172,7 +172,7 @@ export default class SearchPane {
 		this.dom.container.addClass(
 			(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
 				? this.customPaneSettings.className
-				: {}
+				: ''
 		);
 
 		$(panesContainer).append(this.dom.container);
@@ -214,12 +214,12 @@ export default class SearchPane {
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
 			$(clear).on('click', () => {
-				let searches = this.dom.container.getElementsByClassName(this.classes.search);
+				let searches = this.dom.container.find(this.classes.search);
 
-				for (let search of searches) {
-					$(search).val('');
-					$(search).trigger('input');
-				}
+				searches.each(function() {
+					$(this).val('');
+					$(this).trigger('input');
+				});
 
 				this.clearPane();
 			});
@@ -856,11 +856,11 @@ export default class SearchPane {
 		$(this.dom.clear).on('click.dtsp', () => {
 			let searches = this.dom.container.find('.' + this.classes.search);
 
-			for (let search of searches) {
+			searches.each(function() {
 				// set the value of the search box to be an empty string and then search on that, effectively reseting
-				$(search).val('');
-				$(search).trigger('input');
-			}
+				$(this).val('');
+				$(this).trigger('input');
+			});
 
 			this.clearPane();
 		});
@@ -1151,8 +1151,8 @@ export default class SearchPane {
 			table.rows({search: 'applied'}).indexes() :
 			table.rows().indexes();
 
-		for (let index: number = 0; index < indexArray.length; index++) {
-			this._populatePaneArray(indexArray[index], this.s.rowData.arrayFilter, settings);
+		for (let index of indexArray) {
+			this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 		}
 	}
 

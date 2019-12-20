@@ -23,7 +23,7 @@ export interface IDefaults {
 	cascadePanes: boolean;
 	clear: boolean;
 	columns: number[];
-	container: any;
+	container: (dt: any) => any;
 	layout: string;
 	panes: IConfigPaneItem[];
 	viewTotal: boolean;
@@ -31,7 +31,7 @@ export interface IDefaults {
 
 export interface IDOM {
 	clearAll: JQuery<HTMLElement>;
-	container: any; // Container Method needs to return a JQuery
+	container: JQuery<HTMLElement>; // Container Method needs to return a JQuery
 	emptyMessage: JQuery<HTMLElement>;
 	options: JQuery<HTMLElement>;
 	panes: JQuery<HTMLElement>;

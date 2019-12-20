@@ -101,14 +101,14 @@ export default class SearchPanes {
 	 */
 	public clearSelections(): SearchPane[] {
 		// Load in all of the searchBoxes in the documents
-		let searches: HTMLCollectionOf<Element> = document.getElementsByClassName(this.classes.search);
+		let searches = this.dom.container.find(this.classes.search);
 
 		// For each searchBox set the input text to be empty and then trigger
 		//  an input on them so that they no longer filter the panes
-		for (let i: number = 0; i < searches.length; i++) {
-			$(searches[i]).val('');
-			$(searches[i]).trigger('input');
-		}
+		searches.each(function() {
+			$(this).val('');
+			$(this).trigger('input');
+		});
 
 		let returnArray: SearchPane[] = [];
 
@@ -127,7 +127,7 @@ export default class SearchPanes {
 	/**
 	 * returns the container node for the searchPanes
 	 */
-	public getNode(): Node {
+	public getNode(): JQuery<HTMLElement> {
 		return this.dom.container;
 	}
 
@@ -323,7 +323,7 @@ export default class SearchPanes {
 	/**
 	 * Attach the panes, buttons and title to the document
 	 */
-	private _attach(): Node {
+	private _attach(): JQuery<HTMLElement> {
 		$(this.dom.container).removeClass(this.classes.hide);
 		$(this.dom.titleRow).removeClass(this.classes.hide);
 		$(this.dom.titleRow).remove();
@@ -354,7 +354,7 @@ export default class SearchPanes {
 	/**
 	 * Attach the top row containing the filter count and clear all button
 	 */
-	private _attachExtras(): Node {
+	private _attachExtras(): JQuery<HTMLElement> {
 		$(this.dom.container).removeClass(this.classes.hide);
 		$(this.dom.titleRow).removeClass(this.classes.hide);
 		$(this.dom.titleRow).remove();
@@ -374,7 +374,7 @@ export default class SearchPanes {
 	 * If there are no panes to display then this method is called to either
 	 *   display a message in their place or hide them completely.
 	 */
-	private _attachMessage(): Node {
+	private _attachMessage(): JQuery<HTMLElement> {
 		// Create a message to display on the screen
 
 		let message: string;
@@ -407,7 +407,7 @@ export default class SearchPanes {
 	/**
 	 * Attaches the panes to the document and displays a message or hides if there are none
 	 */
-	private _attachPaneContainer(): Node {
+	private _attachPaneContainer(): JQuery<HTMLElement> {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
@@ -464,7 +464,7 @@ export default class SearchPanes {
 	/**
 	 * Attaches the message to the document but does not add any panes
 	 */
-	private _checkMessage(): Node | void {
+	private _checkMessage(): JQuery<HTMLElement> | void {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
