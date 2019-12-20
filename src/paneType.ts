@@ -125,6 +125,7 @@ export interface IS {
 	filteringActive: boolean;
 	index: number;
 	indexes: IIndexes[];
+	lastSelect: boolean;
 	redraw: boolean;
 	rowData: IRowData;
 	searchFunction: any; // Function?

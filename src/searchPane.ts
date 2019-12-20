@@ -111,6 +111,7 @@ export default class SearchPane {
 			filteringActive: false,
 			index: idx,
 			indexes: [],
+			lastSelect: false,
 			redraw: false,
 			rowData: {
 				arrayFilter: [],
@@ -1364,7 +1365,7 @@ export default class SearchPane {
 		if (
 			this.s.dtPane !== undefined &&
 			((!this.s.filteringActive || this.c.cascadePanes) || draw === true) &&
-			(this.c.cascadePanes !== true || this.s.selectPresent !== true)
+			(this.c.cascadePanes !== true || this.s.selectPresent !== true) && !this.s.lastSelect
 		) {
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();

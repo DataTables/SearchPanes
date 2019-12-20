@@ -180,7 +180,6 @@ export default class SearchPanes {
 			//  then there can't be any filtering taking place
 			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
 				filterActive = false;
-				this.s.selectionList = [];
 			}
 			// Otherwise if viewTotal is active then it is necessary to determine which panes a select is present in.
 			//  If there is only one pane with a selection present then it should not show the filtered message as
@@ -226,6 +225,13 @@ export default class SearchPanes {
 					}
 				}
 
+				if (this.s.selectionList.length > 0) {
+					let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+					for (let pane of this.s.panes) {
+						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+					}
+				}
+
 				// Remove selections from the list from the pane where a deselect has taken place
 				for (let i: number = 0; i < this.s.selectionList.length; i++) {
 					if (this.s.selectionList[i].index !== deselectIdx || this.s.selectionList[i].protect === true) {
@@ -256,7 +262,6 @@ export default class SearchPanes {
 							tempFilter = false;
 							pane.s.filteringActive = false;
 						}
-
 						pane.updatePane(!tempFilter ? false : filterActive);
 					}
 				}
@@ -267,6 +272,11 @@ export default class SearchPanes {
 				// If the length of the selections are different then some of them have been removed and a deselect has occured
 				if (newSelectionList.length > 0 && newSelectionList.length < this.s.selectionList.length) {
 					this._cascadeRegen(newSelectionList);
+					let last = newSelectionList[newSelectionList.length - 1].index;
+
+					for (let pane of this.s.panes) {
+						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+					}
 				}
 				else if (newSelectionList.length > 0) {
 					// Update all of the other panes as you would just making a normal selection
@@ -302,6 +312,10 @@ export default class SearchPanes {
 
 				// Update the label that shows how many filters are in place
 				this._updateFilterCount();
+			}
+
+			if (!filterActive) {
+				this.s.selectionList = [];
 			}
 		}
 	}
@@ -426,10 +440,7 @@ export default class SearchPanes {
 			pane.setClear(true);
 
 			// If this is the same as the pane with the only selection then pass it as a parameter into clearPane
-			if (pane.s.dtPane !== undefined && pane.s.index === solePane) {
-				pane.clearPane();
-			}
-			else if (pane.s.dtPane !== undefined) {
+			if ((pane.s.dtPane !== undefined && pane.s.index === solePane) || pane.s.dtPane !== undefined) {
 				pane.clearPane();
 			}
 
