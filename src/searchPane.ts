@@ -1359,7 +1359,7 @@ export default class SearchPane {
 	 * updates the options within the pane
 	 * @param draw a flag to define whether this has been called due to a draw event or not
 	 */
-	private _updateCommon(draw: boolean = false) {
+	private _updateCommon(draw: boolean = false): void {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
 		if (
@@ -1397,7 +1397,7 @@ export default class SearchPane {
 
 				// If the viewTotal option is selected then find the totals for the table
 				if (this.c.viewTotal) {
-						this._detailsPane();
+					this._detailsPane();
 				}
 				else {
 					rowData.binsTotal = rowData.bins;
@@ -1477,23 +1477,6 @@ export default class SearchPane {
 				row.select();
 			}
 
-			if (this.s.dtPane.rows().data().toArray().length === 0) {
-				if (rowData.arrayTotals.length === 0) {
-					this._detailsPane();
-					this._findUnique(rowData.arrayFilter, rowData.arrayTotals);
-				}
-
-				for (let element of rowData.arrayFilter) {
-					this._addRow(
-						element.filter,
-						element.filter,
-						rowData.bins[element.filter],
-						rowData.binsTotal[element.filter],
-						element.sort,
-						element.type
-					);
-				}
-			}
 			this.s.dtPane.draw();
 			this.s.dtPane.table().node().parentNode.scrollTop = scrollTop;
 		}
