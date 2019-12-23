@@ -26,7 +26,7 @@ This is the searchPanes extension for DataTables. It allows results to be filter
 
 This shows how to stop the clear buttons being displayed by setting the `-init searchPanes.clear` config option to be `false`. 
 
--init searchPanes.clear` is `true` by default.
+`-init searchPanes.clear` is `true` by default.
 ]]></info>
 
 </dt-example>

@@ -19,13 +19,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Dealing with Long Data in Panes</title>
+<title lib="searchPanes">Dealing with long data in panes</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to define the maxmum number of characters to display for each search option in the searchPanes with `-init searchPanes.dataLength`.
+This example demonstrates how to define the maximum number of characters to display for each search option in the searchPanes with `-init searchPanes.dataLength`.
 
 The default for `-init searchPanes.dataLength` is `30`.
 

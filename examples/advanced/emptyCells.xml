@@ -26,13 +26,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Dealing with Empty Cells</title>
+<title lib="searchPanes">Dealing with empty cells</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates sorting on cells with no data present. As an empty cell isn't very clear, a string can be used instead to denote the empty value. The default for `-init searchPanes.emptyMessage` is "<i>No Data</i>".
+This example demonstrates sorting on cells when no data is present. As an empty cell isn't very clear in a pane, a string can be used instead to denote the empty value. The default for `-init searchPanes.emptyMessage` is "<i>No Data</i>".
 
 ]]></info>
 

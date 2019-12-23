@@ -18,13 +18,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Hide All Controls on All Panes</title>
+<title lib="SearchPanes">Hide all controls on all panes</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to hide the Controls and disable searching for all of the panes can be hidden by setting the `-init searchPanes.controls` config option to false.
+This example shows how to hide the Controls and disable searching for all of the panes can be hidden by setting the `-init searchPanes.controls` config option to `false`.
 
 ]]></info>
 

@@ -35,7 +35,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Custom Filtering Pane</title>
+<title lib="SearchPanes">Custom filtering pane</title>
 
 <info><![CDATA[
 

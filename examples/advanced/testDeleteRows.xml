@@ -10,7 +10,7 @@ $(document).ready(function() {
         searchPanes: {
             layout: 'columns-2'
         },
-        dom: 'Pfrtip',
+		dom: 'Pfrtip'
     });
     $('#rebuild').click(function(){
         $('#example').DataTable().row(0).remove().draw().searchPanes.rebuildPane();
@@ -19,7 +19,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Interaction when Deleting Rows mid-Search</title>
+<title lib="searchPanes">Interaction when deleting rows mid-search</title>
 
 <info><![CDATA[
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
@@ -50,19 +50,19 @@ First select 'A' in the pane then play around with the following.
                 </tr>
                 <tr>
                     <td>B</td>
-                    <td>123123</td>
+                    <td>123.1.23</td>
                 </tr>
                 <tr>
                     <td>B</td>
-                    <td>273529</td>
+                    <td>27.35.29</td>
                 </tr>
                 <tr>
                     <td>C</td>
-                    <td>123123</td>
+                    <td>12.31.23</td>
                 </tr>
                 <tr>
                     <td>C</td>
-                    <td>273529</td>
+                    <td>27.35.29</td>
                 </tr>
             </tbody>
         </table>

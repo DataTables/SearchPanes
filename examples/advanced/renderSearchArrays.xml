@@ -44,13 +44,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Interaction with Rendering and Arrays</title>
+<title lib="searchPanes">Interaction with rendering and arrays</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on Arrays which are being rendered. The threshold is set to 1 so that the rendered columns will display their data. As the data is coming from an asynchronous Ajax call, the searchPanes need to be rebuilt upon table initialisation.
+This example demonstrates searching on arrays which are being rendered. The threshold is set to `1` so that the rendered columns will display their data. As the data is coming from an asynchronous Ajax call, the searchPanes need to be rebuilt upon table initialisation.
 
 ]]></info>
 

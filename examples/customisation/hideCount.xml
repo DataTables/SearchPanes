@@ -24,13 +24,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Hide Count Column on Individual Pane</title>
+<title lib="SearchPanes">Hide count column on individual pane</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to hide the count for an individual column by setting the `-init columns.searchPanes.hideCount` config option to true.
+This example shows how to hide the count for an individual column by setting the `-init columns.searchPanes.hideCount` config option to `true`.
 
 ]]></info>
 

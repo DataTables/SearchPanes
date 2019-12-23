@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example Demonstrates the `-init searchPanes.displayColumns` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is 3.
+This example demonstrates the `-init searchPanes.displayColumns` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is 3.
 
 ]]></info>
 

@@ -20,7 +20,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Empty Table</title>
+<title lib="searchPanes">Empty table</title>
 
 <info><![CDATA[
 

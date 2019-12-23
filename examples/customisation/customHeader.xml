@@ -24,7 +24,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Add a Custom Title to a Pane</title>
+<title lib="SearchPanes">Add a custom title to a pane</title>
 
 <info><![CDATA[
 

@@ -16,13 +16,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">ColReorder Integration</title>
+<title lib="searchPanes">ColReorder integration</title>
 
 <info><![CDATA[
 
 This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how searchPanes works with colReorder.
+This example shows how searchPanes works with the [ColReorder extension](https://datatables.net/extensions/colreorder) for DataTables.
 
 ]]></info>
 

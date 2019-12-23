@@ -39,7 +39,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Interaction with Built in DataTables Rendering Function</title>
+<title lib="searchPanes">Interaction with built-in DataTables rendering function</title>
 
 <info><![CDATA[
 
