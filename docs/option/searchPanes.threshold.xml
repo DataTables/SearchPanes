@@ -11,20 +11,20 @@
 	</type>
 
 	<default value="0.6">
-        The default value for the `-init searchPanes.threshold` paramater is `0.6`. This default value means that columns with a ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
+        The default value for the `-init searchPanes.threshold` parameter is `0.6`. This default value means that columns with a ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
     </default>
 	<description>
 		<![CDATA[
-        As standard, columns must have a uniqueness ratio of 0.6. This is the ratio of different values throughout the column to the number of total rows. If all rows are unique, this be 1; as the value drops towards 0, this means values are more often repeated.
+			As standard, columns must have a uniqueness ratio of 0.6. This is the ratio of different values throughout the column to the number of total rows. If all rows are unique, this will be 1; as the value drops towards 0, this means values are more often repeated.
 
-        By setting the `-init searchPanes.threshold` option to a different decimal value, the uniqueness ratio must be less than this value to display the pane.
+			By setting the `-init searchPanes.threshold` option to a different decimal value, the uniqueness ratio must be less than this value to display the pane.
 
-        This is useful as it allows fine tuning of at what point it is useful to show panes. If you were to always show a pane for tables with lots of columns the searching may become confusing. This adjustment allows searchPanes to internally make the decisions to display a simpler, less cluttered user interface which may otherwise arise if this was absent.
+			This is useful as it determines at what point a pane for the specified column should be shown. If all panes for tables with lots of columns were shown, the searching may become confusing. This adjustment allows searchPanes to internally make the decisions to display a simpler, less cluttered user interface.
 
-        The threshold of the uniqueness ratio can also be set for individual columns by making use of the `-init columns.searchPanes.threshold` option.
+			The threshold of the uniqueness ratio can also be set for individual columns by making use of the `-init columns.searchPanes.threshold` option.
 
-        If you want to force specific panes to always be present, or to always be hidden, use the `-init columns.searchPanes.show` option.
-        ]]>
+			If you want to force specific panes to always be present, or to always be hidden, use the `-init columns.searchPanes.show` option.
+		]]>
 	</description>
 
 	<example title="Change the threshold of the uniqueness ratio"><![CDATA[
@@ -40,7 +40,7 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init columns.searchPanes.show</related>
-<related>-init columns.searchPanes.threshold</related>
+<related type="option">columns.searchPanes.show</related>
+<related type="option">columns.searchPanes.threshold</related>
 
 </dt-option>

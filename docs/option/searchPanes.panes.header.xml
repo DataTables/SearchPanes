@@ -6,19 +6,19 @@
 
 	<type type="string">
 		<description>
-            The `-init searchPanes.panes.header` string allows a custom header to be set for custom panes.
-        </description>
+			The `-init searchPanes.panes.header` string allows a custom header to be set for custom panes.
+		</description>
 	</type>
 
 	<default value="Custom Pane">
-        The default value of `-init searchPanes.panes.header` is the string `Custom Pane` to make it clear that it is a custom Pane for developers. It is expected this value will be changed. For standard panes, use `-init columns.searchPanes.header`.
-    </default>
+		The default value of `-init searchPanes.panes.header` is the string `Custom Pane` to make it clear that it is a custom Pane for developers. It is expected this value will be changed. For standard panes, use `-init columns.searchPanes.header`.
+	</default>
 	<description>
 		<![CDATA[
-        As standard, Custom panes will be titled with the string "Custom Pane".
+			As standard, Custom panes will be titled with the string "Custom Pane".
 
-        Setting `-init searchPanes.panes.header` to any other string value will cause that string to be displayed in the title of the Pane.
-        ]]>
+			Setting `-init searchPanes.panes.header` to any other string value will cause that string to be displayed in the title of the Pane.
+		]]>
 	</description>
 
 	<example title="Define custom pane header"><![CDATA[

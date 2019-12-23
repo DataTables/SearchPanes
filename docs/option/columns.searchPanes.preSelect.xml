@@ -6,22 +6,22 @@
 
 	<type type="Array">
 		<description>
-            By setting the `-init columns.searchPanes.preSelect` option to an array of `-type string` values, the pane produced for that column will be searched and if the values of the `-init columns.searchPanes.preSelect` option are found then they will be pre-selected.
-        </description>
+			By setting the `-init columns.searchPanes.preSelect` option to an array of `-type string` values, the pane produced for that column will be searched and if the values of the `-init columns.searchPanes.preSelect` option are found then they will be pre-selected.
+		</description>
 	</type>
 
 	<default value="undefined">
-        The default value for the `-init columns.searchPanes.preSelect` paramater is `-type undefined`. When this default value is in place, no values will be preSelected in the pane.
-    </default>
+		The default value for the `-init columns.searchPanes.preSelect` parameter is `-type undefined`. When this default value is in place, no values will be preSelected in the pane.
+	</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will not pre-select any values in any of the panes.
-		
-		If any of the elements in the array held in `-init columns.searchPanes.preSelect` are present in the pane then they will be pre-selected. 
-        ]]>
+			As standard, SearchPanes will not pre-select any values in any of the panes.
+
+			If any of the elements in the array held in `-init columns.searchPanes.preSelect` are present in the pane then they will be pre-selected.
+		]]>
 	</description>
 
-	<example title="Pre-Select Values in a Pane"><![CDATA[
+	<example title="Pre-select values in a pane"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.emptyMessage</name>
-	<summary>Set Custom Empty Message</summary>
+	<summary>Set custom empty message</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
 		<description>
-            By setting the `-init searchPanes.emptyMessage` option to a string, any cells found in the table will be represented in the pane by that string.
-        </description>
+			By setting the `-init searchPanes.emptyMessage` option to a string, any cells found in the table will be represented in the pane by that string.
+		</description>
 	</type>
 
 	<default value="&lt;/i&gt;No Data&lt;/i&gt;">
-        The default value for the `-init searchPanes.emptyMessage` paramater is `\&lt;i\&gt;No Data\&lt;/i\&gt;`.
+		The default value for the `-init searchPanes.emptyMessage` parameter is `\&lt;i\&gt;No Data\&lt;/i\&gt;`.
 	</default>
 	<description>
 		<![CDATA[
-        Empty cells will be represented in the panes by the option `-init searchPanes.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell.
-        ]]>
+			Empty cells will be represented in the panes by the option `-init searchPanes.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell.
+		]]>
 	</description>
 
 	<example title="Altering Empty Message"><![CDATA[

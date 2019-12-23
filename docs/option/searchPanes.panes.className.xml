@@ -6,19 +6,19 @@
 
 	<type type="string">
 		<description>
-            Adds a custom class to the specified pane based on this string.
-        </description>
+			Adds a custom class to the specified pane based on this string.
+		</description>
 	</type>
 
-    <default value="undefined">
-        The default value for the `-init searchPanes.className` option is `-type undefined` as the standard should be without any custom classes.
-    </default>
+	<default value="undefined">
+		The default value for the `-init searchPanes.className` option is `-type undefined` as the standard should be without any custom classes.
+	</default>
 	<description>
 		<![CDATA[
-		By setting a class name, specific panes can be targetted for custom styling.
+			By setting a class name, specific panes can be targetted for custom styling.
 
-        Custom Panes can have custom classes applied in a similar way to how `-init columns.SearchPanes.dtOpts` are applied to panes. You can declare the `-init SearchPanes.panes.className` option within an object of the panes array, this will apply the custom class to that pane.
-        ]]>
+			Custom Panes can have custom classes applied in a similar way to how `-init columns.SearchPanes.dtOpts` are applied to panes. You can declare the `-init SearchPanes.panes.className` option within an object of the panes array, this will apply the custom class to that pane.
+		]]>
 	</description>
 
 	<example title="Define custom pane DataTable options"><![CDATA[
@@ -45,6 +45,6 @@
 
 ]]></example>
 
-<related>-init columns.searchPanes.className</related>
+<related type="option">columns.searchPanes.className</related>
 
 </dt-option>

@@ -15,10 +15,10 @@
     </default>
 	<description>
 		<![CDATA[
-        As standard, no custom options will be applied to the pane for the column if `-init columns.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object.
+		As standard, no custom options will be applied to the pane for the column if `-init columns.searchPanes` is `undefined`. Otherwise the related options will be applied if they are defined within this object.
 
 		This is useful as it means that the panes for individual columns can be customised rather than affecting every pane.
-        ]]>
+]]>
 	</description>
 
 	<example title="Alter searching and info of the third columns pane"><![CDATA[
@@ -190,11 +190,11 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init columns.searchPanes.dtOpts</related>
-<related>-init columns.searchPanes.hideCount</related>
-<related>-init columns.searchPanes.options</related>
-<related>-init columns.searchPanes.preSelect</related>
-<related>-init columns.searchPanes.show</related>
-<related>-init columns.searchPanes.threshold</related>
+<related type="option">columns.searchPanes.dtOpts</related>
+<related type="option">columns.searchPanes.hideCount</related>
+<related type="option">columns.searchPanes.options</related>
+<related type="option">columns.searchPanes.preSelect</related>
+<related type="option">columns.searchPanes.show</related>
+<related type="option">columns.searchPanes.threshold</related>
 
 </dt-option>

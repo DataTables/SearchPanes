@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>columns.searchPanes.orderable</name>
-	<summary>Hide the Ordering buttons in the pane of a specific column</summary>
+	<summary>Hide the ordering buttons in the pane of a specific column</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="boolean">
@@ -11,14 +11,14 @@
 	</type>
 
 	<default value="true">
-        The default value for the `-init columns.searchPanes.orderable` paramater is `true`, meaning that as standard the ordering buttons will be included in the pane.
-    </default>
+		The default value for the `-init columns.searchPanes.orderable` parameter is `true`, meaning that as standard the ordering buttons will be included in the pane.
+	</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will be displayed with the Ordering buttons included in the interface. However if the value of `-init columns.searchPanes.orderable` is set to 'false' then the ordering buttons will no longer be displayed.
+			As standard, SearchPanes will be displayed with the ordering buttons included in the interface. However if the value of `-init columns.searchPanes.orderable` is set to `false` then the ordering buttons will no longer be displayed.
 
-        The ordering buttons can be hidden for all of the panes by making use of `-init searchPanes.orderable`.
-        ]]>
+			The ordering buttons can be hidden for all of the panes by making use of `-init searchPanes.orderable`.
+		]]>
 	</description>
 
 	<example title="Hide ordering buttons for the 5th columns pane"><![CDATA[
@@ -39,6 +39,6 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init searchPanes.orderable</related>
+<related type="option">searchPanes.orderable</related>
 
 </dt-option>

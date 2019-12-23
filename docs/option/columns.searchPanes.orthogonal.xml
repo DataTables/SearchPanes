@@ -6,18 +6,18 @@
 
 	<type type="string">
 		<description>
-            By setting the `-init columns.searchPanes.orthogonal` option to a `-type string` you select which property of the rendering function to use when searching a pane. 
-        </description>
+			By setting the `-init columns.searchPanes.orthogonal` option to a `-type string` you select which property of the rendering function to use when searching a pane. 
+		</description>
 	</type>
 
-    <type type="object">
-        <description>
-            This is the default type of `-init columns.searchPanes.orthogonal`. If this is in place then the searchPanes will display the same values displayed in the DataTable and will search the DataTable using the same raw Data.
-        </description>
-    </type>
+	<type type="object">
+		<description>
+			This is the default type of `-init columns.searchPanes.orthogonal`. If this is in place then the searchPanes will display the same values displayed in the DataTable and will search the DataTable using the same raw Data.
+		</description>
+		</type>
 
 	<default value="object">
-        The default value of the `-init columns.searchPanes.orthogonal` object is shown below
+		The default value of the `-init columns.searchPanes.orthogonal` object is shown below
 
         ```
         orthogonal: {
@@ -26,17 +26,17 @@
             sort: 'sort',
             type: 'type'
         }
-        ```        
+        ```
 
-        This means that as standard the pane will display the same data as the DataTable, and search using the original data from the DataTable.
-    </default>
+		This means that as standard the pane will display the same data as the DataTable, and search using the original data from the DataTable.
+	</default>
 	<description>
 		<![CDATA[
-        `-init columns.searchPanes.orthogonal` is mainly used when the programmer is creating their own custom rendering function. By setting its value to a string it tells SearchPanes how to display and filter on the data it is provided from the DataTable.
+			`-init columns.searchPanes.orthogonal` is used to create a custom rendering function. By setting its value to a string it tells SearchPanes how to display and filter on the data it is provided from the DataTable.
 
-        SearchPanes uses rendering when populating the table and as standard will render the display value using the `columns.searchPanes.orthogonal.display` property and will identify the value to use while filtering by rendering on the `columns.searchPanes.orthogonal.filter` value.   
-        
-        `-init columns.searchPanes.orthogonal` is normally only defined as a string when dealing with arrays. By setting the render object to the following 
+			SearchPanes uses rendering when populating the table and as standard will render the display value using the `columns.searchPanes.orthogonal.display` property and will identify the value to use while filtering by rendering on the `columns.searchPanes.orthogonal.filter` value.   
+
+			`-init columns.searchPanes.orthogonal` is normally only defined as a string when dealing with arrays. By setting the render object to the following 
 
         ```
         {
@@ -73,6 +73,6 @@
 }
 ]]></example>
 
-<related>-init columns.render</related>
+<related type="option">columns.render</related>
 
 </dt-option>
