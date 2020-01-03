@@ -11,14 +11,14 @@
 	</type>
 
 	<default value="true">
-        The default value for the `-init columns.searchPanes.controls` paramater is `true`, meaning that as standard the control buttons will be included in the pane and searching will be enabled.
+        The default value for the `-init columns.searchPanes.controls` parameter is `true`, meaning that as standard the control buttons will be included in the pane and searching will be enabled.
     </default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will be displayed with the control buttons included in the interface and searching will be enabled. However if the value of `-init columns.searchPanes.controls` is set to 'false' then the control buttons will no longer be displayed and searching will be disabled.
+		As standard, SearchPanes will be displayed with the control buttons included in the interface and searching will be enabled. However if the value of `-init columns.searchPanes.controls` is set to `false` then the control buttons will no longer be displayed and searching will be disabled.
 
-        The control buttons can be hidden and searching disabled for all of the panes by making use of `-init searchPanes.controls`.
-        ]]>
+		The control buttons can be hidden and searching disabled for all of the panes by making use of `-init searchPanes.controls`.
+		]]>
 	</description>
 
 	<example title="Hide control buttons and disabled searching for the 5th columns pane"><![CDATA[
@@ -39,6 +39,6 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init searchPanes.controls</related>
+<related type="option">searchPanes.controls</related>
 
 </dt-option>

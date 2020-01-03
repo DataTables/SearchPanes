@@ -11,12 +11,12 @@
 	</type>
 
 	<default value="undefined">
-        The default value for the `-init columns.searchPanes.header` paramater is undefined. By default the pane will use the title of the column for its header.
-    </default>
+		The default value for the `-init columns.searchPanes.header` parameter is `undefined`. By default the pane will use the title of the column for its header.
+		</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will set the headers of the pane based on the title of the corresponding column. This option allows for the header of the pane to be customised. 
-        ]]>
+		As standard, SearchPanes will set the headers of the pane based on the title of the corresponding column. This option customises that text in the pane's header.
+		]]>
 	</description>
 
 	<example title="Set the Header of the Pane to a custom string"><![CDATA[

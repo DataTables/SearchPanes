@@ -48,8 +48,8 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init columns.searchPanes.options</related>
-<related>-init columns.searchPanes.dtOpts</related>
-<related>-init columns.searchPanes.className</related>
+<related type="option">columns.searchPanes.options</related>
+<related type="option">columns.searchPanes.dtOpts</related>
+<related type="option">columns.searchPanes.className</related>
 
 </dt-option>

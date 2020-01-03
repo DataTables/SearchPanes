@@ -6,33 +6,32 @@
 
 	<type type="boolean">
 		<description>
-            By setting the `-init searchPanes` option to true, a series of Panes will be displayed to aid searching the associated DataTable.
+			By setting the `-init searchPanes` option to true, a series of Panes will be displayed to aid searching the associated DataTable.
 
 			This is a short-cut option to enable searchPanes with the default configuration options. Customisations can be made by giving this parameter as an object.
-        </description>
+		</description>
+	</type>
+	<type type="object">
+		<description>
+			By setting the `-init searchPanes` option to an object, SearchPanes will be enabled for the relevant DataTable, with the SearchPanes defaults (`$.fn.dataTable.SearchPanes.defaults`) extended and overwritten by any conflicting options procided in the object as defined by the programmer.
+		</description>
 	</type>
 
-    <type type="object">
-        <description>
-            By setting the `-init searchPanes` option to an object, SearchPanes will be enabled for the relevant DataTable, with the SearchPanes defaults (`$.fn.dataTable.SearchPanes.defaults`) extended and overwritten by any conflicting options procided in the object as defined by the programmer.
-        </description>
-    </type>
-
 	<default value="false">
-        The default value for the `-init searchPanes` paramater is `false`. When this default value is in place no panes will be displayed and you will display a standard DataTable along with any other extensions that are in use.
-    </default>
+		The default value for the `-init searchPanes` parameter is `false`. When this default value is in place no panes will be displayed and you will display a standard DataTable along with any other extensions that are in use.
+	</default>
 	<description>
 		<![CDATA[
-        SearchPanes is an extension that allows for clearer more accesible searching functionality. 
-        
-        When a selection is made in one of the associated panes, the DataTable will be searched for records that meet the criteria of the selections made in the panes. These records will then be displayed while all of the records that do not meet the criteria will not be included in the DataTable.
+			SearchPanes is an extension that allows for clearer more accesible searching functionality. 
 
-        SearchPanes can be enabled by setting the dom property to `dom: 'Pfrtip'`, which will set the configuration options to be the defaults as defined by `$.fn.dataTable.SearchPanes.defaults` or an object with further properties to define operation which is different to the defaults. It can also be enabled through the API.
+			When a selection is made in one of the associated panes, the DataTable will be searched for records that meet the criteria of the selections made in the panes. These records will then be displayed while all of the records that do not meet the criteria will not be included in the DataTable.
 
-        Please note that as with all other configuration options for SearchPanes, this option is an extension to the [default set of DataTables options](/reference/option). This property should be set in the DataTables initialisation object.
+			SearchPanes can be enabled by setting the dom property to `dom: 'Pfrtip'`, which will set the configuration options to be the defaults as defined by `$.fn.dataTable.SearchPanes.defaults` or an object with further properties to define operation which is different to the defaults. It can also be enabled through the API.
 
-        Where speed is a concern, SearchPanes operates fairly normally on the client side for tables with less than 2,000 rows. If increasing above this level then performance hits will occur and it will take longer to both load and operate the panes.
-        ]]>
+			Please note that as with all other configuration options for SearchPanes, this option is an extension to the [default set of DataTables options](/reference/option). This property should be set in the DataTables initialisation object.
+
+			Where speed is a concern, SearchPanes operates fairly normally on the client side for tables with less than 2,000 rows. If increasing above this level then performance hits will occur and it will take longer to both load and operate the panes.
+		]]>
 	</description>
 
 	<example title="Enable SearchPanes"><![CDATA[

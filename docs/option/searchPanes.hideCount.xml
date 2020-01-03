@@ -11,14 +11,14 @@
 	</type>
 
 	<default value="false">
-        The default value for the `-init searchPanes.hideCount` paramater is `false`, meaning that as standard the count column will be included in the panes.
+        The default value for the `-init searchPanes.hideCount` parameter is `false`, meaning that as standard the count column will be included in the panes.
 	</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init searchPanes.hideCount` is set to 'true' then the count column will no longer be displayed in any of the panes.
+			As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init searchPanes.hideCount` is set to `true` then the count column won't be displayed in any of the panes.
 
-        The count column can be hidden for individual panes by the `-init columns.searchPanes.hideCount` option.
-        ]]>
+			The count column can be hidden for individual panes by the `-init columns.searchPanes.hideCount` option.
+		]]>
 	</description>
 
 	<example title="Hide count for all panes"><![CDATA[
@@ -34,6 +34,6 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init columns.searchPanes.hideCount</related>
+<related type="option">columns.searchPanes.hideCount</related>
 
 </dt-option>

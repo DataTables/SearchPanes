@@ -6,19 +6,19 @@
 
 	<type type="string">
 		<description>
-            This option is capable of holding all of the sub-options for languages for the panes.
-        </description>
+			This option is capable of holding all of the sub-options for languages for the panes.
+		</description>
 	</type>
 
 	<default value="undefined">
-        The default value for the `-init language.searchPanes` object is `-type undefined`. Meaning that as standard there are no extra options to add to the panes for language.
-    </default>
+		The default value for the `-init language.searchPanes` object is `-type undefined`. Meaning that as standard there are no extra options to add to the panes for language.
+	</default>
 	<description>
 		<![CDATA[
-        As standard, no custom options will be applied to the panes for languages if `-init language.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object.
+			As standard, no custom options will be applied to the panes for languages if `-init language.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object.
 
-		This is useful as it means that the language options can be set for panes leading to increased internationalisation.
-        ]]>
+			This is useful as it means that the language options can be set for panes leading to increased internationalisation.
+		]]>
 	</description>
 
 	<example title="Alter title messages:"><![CDATA[
@@ -59,8 +59,8 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init language.searchPanes.dtOpts</related>
-<related>-init language.searchPanes.hideCount</related>
-<related>-init language.searchPanes.options</related>
+<related type="option">language.searchPanes.dtOpts</related>
+<related type="option">language.searchPanes.hideCount</related>
+<related type="option">language.searchPanes.options</related>
 
 </dt-option>

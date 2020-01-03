@@ -6,21 +6,21 @@
 
 	<type type="string">
 		<description>
-            `-init language.searchPanes.countFiltered` changes what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and filtering is taking place.
-        </description>
+		`-init language.searchPanes.countFiltered` changes what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and filtering is taking place.
+	</description>
 	</type>
 
 	<default value="{shown} ({total})">
-        The default value for the `-init language.searchPanes.countFiltered` paramater is `{shown} ({total})`. 
-    </default>
+		The default value for the `-init language.searchPanes.countFiltered` parameter is `{shown} ({total})`.
+	</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place.
-		
-		SearchPanes replace two strings when creating the output for the count column: `{shown}` is the count for each different value that is currently displayed in the DataTable, `{total}` is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will be the same value.
+			As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place.
 
-        This message will not be displayed if `-init searchPanes.viewTotal` is not set to be `true`.
-        ]]>
+			SearchPanes replace two strings when creating the output for the count column: `{shown}` is the count for each different value that is currently displayed in the DataTable, `{total}` is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will be the same value.
+
+			This message will not be displayed if `-init searchPanes.viewTotal` is not set to be `true`.
+		]]>
 	</description>
 
 	<example title="Change messages for viewTotal:"><![CDATA[
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init language.searchPanes.count</related>
-<related>-init searchPanes.viewTotal</related>
+<related type="option">language.searchPanes.count</related>
+<related type="option">searchPanes.viewTotal</related>
 
 </dt-option>

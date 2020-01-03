@@ -21,7 +21,7 @@
 	</default>
 	<description>
 		<![CDATA[
-		This is useful as it prevents the searchPanes cells becoming mishapen and overpopulated.
+		This is useful as it prevents the searchPanes cells becoming mishapen and overpopulated when the table contains long strings.
         ]]>
 	</description>
 

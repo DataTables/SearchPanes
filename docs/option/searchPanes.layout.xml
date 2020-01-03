@@ -13,15 +13,14 @@
 	</type>
 
 	<default value="false">
-        The default value for the `-init searchPanes.layout` paramater is `columns-3`. 
+        The default value for the `-init searchPanes.layout` parameter is `columns-3`. 
     </default>
 	<description>
 		<![CDATA[
-        By setting the `-init searchPanes.layout` parameter to `columns-3`, the panes will be displayed in 3 columns.
+			By setting the `-init searchPanes.layout` parameter to `columns-3`, the panes will be displayed in 3 columns.
 
-        There are 6 sizes supported from 1 pane in a row to 6 panes in a row. Altering the number at the end of `columns-` will alter the number of panes on a row.
-
-        ]]>
+			There are 6 sizes supported from 1 pane in a row to 6 panes in a row. Altering the number at the end of `columns-` will alter the number of panes on a row.
+		]]>
 	</description>
 
 	<example title="Set the number of panes in a row to 2"><![CDATA[

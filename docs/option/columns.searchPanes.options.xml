@@ -22,19 +22,19 @@
     </default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will not add any custom options to the panes.
+			As standard, SearchPanes will not add any custom options to the panes.
 
-        When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function recieves the following parameters.
+			When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function recieves the following parameters.
 
-        * rowData - the data from the current row being compared as an array with one element from each column
-        * rowIdx - the index of the row currently being compared
+			* `rowData` - the data from the current row being compared as an array with one element from each column
+			* `rowIdx` - the index of the row currently being compared
 
-        The functions context is an API instance of the host DataTable. This means that from within the custom search functions it is possible to call this.rows().data() and other API methods.
-        
-        The function must return true if that row is to be included in the search results and false if it is not. By allowing the programmer to define their own functions they can make them as complicated as they so choose.
+			The function's context is an API instance of the host DataTable. This means that from within the custom search functions it is possible to call API methods, such as `this.rows().data()`.
 
-        This is useful when you want to add an option to search for options which aren't just values in the column. For example, countries in europe, or cities which arent edinburgh, or age ranges.
-        ]]>
+			The function must return `true` if that row is to be included in the search results and `false` if it is not.
+
+			This is useful when you want to add an option to search for which isn't a value in the table. For example, "Countries in Europe", or, "Cities which aren't Edinburgh", or age ranges.
+		]]>
 	</description>
 
 	<example title="Define custom Options for a specific pane"><![CDATA[
@@ -121,6 +121,6 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init searchPanes.panes</related>
+<related type="option">searchPanes.panes</related>
 
 </dt-option>

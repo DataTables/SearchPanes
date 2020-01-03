@@ -6,25 +6,25 @@
 
 	<type type="Decimal">
 		<description>
-            By setting the `-init columns.searchPanes.threshold` option to an decimal number of value less than one and greater than 0 it is possible to alter the point at which the pane for this column is displayed.
+            By setting the `-init columns.searchPanes.threshold` option to a decimal number of value less than one and greater than 0 it is possible to alter the point at which the pane for this column is displayed.
         </description>
 	</type>
 
 	<default value="0.6">
-        The default value for the `-init searchPanes.threshold` paramater is `0.6`, this will be the default value for all of the columns unless otherwise specified by either `-init searchPanes.thresold` or `-init columns.searchPanes.threshold`. When this default value is in place it will mean that columns where the ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
+        The default value for the `-init searchPanes.threshold` parameter is `0.6`, this will be the default value for all of the columns unless otherwise specified by either `-init searchPanes.thresold` or `-init columns.searchPanes.threshold`. When this default value is in place it will mean that columns where the ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
     </default>
 	<description>
 		<![CDATA[
-        As standard columns must have a uniqueness ratio of 0.6 (ratio of different values throughout the column to the number of total rows).
+			As standard columns must have a uniqueness ratio of 0.6 (ratio of different values throughout the column to the number of total rows).
 
-        By setting the `-init columns.searchPanes.threshold` option to a different decimal value, the uniqueness ratio must be less than this value to display the pane for the column specified.
+			By setting the `-init columns.searchPanes.threshold` option to a different decimal value, the uniqueness ratio must be less than this value to display the pane for the column specified.
 
-        This is useful as it allows fine tuning of at what point it is useful to show the pane for the specified column. If you were to always show a pane for tables with lots of columns the searching may become confusing. This adjustment allows searchPanes to internally make the decisions to display a simpler, less cluttered user interface which may otherwise arise if this was absent.
+			This is useful as it determines at what point a pane for the specified column should be shown. If all panes for tables with lots of columns were shown, the searching may become confusing. This adjustment allows searchPanes to internally make the decisions to display a simpler, less cluttered user interface.
 
-        The threshold of the uniqueness ratio can also be set for all of the columns by making use of the `-init searchPanes.threshold` option.
+			The threshold of the uniqueness ratio can also be set for all of the columns by making use of the `-init searchPanes.threshold` option.
 
-        If you desire to force specific panes to show and other specific panes to hide without having searchPanes automatically work it out, make use of the `-init columns.searchPanes.show` option.
-        ]]>
+			If you desire to force specific panes to show and other specific panes to hide without having searchPanes automatically work it out, make use of the `-init columns.searchPanes.show` option.
+		]]>
 	</description>
 
 	<example title="Change the threshold of the uniqueness ratio for a specific column"><![CDATA[
@@ -45,7 +45,6 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related>-init columns.searchPanes.show</related>
-<related>-init searchPanes.threshold</related>
-
+	<related type="option">columns.searchPanes.show</related>
+	<related>-init searchPanes.threshold</related>
 </dt-option>
