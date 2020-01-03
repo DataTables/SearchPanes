@@ -1223,7 +1223,11 @@ export default class SearchPane {
 
 		if (idx !== undefined) {
 			let table = this.s.dtPane;
-			let rows = table.rows({order: 'index'}).data().map(item => item.filter.toString()).toArray();
+			let rows = table.rows({order: 'index'}).data().map(
+				item => item.filter !== null ?
+				item.filter.toString() :
+				null
+			).toArray();
 
 			for (let filter of loadedFilter.searchPanes.panes[idx].selected) {
 				let id: number = -1;
