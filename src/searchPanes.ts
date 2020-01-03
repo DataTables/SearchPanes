@@ -482,7 +482,7 @@ export default class SearchPanes {
 	private _getState(): void {
 		let loadedFilter = this.s.dt.state.loaded();
 
-		if (loadedFilter && loadedFilter.searchPanes) {
+		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList !== undefined) {
 			this.s.selectionList = loadedFilter.searchPanes.selectionList;
 		}
 	}
