@@ -78,8 +78,15 @@ export default class SearchPanes {
 			filterPane: -1,
 			panes: [],
 			selectionList: [],
+			serverData: {},
 			updating: false,
 		};
+
+		table.on('xhr', (e, settings, json, xhr) => {
+			if (json.searchPanes && json.searchPanes.options) {
+				this.s.serverData = json.searchPanes.options;
+			}
+		});
 
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', 'Clear All'));
@@ -148,7 +155,7 @@ export default class SearchPanes {
 			}
 
 			pane.clearData();
-			returnArray.push(pane.rebuildPane());
+			returnArray.push(pane.rebuildPane(this.s.dt.page.info().serverSide ? this.s.serverData : undefined));
 		}
 
 		// Attach panes, clear buttons, and title bar to the document
@@ -591,7 +598,7 @@ export default class SearchPanes {
 		$(this.dom.container).append(this.dom.panes);
 
 		for (let pane of this.s.panes) {
-			pane.rebuildPane();
+			pane.rebuildPane(this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
 		}
 
 		this._updateFilterCount();
@@ -659,6 +666,24 @@ export default class SearchPanes {
 		if (this.c.clear) {
 			$(this.dom.clearAll).on('click.dtsps', () => {
 				this.clearSelections();
+			});
+		}
+
+		if (this.s.dt.page.info().serverSide) {
+			table.on('preXhr.dt', (e, settings, data) => {
+				if (data.searchPanes === undefined) {
+					data.searchPanes = {};
+				}
+				for (let pane of this.s.panes) {
+					let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
+					let src = this.s.dt.column(pane.s.index).dataSrc();
+					if (data.searchPanes[src] === undefined) {
+						data.searchPanes[src] = [];
+					}
+					for (let dataPoint of rowData) {
+						data.searchPanes[src].push(dataPoint.display);
+					}
+				}
 			});
 		}
 
