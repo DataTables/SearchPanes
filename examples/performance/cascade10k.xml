@@ -20,7 +20,8 @@ $(document).ready(function() {
 			{ data: "extn" },
 			{ data: "start_date" },
 			{ data: "salary" }
-		]
+		],
+        deferRender: true
 	});
 });
 
