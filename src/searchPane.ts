@@ -127,10 +127,6 @@ export default class SearchPane {
 			updating: false,
 		};
 
-		if (this.s.dt.page.info().serverSide) {
-			this.c.hideCount = true;
-		}
-
 		let rowLength: number = table.columns().eq(0).toArray().length;
 		this.colExists = this.s.index < rowLength;
 
@@ -590,7 +586,6 @@ export default class SearchPane {
 					this.dom.container.addClass(this.classes.hidden);
 					this.s.displayed = false;
 					return;
-
 				}
 
 				// If the option viewTotal is true then find
@@ -610,11 +605,26 @@ export default class SearchPane {
 				for (let dataPoint of dataIn[colTitle]) {
 					this.s.rowData.arrayFilter.push({
 						display: dataPoint.label,
-						filter: dataPoint.label,
+						filter: dataPoint.value,
 						sort: dataPoint.label,
 						type: dataPoint.label
 					});
+					this.s.rowData.bins[dataPoint.value] = dataPoint.count;
 				}
+				let binLength: number = Object.keys(rowData.bins).length;
+				let uniqueRatio: number = this._uniqueRatio(binLength, table.rows()[0].length);
+
+				// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
+				if (this.s.displayed === false && ((colOpts.show === undefined && colOpts.threshold === null ?
+						uniqueRatio > this.c.threshold :
+						uniqueRatio > colOpts.threshold)
+					|| (colOpts.show !== true  && binLength <= 1))
+				) {
+					this.dom.container.addClass(this.classes.hidden);
+					this.s.displayed = false;
+					return;
+				}
+
 				this.s.displayed = true;
 			}
 		}
@@ -757,8 +767,8 @@ export default class SearchPane {
 					let row = this._addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
-						1,
-						1,
+						rowData.bins[rowData.arrayFilter[i].filter],
+						rowData.bins[rowData.arrayFilter[i].filter],
 						rowData.arrayFilter[i].sort,
 						rowData.arrayFilter[i].type
 					);
