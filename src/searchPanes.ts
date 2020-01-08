@@ -85,6 +85,40 @@ export default class SearchPanes {
 		table.on('xhr', (e, settings, json, xhr) => {
 			if (json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json.searchPanes.options;
+				let deselectIdx = -1;
+				for (let pane of this.s.panes) {
+					console.log(pane.s)
+					// Identify the pane where a selection or deselection has been made and add it to the list.
+					if (pane.s.selectPresent) {
+						this.s.selectionList.push(
+							{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
+						);
+						table.state.save();
+						pane.s.selectPresent = false;
+						break;
+					}
+					else if (pane.s.deselect) {
+						deselectIdx = pane.s.index;
+						let selectedData = pane.s.dtPane.rows({selected: true}).data().toArray();
+						if (selectedData.length > 0) {
+							this.s.selectionList.push({index: pane.s.index, rows: selectedData, protect: true});
+						}
+						pane.s.deselect = false;
+					}
+				}
+
+				if (this.s.selectionList.length > 0) {
+					let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+					for (let pane of this.s.panes) {
+						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+						console.log(pane.s.index, pane.s.lastSelect)
+					}
+				}
+				for (let pane of this.s.panes) {
+					if (!pane.s.lastSelect) {
+						pane.rebuildPane(this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
+					}
+				}
 			}
 		});
 
@@ -179,7 +213,7 @@ export default class SearchPanes {
 		let table = this.s.dt;
 
 		// Only do this if the redraw isn't being triggered by the panes updating themselves
-		if (!this.s.updating) {
+		if (!this.s.updating && !this.s.dt.page.info().serverSide) {
 			let filterActive: boolean = true;
 			let filterPane: number = this.s.filterPane;
 
@@ -607,7 +641,7 @@ export default class SearchPanes {
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dtsps', () => {
 			this._updateFilterCount();
-			if (this.c.cascadePanes || this.c.viewTotal) {
+			if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
 				this.redrawPanes();
 			}
 			this.s.filterPane = -1;
@@ -675,14 +709,19 @@ export default class SearchPanes {
 					data.searchPanes = {};
 				}
 				for (let pane of this.s.panes) {
-					let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
 					let src = this.s.dt.column(pane.s.index).dataSrc();
 					if (data.searchPanes[src] === undefined) {
 						data.searchPanes[src] = [];
 					}
-					for (let dataPoint of rowData) {
-						data.searchPanes[src].push(dataPoint.display);
+					if (pane.s.dtPane !== undefined) {
+						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
+						for (let dataPoint of rowData) {
+							data.searchPanes[src].push(dataPoint.display);
+						}
 					}
+				}
+				if (this.c.viewTotal) {
+					this._prepViewTotal();
 				}
 			});
 		}
@@ -690,6 +729,37 @@ export default class SearchPanes {
 		table.settings()[0]._searchPanes = this;
 	}
 
+	private _prepViewTotal() {
+		let filterPane: number = this.s.filterPane;
+		let filterActive: boolean = false;
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane !== undefined) {
+				let selectLength: number = pane.s.dtPane.rows({selected: true}).data().toArray().length;
+
+				// If filterPane === -1 then a pane with a selection has not been found yet, so set filterPane to that panes index
+				if (selectLength > 0 && filterPane === -1) {
+					filterPane = pane.s.index;
+					filterActive = true;
+				}
+				// Then if another pane is found with a selection then set filterPane to null to
+				//  show that multiple panes have selections present
+				else if (selectLength > 0) {
+					filterPane = null;
+				}
+			}
+		}
+
+		// Update all of the panes to reflect the current state of the filters
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane !== undefined) {
+				pane.s.filteringActive = true;
+
+				if ((filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) || filterActive === false) {
+					pane.s.filteringActive = false;
+				}
+			}
+		}
+	}
 	/**
 	 * Updates the number of filters that have been applied in the title
 	 */

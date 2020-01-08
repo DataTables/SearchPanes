@@ -112,6 +112,7 @@ export default class SearchPane {
 			index: idx,
 			indexes: [],
 			lastSelect: false,
+			listenerActive: false,
 			redraw: false,
 			rowData: {
 				arrayFilter: [],
@@ -124,6 +125,9 @@ export default class SearchPane {
 			},
 			searchFunction: undefined,
 			selectPresent: false,
+			serverSelect: [],
+			serverSelecting: false,
+			tableLength: null,
 			updating: false,
 		};
 
@@ -601,6 +605,10 @@ export default class SearchPane {
 				this.s.displayed = true;
 			}
 			else if (dataIn !== null) {
+				if (this.s.tableLength === null || table.rows()[0].length > this.s.tableLength) {
+					this.s.tableLength = table.rows()[0].length;
+				}
+
 				let colTitle = table.column(this.s.index).dataSrc();
 				for (let dataPoint of dataIn[colTitle]) {
 					this.s.rowData.arrayFilter.push({
@@ -610,9 +618,10 @@ export default class SearchPane {
 						type: dataPoint.label
 					});
 					this.s.rowData.bins[dataPoint.value] = dataPoint.count;
+					this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
 				}
-				let binLength: number = Object.keys(rowData.bins).length;
-				let uniqueRatio: number = this._uniqueRatio(binLength, table.rows()[0].length);
+				let binLength: number = Object.keys(rowData.binsTotal).length;
+				let uniqueRatio: number = this._uniqueRatio(binLength, this.s.tableLength);
 
 				// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
 				if (this.s.displayed === false && ((colOpts.show === undefined && colOpts.threshold === null ?
@@ -730,6 +739,10 @@ export default class SearchPane {
 			: {}
 		));
 
+		if (!this.s.listenerActive) {
+			this._actListeners();
+		}
+
 		$(this.dom.dtP).addClass(this.classes.table);
 
 		// This is hacky but necessary for when datatables is generating the column titles automatically
@@ -768,7 +781,7 @@ export default class SearchPane {
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
 						rowData.bins[rowData.arrayFilter[i].filter],
-						rowData.bins[rowData.arrayFilter[i].filter],
+						rowData.binsTotal[rowData.arrayFilter[i].filter],
 						rowData.arrayFilter[i].sort,
 						rowData.arrayFilter[i].type
 					);
@@ -776,6 +789,15 @@ export default class SearchPane {
 					if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
 						row.select();
 					}
+
+					for (let option of this.s.serverSelect) {
+						if (option.filter === rowData.arrayFilter[i].filter) {
+							this.s.serverSelecting = true;
+							row.select();
+							this.s.serverSelecting = false;
+						}
+					}
+
 				}
 				else if (
 					rowData.arrayFilter[i] &&
@@ -811,24 +833,7 @@ export default class SearchPane {
 		// Display the pane
 		this.s.dtPane.draw();
 
-		// When an item is selected on the pane, add these to the array which holds selected items.
-		// Custom search will perform.
-		this.s.dtPane.on('select.dtsp', () => {
-			if (this.s.dt.page.info().serverSide) {
-				this.s.dt.draw(false);
-			}
-			else {
-				clearTimeout(t0);
-				$(this.dom.clear).removeClass(this.classes.dull);
-				this.s.selectPresent = true;
-
-				if (!this.s.updating) {
-					this._makeSelection();
-				}
-
-				this.s.selectPresent = false;
-			}
-		});
+		
 
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
@@ -886,9 +891,7 @@ export default class SearchPane {
 			}
 		}
 
-		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
-			originalEvent.stopPropagation();
-		});
+
 
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
@@ -929,24 +932,9 @@ export default class SearchPane {
 			this.s.dt.state.save();
 		});
 
-		// Declare timeout Variable
-		let t0: NodeJS.Timeout;
 
-		// When an item is deselected on the pane, re add the currently selected items to the array
-		// which holds selected items. Custom search will be performed.
-		this.s.dtPane.on('deselect.dtsp', () => {
-			t0 = setTimeout(() => {
-				this.s.deselect = true;
 
-				if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
-					$(this.dom.clear).addClass(this.classes.dull);
-				}
-
-				this._makeSelection();
-				this.s.deselect = false;
-				this.s.dt.state.save();
-			}, 50);
-		});
+		
 
 		// Make sure to save the state once the pane has been built
 		this.s.dt.state.save();
@@ -954,6 +942,66 @@ export default class SearchPane {
 		return true;
 	}
 
+	private _actListeners(){
+		// Declare timeout Variable
+		let t0: NodeJS.Timeout;
+
+		// When an item is deselected on the pane, re add the currently selected items to the array
+		// which holds selected items. Custom search will be performed.
+		this.s.dtPane.on('deselect.dtsp', () => {
+			t0 = setTimeout(() => {
+				if (this.s.dt.page.info().serverSide && !this.s.updating) {
+					if (!this.s.serverSelecting) {
+						this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+						console.log(969);
+						this.s.deselect = true;
+						this.s.dt.draw(false);
+					}
+				}
+				else {
+					this.s.deselect = true;
+
+					if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
+						$(this.dom.clear).addClass(this.classes.dull);
+					}
+
+					this._makeSelection();
+					this.s.deselect = false;
+					this.s.dt.state.save();
+				}
+			}, 50);
+		});
+
+		// When an item is selected on the pane, add these to the array which holds selected items.
+		// Custom search will perform.
+		this.s.dtPane.on('select.dtsp', () => {
+			if (this.s.dt.page.info().serverSide && !this.s.updating) {
+				if (!this.s.serverSelecting) {
+					this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+					console.log(842);
+					this.s.selectPresent = true;
+					this.s.dt.draw(false);
+				}
+			}
+			else {
+				clearTimeout(t0);
+				$(this.dom.clear).removeClass(this.classes.dull);
+				this.s.selectPresent = true;
+
+				if (!this.s.updating) {
+					this._makeSelection();
+				}
+
+				this.s.selectPresent = false;
+			}
+		});
+
+		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
+			originalEvent.stopPropagation();
+		});
+
+		this.s.listenerActive = true;
+	}
 	/**
 	 * Update the array which holds the display and filter values for the table
 	 */
@@ -1532,7 +1580,9 @@ export default class SearchPane {
 						: 0, selectedEl.filter,
 					selectedEl.filter
 				);
+				this.s.updating = true;
 				row.select();
+				this.s.updating = false;
 			}
 
 			this.s.dtPane.draw();
