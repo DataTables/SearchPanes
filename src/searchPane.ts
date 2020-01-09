@@ -833,8 +833,6 @@ export default class SearchPane {
 		// Display the pane
 		this.s.dtPane.draw();
 
-		
-
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
 			// If the data being passed in is empty then a state clear must have occured so clear the panes state as well
@@ -891,8 +889,6 @@ export default class SearchPane {
 			}
 		}
 
-
-
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
 		$(this.dom.nameButton).on('click.dtsp', () => {
@@ -932,17 +928,13 @@ export default class SearchPane {
 			this.s.dt.state.save();
 		});
 
-
-
-		
-
 		// Make sure to save the state once the pane has been built
 		this.s.dt.state.save();
 
 		return true;
 	}
 
-	private _actListeners(){
+	private _actListeners() {
 		// Declare timeout Variable
 		let t0: NodeJS.Timeout;
 
@@ -953,7 +945,6 @@ export default class SearchPane {
 				if (this.s.dt.page.info().serverSide && !this.s.updating) {
 					if (!this.s.serverSelecting) {
 						this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-						console.log(969);
 						this.s.deselect = true;
 						this.s.dt.draw(false);
 					}
@@ -978,7 +969,6 @@ export default class SearchPane {
 			if (this.s.dt.page.info().serverSide && !this.s.updating) {
 				if (!this.s.serverSelecting) {
 					this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-					console.log(842);
 					this.s.selectPresent = true;
 					this.s.dt.draw(false);
 				}

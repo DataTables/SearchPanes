@@ -82,42 +82,13 @@ export default class SearchPanes {
 			updating: false,
 		};
 
+		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
+		// If viewTotal is not enabled then we simply update the data from the server
 		table.on('xhr', (e, settings, json, xhr) => {
 			if (json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json.searchPanes.options;
-				let deselectIdx = -1;
-				for (let pane of this.s.panes) {
-					console.log(pane.s)
-					// Identify the pane where a selection or deselection has been made and add it to the list.
-					if (pane.s.selectPresent) {
-						this.s.selectionList.push(
-							{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
-						);
-						table.state.save();
-						pane.s.selectPresent = false;
-						break;
-					}
-					else if (pane.s.deselect) {
-						deselectIdx = pane.s.index;
-						let selectedData = pane.s.dtPane.rows({selected: true}).data().toArray();
-						if (selectedData.length > 0) {
-							this.s.selectionList.push({index: pane.s.index, rows: selectedData, protect: true});
-						}
-						pane.s.deselect = false;
-					}
-				}
-
-				if (this.s.selectionList.length > 0) {
-					let last = this.s.selectionList[this.s.selectionList.length - 1].index;
-					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
-						console.log(pane.s.index, pane.s.lastSelect)
-					}
-				}
-				for (let pane of this.s.panes) {
-					if (!pane.s.lastSelect) {
-						pane.rebuildPane(this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
-					}
+				if (this.c.viewTotal) {
+					this._serverTotals();
 				}
 			}
 		});
@@ -617,6 +588,92 @@ export default class SearchPanes {
 			setTimeout(() => {
 				this._startup(table);
 			}, 100);
+		}
+	}
+
+	/**
+	 * Works out which panes to update when data is recieved from the server and viewTotal is active
+	 */
+	private _serverTotals() {
+		let selectPresent = false;
+		let deselectPresent = false;
+		let table = this.s.dt;
+		for (let pane of this.s.panes) {
+			// Identify the pane where a selection or deselection has been made and add it to the list.
+			if (pane.s.selectPresent) {
+				this.s.selectionList.push(
+					{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
+				);
+				table.state.save();
+				pane.s.selectPresent = false;
+				selectPresent = true;
+				break;
+			}
+			else if (pane.s.deselect) {
+				let selectedData = pane.s.dtPane.rows({selected: true}).data().toArray();
+				if (selectedData.length > 0) {
+					this.s.selectionList.push({index: pane.s.index, rows: selectedData, protect: true});
+				}
+				selectPresent = true;
+				deselectPresent = true;
+			}
+		}
+
+		// Build an updated list based on any selections or deselections added
+		if (!selectPresent) {
+			this.s.selectionList = [];
+		}
+		else {
+			let newSelectionList = [];
+			for (let i: number = 0; i < this.s.selectionList.length; i++) {
+				let further: boolean = false;
+
+				// Find out if this selection is the last one in the list for that pane
+				for (let j: number = i + 1; j < this.s.selectionList.length; j++) {
+					if (this.s.selectionList[j].index === this.s.selectionList[i].index) {
+						further = true;
+					}
+				}
+
+				// If there are no selections for this pane in the list then just push this one
+				if (
+					!further &&
+					this.s.panes[this.s.selectionList[i].index].s.dtPane.rows({selected: true}).data().toArray().length > 0
+				) {
+					newSelectionList.push(this.s.selectionList[i]);
+				}
+			}
+			this.s.selectionList = newSelectionList;
+		}
+
+		// If there has been a deselect and only one pane has a selection then update everything
+		if (deselectPresent && this.s.selectionList.length === 1) {
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = false;
+				pane.s.deselect = false;
+			}
+		}
+		// Otherwise if there are more 1 selections then find the last one and set it to not update that pane
+		else if (this.s.selectionList.length > 0) {
+			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = (pane.s.index === last);
+				pane.s.deselect = false;
+			}
+		}
+		// Otherwise if there are no selections then find where that took place and do not update to maintain scrolling
+		else if (this.s.selectionList.length === 0) {
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = (pane.s.deselect === true);
+				pane.s.deselect = false;
+			}
+		}
+
+		// Rebuild the desired panes
+		for (let pane of this.s.panes) {
+			if (!pane.s.lastSelect) {
+				pane.rebuildPane(this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
+			}
 		}
 	}
 
