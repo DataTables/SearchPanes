@@ -87,9 +87,10 @@ export default class SearchPanes {
 		table.on('xhr', (e, settings, json, xhr) => {
 			if (json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json.searchPanes.options;
-				if (this.c.viewTotal) {
+				if (this.c.viewTotal  || this.c.cascadePanes) {
 					this._serverTotals();
 				}
+
 			}
 		});
 
@@ -646,11 +647,15 @@ export default class SearchPanes {
 			this.s.selectionList = newSelectionList;
 		}
 
+		let initIdx = -1;
 		// If there has been a deselect and only one pane has a selection then update everything
 		if (deselectPresent && this.s.selectionList.length === 1) {
 			for (let pane of this.s.panes) {
 				pane.s.lastSelect = false;
 				pane.s.deselect = false;
+				if (pane.s.dtPane !== undefined && pane.s.dtPane.rows({selected: true}).data().toArray().length > 0) {
+					initIdx = pane.s.index;
+				}
 			}
 		}
 		// Otherwise if there are more 1 selections then find the last one and set it to not update that pane
@@ -672,7 +677,10 @@ export default class SearchPanes {
 		// Rebuild the desired panes
 		for (let pane of this.s.panes) {
 			if (!pane.s.lastSelect) {
-				pane.rebuildPane(this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
+				pane.rebuildPane(
+					this.s.dt.page.info().serverSide ? this.s.serverData : undefined,
+					pane.s.index === initIdx ? true : null
+				);
 			}
 		}
 	}

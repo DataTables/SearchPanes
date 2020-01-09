@@ -314,7 +314,7 @@ export default class SearchPane {
 	/**
 	 * Rebuilds the panes from the start having deleted the old ones
 	 */
-	public rebuildPane(dataIn = null): this {
+	public rebuildPane(dataIn = null, init = null): this {
 		this.clearData();
 
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
@@ -324,7 +324,7 @@ export default class SearchPane {
 
 		this.dom.container.removeClass(this.classes.hidden);
 		this.s.displayed = false;
-		this._buildPane(dataIn);
+		this._buildPane(dataIn, init);
 		return this;
 	}
 
@@ -514,7 +514,7 @@ export default class SearchPane {
 	/**
 	 * Method to construct the actual pane.
 	 */
-	private _buildPane(dataIn = null): boolean {
+	private _buildPane(dataIn = null, init = null): boolean {
 		// Aliases
 		this.selections = [];
 		let table = this.s.dt;
@@ -776,12 +776,21 @@ export default class SearchPane {
 
 			// Add all of the search options to the pane
 			for (let i: number = 0, ien = rowData.arrayFilter.length; i < ien; i++) {
-				if (this.s.dt.page.info().serverSide) {
+				if (
+					this.s.dt.page.info().serverSide &&
+					(
+						!this.c.cascadePanes ||
+						(this.c.cascadePanes && rowData.bins[rowData.arrayFilter[i].filter] !== 0) ||
+						(this.c.cascadePanes && init !== null)
+					)
+				) {
 					let row = this._addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
 						rowData.bins[rowData.arrayFilter[i].filter],
-						rowData.binsTotal[rowData.arrayFilter[i].filter],
+						this.c.viewTotal
+							? String(rowData.binsTotal[rowData.arrayFilter[i].filter])
+							: rowData.bins[rowData.arrayFilter[i].filter],
 						rowData.arrayFilter[i].sort,
 						rowData.arrayFilter[i].type
 					);
@@ -800,6 +809,7 @@ export default class SearchPane {
 
 				}
 				else if (
+					!this.s.dt.page.info().serverSide &&
 					rowData.arrayFilter[i] &&
 					(rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)
 				) {
@@ -816,7 +826,7 @@ export default class SearchPane {
 						row.select();
 					}
 				}
-				else {
+				else if (!this.s.dt.page.info().serverSide) {
 					this._addRow(this.c.emptyMessage, count, count, this.c.emptyMessage, this.c.emptyMessage, this.c.emptyMessage);
 				}
 			}
