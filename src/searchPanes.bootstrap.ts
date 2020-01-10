@@ -63,7 +63,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll col-1 btn btn-light',
 	container: 'dtsp-searchPanes row',
-	panes: 'dtsp-panes container',
+	panes: 'dtsp-panesContainer',
 	title: 'dtsp-title col-10',
 	titleRow: 'row',
 });

@@ -140,7 +140,7 @@ div.dtsp-panes {
     clear: both;
     
     div.dtsp-titleRow {
-        padding-bottom: 4px;
+        padding-bottom: 10px;
     }
 
 	div.dtsp-title {
@@ -170,8 +170,8 @@ div.dtsp-columns-2{
 	margin: 0px !important;
 }
 div.dtsp-columns-3{
-	min-width: 31%;
-	max-width: 31%;
+	min-width: 31.333%;
+	max-width: 31.333%;
 	padding-left: 1%;
 	padding-right: 1%;
 	margin: 0px !important;
@@ -197,8 +197,8 @@ div.dtsp-columns-5{
 	}
 }
 div.dtsp-columns-6{
-	min-width: 15%;
-	max-width: 15%;
+	min-width: 15.666%;
+	max-width: 15.666%;
 	padding-left: 0.5%;
 	padding-right: 0.5%;
 	margin: 0px !important;

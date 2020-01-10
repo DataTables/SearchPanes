@@ -1,9 +1,7 @@
 @import './common.scss';
 div.dtsp-searchPanes{
-    div.row{
-        margin-left: 0px;
-        margin-right: 0px;
-    }
+    padding-top: 10px;
+    
     button.clearAll{
         max-width: 50px;
     }
@@ -19,6 +17,12 @@ div.dtsp-searchPanes{
             height: 40px;
         }
     }
+}
+
+div.dtsp-searchPanes,
+div.row{
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 div.dtsp-searchPane {
@@ -122,28 +126,55 @@ div.dtsp-panesContainer {
 }
 
 div.dtsp-columns-1{
-	min-width: 95%;
-	max-width: 95%;
+	min-width: 98%;
+	max-width: 98%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
 }
 div.dtsp-columns-2{
-	min-width: 45%;
-	max-width: 45%;
+	min-width: 48%;
+	max-width: 48%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
 }
 div.dtsp-columns-3{
-	min-width: 30%;
-	max-width: 30%;
+	min-width: 33.333%;
+	max-width: 33.333%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
 }
 div.dtsp-columns-4{
-	min-width: 22%;
-	max-width: 22%;
+	min-width: 23%;
+	max-width: 23%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+	div.dtsp-topRow{
+		flex-direction: column !important;
+	}
 }
 div.dtsp-columns-5{
 	min-width: 18%;
 	max-width: 18%;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin: 0px !important;
+	div.dtsp-topRow{
+		flex-direction: column !important;
+	}
 }
 div.dtsp-columns-6{
-	min-width: 15%;
-	max-width: 15%;
+	min-width: 15.666%;
+	max-width: 15.666%;
+	padding-left: 0.5%;
+	padding-right: 0.5%;
+	margin: 0px !important;
+	div.dtsp-topRow{
+		flex-direction: column !important;
+	}
 }
 
 div.dtsp-smallGap{
