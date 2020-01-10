@@ -7,11 +7,10 @@ s
 <![CDATA[
 
 $(document).ready(function() {
-    let table = $('#example').DataTable({
-        dom:"P" + "<'row'<'small-6 columns'l><'small-6 columns'f>r>"+
-            "t"+
-            "<'row'<'small-6 columns'i><'small-6 columns'p>>",
+    var table = $('#example').DataTable({
+        searchPanes: true
     });
+    table.searchPanes.container().prependTo(table.table().container());
 });
 
 ]]>

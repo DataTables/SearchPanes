@@ -7,24 +7,10 @@ s
 <![CDATA[
 
 $(document).ready(function() {
-    let table = $('#example').DataTable({
-        dom:"<'ui stackable grid'"+
-                "<'row'"+
-                    "<'sixteen wide column' P>"+
-                ">"+
-                "<'row'"+
-                    "<'eight wide column'l>"+
-                    "<'right aligned eight wide column'f>"+
-                ">"+
-                "<'row dt-table'"+
-                    "<'sixteen wide column'tr>"+
-                ">"+
-                "<'row'"+
-                    "<'seven wide column'i>"+
-                    "<'right aligned nine wide column'p>"+
-                ">"+
-            ">"
+    var table = $('#example').DataTable({
+        searchPanes: true
     });
+    table.searchPanes.container().prependTo(table.table().container());
 });
 
 ]]>

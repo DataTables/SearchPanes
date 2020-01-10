@@ -41,7 +41,7 @@ export default class SearchPanes {
 	public s: typeInterfaces.IS;
 	public regenerating: boolean = false;
 
-	constructor(paneSettings, opts) {
+	constructor(paneSettings, opts, fromInit = false) {
 		// Check that the required version of DataTables is included
 		if (! DataTable || ! DataTable.versionCheck || ! DataTable.versionCheck('1.10.0')) {
 			throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -86,7 +86,7 @@ export default class SearchPanes {
 
 		this._getState();
 
-		if (this.s.dt.settings()[0]._bInitComplete) {
+		if (this.s.dt.settings()[0]._bInitComplete || fromInit) {
 			this._paneDeclare(table, paneSettings, opts);
 		}
 		else {

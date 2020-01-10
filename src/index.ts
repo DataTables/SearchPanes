@@ -140,13 +140,29 @@ import SearchPanes from './searchPanes';
 		}
 	};
 
-	function _init(settings) {
+	function _init(settings, fromPre = false) {
 		let api = new DataTable.Api(settings);
 		let opts = api.init().searchPanes || DataTable.defaults.searchPanes;
-		let searchPanes =  new SearchPanes(api, opts);
+		let searchPanes =  new SearchPanes(api, opts, fromPre);
 		let node = searchPanes.getNode();
 		return node;
 	}
+
+	// Attach a listener to the document which listens for DataTables initialisation
+	// events so we can automatically initialise
+	$(document).on( 'preInit.dt.dtsp', function (e, settings, json) {
+		if ( e.namespace !== 'dt' ) {
+			return;
+		}
+
+		if (settings.oInit.searchPanes ||
+			DataTable.defaults.searchPanes
+		) {
+			if (!settings._searchPanes) {
+				_init(settings, true);
+			}
+		}
+	} );
 
 	// DataTables `dom` feature option
 	DataTable.ext.feature.push({

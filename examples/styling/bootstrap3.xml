@@ -7,13 +7,10 @@
 <![CDATA[
 
 $(document).ready(function() {
-    let table = $('#example').DataTable({
-        dom: "<'row'<'col-sm-12'P>>" +
-                "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    var table = $('#example').DataTable({
+        searchPanes: true
     });
-    
+    table.searchPanes.container().prependTo(table.table().container());
 });
 
 ]]>
