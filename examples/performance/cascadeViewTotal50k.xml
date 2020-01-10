@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="ajax" table-class="display nowrap" order="32">
 
-<css lib="datatables searchpanes select"/>
+<css lib="datatables searchpanes select scroller"/>
 
-<js lib="jquery datatables searchpanes select">
+<js lib="jquery datatables searchpanes select scroller">
 <![CDATA[
 
 $(document).ready(function() {
@@ -29,7 +29,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Performance 50k with cascadePanes and viewTotal</title>
+<title lib="searchPanes">50k Rows with cascadePanes and viewTotal</title>
 
 <info><![CDATA[
 
