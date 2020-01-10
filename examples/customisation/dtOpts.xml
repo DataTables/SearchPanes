@@ -15,6 +15,7 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             dtOpts:{
+                dom:"tp",
                 paging: true,
                 pagingType: 'numbers',
                 searching: false,
@@ -25,6 +26,7 @@ $(document).ready(function() {
             {
                 searchPanes:{
                     dtOpts:{
+                        dom:"ti",
                         info: true,
                     }
                 },
@@ -44,7 +46,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows the activation of paging within the panes by enabling the searchPanes `-init searchPanes.dtOpts` property for `-init paging`, and setting the `-init pagingType` to `numbers`. It also enables `-init info` of the third column's pane.
+This example shows the activation of paging within the panes by enabling the searchPanes `-init searchPanes.dtOpts` property for `-init paging`, and setting the `-init pagingType` to `numbers`. It also enables `-init info` of the third column's pane. The `-init dom` property must be set to include whatever visual additions are made to the DataTable as SearchPanes as default overrides this to be just `t`.
 
 The default for `-init searching` is true and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
 

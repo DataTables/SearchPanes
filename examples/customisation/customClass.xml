@@ -25,6 +25,7 @@ $(document).ready(function() {
                         }
                     ],
                     dtOpts: {
+                        dom:"tp",
                         paging: true,
                         order: [[1, 'desc']]
                     },

@@ -624,6 +624,7 @@ export default class SearchPane {
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
 			true,
 			{
+				dom: 't',
 				columnDefs: [
 					{
 						className: 'dtsp-nameColumn',

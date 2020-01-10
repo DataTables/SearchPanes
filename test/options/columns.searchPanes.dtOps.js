@@ -43,6 +43,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 						targets: 1,
 						searchPanes: {
 							dtOpts: {
+								dom: "tp",
 								paging: true
 							}
 						}
@@ -50,7 +51,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				]
 			});
 
-			expect($('div.dataTables_length').length).toBe(1);
+			expect($('div.dataTables_paginate').length).toBe(2);
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
@@ -67,6 +68,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 						targets: 1,
 						searchPanes: {
 							dtOpts: {
+								dom: "tp",
 								paging: true
 							}
 						}
@@ -79,7 +81,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dataTables_length').length).toBe(0);
+			expect($('div.dataTables_paginate').length).toBe(2);
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
@@ -103,13 +105,14 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				],
 				searchPanes: {
 					dtOpts: {
+						dom: "tp",
 						paging: true
 					}
 				}
 			});
 
-			expect($('div.dataTables_length').length).toBe(2);
-			expect($('div.dtsp-searchPane:eq(1) div.dataTables_length').length).toBe(0);
+			expect($('div.dataTables_paginate').length).toBe(3);
+			expect($('div.dtsp-searchPane:eq(1) div.dataTables_paginate').length).toBe(0);
 		});
 
 		dt.html('basic');
@@ -121,6 +124,7 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 						targets: 1,
 						searchPanes: {
 							dtOpts: {
+								dom: "tp",
 								paging: true
 							}
 						}
@@ -133,8 +137,8 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dataTables_length').length).toBe(1);
-			expect($('div.dtsp-searchPane:eq(1) div.dataTables_length').length).toBe(1);
+			expect($('div.dataTables_paginate').length).toBe(2);
+			expect($('div.dtsp-searchPane:eq(1) div.dataTables_paginate').length).toBe(1);
 		});
 	});
 });

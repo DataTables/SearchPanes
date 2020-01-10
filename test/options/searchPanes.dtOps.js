@@ -59,7 +59,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dataTables_length').length).toBe(0);
+			expect($('div.dataTables_paginate').length).toBe(1);
 		});
 
 		dt.html('basic');
@@ -68,12 +68,13 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				dom: 'Pfrtip',
 				searchPanes: {
 					dtOpts: {
+						dom: "tp",
 						paging: true
 					}
 				}
 			});
 
-			expect($('div.dataTables_length').length).toBe(3);
+			expect($('div.dataTables_paginate').length).toBe(4);
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
@@ -98,6 +99,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 								}
 							],
 							dtOpts: {
+								dom: "tp",
 								paging: true
 							}
 						}
@@ -105,7 +107,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(6) div.dataTables_length').length).toBe(1);
+			expect($('div.dtsp-searchPane:eq(6) div.dataTables_paginate').length).toBe(1);
 		});
 	});
 });

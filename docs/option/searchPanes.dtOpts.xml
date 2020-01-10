@@ -15,7 +15,7 @@
     </default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`.
+			As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`. As Standard SearchPanes internal DataTable has a `-init dom` property of only `t`, meaning that if you are added paging or something visual then you must also modify the `-init dom` property.
 
 			By overwriting this value in the initialisation, the panes can be customised as much as a standard DataTables. 
 

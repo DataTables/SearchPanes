@@ -26,7 +26,7 @@ div.dtsp-searchPane {
     align-content: flex-start;
     align-items: stretch;
     padding-top: 0px;
-    padding-bottom: 0px;
+    padding-bottom: 5px;
     margin: 5px 0;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -34,11 +34,17 @@ div.dtsp-searchPane {
     
     div.dataTables_wrapper {
         flex: 1;
-        margin: 1em 0.5%;
-        margin-top: 0px;
 
         div.dataTables_filter {
             display: none;
+        }
+        div.row {
+            div.col-sm-12:empty{
+                display: none;
+            }
+            div.dataTables_filter{
+                display: none;
+            }
         }
     }
     div.btn-group{
@@ -115,6 +121,7 @@ div.dtsp-searchPane {
     .dtsp-searchIcon{
         display: block;
         position: relative;
+        padding: 18px 13px;
     }
 
     div.dataTables_wrapper {
@@ -170,8 +177,8 @@ div.dtsp-columns-2{
 	margin: 0px !important;
 }
 div.dtsp-columns-3{
-	min-width: 31.333%;
-	max-width: 31.333%;
+	min-width: 33.333%;
+	max-width: 33.333%;
 	padding-left: 1%;
 	padding-right: 1%;
 	margin: 0px !important;
