@@ -22,7 +22,18 @@ div.dtsp-verticalContainer div.dtsp-dataTable{
 div.dtsp-verticalContainer div.dtsp-verticalPanes{
     flex-grow: 1;
     flex-shrink: 0;
-    flex-basis: 30%;
+    flex-basis: 26%;
+}
+
+div.dtsp-title {
+    margin-right: 0px !important;
+    margin-top: 13px !important;
+}
+
+input.dtsp-search {
+    min-width: 0px !important;
+    padding-left: 0px !important;
+    margin: 0px !important;
 }
 
 div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes{
