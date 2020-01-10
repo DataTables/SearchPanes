@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example order="0">
+
+<title lib="SearchPanes">Advanced SearchPanes</title>
+
+<info><![CDATA[
+
+This is the section to display how SearchPanes will perform with larger sets of Data.
+
+As well as basic configuration, there are examples with CascadePanes and ViewTotal enables, as these are process heavy and cause longer load times.
+
+]]></info>
+
+</dt-example>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example order="0">
+
+<title lib="SearchPanes">Advanced SearchPanes</title>
+
+<info><![CDATA[
+
+This is the section for showing how it is possible to customise how SearchPanes appears to the user.
+
+It shows how to remove parts of the interface, set the location of the panes relative to the DataTable, how to customise the text within the interface and also how to display SearchPanes using the "Buttons" extension. 
+
+]]></info>
+
+</dt-example>

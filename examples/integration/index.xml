@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example order="0">
+
+<title lib="SearchPanes">Advanced SearchPanes</title>
+
+<info><![CDATA[
+
+This is the section to show how SearchPanes integrates with some other DataTables extensions.
+
+]]></info>
+
+</dt-example>

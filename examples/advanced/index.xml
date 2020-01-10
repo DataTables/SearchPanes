@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example order="0">
+
+<title lib="SearchPanes">Advanced SearchPanes</title>
+
+<info><![CDATA[
+
+This is the section for advanced Examples showing SearchPanes capabilities.
+
+It shows SearchPanes behaviours with orthogonal data, unusual data and other situations where you may wonder how SearchPanes will interact with the DataTable.
+
+]]></info>
+
+</dt-example>

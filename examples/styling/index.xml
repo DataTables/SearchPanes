@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example order="0">
+
+<title lib="SearchPanes">Advanced SearchPanes</title>
+
+<info><![CDATA[
+
+This is the section for showing how SearchPanes appears for each of the 5 styling frameworks supported by DataTables.
+
+]]></info>
+
+</dt-example>

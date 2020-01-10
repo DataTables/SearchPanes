@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example order="0">
+
+<title lib="SearchPanes">Advanced SearchPanes</title>
+
+<info><![CDATA[
+
+This is the section for showing the key configuration options that are available with SearchPanes.
+
+This includes showing sub-totals, cascading the panes, selecting which panes to show or hide and pre-selecting rows to name a few.
+
+]]></info>
+
+</dt-example>
