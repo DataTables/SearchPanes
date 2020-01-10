@@ -92,9 +92,6 @@ div.dtsp-panesContainer {
 						max-width: none;
 						min-width: 90px;
 						padding: 2px;
-						&:focus{
-							border-bottom: 1px solid black;
-						}
 						&::placeholder {
 							color: black;
 							font-size: 16px;
