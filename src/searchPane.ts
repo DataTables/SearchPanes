@@ -2,7 +2,7 @@ import * as typeInterfaces from './paneType';
 let DataTable = $.fn.dataTable;
 export default class SearchPane {
 
-	private static version = '0.0.3';
+	private static version = '0.0.5';
 
 	private static classes: typeInterfaces.IClasses = {
 		buttonGroup: 'dtsp-buttonGroup',
