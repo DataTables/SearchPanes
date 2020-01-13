@@ -1,6 +1,6 @@
 {
   "name": "datatables.net-searchpane",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Search Panels for DataTables",
   "main": "index.js",
   "directories": {
