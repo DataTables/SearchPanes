@@ -48,12 +48,23 @@ node_modules/typescript/bin/tsc src/searchPanes.semanticui.ts --module ES6
 
 
 # Copy JS
+HEADER="$(head -n 3 src/index.ts)"
+
 rsync -r src/*.js $OUT_DIR/js
 js_frameworks searchPanes $OUT_DIR/js
 
 ./node_modules/rollup/bin/rollup $OUT_DIR/js/index.js \
     --format iife \
+    --banner "$HEADER" \
     --file $OUT_DIR/js/dataTables.searchPanes.js
+
+rm \
+    $OUT_DIR/js/index.js \
+    $OUT_DIR/js/panesType.js \
+    $OUT_DIR/js/paneType.js \
+    $OUT_DIR/js/searchPane.js \
+    $OUT_DIR/js/searchPanes.js
+
 
 js_compress $OUT_DIR/js/dataTables.searchPanes.js
 
