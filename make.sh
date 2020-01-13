@@ -48,13 +48,14 @@ node_modules/typescript/bin/tsc src/searchPanes.semanticui.ts --module ES6
 
 
 # Copy JS
-rsync -r src/* $OUT_DIR/js
-js_compress $OUT_DIR/js/dataTables.searchPanes.js
+rsync -r src/*.js $OUT_DIR/js
 js_frameworks searchPanes $OUT_DIR/js
 
 ./node_modules/rollup/bin/rollup $OUT_DIR/js/index.js \
     --format iife \
     --file $OUT_DIR/js/dataTables.searchPanes.js
+
+js_compress $OUT_DIR/js/dataTables.searchPanes.js
 
 # Copy and build examples
 rsync -r examples $OUT_DIR
