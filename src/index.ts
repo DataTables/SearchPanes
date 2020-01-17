@@ -136,7 +136,6 @@ import SearchPanes from './searchPanes';
 			this.popover(config._panes.getNode(), {
 				align: 'dt-container'
 			});
-			config._panes.adjust();
 		}
 	};
 
