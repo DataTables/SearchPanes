@@ -2,8 +2,8 @@
 div.dtsp-panesContainer {
 	font-family: 'Roboto', sans-serif;
 	padding: 5px;
-	border: 2px solid #f0f0f0;
-	border-radius: 10px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
 	margin: 5px 0;
 	clear: both;
 	text-align: center;
@@ -86,7 +86,7 @@ div.dtsp-panesContainer {
 						flex-basis: 90px;
 						min-height: 20px;
 						max-width: none;
-						min-width: 90px;
+						min-width: 50px;
 						border: none;
 						padding-left: 12px; 
 						&::placeholder {
