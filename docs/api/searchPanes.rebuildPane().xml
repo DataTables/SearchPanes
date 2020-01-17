@@ -16,13 +16,24 @@
         </parameter>
 		<returns type="DataTables.Api">DataTables API instance</returns>
 	</type>
+	<type type="function">
+		<signature>searchPanes.rebuildPane( index, maintainSelect )</signature>
+		<description>Rebuild specific pane, regathering options from the table and maintaining the selections present in the pane.</description>
+		<parameter type="integer" name="index">
+            Index of pane to rebuild.
+        </parameter>
+		<parameter type="boolean" name="maintainSelect">
+            Flag to decide whether to maintain the selections in the pane or not.
+        </parameter>
+		<returns type="DataTables.Api">DataTables API instance</returns>
+	</type>
 
 	<description>
 		This method provides the ability to rebuild the panes should a change occur on the associated DataTable.
 
 		If no argument is provided to `-init searchPanes.rebuildPane()` then all of the panes will be rebuilt.
 
-		Otherwise, the `-init searchPanes.rebuildPane()` function takes in the index of the pane. The index of the panes include hidden panes and custom panes - to rebuild the second column's associated pane call `searchPanes.rebuildPane(1)`. As custom panes come after the column's panes, to rebuild the first custom pane where a table has five columns then the command to run would be `searchPanes.rebuildPane(5)` (note counting starts from zero).
+		Otherwise, the `-init searchPanes.rebuildPane()` function takes in the index of the pane. The index of the panes include hidden panes and custom panes - to rebuild the second column's associated pane call `searchPanes.rebuildPane(1)`. As custom panes come after the column's panes, to rebuild the first custom pane where a table has five columns then the command to run would be `searchPanes.rebuildPane(5)` (note counting starts from zero). A second parameter is available which allows the selections to be maintained when a rebuild is called. It is a boolean value with a default of `false`.
 
 	</description>
 
@@ -47,6 +58,17 @@ $(document).ready(function() {
 
 	$('#example').DataTable().row(0).remove();
 	$('#example').DataTable().searchPanes.rebuildPane();
+});
+]]></example>
+
+	<example title="Redraw the first pane while maintaining selections:"><![CDATA[
+
+$(document).ready(function() {
+    var dt = $('#example').DataTable( {
+        dom: 'Pfrtip'
+    });
+
+	$('#example').DataTable().searchPanes.rebuildPane(0, true);
 });
 ]]></example>
 
