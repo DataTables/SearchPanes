@@ -127,7 +127,7 @@ import SearchPanes from './searchPanes';
 					dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
 				}
 			});
-			let message = dt.i18n('searchPanes.collapse', 'SearchPanes');
+			let message = dt.i18n('searchPanes.collapse', 'SearchPanes', 0);
 			dt.button(node).text(message);
 			config._panes = panes;
 		},

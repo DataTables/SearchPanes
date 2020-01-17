@@ -11,7 +11,7 @@ $(document).ready(function() {
         language: {
             searchPanes: {
                 clearMessage: 'Obliterate Selections',
-                collapse: 'Filter',
+                collapse: {0: 'Search Options', _: 'Search Options (%d)'}
             }
         },
         buttons:[
@@ -31,6 +31,8 @@ $(document).ready(function() {
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to edit the text in the clear message and the filter button.
+
+The SearchPanes button is capable of showing the number of selections that are made across the panes by passing in an object with counts and the text to be displayed for each value. `%d` is replaced by the count value. This object is passed into an `-api i18n()` function. In order not to display the count, simply set the value of collapse to be a string with no %d present.
 
 ]]></info>
 

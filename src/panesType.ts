@@ -24,6 +24,7 @@ export interface IDefaults {
 	clear: boolean;
 	columns: number[];
 	container: (dt: any) => any;
+	filterChanged: (count: number) => any;
 	layout: string;
 	panes: IConfigPaneItem[];
 	viewTotal: boolean;

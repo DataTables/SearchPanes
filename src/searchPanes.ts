@@ -30,6 +30,7 @@ export default class SearchPanes {
 			return dt.table().container();
 		},
 		columns: [],
+		filterChanged: undefined,
 		layout: 'columns-3',
 		panes: [],
 		viewTotal: false,
@@ -681,5 +682,9 @@ export default class SearchPanes {
 		// Run the message through the internationalisation method to improve readability
 		let message: string = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
 		$(this.dom.title).text(message);
+
+		if(this.c.filterChanged !== undefined && typeof this.c.filterChanged === "function"){
+			this.c.filterChanged(filterCount)
+		}
 	}
 }
