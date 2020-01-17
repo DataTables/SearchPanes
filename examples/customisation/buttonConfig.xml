@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="5">
+
+<css lib="datatables searchpanes select buttons"/>
+
+<js lib="jquery datatables searchpanes select buttons">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        buttons:[
+            {
+                extend: 'searchPanes',
+                config: {
+                    cascadePanes: true
+                }
+            }
+        ],
+        dom: 'Bfrtip',
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">SearchPanes Configuration using a Button</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example demonstrates searchPanes being operated using a [Buttons extension](https://datatables.net/extensions/buttons) button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focussed on.
+
+Further to this, this example shows how to set the panes options when they are being initialised through a button. The `config` option should be structured in the exact same way as a normal SearchPanes config. 
+
+]]></info>
+
+</dt-example>

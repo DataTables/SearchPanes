@@ -122,11 +122,22 @@ import SearchPanes from './searchPanes';
 	$.fn.dataTable.ext.buttons.searchPanes = {
 		text: 'Search Panes',
 		init(dt, node, config) {
-			let panes = new $.fn.dataTable.SearchPanes(dt, {
-				filterChanged(count) {
-					dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
-				}
-			});
+			console.log($.extend(
+				{
+					filterChanged(count) {
+						dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
+					}
+				},
+				config.config
+			))
+			let panes = new $.fn.dataTable.SearchPanes(dt, $.extend(
+				{
+					filterChanged(count) {
+						dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
+					}
+				},
+				config.config
+			));
 			let message = dt.i18n('searchPanes.collapse', 'SearchPanes', 0);
 			dt.button(node).text(message);
 			config._panes = panes;
@@ -136,7 +147,8 @@ import SearchPanes from './searchPanes';
 			this.popover(config._panes.getNode(), {
 				align: 'dt-container'
 			});
-		}
+		},
+		config:{}
 	};
 
 	function _init(settings, fromPre = false) {
