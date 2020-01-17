@@ -101,9 +101,9 @@ import SearchPanes from './searchPanes';
 		return this;
 	});
 
-	apiRegister('searchPanes.rebuildPane()', function(targetIdx) {
+	apiRegister('searchPanes.rebuildPane()', function(targetIdx, maintainSelections) {
 		let ctx = this.context[0];
-		ctx._searchPanes.rebuild(targetIdx);
+		ctx._searchPanes.rebuild(targetIdx, maintainSelections);
 		return this;
 	});
 
@@ -122,14 +122,6 @@ import SearchPanes from './searchPanes';
 	$.fn.dataTable.ext.buttons.searchPanes = {
 		text: 'Search Panes',
 		init(dt, node, config) {
-			console.log($.extend(
-				{
-					filterChanged(count) {
-						dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
-					}
-				},
-				config.config
-			))
 			let panes = new $.fn.dataTable.SearchPanes(dt, $.extend(
 				{
 					filterChanged(count) {

@@ -310,17 +310,21 @@ export default class SearchPane {
 	/**
 	 * Rebuilds the panes from the start having deleted the old ones
 	 */
-	public rebuildPane(): this {
+	public rebuildPane(maintainSelection = false): this {
 		this.clearData();
 
+		let selectedRows = [];
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
+			if(maintainSelection){
+				selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+			}
 			this.s.dtPane.clear().destroy();
 		}
 
 		this.dom.container.removeClass(this.classes.hidden);
 		this.s.displayed = false;
-		this._buildPane();
+		this._buildPane(selectedRows);
 		return this;
 	}
 
@@ -510,7 +514,7 @@ export default class SearchPane {
 	/**
 	 * Method to construct the actual pane.
 	 */
-	private _buildPane(): boolean {
+	private _buildPane(selectedRows = []): boolean {
 		// Aliases
 		this.selections = [];
 		let table = this.s.dt;
@@ -778,6 +782,14 @@ export default class SearchPane {
 			}
 			this.s.selectPresent = false;
 		});
+
+		for(let selection of selectedRows){
+			for(let row of this.s.dtPane.rows().toArray()){
+				if(selection.value === this.s.dtPane.row(row).data().value){
+					this.s.dtPane.row(row).select();
+				}
+			}
+		}
 
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {

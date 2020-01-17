@@ -107,11 +107,11 @@ $(document).ready(function() {
     });
 
     dt.on('select.dt', () => {			
-        dt.searchPanes.rebuildPane(0);
+        dt.searchPanes.rebuildPane(0, true);
     });
 
     dt.on('deselect.dt', () => {
-        dt.searchPanes.rebuildPane(0);
+        dt.searchPanes.rebuildPane(0, true);
     });
 });
 

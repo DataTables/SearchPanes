@@ -135,12 +135,14 @@ export default class SearchPanes {
 	/**
 	 * rebuilds all of the panes
 	 */
-	public rebuild(targetIdx: boolean | number = false): SearchPane | SearchPane[] {
+	public rebuild(targetIdx: boolean | number = false, maintainSelection = false): SearchPane | SearchPane[] {
 		$(this.dom.emptyMessage).remove();
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		let returnArray: SearchPane[] = [];
 
-		this.clearSelections();
+		if(!maintainSelection){
+			this.clearSelections();
+		}
 
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
 		for (let pane of this.s.panes) {
@@ -149,7 +151,7 @@ export default class SearchPanes {
 			}
 
 			pane.clearData();
-			returnArray.push(pane.rebuildPane());
+			returnArray.push(pane.rebuildPane(maintainSelection));
 		}
 
 		// Attach panes, clear buttons, and title bar to the document
