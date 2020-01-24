@@ -69,6 +69,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 			expect($('div.dtsp-title:visible').length).toBe(1);
 		});
+		// Add test for DD-1346 here
 
 		dt.html('basic');
 		it('Shown when panes displayed at start', function() {
