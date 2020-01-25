@@ -17,7 +17,7 @@
 		<![CDATA[
 			By setting a class name, specific panes can be targetted for custom styling.
 
-			Custom Panes can have custom classes applied in a similar way to how `-init columns.SearchPanes.dtOpts` are applied to panes. You can declare the `-init SearchPanes.panes.className` option within an object of the panes array, this will apply the custom class to that pane.
+			Custom Panes can have custom classes applied in a similar way to how `-init columns.searchPanes.dtOpts` are applied to panes. You can declare the `-init searchPanes.panes.className` option within an object of the panes array, this will apply the custom class to that pane.
 		]]>
 	</description>
 
