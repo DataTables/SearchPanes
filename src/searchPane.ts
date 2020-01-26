@@ -1278,10 +1278,6 @@ export default class SearchPane {
 			// if the filter is a function then does it meet the criteria of that function or not
 			else if (typeof colSelect.filter === 'function') {
 				if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
-					if (!this.s.redraw) {
-						this.updatePane();
-					}
-
 					if (colOpts.combiner === 'or') {
 						return true;
 					}
