@@ -335,6 +335,9 @@ export default class SearchPanes {
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
 			$(this.dom.clearAll).appendTo(this.dom.titleRow);
+			$(this.dom.clearAll).on('click.dtsps', () => {
+				this.clearSelections();
+			});
 		}
 
 		$(this.dom.titleRow).appendTo(this.dom.container);
