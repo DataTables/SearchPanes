@@ -120,7 +120,13 @@ import SearchPanes from './searchPanes';
 	};
 
 	$.fn.dataTable.ext.buttons.searchPanes = {
-		text: 'Search Panes',
+		action(e, dt, node, config) {
+			e.stopPropagation();
+			this.popover(config._panes.getNode(), {
+				align: 'dt-container'
+			});
+		},
+		config: {},
 		init(dt, node, config) {
 			let panes = new $.fn.dataTable.SearchPanes(dt, $.extend(
 				{
@@ -134,13 +140,7 @@ import SearchPanes from './searchPanes';
 			dt.button(node).text(message);
 			config._panes = panes;
 		},
-		action(e, dt, node, config) {
-			e.stopPropagation();
-			this.popover(config._panes.getNode(), {
-				align: 'dt-container'
-			});
-		},
-		config:{}
+		text: 'Search Panes',
 	};
 
 	function _init(settings, fromPre = false) {
@@ -153,8 +153,8 @@ import SearchPanes from './searchPanes';
 
 	// Attach a listener to the document which listens for DataTables initialisation
 	// events so we can automatically initialise
-	$(document).on( 'preInit.dt.dtsp', function (e, settings, json) {
-		if ( e.namespace !== 'dt' ) {
+	$(document).on('preInit.dt.dtsp', function(e, settings, json) {
+		if (e.namespace !== 'dt') {
 			return;
 		}
 
@@ -165,7 +165,7 @@ import SearchPanes from './searchPanes';
 				_init(settings, true);
 			}
 		}
-	} );
+	});
 
 	// DataTables `dom` feature option
 	DataTable.ext.feature.push({

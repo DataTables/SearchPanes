@@ -317,7 +317,7 @@ export default class SearchPane {
 		let selectedRows = [];
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
-			if(maintainSelection){
+			if (maintainSelection) {
 				selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
 			}
 			this.s.dtPane.clear().destroy();
@@ -631,7 +631,6 @@ export default class SearchPane {
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
 			true,
 			{
-				dom: 't',
 				columnDefs: [
 					{
 						className: 'dtsp-nameColumn',
@@ -697,6 +696,7 @@ export default class SearchPane {
 					}
 				],
 				deferRender: true,
+				dom: 't',
 				info: false,
 				paging: haveScroller ? true : false,
 				scrollY: '200px',
@@ -774,14 +774,14 @@ export default class SearchPane {
 		// Display the pane
 		this.s.dtPane.draw();
 
-		if(this.s.listSet === false) {
+		if (!this.s.listSet) {
 			this._setListeners();
 			this.s.listSet = true;
 		}
 
-		for(let selection of selectedRows){
-			for(let row of this.s.dtPane.rows().toArray()){
-				if(selection.value === this.s.dtPane.row(row).data().value){
+		for (let selection of selectedRows) {
+			for (let row of this.s.dtPane.rows().toArray()) {
+				if (selection.value === this.s.dtPane.row(row).data().value) {
 					this.s.dtPane.row(row).select();
 				}
 			}
@@ -808,10 +808,10 @@ export default class SearchPane {
 
 	/**
 	 * Sets the listeners for the pane.
-	 * 
+	 *
 	 * Having it in it's own function makes it easier to only set them once
 	 */
-	private _setListeners(){
+	private _setListeners() {
 		let rowData = this.s.rowData;
 
 		// When an item is selected on the pane, add these to the array which holds selected items.

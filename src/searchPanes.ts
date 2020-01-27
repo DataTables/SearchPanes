@@ -140,7 +140,7 @@ export default class SearchPanes {
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		let returnArray: SearchPane[] = [];
 
-		if(!maintainSelection){
+		if (!maintainSelection) {
 			this.clearSelections();
 		}
 
@@ -688,8 +688,8 @@ export default class SearchPanes {
 		let message: string = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
 		$(this.dom.title).text(message);
 
-		if(this.c.filterChanged !== undefined && typeof this.c.filterChanged === "function"){
-			this.c.filterChanged(filterCount)
+		if (this.c.filterChanged !== undefined && typeof this.c.filterChanged === 'function') {
+			this.c.filterChanged(filterCount);
 		}
 	}
 }
