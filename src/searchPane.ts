@@ -112,6 +112,7 @@ export default class SearchPane {
 			index: idx,
 			indexes: [],
 			lastSelect: false,
+			listSet: false,
 			redraw: false,
 			rowData: {
 				arrayFilter: [],
@@ -611,15 +612,17 @@ export default class SearchPane {
 		// If the variance is accceptable then display the search pane
 		this._displayPane();
 
-		// Here, when the state is loaded if the data object on the original table is empty,
-		//  then a state.clear() must have occurred, so delete all of the panes tables state objects too.
-		this.dom.dtP.on('stateLoadParams.dt', (e, settings, data) => {
-			if ($.isEmptyObject(table.state.loaded())) {
-				$.each(data, (index, value) => {
-					delete data[index];
-				});
-			}
-		});
+		if (!this.s.listSet) {
+			// Here, when the state is loaded if the data object on the original table is empty,
+			//  then a state.clear() must have occurred, so delete all of the panes tables state objects too.
+			this.dom.dtP.on('stateLoadParams.dt', (e, settings, data) => {
+				if ($.isEmptyObject(table.state.loaded())) {
+					$.each(data, (index, value) => {
+						delete data[index];
+					});
+				}
+			});
+		}
 
 		// Declare the datatable for the pane
 		let errMode: string = $.fn.dataTable.ext.errMode;
@@ -771,6 +774,46 @@ export default class SearchPane {
 		// Display the pane
 		this.s.dtPane.draw();
 
+		if(this.s.listSet === false) {
+			this._setListeners();
+			this.s.listSet = true;
+		}
+
+		for(let selection of selectedRows){
+			for(let row of this.s.dtPane.rows().toArray()){
+				if(selection.value === this.s.dtPane.row(row).data().value){
+					this.s.dtPane.row(row).select();
+				}
+			}
+		}
+
+		// Reload the selection, searchbox entry and ordering from the previous state
+		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
+			if (!this.c.cascadePanes) {
+				this._reloadSelect(loadedFilter);
+			}
+
+			for (let pane of loadedFilter.searchPanes.panes) {
+				if (pane.id === this.s.index) {
+					$(this.dom.searchBox).val(pane.searchTerm);
+					this.s.dt.order(pane.order);
+				}
+			}
+		}
+
+		// Make sure to save the state once the pane has been built
+		this.s.dt.state.save();
+		return true;
+	}
+
+	/**
+	 * Sets the listeners for the pane.
+	 * 
+	 * Having it in it's own function makes it easier to only set them once
+	 */
+	private _setListeners(){
+		let rowData = this.s.rowData;
+
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
 		this.s.dtPane.on('select.dtsp', () => {
@@ -782,14 +825,6 @@ export default class SearchPane {
 			}
 			this.s.selectPresent = false;
 		});
-
-		for(let selection of selectedRows){
-			for(let row of this.s.dtPane.rows().toArray()){
-				if(selection.value === this.s.dtPane.row(row).data().value){
-					this.s.dtPane.row(row).select();
-				}
-			}
-		}
 
 		// When saving the state store all of the selected rows for preselection next time around
 		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
@@ -832,20 +867,6 @@ export default class SearchPane {
 				selected,
 			});
 		});
-
-		// Reload the selection, searchbox entry and ordering from the previous state
-		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
-			if (!this.c.cascadePanes) {
-				this._reloadSelect(loadedFilter);
-			}
-
-			for (let pane of loadedFilter.searchPanes.panes) {
-				if (pane.id === this.s.index) {
-					$(this.dom.searchBox).val(pane.searchTerm);
-					this.s.dt.order(pane.order);
-				}
-			}
-		}
 
 		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
@@ -908,11 +929,6 @@ export default class SearchPane {
 				this.s.dt.state.save();
 			}, 50);
 		});
-
-		// Make sure to save the state once the pane has been built
-		this.s.dt.state.save();
-
-		return true;
 	}
 
 	/**
