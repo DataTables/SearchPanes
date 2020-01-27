@@ -121,7 +121,8 @@ export default class SearchPane {
 				bins: {},
 				binsOriginal: {},
 				binsTotal: {},
-				filterMap: new Map()
+				filterMap: new Map(),
+				totalOptions: 0
 			},
 			searchFunction: undefined,
 			selectPresent: false,
@@ -258,7 +259,8 @@ export default class SearchPane {
 			bins: {},
 			binsOriginal: {},
 			binsTotal: {},
-			filterMap: new Map()
+			filterMap: new Map(),
+			totalOptions: 0,
 		};
 	}
 
@@ -421,6 +423,7 @@ export default class SearchPane {
 					else {
 						bins[filter[i]]++;
 					}
+					this.s.rowData.totalOptions++;
 				}
 				return;
 			}
@@ -438,9 +441,11 @@ export default class SearchPane {
 					sort,
 					type
 				});
+				this.s.rowData.totalOptions++;
 			}
 			else {
 				bins[filter]++;
+				this.s.rowData.totalOptions++;
 				return;
 			}
 		}
@@ -1198,9 +1203,11 @@ export default class SearchPane {
 					arrayFilter,
 					bins
 				);
+				this.s.rowData.totalOptions++;
 			}
 			else {
 				bins[filter] ++;
+				this.s.rowData.totalOptions++;
 				return;
 			}
 		}
@@ -1354,8 +1361,8 @@ export default class SearchPane {
 	 * @returns {number} returns the ratio
 	 */
 	private _uniqueRatio(bins: number, rowCount: number): number {
-		if (rowCount > 0) {
-			return bins / rowCount;
+		if (rowCount > 0 && this.s.rowData.totalOptions > 0) {
+			return bins / this.s.rowData.totalOptions;
 		}
 		else {
 			return 1;

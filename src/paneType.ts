@@ -112,6 +112,7 @@ export interface IRowData {
 	binsOriginal: {[keys: string]: number};
 	binsTotal: {[keys: string]: number};
 	filterMap: Map<number, any>;
+	totalOptions: number;
 }
 
 export interface IS {
