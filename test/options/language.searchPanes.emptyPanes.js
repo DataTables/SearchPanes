@@ -69,7 +69,14 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 			expect($('div.dtsp-title:visible').length).toBe(1);
 		});
-		// Add test for DD-1346 here
+		it('SearchPanes still work', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').click();
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
+		});
+		it('Clear All still works', async function() {
+			$('button.dtsp-clearAll').click();
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+		});
 
 		dt.html('basic');
 		it('Shown when panes displayed at start', function() {
