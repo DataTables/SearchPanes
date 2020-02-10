@@ -605,11 +605,15 @@ export default class SearchPane {
 				this.s.displayed = true;
 			}
 			else if (dataIn !== null) {
-				if (this.s.tableLength === null || table.rows()[0].length > this.s.tableLength) {
+				if (dataIn.tableLength !== undefined) {
+					this.s.tableLength = dataIn.tableLength;
+				}
+				else if (this.s.tableLength === null || table.rows()[0].length > this.s.tableLength) {
 					this.s.tableLength = table.rows()[0].length;
 				}
 
 				let colTitle = table.column(this.s.index).dataSrc();
+
 				for (let dataPoint of dataIn[colTitle]) {
 					this.s.rowData.arrayFilter.push({
 						display: dataPoint.label,
@@ -620,6 +624,7 @@ export default class SearchPane {
 					this.s.rowData.bins[dataPoint.value] = dataPoint.count;
 					this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
 				}
+
 				let binLength: number = Object.keys(rowData.binsTotal).length;
 				let uniqueRatio: number = this._uniqueRatio(binLength, this.s.tableLength);
 

@@ -87,10 +87,11 @@ export default class SearchPanes {
 		table.on('xhr', (e, settings, json, xhr) => {
 			if (json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json.searchPanes.options;
+				this.s.serverData.tableLength = json.recordsTotal;
+
 				if (this.c.viewTotal  || this.c.cascadePanes) {
 					this._serverTotals();
 				}
-
 			}
 		});
 
@@ -773,18 +774,23 @@ export default class SearchPanes {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
+
 				for (let pane of this.s.panes) {
 					let src = this.s.dt.column(pane.s.index).dataSrc();
+
 					if (data.searchPanes[src] === undefined) {
 						data.searchPanes[src] = [];
 					}
+
 					if (pane.s.dtPane !== undefined) {
 						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
+
 						for (let dataPoint of rowData) {
 							data.searchPanes[src].push(dataPoint.display);
 						}
 					}
 				}
+
 				if (this.c.viewTotal) {
 					this._prepViewTotal();
 				}
