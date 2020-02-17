@@ -8,7 +8,9 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        searchPanes:true,
+        searchPanes:{
+            layout: 'columns-2',
+        },
         dom: 'Pfrtip',
         columnDefs:[
             {
