@@ -46,6 +46,12 @@ div.dtsp-topRow {
     }
 }
 
+div.dt-button-collection {
+    top: 40px !important;
+    left: 0px !important;
+    z-index: 2002;
+}
+
 div.dataTables_scrollBody {
     background: white !important;
 }

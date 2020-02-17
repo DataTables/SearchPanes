@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="1" framework="bootstrap">
+
+<css lib="datatables searchpanes select buttons"/>
+
+<js lib="jquery datatables searchpanes select buttons">
+<![CDATA[
+
+$(document).ready(function() {
+    var table = $('#example').DataTable({
+        buttons:[
+            'searchPanes'
+        ],
+        dom: 'Bfrtip',
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">BS3 Button</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows DataTables and the searchPanes extension being used with the [Bootstrap 3](http://getbootstrap.com) framework providing the styling and using a button to implement SearchPanes. The [DataTables / Bootstrap integration](//datatables.net/manual/styling/bootstrap) provides seamless integration for DataTables to be used in a Bootstrap page.
+
+
+]]></info>
+
+</dt-example>
