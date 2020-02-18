@@ -61,6 +61,7 @@ export default class SearchPane {
 			type: 'type'
 		},
 		preSelect: [],
+		stateSave: true,
 		threshold: 0.6,
 		viewTotal: false,
 	};
@@ -707,7 +708,7 @@ export default class SearchPane {
 				scrollY: '200px',
 				scroller: haveScroller ? true : false,
 				select: true,
-				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
+				stateSave: (table.settings()[0].oFeatures.bStateSave && c.stateSave) ? true : false,
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
 			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
