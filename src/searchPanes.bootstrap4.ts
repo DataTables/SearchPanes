@@ -59,10 +59,10 @@ $.extend(true, DataTable.SearchPane.classes, {
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll col-1 btn btn-light',
+	clearAll: 'dtsp-clearAll col-auto btn btn-light',
 	container: 'dtsp-searchPanes',
 	panes: 'dtsp-panes dtsp-container',
-	title: 'dtsp-title col-10',
+	title: 'dtsp-title col',
 	titleRow: 'dtsp-titleRow row',
 });
 
