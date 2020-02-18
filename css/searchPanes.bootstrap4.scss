@@ -8,7 +8,7 @@ div.dtsp-searchPanes{
     align-items: stretch;
     clear: both;
     button.btn{
-        margin: 1px;
+        margin: 0;
     }
 
     button.dtsp-clearAll{
@@ -49,16 +49,12 @@ div.dtsp-searchPane {
     }
     div.btn-group{
         padding: 0px;
-    
-        button.btn{
-            margin: 0;
-            height: 40px;
-        }
     }
     margin: 5px;
     div.dtsp-topRow{
         padding: 0px !important;
-        margin: 0px !important;    
+        margin: 0px;    
+	margin-bottom: 0.5rem;
         div.dtsp-subRows{
             padding: 0px !important;
             text-align: right;
@@ -81,7 +77,6 @@ div.dtsp-searchPane {
     }
 
     .input-group {
-        height: 40px !important;
         padding: 0px !important;
 
         .input-group-append{
@@ -148,13 +143,16 @@ div.dtsp-panes {
     
     div.dtsp-titleRow {
         padding-bottom: 10px;
+	padding-left: 20px;
+        padding-right: 20px;
     }
 
 	div.dtsp-title {
 		float: left;
-		margin: 20px;
 		margin-bottom: 0px;
 		margin-top: 10px;
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	button.dtsp-clearAll{
