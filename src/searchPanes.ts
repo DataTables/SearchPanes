@@ -82,6 +82,10 @@ export default class SearchPanes {
 			updating: false,
 		};
 
+		if (table.settings()[0]._searchPanes !== undefined) {
+			return;
+		}
+
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', 'Clear All'));
 
@@ -91,7 +95,7 @@ export default class SearchPanes {
 			this._paneDeclare(table, paneSettings, opts);
 		}
 		else {
-			table.on('preInit.dt', () => {
+			table.one('preInit.dt', (settings) => {
 				this._paneDeclare(table, paneSettings, opts);
 			});
 		}
