@@ -143,7 +143,7 @@ export default class SearchPane {
 					.addClass(this.classes.paneButton)
 					.addClass(this.classes.clearButton),
 			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
-					(layVal < 7 ? layout : layout.split('-')[0] + '-6')),
+					(layVal < 10 ? layout : layout.split('-')[0] + '-9')),
 			countButton:  $('<button type="button"></button>')
 							.addClass(this.classes.paneButton)
 							.addClass(this.classes.countButton),
@@ -989,6 +989,7 @@ export default class SearchPane {
 				.removeClass(this.classes.paneInputButton)
 				.addClass(this.classes.disabledButton);
 		}
+
 		$(this.dom.searchBox).appendTo(this.dom.searchCont);
 
 		// Create the contents of the searchCont div. Worth noting that this function will change when using semantic ui
