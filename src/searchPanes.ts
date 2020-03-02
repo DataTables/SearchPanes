@@ -150,7 +150,6 @@ export default class SearchPanes {
 				continue;
 			}
 
-			pane.clearData();
 			returnArray.push(pane.rebuildPane(maintainSelection));
 		}
 
@@ -618,6 +617,20 @@ export default class SearchPanes {
 				data.searchPanes = {};
 			}
 			data.searchPanes.selectionList = this.s.selectionList;
+		});
+
+		// If the data is reloaded from the server then it is possible that it has changed completely,
+		// so we need to rebuild the panes
+		this.s.dt.on('xhr', () => {
+			if (!this.s.dt.page.info().serverSide) {
+				this.s.dt.one('draw', () => {
+					for (let pane of this.s.panes) {
+						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
+						pane.rebuildPane();
+					}
+					this._checkMessage();
+				});
+			}
 		});
 
 		// If cascadePanes is active then make the previous selections in the order they were previously
