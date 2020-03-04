@@ -329,6 +329,7 @@ export default class SearchPane {
 
 		this.dom.container.removeClass(this.classes.hidden);
 		this.s.displayed = false;
+		this.s.listSet = false;
 		this._buildPane(selectedRows);
 		return this;
 	}
@@ -823,7 +824,7 @@ export default class SearchPane {
 
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
-		this.s.dtPane.on('select.dtsp', () => {
+		this.s.dtPane.off('select.dtsp').on('select.dtsp', () => {
 			clearTimeout(t0);
 			$(this.dom.clear).removeClass(this.classes.dull);
 			this.s.selectPresent = true;
@@ -834,7 +835,7 @@ export default class SearchPane {
 		});
 
 		// When saving the state store all of the selected rows for preselection next time around
-		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
+		this.s.dt.off('stateSaveParams.dtsp').on('stateSaveParams.dtsp', (e, settings, data) => {
 			// If the data being passed in is empty then a state clear must have occured so clear the panes state as well
 			if ($.isEmptyObject(data)) {
 				this.s.dtPane.state.clear();
@@ -875,26 +876,26 @@ export default class SearchPane {
 			});
 		});
 
-		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
+		this.s.dtPane.off('user-select.dtsp').on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
 		});
 
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
-		$(this.dom.nameButton).on('click.dtsp', () => {
+		$(this.dom.nameButton).off('click.dtsp').on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
 		});
 
 		// When the button to order by the number of entries in the column is clicked then
 		//  change the ordering to whatever it isn't currently
-		$(this.dom.countButton).on('click.dtsp', () => {
+		$(this.dom.countButton).off('click.dtsp').on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
 		});
 
 		// When the clear button is clicked reset the pane
-		$(this.dom.clear).on('click.dtsp', () => {
+		$(this.dom.clear).off('click.dtsp').on('click.dtsp', () => {
 			let searches = this.dom.container.find('.' + this.classes.search);
 
 			searches.each(function() {
@@ -907,13 +908,13 @@ export default class SearchPane {
 		});
 
 		// When the search button is clicked then draw focus to the search box
-		$(this.dom.searchButton).on('click.dtsp', () => {
+		$(this.dom.searchButton).off('click.dtsp').on('click.dtsp', () => {
 			$(this.dom.searchBox).focus();
 		});
 
 		// When a character is inputted into the searchbox search the pane for matching values.
 		// Doing it this way means that no button has to be clicked to trigger a search, it is done asynchronously
-		$(this.dom.searchBox).on('input.dtsp', () => {
+		$(this.dom.searchBox).off('input.dtsp').on('input.dtsp', () => {
 			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
 			this.s.dt.state.save();
 		});
@@ -923,7 +924,7 @@ export default class SearchPane {
 
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
-		this.s.dtPane.on('deselect.dtsp', () => {
+		this.s.dtPane.off('deselect.dtsp').on('deselect.dtsp', () => {
 			t0 = setTimeout(() => {
 				this.s.deselect = true;
 
