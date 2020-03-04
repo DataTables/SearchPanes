@@ -477,6 +477,7 @@ export default class SearchPanes {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
+				this.dom.container.removeClass(this.classes.hide);
 				return;
 			}
 		}
