@@ -95,5 +95,43 @@ describe('searchPanes - options - searchPanes', function() {
 			await dt.sleep(1000);
 			expect($('div.dtsp-panesContainer').text()).not.toBe('Loading Search Panes...');
 		});
+
+		dt.html('empty');
+		it('Loading message displayed if more than 500 rows', function(done) {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				language: {
+					searchPanes: {
+						emptyPanes: 'unittest'
+					}
+				},
+				columns: dt.getTestColumns(),
+				ajax: '/base/test/data/large.txt',
+				initComplete: function(settings, json) {
+					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
+					done();
+				}
+			});
+		});
+		it('... and it will be removed once table loaded', async function() {
+			await dt.sleep(1000);
+			expect($('div.dtsp-panesContainer').text()).not.toBe('Loading Search Panes...');
+		});
+		it('... change URL and reload table - searchPanes use new data', async function() {
+			table.ajax.url('/base/test/data/data.txt');
+			table.ajax.reload();
+			await dt.sleep(1000);
+
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
+				'Edinburgh'
+			);
+		});
+		it('... even after rebuild', function() {
+			table.searchPanes.rebuildPane();
+
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
+				'Edinburgh'
+			);
+		});
 	});
 });
