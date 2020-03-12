@@ -16,7 +16,7 @@
 	<description>
 		This method provides the ability to return the node of the container that is storing all of the SearchPanes.
 
-        As it is a getter it does not take any arguments
+		As it is a getter it does not take any arguments
 
 	</description>
 

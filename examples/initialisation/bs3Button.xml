@@ -18,7 +18,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">BS3 Button</title>
+<title lib="searchPanes">Bootstrap 3 Button</title>
 
 <info><![CDATA[
 

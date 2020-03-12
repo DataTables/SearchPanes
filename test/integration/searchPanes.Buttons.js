@@ -99,10 +99,7 @@ describe('searchPanes - integrations - Buttons', function() {
 		});
 		it('... closing keeps string', async function() {
 			$('div.dt-button-background').click();
-
 			expect($('button.dt-button').text()).toBe('Search other 3');
-
 		});
-		// check you can have own string in the button and total still works
 	});
 });
