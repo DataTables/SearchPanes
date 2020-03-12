@@ -12,7 +12,7 @@ $(document).ready(function() {
         columnDefs:[
             {
                 searchPanes: {
-                    header: 'Length of Life is a really long header'
+                    header: 'Duration so far of life'
                 },
                 targets: [3]
             }
@@ -23,13 +23,15 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Behaviour with a Long Header</title>
+<title lib="SearchPanes">Add a custom title to a pane</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how SearchPanes behaves when a long header is in place on a pane. An ellipsis will be added when the text overflows the input element.
+This example shows the behaviour of SearchPanes when a header is used, which has a length longer than the width of the search bar. In this case an ellipsis will be appended.
+
+Note: The header has to be made this abstract in order to trigger the behaviour!
 
 ]]></info>
 
