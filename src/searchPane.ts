@@ -312,24 +312,23 @@ export default class SearchPane {
 
 	/**
 	 * Rebuilds the panes from the start having deleted the old ones
+	 * @param? last boolean to indicate if this is the last pane a selection was made in
 	 */
-	public rebuildPane(maintainSelection = false): this {
+	public rebuildPane(last = false): this {
+		this.s.lastSelect = last;
 		this.clearData();
 
 		let selectedRows = [];
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
-			if (maintainSelection) {
-				selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
-			}
-
+			selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
 			this.s.dtPane.clear().destroy();
 			this.s.dtPane = undefined;
 		}
 
 		this.dom.container.removeClass(this.classes.hidden);
 		this.s.displayed = false;
-		this._buildPane(selectedRows);
+		this._buildPane(selectedRows, last);
 		return this;
 	}
 
@@ -521,8 +520,10 @@ export default class SearchPane {
 
 	/**
 	 * Method to construct the actual pane.
+	 * @param selectedRows previously selected Rows to be reselected
+	 * @last boolean to indicate whether this pane was the last one to have a selection made
 	 */
-	private _buildPane(selectedRows = []): boolean {
+	private _buildPane(selectedRows = [], last = false): boolean {
 		// Aliases
 		this.selections = [];
 		let table = this.s.dt;
@@ -563,7 +564,7 @@ export default class SearchPane {
 
 			// Only run populatePane if the data has not been collected yet
 			if (rowData.arrayFilter.length === 0) {
-				this._populatePane();
+				this._populatePane(last);
 
 				if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
 					// If the index is not found then no data has been added to the state for this pane,
@@ -788,7 +789,7 @@ export default class SearchPane {
 
 		for (let selection of selectedRows) {
 			for (let row of this.s.dtPane.rows().toArray()) {
-				if (selection.value === this.s.dtPane.row(row).data().value) {
+				if (selection.filter === this.s.dtPane.row(row).data().filter) {
 					this.s.dtPane.row(row).select();
 				}
 			}
@@ -1153,16 +1154,17 @@ export default class SearchPane {
 
 	/**
 	 * Fill the array with the values that are currently being displayed in the table
+	 * @param last boolean to indicate whether this was the last pane a selection was made in
 	 */
-	private _populatePane(): void {
+	private _populatePane(last = false): void {
 		let table = this.s.dt;
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.bins = {};
 		let settings = this.s.dt.settings()[0];
 
 		// If cascadePanes or viewTotal are active it is necessary to get the data which is currently
-		//  being displayed for their functionality.
-		let indexArray = (this.c.cascadePanes || this.c.viewTotal) && !this.s.clearing ?
+		//  being displayed for their functionality. Also make sure that this was not the last pane to have a selection made
+		let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
 			table.rows({search: 'applied'}).indexes() :
 			table.rows().indexes();
 

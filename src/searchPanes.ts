@@ -144,17 +144,19 @@ export default class SearchPanes {
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		let returnArray: SearchPane[] = [];
 
-		if (!maintainSelection) {
-			this.clearSelections();
-		}
-
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
 		for (let pane of this.s.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
 				continue;
 			}
 
-			returnArray.push(pane.rebuildPane(maintainSelection));
+			returnArray.push(
+				// Pass a boolean to say whether this is the last choice made for maintaining selections when rebuilding
+				pane.rebuildPane(
+					this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
+						pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
+						false)
+			);
 		}
 
 		// Attach panes, clear buttons, and title bar to the document
@@ -517,7 +519,11 @@ export default class SearchPanes {
 					// select every row in the pane that was selected previously
 					for (let row of selection.rows) {
 						pane.s.dtPane.rows().every((rowIdx) => {
-							if (pane.s.dtPane.row(rowIdx).data().filter === row.filter) {
+							if (
+								pane.s.dtPane.row(rowIdx).data() !== undefined &&
+								row !== undefined &&
+								pane.s.dtPane.row(rowIdx).data().filter === row.filter
+							) {
 								pane.s.dtPane.row(rowIdx).select();
 							}
 						});
@@ -630,7 +636,13 @@ export default class SearchPanes {
 				this.s.dt.one('draw', () => {
 					for (let pane of this.s.panes) {
 						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
-						pane.rebuildPane();
+
+						// Pass a boolean to say whether this is the last choice made for maintaining selections when rebuilding
+						pane.rebuildPane(
+							this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
+								pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
+								false
+						);
 					}
 					this._checkMessage();
 				});
