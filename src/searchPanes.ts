@@ -155,9 +155,12 @@ export default class SearchPanes {
 				pane.rebuildPane(
 					this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
 						pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
-						false)
+						false
+				)
 			);
 		}
+
+		this.redrawPanes();
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
@@ -632,8 +635,14 @@ export default class SearchPanes {
 		// If the data is reloaded from the server then it is possible that it has changed completely,
 		// so we need to rebuild the panes
 		this.s.dt.on('xhr', () => {
+			let processing = false;
 			if (!this.s.dt.page.info().serverSide) {
+
 				this.s.dt.one('draw', () => {
+					if (processing) {
+						return;
+					}
+					processing = true;
 					for (let pane of this.s.panes) {
 						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
 
@@ -644,6 +653,7 @@ export default class SearchPanes {
 								false
 						);
 					}
+					this.redrawPanes();
 					this._checkMessage();
 				});
 			}

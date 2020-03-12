@@ -788,9 +788,11 @@ export default class SearchPane {
 		}
 
 		for (let selection of selectedRows) {
-			for (let row of this.s.dtPane.rows().indexes().toArray()) {
-				if (selection.filter === this.s.dtPane.row(row).data().filter) {
-					this.s.dtPane.row(row).select();
+			if (selection !== undefined) {
+				for (let row of this.s.dtPane.rows().indexes().toArray()) {
+					if (this.s.dtPane.row(row).data() !== undefined && selection.filter === this.s.dtPane.row(row).data().filter) {
+						this.s.dtPane.row(row).select();
+					}
 				}
 			}
 		}
