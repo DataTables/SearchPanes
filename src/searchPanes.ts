@@ -160,7 +160,9 @@ export default class SearchPanes {
 			);
 		}
 
-		this.redrawPanes(true);
+		if (this.c.cascadePanes || this.c.viewTotal) {
+			this.redrawPanes(true);
+		}
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
