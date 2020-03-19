@@ -282,7 +282,6 @@ export default class SearchPanes {
 
 				// If the length of the selections are different then some of them have been removed and a deselect has occured
 				if (newSelectionList.length > 0 && (newSelectionList.length < this.s.selectionList.length || rebuild)) {
-					console.log(newSelectionList)
 					this._cascadeRegen(newSelectionList);
 					let last = newSelectionList[newSelectionList.length - 1].index;
 					for (let pane of this.s.panes) {
@@ -290,7 +289,6 @@ export default class SearchPanes {
 					}
 				}
 				else if (newSelectionList.length > 0) {
-					console.log(newSelectionList);
 					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.s.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
@@ -668,7 +666,6 @@ export default class SearchPanes {
 
 		// If cascadePanes is active then make the previous selections in the order they were previously
 		if (this.s.selectionList.length > 0 && this.c.cascadePanes) {
-			console.log(this.s.selectionList);
 			this._cascadeRegen(this.s.selectionList);
 		}
 
