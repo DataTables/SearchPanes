@@ -160,7 +160,7 @@ export default class SearchPanes {
 			);
 		}
 
-		this.redrawPanes();
+		this.redrawPanes(true);
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
@@ -179,7 +179,7 @@ export default class SearchPanes {
 	/**
 	 * Redraws all of the panes
 	 */
-	public redrawPanes(): void {
+	public redrawPanes(rebuild = false): void {
 		let table = this.s.dt;
 
 		// Only do this if the redraw isn't being triggered by the panes updating themselves
@@ -281,15 +281,16 @@ export default class SearchPanes {
 				this._updateFilterCount();
 
 				// If the length of the selections are different then some of them have been removed and a deselect has occured
-				if (newSelectionList.length > 0 && newSelectionList.length < this.s.selectionList.length) {
+				if (newSelectionList.length > 0 && (newSelectionList.length < this.s.selectionList.length || rebuild)) {
+					console.log(newSelectionList)
 					this._cascadeRegen(newSelectionList);
 					let last = newSelectionList[newSelectionList.length - 1].index;
-
 					for (let pane of this.s.panes) {
 						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
 					}
 				}
 				else if (newSelectionList.length > 0) {
+					console.log(newSelectionList);
 					// Update all of the other panes as you would just making a normal selection
 					for (let paneUpdate of this.s.panes) {
 						if (paneUpdate.s.dtPane !== undefined) {
@@ -300,7 +301,6 @@ export default class SearchPanes {
 								tempFilter = false;
 								paneUpdate.s.filteringActive = false;
 							}
-
 							paneUpdate.updatePane(!tempFilter ? tempFilter : filterActive);
 						}
 					}
@@ -498,7 +498,7 @@ export default class SearchPanes {
 
 		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList !== undefined) {
 			this.s.selectionList = loadedFilter.searchPanes.selectionList;
-		}
+		}		
 	}
 
 	/**
@@ -659,8 +659,16 @@ export default class SearchPanes {
 			}
 		});
 
+		if (this.s.selectionList !== undefined && this.s.selectionList.length > 0) {
+			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+			}
+		}
+
 		// If cascadePanes is active then make the previous selections in the order they were previously
 		if (this.s.selectionList.length > 0 && this.c.cascadePanes) {
+			console.log(this.s.selectionList);
 			this._cascadeRegen(this.s.selectionList);
 		}
 

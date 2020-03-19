@@ -315,7 +315,7 @@ export default class SearchPane {
 	 * @param? last boolean to indicate if this is the last pane a selection was made in
 	 */
 	public rebuildPane(last = false): this {
-		this.s.lastSelect = last;
+		//this.s.lastSelect = last;
 		this.clearData();
 
 		let selectedRows = [];
