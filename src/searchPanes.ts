@@ -163,6 +163,9 @@ export default class SearchPanes {
 		if (this.c.cascadePanes || this.c.viewTotal) {
 			this.redrawPanes(true);
 		}
+		else {
+			this._updateSelection();
+		}
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
@@ -498,7 +501,7 @@ export default class SearchPanes {
 
 		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList !== undefined) {
 			this.s.selectionList = loadedFilter.searchPanes.selectionList;
-		}		
+		}
 	}
 
 	/**
@@ -618,9 +621,14 @@ export default class SearchPanes {
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dtsps', () => {
 			this._updateFilterCount();
+
 			if (this.c.cascadePanes || this.c.viewTotal) {
 				this.redrawPanes();
 			}
+			else {
+				this._updateSelection();
+			}
+
 			this.s.filterPane = -1;
 		});
 
@@ -653,7 +661,14 @@ export default class SearchPanes {
 								false
 						);
 					}
-					this.redrawPanes();
+
+					if (this.c.cascadePanes || this.c.viewTotal) {
+						this.redrawPanes();
+					}
+					else {
+						this._updateSelection();
+					}
+
 					this._checkMessage();
 				});
 			}
@@ -737,5 +752,20 @@ export default class SearchPanes {
 		if (this.c.filterChanged !== undefined && typeof this.c.filterChanged === 'function') {
 			this.c.filterChanged(filterCount);
 		}
+	}
+
+	/**
+	 * Updates the selectionList when cascade is not in place
+	 */
+	private _updateSelection() {
+		this.s.selectionList = [];
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane !== undefined) {
+				this.s.selectionList.push(
+					{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
+				);
+			}
+		}
+		this.s.dt.state.save();
 	}
 }

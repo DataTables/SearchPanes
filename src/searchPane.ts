@@ -315,7 +315,6 @@ export default class SearchPane {
 	 * @param? last boolean to indicate if this is the last pane a selection was made in
 	 */
 	public rebuildPane(last = false): this {
-		//this.s.lastSelect = last;
 		this.clearData();
 
 		let selectedRows = [];
@@ -535,6 +534,11 @@ export default class SearchPane {
 		let countMessage: string = table.i18n('searchPanes.count', '{total}');
 		let filteredMessage: string = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
 		let loadedFilter = table.state.loaded();
+
+		// If the listeners have not been set yet then using the latest state may result in funny errors
+		if (this.s.listSet) {
+			loadedFilter = table.state();
+		}
 
 		// If it is not a custom pane in place
 		if (this.colExists) {
