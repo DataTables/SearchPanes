@@ -244,7 +244,7 @@ export default class SearchPanes {
 				if (this.s.selectionList.length > 0) {
 					let last = this.s.selectionList[this.s.selectionList.length - 1].index;
 					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+						pane.s.lastSelect = (pane.s.index === last);
 					}
 				}
 
@@ -290,7 +290,7 @@ export default class SearchPanes {
 					this._cascadeRegen(newSelectionList);
 					let last = newSelectionList[newSelectionList.length - 1].index;
 					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+						pane.s.lastSelect = (pane.s.index === last);
 					}
 				}
 				else if (newSelectionList.length > 0) {
@@ -677,7 +677,7 @@ export default class SearchPanes {
 		if (this.s.selectionList !== undefined && this.s.selectionList.length > 0) {
 			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
 			for (let pane of this.s.panes) {
-				pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+				pane.s.lastSelect = (pane.s.index === last);
 			}
 		}
 
