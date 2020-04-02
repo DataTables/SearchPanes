@@ -8,6 +8,8 @@
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
+As of SearchPanes 1.1 Server Side Processing is supported. This will work with the Editor libraries for Server Side Processing. For more information on how to implement this please refer to the <a href="https://datatables.net/manual/server-side">Server Side Processing Manual Page</a>.
+
 ]]></info>
 
 </dt-example>
