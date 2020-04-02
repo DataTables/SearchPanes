@@ -572,19 +572,18 @@ export default class SearchPanes {
 			this.s.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
 		}
 
+		// If a custom ordering is being used
 		if(this.c.order.length > 0){
-			let newPanes = [];
-			for(let paneName of this.c.order){
-				for(let pane of this.s.panes){
-					if(paneName === pane.s.name){
-						newPanes.push(pane);
-						break;
-					}
-				}
-			}
+			// Make a new Array of panes based upon the order
+			let newPanes = this.c.order.map((name, index, values) =>{
+				return this._findPane(name);
+			})
+
+			// Remove the old panes from the dom
 			this.dom.panes.empty();
-			console.log(newPanes);
 			this.s.panes = newPanes;
+
+			// Append the panes in the correct order
 			for(let pane of this.s.panes){
 				this.dom.panes.append(pane.dom.container);
 			}
@@ -600,6 +599,20 @@ export default class SearchPanes {
 			this.s.dt.settings()[0].aoInitComplete.push({fn: () => {
 				this._paneStartup(table);
 			}});
+		}
+	}
+
+	/**
+	 * Finds a pane based upon the name of that pane
+	 * @param name string representing the name of the pane
+	 * @returns SearchPane The pane which has that name
+	 */
+	private _findPane(name: string): SearchPane{
+		for(let pane of this.s.panes){
+			console.log(name, pane.s.name);
+			if(name === pane.s.name){
+				return pane;
+			}
 		}
 	}
 

@@ -41,6 +41,7 @@ export interface IConfigPaneItem {
 	dtOpts: {[keys: string]: any}; // All dtOpts
 	header: string;
 	options: IOption[];
+	name: string;
 }
 
 export interface IDataArray {

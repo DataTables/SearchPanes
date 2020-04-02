@@ -179,13 +179,17 @@ export default class SearchPane {
 				: ''
 		);
 
-		if(this.s.colOpts.name === undefined){
+		// Set the value of name incase ordering is desired
+		if(this.s.colOpts.name !== undefined){
+			this.s.name = this.s.colOpts.name;
+		}
+		else if(this.customPaneSettings !== null && this.customPaneSettings.name !== undefined){
+			this.s.name = this.customPaneSettings.name;
+		}
+		else {
 			this.s.name = this.colExists ?
 				$(table.column(this.s.index).header()).text() :
 				this.customPaneSettings.header || 'Custom Pane';
-		}
-		else {
-			this.s.name = this.s.colOpts.name;
 		}
 
 		$(panesContainer).append(this.dom.container);
