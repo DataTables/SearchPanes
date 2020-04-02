@@ -50,6 +50,7 @@ export default class SearchPane {
 		emptyMessage: '<i>No Data</i>',
 		hideCount: false,
 		layout: 'columns-3',
+		name: undefined,
 		orderable: true,
 		orthogonal: {
 			display: 'display',
@@ -113,6 +114,7 @@ export default class SearchPane {
 			indexes: [],
 			lastSelect: false,
 			listSet: false,
+			name: undefined,
 			redraw: false,
 			rowData: {
 				arrayFilter: [],
@@ -176,6 +178,13 @@ export default class SearchPane {
 				? this.customPaneSettings.className
 				: ''
 		);
+
+		if(this.s.colOpts.name === undefined){
+			this.s.name = $(table.column(this.s.index).header()).text();
+		}
+		else {
+			this.s.name = this.s.colOpts.name;
+		}
 
 		$(panesContainer).append(this.dom.container);
 

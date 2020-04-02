@@ -61,6 +61,7 @@ export interface IDefaults {
 	emptyMessage: string;
 	hideCount: boolean;
 	layout: string;
+	name: string;
 	orderable: boolean;
 	orthogonal: IOrthogonal;
 	preSelect: any;
@@ -128,6 +129,7 @@ export interface IS {
 	indexes: IIndexes[];
 	lastSelect: boolean;
 	listSet: boolean;
+	name: string;
 	redraw: boolean;
 	rowData: IRowData;
 	searchFunction: any; // Function?

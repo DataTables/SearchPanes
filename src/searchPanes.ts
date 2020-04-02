@@ -32,6 +32,7 @@ export default class SearchPanes {
 		columns: [],
 		filterChanged: undefined,
 		layout: 'columns-3',
+		order: [],
 		panes: [],
 		viewTotal: false,
 	};
@@ -569,6 +570,24 @@ export default class SearchPanes {
 		for (let i: number = 0; i < paneLength; i++) {
 			let id: number = rowLength + i;
 			this.s.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
+		}
+
+		if(this.c.order.length > 0){
+			let newPanes = [];
+			for(let paneName of this.c.order){
+				for(let pane of this.s.panes){
+					if(paneName === pane.s.name){
+						newPanes.push(pane);
+						break;
+					}
+				}
+			}
+			this.dom.panes.empty();
+			console.log(newPanes);
+			this.s.panes = newPanes;
+			for(let pane of this.s.panes){
+				this.dom.panes.append(pane.dom.container);
+			}
 		}
 
 		// If this internal property is true then the DataTable has been initialised already

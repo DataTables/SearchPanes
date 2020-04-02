@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.name</name>
+	<summary>Set the name of the SearchPane</summary>
+	<since>SearchPanes 1.1.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init columns.searchPanes.name` option to a string of your choice you can customise the order that the Panes are displayed in.
+        </description>
+	</type>
+
+	<default value="string">
+		The default value for the `-init columns.searchPanes.name` parameter is the title of the column that the pane is attached to.
+		</default>
+	<description>
+		<![CDATA[
+		As standard, SearchPanes will set the names of the pane based on the title of the corresponding column. This option customises that name. The order of the panes is then set using the `-init searchPanes.order` option.
+		]]>
+	</description>
+
+	<example title="Set the Name of the Pane to a custom string"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    name: 'Length of Life'
+                },
+                targets: [3]
+            }
+        ]
+    });
+});
+
+]]></example>
+<related type="option">searchPanes.order</related>
+</dt-option>

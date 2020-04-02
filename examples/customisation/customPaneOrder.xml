@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="4">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+        searchPanes:{
+            order: ['ageName', 'Custom', 'Position'],
+            panes: [
+                {
+                    name:'Custom',
+                    header:'Custom',
+                    options:[
+                        {
+                            label:'Accountants from Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+                            }
+                        }
+                    ]
+                }
+            ],
+        },
+        columnDefs:[
+            {
+                searchPanes: {
+                    name: 'ageName'
+                },
+                targets: [3]
+            }
+        ]
+    });
+});
+
+]]>
+</js>
+
+<title lib="SearchPanes">Custom Pane Order</title>
+
+<info><![CDATA[
+
+This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+
+This example shows how to customise the order of the Panes. The `-init searchPanes.order` property defines the order that the panes should take. It is an array of strings which is then matched against the `-init columns.searchPanes.name` property. This is particularly useful for mixing custom panes with automatically generated ones.
+
+]]></info>
+
+</dt-example>

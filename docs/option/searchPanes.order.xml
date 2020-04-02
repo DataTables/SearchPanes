@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.layout</name>
+	<summary>Set the order of the Panes</summary>
+	<since>SearchPanes 1.1.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init searchPanes.order` to an array of the `-init columns.searchPanes.name` property of the SearchPanes, the panes are displayed in that order.
+
+            By default the `-init columns.searchPanes.name` is set to be the title of the column. This can be overridden if desired.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init searchPanes.layout` parameter is `columns-3`. 
+    </default>
+	<description>
+		<![CDATA[
+			By setting the `-init searchPanes.order` to an array of the `-init columns.searchPanes.name` property of the SearchPanes, the panes are displayed in that order.
+
+            By default the `-init columns.searchPanes.name` is set to be the title of the column. This can be overridden if desired. This is particularly useful for mixing custom and auto generated panes. If the `-init searchPanes.order` property is set then any panes that would normally have shown but are not present in the array will not be shown at all.
+		]]>
+	</description>
+
+	<example title="Set the order of the panes"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: {
+            order: ['Age', 'Office', 'Position']
+        },
+        dom: 'Pfrtip'
+    });
+});
+
+]]></example>
+
+<example title="Set the order of the panes including a custom name"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes: {
+            order: ['Length of Life', 'Office', 'Position']
+        },
+        columnDefs:[
+            {
+                searchPanes: {
+                    name: 'Length of Life'
+                },
+                targets: [3]
+            }
+        ],
+        dom: 'Pfrtip'
+    });
+});
+
+]]></example>
+<related type="option">columns.searchPanes.name</related>
+</dt-option>

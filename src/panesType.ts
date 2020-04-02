@@ -26,6 +26,7 @@ export interface IDefaults {
 	container: (dt: any) => any;
 	filterChanged: (count: number) => any;
 	layout: string;
+	order: string[];
 	panes: IConfigPaneItem[];
 	viewTotal: boolean;
 }
