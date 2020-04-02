@@ -8,7 +8,7 @@
 		<description>
             By setting the `-init searchPanes.order` to an array of the `-init columns.searchPanes.name` property of the SearchPanes, the panes are displayed in that order.
 
-            By default the `-init columns.searchPanes.name` is set to be the title of the column. This can be overridden if desired.
+            By default the `-init columns.searchPanes.name` is set to be the title of the column, or the `-init searchPanes.panes.header` value for custom Panes. This can be overridden if desired.
         </description>
 	</type>
 
@@ -57,4 +57,5 @@ $(document).ready(function() {
 
 ]]></example>
 <related type="option">columns.searchPanes.name</related>
+<related type="option">searchPanes.panes.header</related>
 </dt-option>

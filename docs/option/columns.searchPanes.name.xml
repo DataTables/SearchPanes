@@ -11,7 +11,7 @@
 	</type>
 
 	<default value="string">
-		The default value for the `-init columns.searchPanes.name` parameter is the title of the column that the pane is attached to.
+		The default value for the `-init columns.searchPanes.name` parameter is the title of the column that the pane is attached to. In the case of custom panes, the `-init searchPanes.panes.header` value is taken as the value of name`-init columns.searchPanes.name`.
 		</default>
 	<description>
 		<![CDATA[
@@ -37,4 +37,5 @@ $(document).ready(function() {
 
 ]]></example>
 <related type="option">searchPanes.order</related>
+<related type="option">searchPanes.panes.header</related>
 </dt-option>

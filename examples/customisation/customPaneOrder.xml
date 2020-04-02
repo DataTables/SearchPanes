@@ -10,10 +10,10 @@ $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Pfrtip',
         searchPanes:{
-            order: ['ageName', 'Custom', 'Position'],
+            order: ['ageName', 'Custom Name', 'Position'],
             panes: [
                 {
-                    name:'Custom',
+                    name:'Custom Name',
                     header:'Custom',
                     options:[
                         {
