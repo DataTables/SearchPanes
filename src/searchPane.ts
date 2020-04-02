@@ -614,15 +614,17 @@ export default class SearchPane {
 
 				let colTitle = table.column(this.s.index).dataSrc();
 
-				for (let dataPoint of dataIn[colTitle]) {
-					this.s.rowData.arrayFilter.push({
-						display: dataPoint.label,
-						filter: dataPoint.value,
-						sort: dataPoint.label,
-						type: dataPoint.label
-					});
-					this.s.rowData.bins[dataPoint.value] = dataPoint.count;
-					this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
+				if (dataIn[colTitle] !== undefined) {
+					for (let dataPoint of dataIn[colTitle]) {
+						this.s.rowData.arrayFilter.push({
+							display: dataPoint.label,
+							filter: dataPoint.value,
+							sort: dataPoint.label,
+							type: dataPoint.label
+						});
+						this.s.rowData.bins[dataPoint.value] = dataPoint.count;
+						this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
+					}
 				}
 
 				let binLength: number = Object.keys(rowData.binsTotal).length;
