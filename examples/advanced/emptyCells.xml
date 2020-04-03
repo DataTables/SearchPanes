@@ -18,7 +18,6 @@ $(document).ready(function() {
     dt.cell(4,2).data('Edi');
     dt.cell(6,2).data('');
     dt.cell(2,3).data('');
-    console.log("rebuild")
     dt.searchPanes.rebuildPane(3);
     dt.searchPanes.rebuildPane(2);
 });

@@ -609,7 +609,6 @@ export default class SearchPanes {
 	 */
 	private _findPane(name: string): SearchPane{
 		for(let pane of this.s.panes){
-			console.log(name, pane.s.name);
 			if(name === pane.s.name){
 				return pane;
 			}
