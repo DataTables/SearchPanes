@@ -1,5 +1,13 @@
 import * as typeInterfaces from './paneType';
-let DataTable = $.fn.dataTable;
+
+let $;
+let DataTable;
+
+export function setJQuery(jq) {
+  $ = jq;
+  DataTable = jq.fn.dataTable;
+};
+
 export default class SearchPane {
 
 	private static version = '1.0.1';

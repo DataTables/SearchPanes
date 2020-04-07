@@ -1,5 +1,13 @@
 import * as typeInterfaces from './panesType';
-let DataTable = $.fn.dataTable;
+
+let $;
+let DataTable;
+
+export function setJQuery(jq) {
+  $ = jq;
+  DataTable = jq.fn.dataTable;
+};
+
 namespace DataTables {
 	interface IStaticFunctions {
 		select: any;
