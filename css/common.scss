@@ -52,7 +52,6 @@ div.dtsp-topRow {
 
 div.dt-button-collection {
     top: 40px !important;
-    left: 0px !important;
     z-index: 2002;
 }
 
@@ -140,4 +139,12 @@ div.dtsp-columns-9{
 	div.dtsp-topRow{
 		flex-direction: column !important;
 	}
+}
+
+div.dt-button-collection{
+	float: none;
+}
+
+div.dtsp-panesContainer {
+	width: 100%;
 }
