@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="1" framework="semanticui">
+
+<css lib="datatables searchpanes select buttons">
+<![CDATA[
+
+.floatRight{
+  float: right !important;
+}
+
+]]>
+</css>
+
+<js lib="jquery datatables searchpanes select buttons">
+<![CDATA[
+
+$(document).ready( function () {
+  var table = $('#example').DataTable({
+      columnDefs:[
+      {
+          searchPanes:{
+              show: false,
+          },
+          targets: [1, 2],
+      }
+    ],
+    buttons: {
+      dom: {
+        container: {
+          className: 'dt-buttons btn-group floatRight'
+        }                        
+      },
+      buttons: [{
+                text: 'My button',
+                action: function ( e, dt, node, config ) {
+                  console.log(e);
+                    e.stopPropogation();
+                    this.popover('<div><button>Im a button</button></div>', {
+                      align: 'dt-container'
+                    });
+                }
+            }, 'searchPanes']
+    },
+    dom: 'Brtip',
+  });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Basic Pane Example</title>
+
+<info><![CDATA[
+
+This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+
+See other examples for more detail.
+
+]]></info>
+
+</dt-example>
