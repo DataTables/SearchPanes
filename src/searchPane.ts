@@ -136,6 +136,9 @@ export default class SearchPane {
 			},
 			searchFunction: undefined,
 			selectPresent: false,
+			serverSelect: [],
+			serverSelecting: false,
+			tableLength: null,
 			updating: false,
 		};
 
@@ -188,10 +191,10 @@ export default class SearchPane {
 		);
 
 		// Set the value of name incase ordering is desired
-		if(this.s.colOpts.name !== undefined){
+		if (this.s.colOpts.name !== undefined) {
 			this.s.name = this.s.colOpts.name;
 		}
-		else if(this.customPaneSettings !== null && this.customPaneSettings.name !== undefined){
+		else if (this.customPaneSettings !== null && this.customPaneSettings.name !== undefined) {
 			this.s.name = this.customPaneSettings.name;
 		}
 		else {
@@ -337,7 +340,7 @@ export default class SearchPane {
 	 * Rebuilds the panes from the start having deleted the old ones
 	 * @param? last boolean to indicate if this is the last pane a selection was made in
 	 */
-	public rebuildPane(last = false): this {
+	public rebuildPane(last = false, dataIn = null, init = null): this {
 		this.clearData();
 
 		let selectedRows = [];
@@ -350,7 +353,7 @@ export default class SearchPane {
 
 		this.dom.container.removeClass(this.classes.hidden);
 		this.s.displayed = false;
-		this._buildPane(selectedRows, last);
+		this._buildPane(selectedRows, last, dataIn, init);
 		return this;
 	}
 
@@ -545,7 +548,7 @@ export default class SearchPane {
 	 * @param selectedRows previously selected Rows to be reselected
 	 * @last boolean to indicate whether this pane was the last one to have a selection made
 	 */
-	private _buildPane(selectedRows = [], last = false): boolean {
+	private _buildPane(selectedRows = [], last = false, dataIn = null, init = null): boolean {
 		// Aliases
 		this.selections = [];
 		let table = this.s.dt;
@@ -589,56 +592,96 @@ export default class SearchPane {
 				this.s.displayed = true;
 			}
 
-			// Only run populatePane if the data has not been collected yet
-			if (rowData.arrayFilter.length === 0) {
-				this._populatePane(last);
+			if (!this.s.dt.page.info().serverSide) {
+				// Only run populatePane if the data has not been collected yet
+				if (rowData.arrayFilter.length === 0) {
+					this._populatePane(last);
 
-				if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
-					// If the index is not found then no data has been added to the state for this pane,
-					//  which will only occur if it has previously failed to meet the criteria to be
-					//  displayed, therefore we can just hide it again here
-					if (idx !== -1) {
-						rowData.binsOriginal = loadedFilter.searchPanes.panes[idx].bins;
-						rowData.arrayOriginal = loadedFilter.searchPanes.panes[idx].arrayFilter;
+					if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
+						// If the index is not found then no data has been added to the state for this pane,
+						//  which will only occur if it has previously failed to meet the criteria to be
+						//  displayed, therefore we can just hide it again here
+						if (idx !== -1) {
+							rowData.binsOriginal = loadedFilter.searchPanes.panes[idx].bins;
+							rowData.arrayOriginal = loadedFilter.searchPanes.panes[idx].arrayFilter;
+						}
+						else {
+							this.dom.container.addClass(this.classes.hidden);
+							this.s.displayed = false;
+							return;
+						}
 					}
 					else {
-						this.dom.container.addClass(this.classes.hidden);
-						this.s.displayed = false;
-						return;
+						rowData.arrayOriginal = rowData.arrayFilter;
+						rowData.binsOriginal = rowData.bins;
 					}
 				}
-				else {
-					rowData.arrayOriginal = rowData.arrayFilter;
-					rowData.binsOriginal = rowData.bins;
+				
+				let binLength: number = Object.keys(rowData.binsOriginal).length;
+				let uniqueRatio: number = this._uniqueRatio(binLength, table.rows()[0].length);
+
+				// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
+				if (this.s.displayed === false && ((colOpts.show === undefined && colOpts.threshold === null ?
+						uniqueRatio > this.c.threshold :
+						uniqueRatio > colOpts.threshold)
+					|| (colOpts.show !== true  && binLength <= 1))
+				) {
+					this.dom.container.addClass(this.classes.hidden);
+					this.s.displayed = false;
+					return;
 				}
+
+				// If the option viewTotal is true then find
+				// the total count for the whole table to display alongside the displayed count
+				if (this.c.viewTotal && rowData.arrayTotals.length === 0) {
+					this._detailsPane();
+				}
+				else {
+					rowData.binsTotal = rowData.bins;
+				}
+
+				this.dom.container.addClass(this.classes.show);
+				this.s.displayed = true;
 			}
+			else if (dataIn !== null) {
+				if (dataIn.tableLength !== undefined) {
+					this.s.tableLength = dataIn.tableLength;
+				}
+				else if (this.s.tableLength === null || table.rows()[0].length > this.s.tableLength) {
+					this.s.tableLength = table.rows()[0].length;
+				}
 
-			let binLength: number = Object.keys(rowData.binsOriginal).length;
-			let uniqueRatio: number = this._uniqueRatio(binLength, table.rows()[0].length);
+				let colTitle = table.column(this.s.index).dataSrc();
 
-			// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
-			if (this.s.displayed === false && ((colOpts.show === undefined && colOpts.threshold === null ?
-					uniqueRatio > this.c.threshold :
-					uniqueRatio > colOpts.threshold)
-				|| (colOpts.show !== true  && binLength <= 1))
-			) {
-				this.dom.container.addClass(this.classes.hidden);
-				this.s.displayed = false;
-				return;
+				if (dataIn[colTitle] !== undefined) {
+					for (let dataPoint of dataIn[colTitle]) {
+						this.s.rowData.arrayFilter.push({
+							display: dataPoint.label,
+							filter: dataPoint.value,
+							sort: dataPoint.label,
+							type: dataPoint.label
+						});
+						this.s.rowData.bins[dataPoint.value] = dataPoint.count;
+						this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
+					}
+				}
 
+				let binLength: number = Object.keys(rowData.binsTotal).length;
+				let uniqueRatio: number = this._uniqueRatio(binLength, this.s.tableLength);
+
+				// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry for that pane
+				if (this.s.displayed === false && ((colOpts.show === undefined && colOpts.threshold === null ?
+						uniqueRatio > this.c.threshold :
+						uniqueRatio > colOpts.threshold)
+					|| (colOpts.show !== true  && binLength <= 1))
+				) {
+					this.dom.container.addClass(this.classes.hidden);
+					this.s.displayed = false;
+					return;
+				}
+
+				this.s.displayed = true;
 			}
-
-			// If the option viewTotal is true then find
-			// the total count for the whole table to display alongside the displayed count
-			if (this.c.viewTotal && rowData.arrayTotals.length === 0) {
-				this._detailsPane();
-			}
-			else {
-				rowData.binsTotal = rowData.bins;
-			}
-
-			this.dom.container.addClass(this.classes.show);
-			this.s.displayed = true;
 		}
 		else {
 			this.s.displayed = true;
@@ -778,7 +821,43 @@ export default class SearchPane {
 
 			// Add all of the search options to the pane
 			for (let i: number = 0, ien = rowData.arrayFilter.length; i < ien; i++) {
-				if (rowData.arrayFilter[i] && (rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)) {
+				if (
+					this.s.dt.page.info().serverSide &&
+					(
+						!this.c.cascadePanes ||
+						(this.c.cascadePanes && rowData.bins[rowData.arrayFilter[i].filter] !== 0) ||
+						(this.c.cascadePanes && init !== null)
+					)
+				) {
+					let row = this._addRow(
+						rowData.arrayFilter[i].display,
+						rowData.arrayFilter[i].filter,
+						rowData.bins[rowData.arrayFilter[i].filter],
+						this.c.viewTotal
+							? String(rowData.binsTotal[rowData.arrayFilter[i].filter])
+							: rowData.bins[rowData.arrayFilter[i].filter],
+						rowData.arrayFilter[i].sort,
+						rowData.arrayFilter[i].type
+					);
+
+					if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
+						row.select();
+					}
+
+					for (let option of this.s.serverSelect) {
+						if (option.filter === rowData.arrayFilter[i].filter) {
+							this.s.serverSelecting = true;
+							row.select();
+							this.s.serverSelecting = false;
+						}
+					}
+
+				}
+				else if (
+					!this.s.dt.page.info().serverSide &&
+					rowData.arrayFilter[i] &&
+					(rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)
+				) {
 					let row = this._addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
@@ -792,7 +871,7 @@ export default class SearchPane {
 						row.select();
 					}
 				}
-				else {
+				else if (!this.s.dt.page.info().serverSide) {
 					this._addRow(this.c.emptyMessage, count, count, this.c.emptyMessage, this.c.emptyMessage, this.c.emptyMessage);
 				}
 			}
@@ -850,17 +929,54 @@ export default class SearchPane {
 	 */
 	private _setListeners() {
 		let rowData = this.s.rowData;
-
+		let t0: NodeJS.Timeout;
+		
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
 		this.s.dtPane.on('select.dtsp', () => {
-			clearTimeout(t0);
-			$(this.dom.clear).removeClass(this.classes.dull);
-			this.s.selectPresent = true;
-			if (!this.s.updating) {
-				this._makeSelection();
+			if (this.s.dt.page.info().serverSide && !this.s.updating) {
+				if (!this.s.serverSelecting) {
+					this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+					this.s.selectPresent = true;
+					this.s.dt.draw(false);
+				}
 			}
-			this.s.selectPresent = false;
+			else {
+				clearTimeout(t0);
+				$(this.dom.clear).removeClass(this.classes.dull);
+				this.s.selectPresent = true;
+
+				if (!this.s.updating) {
+					this._makeSelection();
+				}
+
+				this.s.selectPresent = false;
+			}
+		});
+
+		// When an item is deselected on the pane, re add the currently selected items to the array
+		// which holds selected items. Custom search will be performed.
+		this.s.dtPane.on('deselect.dtsp', () => {
+			t0 = setTimeout(() => {
+				if (this.s.dt.page.info().serverSide && !this.s.updating) {
+					if (!this.s.serverSelecting) {
+						this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+						this.s.deselect = true;
+						this.s.dt.draw(false);
+					}
+				}
+				else {
+					this.s.deselect = true;
+
+					if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
+						$(this.dom.clear).addClass(this.classes.dull);
+					}
+
+					this._makeSelection();
+					this.s.deselect = false;
+					this.s.dt.state.save();
+				}
+			}, 50);
 		});
 
 		// When saving the state store all of the selected rows for preselection next time around
@@ -948,24 +1064,10 @@ export default class SearchPane {
 			this.s.dt.state.save();
 		});
 
-		// Declare timeout Variable
-		let t0: NodeJS.Timeout;
+		// Make sure to save the state once the pane has been built
+		this.s.dt.state.save();
 
-		// When an item is deselected on the pane, re add the currently selected items to the array
-		// which holds selected items. Custom search will be performed.
-		this.s.dtPane.on('deselect.dtsp', () => {
-			t0 = setTimeout(() => {
-				this.s.deselect = true;
-
-				if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
-					$(this.dom.clear).addClass(this.classes.dull);
-				}
-
-				this._makeSelection();
-				this.s.deselect = false;
-				this.s.dt.state.save();
-			}, 50);
-		});
+		return true;
 	}
 
 	/**
@@ -1193,12 +1295,14 @@ export default class SearchPane {
 
 		// If cascadePanes or viewTotal are active it is necessary to get the data which is currently
 		//  being displayed for their functionality. Also make sure that this was not the last pane to have a selection made
-		let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
+		if (!this.s.dt.page.info().serverSide) {
+			let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
 			table.rows({search: 'applied'}).indexes() :
 			table.rows().indexes();
 
-		for (let index of indexArray) {
-			this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
+			for (let index of indexArray) {
+				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
+			}
 		}
 	}
 
@@ -1522,7 +1626,9 @@ export default class SearchPane {
 						: 0, selectedEl.filter,
 					selectedEl.filter
 				);
+				this.s.updating = true;
 				row.select();
+				this.s.updating = false;
 			}
 
 			this.s.dtPane.draw();

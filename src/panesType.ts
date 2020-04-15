@@ -53,6 +53,7 @@ export interface IS {
 	filterPane: number;
 	panes: SearchPane[];
 	selectionList: ISelectItem[];
+	serverData: {[keys: string]: any};
 	updating: boolean;
 }
 

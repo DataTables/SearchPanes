@@ -135,5 +135,8 @@ export interface IS {
 	rowData: IRowData;
 	searchFunction: any; // Function?
 	selectPresent: boolean;
+	serverSelect: any;
+	serverSelecting: boolean;
+	tableLength: number;
 	updating: boolean;
 }
