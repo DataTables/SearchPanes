@@ -862,7 +862,7 @@ export default class SearchPanes {
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
 		table.on('destroy.dtsps', () => {
 			for (let pane of this.s.panes) {
-					pane.destroy();
+				pane.destroy();
 			}
 
 			table.off('.dtsps');

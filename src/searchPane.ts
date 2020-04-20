@@ -325,6 +325,8 @@ export default class SearchPane {
 		if (this.s.dtPane !== undefined) {
 			this.s.dtPane.destroy();
 		}
+
+		this.s.listSet = false;
 	}
 
 	/**
@@ -348,7 +350,9 @@ export default class SearchPane {
 		if (this.s.dtPane !== undefined) {
 			selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
 			this.s.dtPane.clear().destroy();
+			this.destroy();
 			this.s.dtPane = undefined;
+			$.fn.dataTable.ext.search.push(this.s.searchFunction);
 		}
 
 		this.dom.container.removeClass(this.classes.hidden);
@@ -616,7 +620,7 @@ export default class SearchPane {
 						rowData.binsOriginal = rowData.bins;
 					}
 				}
-				
+
 				let binLength: number = Object.keys(rowData.binsOriginal).length;
 				let uniqueRatio: number = this._uniqueRatio(binLength, table.rows()[0].length);
 
@@ -930,7 +934,7 @@ export default class SearchPane {
 	private _setListeners() {
 		let rowData = this.s.rowData;
 		let t0: NodeJS.Timeout;
-		
+
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
 		this.s.dtPane.on('select.dtsp', () => {
