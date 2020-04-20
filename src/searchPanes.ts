@@ -793,13 +793,15 @@ export default class SearchPanes {
 		// so we need to rebuild the panes
 		this.s.dt.on('xhr', () => {
 			let processing = false;
-			if (!this.s.dt.page.info().serverSide) {
 
+			if (!this.s.dt.page.info().serverSide) {
 				this.s.dt.one('draw', () => {
 					if (processing) {
 						return;
 					}
 					processing = true;
+					$(this.dom.panes).empty();
+
 					for (let pane of this.s.panes) {
 						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
 
@@ -809,6 +811,7 @@ export default class SearchPanes {
 								pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
 								false
 						);
+						$(this.dom.panes).append(pane.dom.container);
 					}
 
 					if (this.c.cascadePanes || this.c.viewTotal) {
