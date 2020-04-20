@@ -751,7 +751,7 @@ export default class SearchPane {
 							if (!this.c.dataLength) {
 								displayMessage = '<span class="' + this.classes.name + '">' + data + '</span>' + pill;
 							}
-							else if (data.length > this.c.dataLength) {
+							else if (data !== null && data.length > this.c.dataLength) {
 								displayMessage = '<span class="' + this.classes.name + '">'
 												+ data.substr(0, this.c.dataLength) + '...'
 												+ '</span>'
