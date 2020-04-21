@@ -167,8 +167,10 @@ export default class SearchPanes {
 		let returnArray: SearchPane[] = [];
 
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
+		$(this.dom.panes).empty();
 		for (let pane of this.s.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
+				$(this.dom.panes).append(pane.dom.container);
 				continue;
 			}
 
@@ -184,6 +186,7 @@ export default class SearchPanes {
 						undefined
 				)
 			);
+			$(this.dom.panes).append(pane.dom.container);
 		}
 
 		if (this.c.cascadePanes || this.c.viewTotal) {
@@ -738,6 +741,7 @@ export default class SearchPanes {
 			}
 		}
 
+		$(this.dom.panes).empty();
 		// Rebuild the desired panes
 		for (let pane of this.s.panes) {
 			if (!pane.s.lastSelect) {
@@ -747,6 +751,9 @@ export default class SearchPanes {
 					pane.s.index === initIdx ? true : null
 				);
 			}
+			console.log("append", pane.s.index);
+			console.log($(pane.s.dtPane))
+			$(this.dom.panes).append(pane.dom.container);
 		}
 	}
 
@@ -761,8 +768,10 @@ export default class SearchPanes {
 		this._attachExtras();
 		$(this.dom.container).append(this.dom.panes);
 
+		$(this.dom.panes).empty();
 		for (let pane of this.s.panes) {
 			pane.rebuildPane(undefined, this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
+			$(this.dom.panes).append(pane.dom.container);
 		}
 
 		this._updateFilterCount();
@@ -864,6 +873,7 @@ export default class SearchPanes {
 
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
 		table.on('destroy.dtsps', () => {
+			console.log("panes destroy");
 			for (let pane of this.s.panes) {
 				pane.destroy();
 			}

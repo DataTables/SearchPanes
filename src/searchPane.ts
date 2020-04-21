@@ -304,6 +304,7 @@ export default class SearchPane {
 	 * Strips all of the SearchPanes elements from the document and turns all of the listeners for the buttons off
 	 */
 	public destroy(): void {
+		console.log("destroy", this.s.index);
 		$(this.s.dtPane).off('.dtsp');
 		$(this.s.dt).off('.dtsp');
 
@@ -323,6 +324,7 @@ export default class SearchPane {
 
 		// If the datatables have been defined for the panes then also destroy these
 		if (this.s.dtPane !== undefined) {
+			console.log("destroy datatable", this.s.index);
 			this.s.dtPane.destroy();
 		}
 
@@ -553,6 +555,7 @@ export default class SearchPane {
 	 * @last boolean to indicate whether this pane was the last one to have a selection made
 	 */
 	private _buildPane(selectedRows = [], last = false, dataIn = null, init = null): boolean {
+		console.log(this.s.index, "build");
 		// Aliases
 		this.selections = [];
 		let table = this.s.dt;
@@ -710,6 +713,7 @@ export default class SearchPane {
 		let errMode: string = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
 		let haveScroller = (DataTable as any).Scroller;
+		console.log("initialise datatable", this.s.index)
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
 			true,
 			{
@@ -931,7 +935,7 @@ export default class SearchPane {
 	 *
 	 * Having it in it's own function makes it easier to only set them once
 	 */
-	private _setListeners() {
+	public _setListeners() {
 		let rowData = this.s.rowData;
 		let t0: NodeJS.Timeout;
 
@@ -958,9 +962,11 @@ export default class SearchPane {
 			}
 		});
 
+		console.log("set deselect", this.s.index);
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.on('deselect.dtsp', () => {
+			console.log("deselect");
 			t0 = setTimeout(() => {
 				if (this.s.dt.page.info().serverSide && !this.s.updating) {
 					if (!this.s.serverSelecting) {
@@ -1154,6 +1160,7 @@ export default class SearchPane {
 
 		$(this.dom.topRow).prependTo(this.dom.container);
 		$(container).append(this.dom.dtP);
+		console.log("append dtP", this.s.index);
 		$(container).show();
 	}
 
