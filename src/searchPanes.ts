@@ -6,7 +6,7 @@ let DataTable;
 export function setJQuery(jq) {
   $ = jq;
   DataTable = jq.fn.dataTable;
-};
+}
 
 namespace DataTables {
 	interface IStaticFunctions {
@@ -601,18 +601,18 @@ export default class SearchPanes {
 		}
 
 		// If a custom ordering is being used
-		if(this.c.order.length > 0){
+		if (this.c.order.length > 0) {
 			// Make a new Array of panes based upon the order
-			let newPanes = this.c.order.map((name, index, values) =>{
+			let newPanes = this.c.order.map((name, index, values) => {
 				return this._findPane(name);
-			})
+			});
 
 			// Remove the old panes from the dom
 			this.dom.panes.empty();
 			this.s.panes = newPanes;
 
 			// Append the panes in the correct order
-			for(let pane of this.s.panes){
+			for (let pane of this.s.panes) {
 				this.dom.panes.append(pane.dom.container);
 			}
 		}
@@ -635,9 +635,9 @@ export default class SearchPanes {
 	 * @param name string representing the name of the pane
 	 * @returns SearchPane The pane which has that name
 	 */
-	private _findPane(name: string): SearchPane{
-		for(let pane of this.s.panes){
-			if(name === pane.s.name){
+	private _findPane(name: string): SearchPane {
+		for (let pane of this.s.panes) {
+			if (name === pane.s.name) {
 				return pane;
 			}
 		}
@@ -751,9 +751,13 @@ export default class SearchPanes {
 					pane.s.index === initIdx ? true : null
 				);
 			}
-			console.log("append", pane.s.index);
-			console.log($(pane.s.dtPane))
+			else {
+				pane._setListeners();
+			}
+
+			// append all of the panes and enable select
 			$(this.dom.panes).append(pane.dom.container);
+			($.fn.dataTable as any).select.init(pane.s.dtPane);
 		}
 	}
 
@@ -813,7 +817,6 @@ export default class SearchPanes {
 
 					for (let pane of this.s.panes) {
 						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
-
 						// Pass a boolean to say whether this is the last choice made for maintaining selections when rebuilding
 						pane.rebuildPane(
 							this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
@@ -873,7 +876,6 @@ export default class SearchPanes {
 
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
 		table.on('destroy.dtsps', () => {
-			console.log("panes destroy");
 			for (let pane of this.s.panes) {
 				pane.destroy();
 			}

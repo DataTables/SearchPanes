@@ -78,6 +78,7 @@ export interface IDOM {
 	dtP: JQuery<HTMLElement>;
 	lower: JQuery<HTMLElement>;
 	nameButton: JQuery<HTMLElement>;
+	panesContainer: JQuery<HTMLElement>;
 	searchButton: JQuery<HTMLElement>;
 	searchBox: JQuery<HTMLElement>;
 	searchCont: JQuery<HTMLElement>;
