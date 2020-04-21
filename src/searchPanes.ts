@@ -736,7 +736,8 @@ export default class SearchPanes {
 		// Otherwise if there are no selections then find where that took place and do not update to maintain scrolling
 		else if (this.s.selectionList.length === 0) {
 			for (let pane of this.s.panes) {
-				pane.s.lastSelect = (pane.s.deselect === true);
+				// pane.s.lastSelect = (pane.s.deselect === true);
+				pane.s.lastSelect = false;
 				pane.s.deselect = false;
 			}
 		}
