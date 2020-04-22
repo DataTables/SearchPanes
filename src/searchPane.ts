@@ -586,6 +586,7 @@ export default class SearchPane {
 			if (filter instanceof DataTable.Api) {
 				filter = filter.toArray();
 				display = display.toArray();
+				sort = sort.toArray();
 			}
 
 			if (filter.length === display.length && filter.length === sort.length) {
