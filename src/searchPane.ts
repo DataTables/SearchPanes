@@ -588,7 +588,7 @@ export default class SearchPane {
 				display = display.toArray();
 			}
 
-			if (filter.length === display.length) {
+			if (filter.length === display.length && filter.length === sort.length) {
 				for (let i: number = 0; i < filter.length; i++) {
 					// If we haven't seen this row before add it
 					if (!bins[filter[i]]) {
@@ -596,7 +596,7 @@ export default class SearchPane {
 						arrayFilter.push({
 							display: display[i],
 							filter: filter[i],
-							sort,
+							sort: sort[i],
 							type
 						});
 					}
@@ -609,7 +609,7 @@ export default class SearchPane {
 				return;
 			}
 			else {
-				throw new Error('display and filter not the same length');
+				throw new Error('display, filter and sort are not the same length');
 			}
 		}
 		// If the values were affected by othogonal data and are not an array then check if it is already present
