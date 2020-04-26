@@ -57,6 +57,10 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			table.searchPanes.rebuildPane();
 			checkTopRows('4', '11', '3');
 		});
+		it('#Can still click buttons in pane after the rebuild', function() {
+			$('.dtsp-searchPane:visible:eq(1) button.dtsp-nameButton').click();
+			checkTopRows('4', '5', '3');
+		});
 
 		dt.html('basic');
 		it('Table with a custom pane', function() {
