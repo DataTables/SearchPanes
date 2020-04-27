@@ -1323,7 +1323,7 @@ export default class SearchPane {
 			table.rows({search: 'applied'}).indexes() :
 			table.rows().indexes();
 
-			for (let index of indexArray) {
+			for (let index of indexArray.toArray()) {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
 		}

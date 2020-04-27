@@ -33,18 +33,8 @@ fi
 
 # Copy images
 #rsync -r images $OUT_DIR
+node_modules/typescript/bin/tsc
 
-node_modules/typescript/bin/tsc src/searchPanes.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPane.ts --module ES6
-node_modules/typescript/bin/tsc src/index.ts --module ES6
-node_modules/typescript/bin/tsc src/paneType.ts --module ES6
-node_modules/typescript/bin/tsc src/panesType.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPanes.dataTables.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPanes.bootstrap4.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPanes.bootstrap.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPanes.foundation.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPanes.jqueryui.ts --module ES6
-node_modules/typescript/bin/tsc src/searchPanes.semanticui.ts --module ES6
 
 
 # Copy JS
@@ -63,8 +53,9 @@ rm \
     $OUT_DIR/js/panesType.js \
     $OUT_DIR/js/paneType.js \
     $OUT_DIR/js/searchPane.js \
-    $OUT_DIR/js/searchPanes.js
-
+    $OUT_DIR/js/searchPanes.js \
+    /home/vagrant/DataTablesSrc/extensions/SearchPanes/src/*.js \
+    /home/vagrant/DataTablesSrc/extensions/SearchPanes/src/*.d.ts
 
 js_compress $OUT_DIR/js/dataTables.searchPanes.js
 
