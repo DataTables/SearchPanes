@@ -1,7 +1,7 @@
 {
   "name": "datatables.net-searchpane",
   "version": "1.0.1",
-  "description": "Search Panels for DataTables",
+  "description": "Search Panes for DataTables",
   "main": "index.js",
   "directories": {
     "doc": "docs",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DataTables/SearchPane.git"
+    "url": "git+https://github.com/DataTables/SearchPanes.git"
   },
   "author": "SpryMedia ltd",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DataTables/SearchPane/issues"
+    "url": "https://github.com/DataTables/SearchPanes/issues"
   },
-  "homepage": "https://github.com/DataTables/SearchPane#readme",
+  "homepage": "https://github.com/DataTables/SearchPanes#readme",
   "dependencies": {
     "@types/datatables.net": "^1.10.17",
     "@types/datatables.net-buttons": "^1.4.2",
