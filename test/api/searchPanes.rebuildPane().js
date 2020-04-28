@@ -78,9 +78,8 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			table.searchPanes.rebuildPane();
 
 			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected').length).toBe(0);
-			// DD-1417
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
-			// expect($('#example tbody tr').length).toBe(57);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+			expect($('#example tbody tr').length).toBe(10);
 		});
 
 		dt.html('basic');
@@ -104,9 +103,8 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			table.searchPanes.rebuildPane();
 
 			expect($('.dtsp-searchPane:visible:eq(2)').length).toBe(0);
-			// DD-1418
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
-			// expect($('#example tbody tr').length).toBe(54);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+			expect($('#example tbody tr').length).toBe(10);
 		});
 
 		dt.html('basic');
@@ -150,9 +148,8 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			table.searchPanes.rebuildPane(undefined, true);
 
 			expect($('.dtsp-searchPane:visible:eq(2)').length).toBe(0);
-			// DD-1418
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
-			// expect($('#example tbody tr').length).toBe(54);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+			expect($('#example tbody tr').length).toBe(10);
 		});
 
 		dt.html('basic');
@@ -178,10 +175,9 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			expect($('.dtsp-searchPane:visible:eq(2)').length).toBe(0);
 			expect($('.dtsp-searchPane:visible:eq(0) tbody tr.selected td:eq(0)').text()).toBe('Marketing Designer2');
 
-			// DD-1418
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Michael Silva');
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Unity Butler');
-			// expect($('#example tbody tr').length).toBe(2);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Michael Silva');
+			expect($('#example tbody tr:eq(1) td:eq(0)').text()).toBe('Unity Butler');
+			expect($('#example tbody tr').length).toBe(2);
 		});
 
 		dt.html('basic');
