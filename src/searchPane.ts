@@ -120,6 +120,7 @@ export default class SearchPane {
 			filteringActive: false,
 			index: idx,
 			indexes: [],
+			lastCascade: false,
 			lastSelect: false,
 			listSet: false,
 			name: undefined,
@@ -138,6 +139,7 @@ export default class SearchPane {
 			selectPresent: false,
 			serverSelect: [],
 			serverSelecting: false,
+			showFiltered: false,
 			tableLength: null,
 			updating: false,
 		};
@@ -892,7 +894,7 @@ export default class SearchPane {
 							}
 
 							let message: string;
-							this.s.filteringActive && this.c.viewTotal
+							(this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal
 								? message = filteredMessage.replace(/{total}/, row.total)
 								: message = countMessage.replace(/{total}/, row.total) ;
 							message = message.replace(/{shown}/, row.shown);
@@ -1546,8 +1548,8 @@ export default class SearchPane {
 		// update all of the panes except for the one causing the change
 		if (
 			this.s.dtPane !== undefined &&
-			((!this.s.filteringActive || this.c.cascadePanes) || draw === true) &&
-			(this.c.cascadePanes !== true || this.s.selectPresent !== true) && !this.s.lastSelect
+			(!this.s.filteringActive || this.c.cascadePanes || draw === true) &&
+			(this.c.cascadePanes !== true || this.s.selectPresent !== true) && (!this.s.lastSelect || !this.s.lastCascade)
 		) {
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();

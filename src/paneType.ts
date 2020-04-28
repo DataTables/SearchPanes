@@ -129,6 +129,7 @@ export interface IS {
 	filteringActive: boolean;
 	index: number;
 	indexes: IIndexes[];
+	lastCascade: boolean;
 	lastSelect: boolean;
 	listSet: boolean;
 	name: string;
@@ -138,6 +139,7 @@ export interface IS {
 	selectPresent: boolean;
 	serverSelect: any;
 	serverSelecting: boolean;
+	showFiltered: boolean;
 	tableLength: number;
 	updating: boolean;
 }

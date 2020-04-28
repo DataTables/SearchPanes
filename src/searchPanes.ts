@@ -541,11 +541,17 @@ export default class SearchPanes {
 	 */
 	private _makeCascadeSelections(newSelectionList): void {
 		// make selections in the order they were made previously, excluding those from the pane where a deselect was made
-		for (let selection of newSelectionList) {
+		for (let i = 0; i < newSelectionList.length; i++) {
 			// As the selections may have been made across the panes in a different order to the pane index we must identify
 			//  which pane has the index of the selection. This is also important for colreorder etc
 			for (let pane of this.s.panes) {
-				if (pane.s.index === selection.index && pane.s.dtPane !== undefined) {
+				if (pane.s.index === newSelectionList[i].index && pane.s.dtPane !== undefined) {
+					// When regenerating the cascade selections we need this flag so that the panes are only ignored if it
+					//  is the last selection and the pane for that selection
+					if (i === newSelectionList.length - 1) {
+						pane.s.lastCascade = true;
+					}
+
 					// if there are any selections currently in the pane then deselect them as we are about to make our new selections
 					if (pane.s.dtPane.rows({selected: true}).data().toArray().length > 0 && pane.s.dtPane !== undefined) {
 						pane.setClear(true);
@@ -554,7 +560,7 @@ export default class SearchPanes {
 					}
 
 					// select every row in the pane that was selected previously
-					for (let row of selection.rows) {
+					for (let row of newSelectionList[i].rows) {
 						pane.s.dtPane.rows().every((rowIdx) => {
 							if (
 								pane.s.dtPane.row(rowIdx).data() !== undefined &&
@@ -568,6 +574,7 @@ export default class SearchPanes {
 
 					// Update the label that shows how many filters are in place
 					this._updateFilterCount();
+					pane.s.lastCascade = false;
 				}
 			}
 		}
@@ -776,9 +783,40 @@ export default class SearchPanes {
 		$(this.dom.container).append(this.dom.panes);
 
 		$(this.dom.panes).empty();
+
+		if (this.c.viewTotal && !this.c.cascadePanes) {
+			let loadedFilter = this.s.dt.state.loaded();
+
+			if (
+				loadedFilter !== null &&
+				loadedFilter !== undefined &&
+				loadedFilter.searchPanes !== undefined &&
+				loadedFilter.searchPanes.panes !== undefined
+			) {
+				let filterActive = false;
+				for (let pane of loadedFilter.searchPanes.panes) {
+					if (pane.selected.length > 0) {
+						filterActive = true;
+						break;
+					}
+				}
+				if (filterActive) {
+					for (let pane of this.s.panes) {
+						pane.s.showFiltered = true;
+					}
+				}
+			}
+		}
+
 		for (let pane of this.s.panes) {
 			pane.rebuildPane(undefined, this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
 			$(this.dom.panes).append(pane.dom.container);
+		}
+
+		if (this.c.viewTotal && !this.c.cascadePanes) {
+			for (let pane of this.s.panes) {
+				pane.updatePane();
+			}
 		}
 
 		this._updateFilterCount();
