@@ -202,6 +202,8 @@ export default class SearchPanes {
 		this._updateFilterCount();
 		this._attachPaneContainer();
 
+		this.s.dt.draw();
+
 		// If a single pane has been rebuilt then return only that pane
 		if (returnArray.length === 1) {
 			return returnArray[0];
