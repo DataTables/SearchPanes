@@ -342,15 +342,22 @@ export default class SearchPane {
 	/**
 	 * Rebuilds the panes from the start having deleted the old ones
 	 * @param? last boolean to indicate if this is the last pane a selection was made in
+	 * @param? dataIn data to be used in buildPane
+	 * @param? init Whether this is the initial draw or not
+	 * @param? maintainSelection Whether the current selections are to be maintained over rebuild
 	 */
-	public rebuildPane(last = false, dataIn = null, init = null): this {
+	public rebuildPane(last = false, dataIn = null, init = null, maintainSelection = false): this {
 		this.clearData();
 
 		let selectedRows = [];
 		let prevEl = null;
+
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
-			selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+			if (maintainSelection) {
+				selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+			}
+
 			this.s.dtPane.clear().destroy();
 			prevEl = $(this.dom.container).prev();
 			this.destroy();

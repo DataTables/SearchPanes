@@ -183,7 +183,9 @@ export default class SearchPanes {
 						false,
 					this.s.dt.page.info().serverSide ?
 						this.s.serverData :
-						undefined
+						undefined,
+					null,
+					maintainSelection
 				)
 			);
 			$(this.dom.panes).append(pane.dom.container);
