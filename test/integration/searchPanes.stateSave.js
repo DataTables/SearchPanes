@@ -68,19 +68,19 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			checkOrdering();
 		});
-		// DD-1422
-		// it('... still same after reload', async function() {
-		// 	table = $('#example').DataTable({
-		// 		dom: 'Pfrtip',
-		// 		destroy: true,
-		// 		searchPanes: true,
-		// 		stateSave: true
-		// 	});
 
-		// 	await dt.sleep(500);
+		it('... still same after reload', async function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				destroy: true,
+				searchPanes: true,
+				stateSave: true
+			});
 
-		// 	checkOrdering();
-		// });
+			await dt.sleep(500);
+
+			checkOrdering();
+		});
 
 		function checkSearch() {
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').val()).toBe('Developer');
@@ -103,19 +103,19 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			checkSearch();
 		});
-		// DD-1421
-		// it('... still same after reload', async function() {
-		// 	table = $('#example').DataTable({
-		// 		dom: 'Pfrtip',
-		// 		destroy: true,
-		// 		searchPanes: true,
-		// 		stateSave: true
-		// 	});
 
-		// 	await dt.sleep(500);
+		it('... still same after reload', async function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				destroy: true,
+				searchPanes: true,
+				stateSave: true
+			});
 
-		// 	checkSearch();
-		// });
+			await dt.sleep(500);
+
+			checkSearch();
+		});
 
 		function checkTotals(pane, exp) {
 			for (let i = 0; i < exp.length; i++) {

@@ -532,6 +532,7 @@ export default class SearchPane {
 		$(this.dom.nameButton).on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+			this.s.dt.state.save();
 		});
 
 		// When the button to order by the number of entries in the column is clicked then
@@ -539,6 +540,7 @@ export default class SearchPane {
 		$(this.dom.countButton).on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+			this.s.dt.state.save();
 		});
 
 		// When the clear button is clicked reset the pane
@@ -1092,7 +1094,8 @@ export default class SearchPane {
 			for (let pane of loadedFilter.searchPanes.panes) {
 				if (pane.id === this.s.index) {
 					$(this.dom.searchBox).val(pane.searchTerm);
-					this.s.dt.order(pane.order);
+					$(this.dom.searchBox).trigger('input');
+					this.s.dtPane.order(pane.order).draw();
 				}
 			}
 		}
