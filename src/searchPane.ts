@@ -263,6 +263,10 @@ export default class SearchPane {
 			this._adjustTopRow();
 		});
 
+		table.on('buttons-action', () => {
+			this._adjustTopRow();
+		});
+
 		$(window).on('resize.dtsp', DataTable.util.throttle(() => {
 			this._adjustTopRow();
 		}));
@@ -525,6 +529,10 @@ export default class SearchPane {
 
 		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
+		});
+
+		this.s.dtPane.on('draw.dtsp', () => {
+			this._adjustTopRow();
 		});
 
 		// When the button to order by the name of the options is clicked then
@@ -1061,6 +1069,7 @@ export default class SearchPane {
 
 		// Display the pane
 		this.s.dtPane.draw();
+		this._adjustTopRow();
 
 		if (!this.s.listSet) {
 			this._setListeners();
