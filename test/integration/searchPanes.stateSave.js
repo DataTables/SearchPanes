@@ -30,7 +30,7 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			checkSelection();
 		});
-		it('... still same after reload', async function() {
+		it('... still same after reload', async function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -41,6 +41,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkSelection();
+
+			done();
 		});
 
 		function checkOrdering() {
@@ -52,7 +54,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			);
 		}
 
-		it('Test ordering', async function() {
+		it('Test ordering', async function(done) {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -67,9 +69,11 @@ describe('searchPanes - integrations - stateSave', function() {
 			$('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(2)').click();
 
 			checkOrdering();
+
+			done();
 		});
 
-		it('... still same after reload', async function() {
+		it('... still same after reload', async function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -80,6 +84,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkOrdering();
+
+			done();
 		});
 
 		function checkSearch() {
@@ -87,7 +93,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr').length).toBe(4);
 		}
 
-		it('Test searching', async function() {
+		it('Test searching', async function(done) {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -102,9 +108,11 @@ describe('searchPanes - integrations - stateSave', function() {
 			$('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').trigger('input');
 
 			checkSearch();
+
+			done();
 		});
 
-		it('... still same after reload', async function() {
+		it('... still same after reload', async function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -115,6 +123,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkSearch();
+
+			done();
 		});
 
 		function checkTotals(pane, exp) {
@@ -131,7 +141,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkTotals(2, ['1 (1)', '1 (2)']);
 		}
 
-		it('Test viewtotal and cascadePanes', async function() {
+		it('Test viewtotal and cascadePanes', async function(done) {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -151,8 +161,10 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(600);
 
 			checkCascades();
+
+			done();
 		});
-		it('... still same after reload', async function() {
+		it('... still same after reload', async function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -166,6 +178,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(600);
 
 			checkCascades();
+
+			done();
 		});
 
 		function checkCustom() {
@@ -175,7 +189,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			expect($('#example tbody tr:eq(1) td:eq(0)').text()).toBe('Garrett Winters');
 		}
 
-		it('Test custom panes', async function() {
+		it('Test custom panes', async function(done) {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -205,8 +219,10 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkCustom();
+
+			done();
 		});
-		it('... still same after reload', async function() {
+		it('... still same after reload', async function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -231,6 +247,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkCustom();
+
+			done();
 		});
 	});
 
@@ -245,7 +263,7 @@ describe('searchPanes - integrations - stateSave', function() {
 		});
 
 		dt.html('basic');
-		it('Add searchPanes', async function() {
+		it('Add searchPanes', async function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true,
@@ -253,6 +271,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			});
 
 			expect($('div.dtsp-searchPane').length).toBe(6);
+
+			done();
 		});
 		it('Tidy up', function() {
 			table.state.clear();
