@@ -20,6 +20,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		}
 
 		it('Check selection', function() {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true,
@@ -31,6 +33,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkSelection();
 		});
 		it('... still same after reload', async function(done) {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -58,6 +62,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkTotals(2, ['1 (1)', '1 (2)']);
 		}
 		it('Test viewtotal and cascadePanes', async function(done) {
+			console.log(new Date());
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -81,6 +86,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			done();
 		});
 		it('... still same after reload', async function(done) {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -108,6 +115,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		}
 
 		it('Test ordering', async function(done) {
+			console.log(new Date());
+
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -127,6 +136,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		});
 
 		it('... still same after reload', async function(done) {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -147,6 +158,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		}
 
 		it('Test searching', async function(done) {
+			console.log(new Date());
+
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -166,6 +179,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		});
 
 		it('... still same after reload', async function(done) {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -188,6 +203,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		}
 
 		it('Test custom panes', async function(done) {
+			console.log(new Date());
+
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -221,6 +238,8 @@ describe('searchPanes - integrations - stateSave', function() {
 			done();
 		});
 		it('... still same after reload', async function(done) {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -248,11 +267,17 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			done();
 		});
+		it('Tidy up', function() {
+			table.state.clear();
+		});
 	});
 
 	describe('stateSave when searchPanes not enabled originally', function() {
+
 		dt.html('basic');
 		it('No searchPanes originally', function() {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				stateSave: true
 			});
@@ -262,6 +287,8 @@ describe('searchPanes - integrations - stateSave', function() {
 
 		dt.html('basic');
 		it('Add searchPanes', async function(done) {
+			console.log(new Date());
+
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true,
