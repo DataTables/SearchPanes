@@ -1,10 +1,10 @@
 describe('searchPanes - integrations - stateSave', function() {
-	let table;
-
 	dt.libs({
 		js: ['jquery', 'datatables', 'select', 'searchpanes'],
 		css: ['datatables', 'select', 'searchpanes']
 	});
+
+	let table;
 
 	describe('Functional tests', function() {
 		dt.html('basic');
@@ -20,6 +20,8 @@ describe('searchPanes - integrations - stateSave', function() {
 		}
 
 		it('Check selection', function() {
+			jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+			console.log(jasmine.DEFAULT_TIMEOUT_INTERVAL);
 			console.log(new Date());
 
 			table = $('#example').DataTable({
@@ -33,6 +35,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkSelection();
 		});
 		it('... still same after reload', async function(done) {
+			console.log(jasmine.DEFAULT_TIMEOUT_INTERVAL);
 			console.log(new Date());
 
 			table = $('#example').DataTable({
@@ -62,6 +65,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkTotals(2, ['1 (1)', '1 (2)']);
 		}
 		it('Test viewtotal and cascadePanes', async function(done) {
+			console.log(jasmine.DEFAULT_TIMEOUT_INTERVAL);
 			console.log(new Date());
 			table.state.clear();
 			table = $('#example').DataTable({
@@ -273,7 +277,6 @@ describe('searchPanes - integrations - stateSave', function() {
 	});
 
 	describe('stateSave when searchPanes not enabled originally', function() {
-
 		dt.html('basic');
 		it('No searchPanes originally', function() {
 			console.log(new Date());
