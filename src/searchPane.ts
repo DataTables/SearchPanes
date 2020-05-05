@@ -1083,7 +1083,6 @@ export default class SearchPane {
 			this.s.listSet = true;
 		}
 
-		console.log(selectedRows);
 		for (let selection of selectedRows) {
 			if (selection !== undefined) {
 				for (let row of this.s.dtPane.rows().indexes().toArray()) {
