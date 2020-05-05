@@ -1,10 +1,10 @@
 describe('searchPanes - integrations - stateSave', function() {
-	let table;
-
 	dt.libs({
 		js: ['jquery', 'datatables', 'select', 'searchpanes'],
 		css: ['datatables', 'select', 'searchpanes']
 	});
+
+	let table;
 
 	describe('Functional tests', function() {
 		dt.html('basic');
@@ -247,6 +247,9 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkCustom();
 
 			done();
+		});
+		it('Tidy up', function() {
+			table.state.clear();
 		});
 	});
 
