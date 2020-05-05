@@ -356,12 +356,18 @@ export default class SearchPane {
 		this.clearData();
 
 		let selectedRows = [];
+		this.s.serverSelect = [];
 		let prevEl = null;
 
 		// When rebuilding strip all of the HTML Elements out of the container and start from scratch
 		if (this.s.dtPane !== undefined) {
 			if (maintainSelection) {
-				selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+				if (!this.s.dt.page.info().serverSide) {
+					selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+				}
+				else {
+					this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+				}
 			}
 
 			this.s.dtPane.clear().destroy();
@@ -834,7 +840,9 @@ export default class SearchPane {
 							sort: dataPoint.label,
 							type: dataPoint.label
 						});
-						this.s.rowData.bins[dataPoint.value] = this.c.viewTotal ? dataPoint.count : dataPoint.total;
+						this.s.rowData.bins[dataPoint.value] = this.c.viewTotal || this.c.cascadePanes ?
+							dataPoint.count :
+							dataPoint.total;
 						this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
 					}
 				}
@@ -1075,6 +1083,7 @@ export default class SearchPane {
 			this.s.listSet = true;
 		}
 
+		console.log(selectedRows);
 		for (let selection of selectedRows) {
 			if (selection !== undefined) {
 				for (let row of this.s.dtPane.rows().indexes().toArray()) {
