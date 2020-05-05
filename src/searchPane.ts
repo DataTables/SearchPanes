@@ -826,7 +826,6 @@ export default class SearchPane {
 				}
 
 				let colTitle = table.column(this.s.index).dataSrc();
-
 				if (dataIn[colTitle] !== undefined) {
 					for (let dataPoint of dataIn[colTitle]) {
 						this.s.rowData.arrayFilter.push({
@@ -835,7 +834,7 @@ export default class SearchPane {
 							sort: dataPoint.label,
 							type: dataPoint.label
 						});
-						this.s.rowData.bins[dataPoint.value] = dataPoint.count;
+						this.s.rowData.bins[dataPoint.value] = this.c.viewTotal ? dataPoint.count : dataPoint.total;
 						this.s.rowData.binsTotal[dataPoint.value] = dataPoint.total;
 					}
 				}
@@ -1559,6 +1558,7 @@ export default class SearchPane {
 		// Update the panes if doing a deselect. if doing a select then
 		// update all of the panes except for the one causing the change
 		if (
+			!this.s.dt.page.info().serverSide &&
 			this.s.dtPane !== undefined &&
 			(!this.s.filteringActive || this.c.cascadePanes || draw === true) &&
 			(this.c.cascadePanes !== true || this.s.selectPresent !== true) && (!this.s.lastSelect || !this.s.lastCascade)
