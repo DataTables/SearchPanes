@@ -946,14 +946,14 @@ export default class SearchPanes {
 					let src = this.s.dt.column(pane.s.index).dataSrc();
 
 					if (data.searchPanes[src] === undefined) {
-						data.searchPanes[src] = [];
+						data.searchPanes[src] = {};
 					}
 
 					if (pane.s.dtPane !== undefined) {
 						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
 
-						for (let dataPoint of rowData) {
-							data.searchPanes[src].push(dataPoint.display);
+						for (let i = 0; i < rowData.length; i++) {
+							data.searchPanes[src][i] = rowData[i].display;
 						}
 					}
 				}
@@ -962,7 +962,7 @@ export default class SearchPanes {
 					this._prepViewTotal();
 				}
 			});
-		}
+		};
 
 		table.settings()[0]._searchPanes = this;
 	}
