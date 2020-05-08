@@ -17,12 +17,12 @@
 		<returns type="DataTables.Api">DataTables API instance</returns>
 	</type>
 	<type type="function">
-		<signature>searchPanes.rebuildPane( index, maintainSelect )</signature>
+		<signature>searchPanes.rebuildPane( index [, maintainSelect ] )</signature>
 		<description>Rebuild specific pane, regathering options from the table and maintaining the selections present in the pane.</description>
 		<parameter type="integer" name="index">
             Index of pane to rebuild.
         </parameter>
-		<parameter type="boolean" name="maintainSelect">
+		<parameter type="boolean" name="maintainSelect" default="false">
             Flag to decide whether to maintain the selections in the pane or not.
         </parameter>
 		<returns type="DataTables.Api">DataTables API instance</returns>
@@ -37,7 +37,7 @@
 
 	</description>
 
-	<example title="Delete a row and redraw the first pane:"><![CDATA[
+	<example title="Delete a row and redraw the first pane"><![CDATA[
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
@@ -49,7 +49,7 @@ $(document).ready(function() {
 });
 ]]></example>
 
-<example title="Delete a row and redraw all of the panes:"><![CDATA[
+<example title="Delete a row and redraw all of the panes"><![CDATA[
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
@@ -61,7 +61,7 @@ $(document).ready(function() {
 });
 ]]></example>
 
-	<example title="Redraw the first pane while maintaining selections:"><![CDATA[
+	<example title="Redraw the first pane while maintaining selections"><![CDATA[
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {

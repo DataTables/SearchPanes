@@ -19,14 +19,14 @@
 	<default value="object">
 		The default value of the `-init columns.searchPanes.orthogonal` object is shown below
 
-        ```
-        orthogonal: {
-            display: 'display',
-            search: 'filter',
-            sort: 'sort',
-            type: 'type'
-        }
-        ```
+		```
+		orthogonal: {
+			display: 'display',
+			search: 'filter',
+			sort: 'sort',
+			type: 'type'
+		}
+		```
 
 		This means that as standard the pane will display the same data as the DataTable, and search using the original data from the DataTable.
 	</default>
@@ -38,17 +38,17 @@
 
 			`-init columns.searchPanes.orthogonal` is normally only defined as a string when dealing with arrays. By setting the render object to the following 
 
-        ```
-        {
-            render: {
-                _: '[, ].name',
-                sp: '[].name'
-            }
-        }
-        ```
+			```js
+			{
+				render: {
+					_: '[, ].name',
+					sp: '[].name'
+				}
+			}
+			```
 
-        and `-init columns.searchPanes.orthogonal` to `'sp'`, the original array will be displayed in the dataTable as a list seperated by ', ', where as in the SearchPane each individual element will be displayed. It is then possible to search by individual element rather than the entire array combination. 
-        ]]>
+			and `-init columns.searchPanes.orthogonal` to `'sp'`, the original array will be displayed in the dataTable as a list seperated by ', ', where as in the SearchPane each individual element will be displayed. It is then possible to search by individual element rather than the entire array combination. 
+		]]>
 	</description>
 
 	<example title="Normal Render Function Which Uses Default Value of orthogonal"><![CDATA[
