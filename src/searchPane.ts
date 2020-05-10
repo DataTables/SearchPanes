@@ -621,8 +621,8 @@ export default class SearchPane {
 						arrayFilter.push({
 							display: display[i],
 							filter: filter[i],
-							sort,
-							type
+							sort: sort[i],
+							type: type[i]
 						});
 					}
 					// Otherwise just increment the count
