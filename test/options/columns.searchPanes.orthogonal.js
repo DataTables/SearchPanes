@@ -24,7 +24,9 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 				]
 			});
 
-			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('panes Edinburgh');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
+				'panes Edinburgh'
+			);
 			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('9');
 		});
 		it('Check filter of rendered options', function() {
@@ -38,7 +40,7 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 				{
 					name: { first: 'Aaron', last: 'Aardvark' },
 					position: 'Architect',
-					office: [{ city: 'Atlanta' }, { city: 'Aspen' }],
+					office: [{ city: 'Detroit' }, { city: 'Atlanta' }],
 					age: 99,
 					start_date: '2018/05/06',
 					salary: '$40,000'
@@ -59,9 +61,8 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 				return data.first + ' ' + data.last;
 			};
 			cols[0].searchPanes = { threshold: 0, show: true };
-			cols[2].render = '[; ].city';
-			cols[2].searchPanes = { threshold: 0, show: true };
-
+			cols[2].render = { _:'[; ].city', sp: '[].city'};
+			cols[2].searchPanes = { threshold: 0, show: true, orthogonal: 'sp' };
 
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -73,7 +74,9 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function() {
 		});
 		it('Check contents as expected', function() {
 			expect($('div.dtsp-searchPane:eq(0) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Aaron Aardvark');
-			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Atlanta; Aspen');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Atlanta');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Boulder');
+			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(2) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Detroit');
 		});
 	});
 });
