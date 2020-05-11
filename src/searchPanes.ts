@@ -760,7 +760,8 @@ export default class SearchPanes {
 				pane.rebuildPane(
 					undefined,
 					this.s.dt.page.info().serverSide ? this.s.serverData : undefined,
-					pane.s.index === initIdx ? true : null
+					pane.s.index === initIdx ? true : null,
+					true
 				);
 			}
 			else {
