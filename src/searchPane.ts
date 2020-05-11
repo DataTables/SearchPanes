@@ -10,7 +10,7 @@ export function setJQuery(jq) {
 
 export default class SearchPane {
 
-	private static version = '1.0.1';
+	private static version = '1.1.0';
 
 	private static classes: typeInterfaces.IClasses = {
 		buttonGroup: 'dtsp-buttonGroup',
