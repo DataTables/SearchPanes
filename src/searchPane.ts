@@ -135,6 +135,7 @@ export default class SearchPane {
 				filterMap: new Map(),
 				totalOptions: 0
 			},
+			scrollTop: 0,
 			searchFunction: undefined,
 			selectPresent: false,
 			serverSelect: [],
@@ -379,7 +380,16 @@ export default class SearchPane {
 
 		this.dom.container.removeClass(this.classes.hidden);
 		this.s.displayed = false;
-		this._buildPane(selectedRows, last, dataIn, init, prevEl);
+		this._buildPane(
+			!this.s.dt.page.info().serverSide ?
+				selectedRows :
+				this.s.serverSelect,
+			last,
+			dataIn,
+			init,
+			prevEl
+		);
+
 		return this;
 	}
 
@@ -449,6 +459,7 @@ export default class SearchPane {
 			if (this.s.dt.page.info().serverSide && !this.s.updating) {
 				if (!this.s.serverSelecting) {
 					this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+					this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
 					this.s.selectPresent = true;
 					this.s.dt.draw(false);
 				}
@@ -1012,12 +1023,21 @@ export default class SearchPane {
 
 			// Add all of the search options to the pane
 			for (let i: number = 0, ien = rowData.arrayFilter.length; i < ien; i++) {
+				let selected = false;
+
+				for (let option of this.s.serverSelect)  {
+					if (option.filter === rowData.arrayFilter[i].filter) {
+						selected = true;
+					}
+				}
+
 				if (
 					this.s.dt.page.info().serverSide &&
 					(
 						!this.c.cascadePanes ||
 						(this.c.cascadePanes && rowData.bins[rowData.arrayFilter[i].filter] !== 0) ||
-						(this.c.cascadePanes && init !== null)
+						(this.c.cascadePanes && init !== null) ||
+						selected
 					)
 				) {
 					let row = this._addRow(

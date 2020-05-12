@@ -771,6 +771,9 @@ export default class SearchPanes {
 
 			// append all of the panes and enable select
 			$(this.dom.panes).append(pane.dom.container);
+			if (pane.s.dtPane !== undefined) {
+				$(pane.s.dtPane.table().node()).parent()[0].scrollTop = pane.s.scrollTop;
+			}
 			($.fn.dataTable as any).select.init(pane.s.dtPane);
 		}
 	}

@@ -135,6 +135,7 @@ export interface IS {
 	name: string;
 	redraw: boolean;
 	rowData: IRowData;
+	scrollTop: number;
 	searchFunction: any; // Function?
 	selectPresent: boolean;
 	serverSelect: any;
