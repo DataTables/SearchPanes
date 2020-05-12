@@ -1023,8 +1023,10 @@ export default class SearchPane {
 					let row = this._addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
-						rowData.bins[rowData.arrayFilter[i].filter],
-						this.c.viewTotal
+						init ?
+							rowData.binsTotal[rowData.arrayFilter[i].filter] :
+							rowData.bins[rowData.arrayFilter[i].filter],
+						this.c.viewTotal || init
 							? String(rowData.binsTotal[rowData.arrayFilter[i].filter])
 							: rowData.bins[rowData.arrayFilter[i].filter],
 						rowData.arrayFilter[i].sort,

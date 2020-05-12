@@ -754,6 +754,7 @@ export default class SearchPanes {
 		}
 
 		$(this.dom.panes).empty();
+
 		// Rebuild the desired panes
 		for (let pane of this.s.panes) {
 			if (!pane.s.lastSelect) {
@@ -963,7 +964,7 @@ export default class SearchPanes {
 					this._prepViewTotal();
 				}
 			});
-		};
+		}
 
 		table.settings()[0]._searchPanes = this;
 	}
