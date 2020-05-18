@@ -238,6 +238,14 @@ export default class SearchPanes {
 					if (pane.s.dtPane !== undefined) {
 						let selectLength: number = pane.s.dtPane.rows({selected: true}).data().toArray().length;
 
+						if (selectLength === 0) {
+							for (let selection of this.s.selectionList) {
+								if (selection.index === pane.s.index && selection.rows.length !== 0) {
+									selectLength = selection.rows.length;
+								}
+							}
+						}
+
 						// If filterPane === -1 then a pane with a selection has not been found yet, so set filterPane to that panes index
 						if (selectLength > 0 && filterPane === -1) {
 							filterPane = pane.s.index;
@@ -301,16 +309,26 @@ export default class SearchPanes {
 					}
 				}
 
+				let solePane: number = -1;
+				if (newSelectionList.length === 1) {
+					solePane = newSelectionList[0].index;
+				}
+
 				// Update all of the panes to reflect the current state of the filters
 				for (let pane of this.s.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let tempFilter: boolean = true;
 						pane.s.filteringActive = true;
 
-						if ((filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) || filterActive === false) {
+						if (
+							(filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) ||
+							filterActive === false ||
+							pane.s.index === solePane
+						) {
 							tempFilter = false;
 							pane.s.filteringActive = false;
 						}
+
 						pane.updatePane(!tempFilter ? false : filterActive);
 					}
 				}
@@ -337,18 +355,29 @@ export default class SearchPanes {
 								tempFilter = false;
 								paneUpdate.s.filteringActive = false;
 							}
+
 							paneUpdate.updatePane(!tempFilter ? tempFilter : filterActive);
 						}
 					}
 				}
 			}
 			else {
+
+				let solePane: number = -1;
+				if (newSelectionList.length === 1) {
+					solePane = newSelectionList[0].index;
+				}
+
 				for (let pane of this.s.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let tempFilter: boolean = true;
 						pane.s.filteringActive = true;
 
-						if ((filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) || filterActive === false) {
+						if (
+							(filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) ||
+							filterActive === false ||
+							pane.s.index === solePane
+						) {
 							tempFilter = false;
 							pane.s.filteringActive = false;
 						}
@@ -875,7 +904,7 @@ export default class SearchPanes {
 					}
 
 					if (this.c.cascadePanes || this.c.viewTotal) {
-						this.redrawPanes();
+						this.redrawPanes(this.c.cascadePanes);
 					}
 					else {
 						this._updateSelection();
