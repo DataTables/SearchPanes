@@ -1,14 +1,27 @@
 {
     "compilerOptions": {
-        "target": "ES6",
-        "module": "commonjs",
+        "target": "ES3",
+        "module": "ES6",
         "lib": ["es2017", "es2016", "dom"],
         "allowUnreachableCode": true,
         "allowSyntheticDefaultImports": true,
         "pretty": true,
         "declaration": true
-        },
+    },
     "exclude": [
         "./node_modules/**/*"
+    ],
+    "files": [
+        "src/searchPanes.ts",
+        "src/searchPane.ts",
+        "src/index.ts",
+        "src/paneType.ts",
+        "src/panesType.ts",
+        "src/searchPanes.dataTables.ts",
+        "src/searchPanes.bootstrap4.ts",
+        "src/searchPanes.bootstrap.ts",
+        "src/searchPanes.foundation.ts",
+        "src/searchPanes.jqueryui.ts",
+        "src/searchPanes.semanticui.ts",
     ]
 }

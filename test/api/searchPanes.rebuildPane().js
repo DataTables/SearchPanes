@@ -57,6 +57,128 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 			table.searchPanes.rebuildPane();
 			checkTopRows('4', '11', '3');
 		});
+		it('Can still click buttons in pane after the rebuild', function() {
+			$('.dtsp-searchPane:visible:eq(1) button.dtsp-nameButton').click();
+			checkTopRows('4', '5', '3');
+		});
+
+		dt.html('basic');
+		it('Select an item in the searchPane', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+
+			$('.dtsp-searchPane:visible:eq(2) tbody tr:eq(32) td').click();
+
+			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected td:eq(0)').text()).toBe('662');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
+		});
+		it('Rebuild pane without keeping selection', function() {
+			table.searchPanes.rebuildPane();
+
+			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected').length).toBe(0);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+			expect($('#example tbody tr').length).toBe(10);
+		});
+
+		dt.html('basic');
+		it('Select an item in the searchPane', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+
+			$('.dtsp-searchPane:visible:eq(2) tbody tr:eq(32) td').click();
+
+			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected td:eq(0)').text()).toBe('662');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
+		});
+		it('Rebuild pane when one pane vanishes without keeping selection', function() {
+			table
+				.rows([1, 2, 6])
+				.remove()
+				.draw();
+
+			table.searchPanes.rebuildPane();
+
+			expect($('.dtsp-searchPane:visible:eq(2)').length).toBe(0);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+			expect($('#example tbody tr').length).toBe(10);
+		});
+
+		dt.html('basic');
+		it('Select an item in the searchPane', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+
+			$('.dtsp-searchPane:visible:eq(2) tbody tr:eq(32) td').click();
+
+			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected td:eq(0)').text()).toBe('662');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
+		});
+		it('Rebuild pane while keeping selection', function() {
+			table.searchPanes.rebuildPane(undefined, true);
+
+			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected').length).toBe(1);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
+			expect($('#example tbody tr').length).toBe(2);
+		});
+
+		dt.html('basic');
+		it('Select an item in the searchPane', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+
+			$('.dtsp-searchPane:visible:eq(2) tbody tr:eq(32) td').click();
+
+			expect($('.dtsp-searchPane:visible:eq(2) tbody tr.selected td:eq(0)').text()).toBe('662');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
+		});
+		it('Rebuild pane when one pane vanishes while keeping selection', function() {
+			table
+				.rows([1, 2, 6])
+				.remove()
+				.draw();
+
+			table.searchPanes.rebuildPane(undefined, true);
+
+			expect($('.dtsp-searchPane:visible:eq(2)').length).toBe(0);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
+			expect($('#example tbody tr').length).toBe(10);
+		});
+
+		dt.html('basic');
+		it('Select two items in the searchPane', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+
+			$('.dtsp-searchPane:visible:eq(2) tbody tr:eq(32) td').click();
+			$('.dtsp-searchPane:visible:eq(0) tbody tr:eq(15) td').click();
+
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Michael Silva');
+		});
+		it('Rebuild pane when one pane vanishes while keeping selection', function() {
+			table
+				.rows([1, 2, 6])
+				.remove()
+				.draw();
+
+			table.searchPanes.rebuildPane(undefined, true);
+
+			expect($('.dtsp-searchPane:visible:eq(2)').length).toBe(0);
+			expect($('.dtsp-searchPane:visible:eq(0) tbody tr.selected td:eq(0)').text()).toBe('Marketing Designer2');
+
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Michael Silva');
+			expect($('#example tbody tr:eq(1) td:eq(0)').text()).toBe('Unity Butler');
+			expect($('#example tbody tr').length).toBe(2);
+		});
 
 		dt.html('basic');
 		it('Table with a custom pane', function() {

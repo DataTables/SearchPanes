@@ -24,7 +24,7 @@ declare var define: {
 				$ = require('datatables.net-dt')(root, $).$;
 			}
 
-			if (! $.fn.dataTable.searchpanes) {
+			if (! $.fn.dataTable.searchPanes) {
 				require('datatables.net-searchpanes')(root, $);
 			}
 

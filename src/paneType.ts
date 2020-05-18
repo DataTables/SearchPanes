@@ -41,6 +41,7 @@ export interface IConfigPaneItem {
 	dtOpts: {[keys: string]: any}; // All dtOpts
 	header: string;
 	options: IOption[];
+	name: string;
 }
 
 export interface IDataArray {
@@ -61,6 +62,7 @@ export interface IDefaults {
 	emptyMessage: string;
 	hideCount: boolean;
 	layout: string;
+	name: string;
 	orderable: boolean;
 	orthogonal: IOrthogonal;
 	preSelect: any;
@@ -76,6 +78,7 @@ export interface IDOM {
 	dtP: JQuery<HTMLElement>;
 	lower: JQuery<HTMLElement>;
 	nameButton: JQuery<HTMLElement>;
+	panesContainer: JQuery<HTMLElement>;
 	searchButton: JQuery<HTMLElement>;
 	searchBox: JQuery<HTMLElement>;
 	searchCont: JQuery<HTMLElement>;
@@ -126,11 +129,18 @@ export interface IS {
 	filteringActive: boolean;
 	index: number;
 	indexes: IIndexes[];
+	lastCascade: boolean;
 	lastSelect: boolean;
 	listSet: boolean;
+	name: string;
 	redraw: boolean;
 	rowData: IRowData;
+	scrollTop: number;
 	searchFunction: any; // Function?
 	selectPresent: boolean;
+	serverSelect: any;
+	serverSelecting: boolean;
+	showFiltered: boolean;
+	tableLength: number;
 	updating: boolean;
 }

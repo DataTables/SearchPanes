@@ -1,5 +1,13 @@
 import * as typeInterfaces from './panesType';
-let DataTable = $.fn.dataTable;
+
+let $;
+let DataTable;
+
+export function setJQuery(jq) {
+  $ = jq;
+  DataTable = jq.fn.dataTable;
+}
+
 namespace DataTables {
 	interface IStaticFunctions {
 		select: any;
@@ -32,6 +40,7 @@ export default class SearchPanes {
 		columns: [],
 		filterChanged: undefined,
 		layout: 'columns-3',
+		order: [],
 		panes: [],
 		viewTotal: false,
 	};
@@ -79,12 +88,25 @@ export default class SearchPanes {
 			filterPane: -1,
 			panes: [],
 			selectionList: [],
+			serverData: {},
 			updating: false,
 		};
 
 		if (table.settings()[0]._searchPanes !== undefined) {
 			return;
 		}
+		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
+		// If viewTotal is not enabled then we simply update the data from the server
+		table.on('xhr', (e, settings, json, xhr) => {
+			if (json.searchPanes && json.searchPanes.options) {
+				this.s.serverData = json.searchPanes.options;
+				this.s.serverData.tableLength = json.recordsTotal;
+
+				if (this.c.viewTotal  || this.c.cascadePanes) {
+					this._serverTotals();
+				}
+			}
+		});
 
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', 'Clear All'));
@@ -144,22 +166,43 @@ export default class SearchPanes {
 		// As a rebuild from scratch is required, empty the searchpanes container.
 		let returnArray: SearchPane[] = [];
 
-		if (!maintainSelection) {
-			this.clearSelections();
-		}
-
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
+		$(this.dom.panes).empty();
 		for (let pane of this.s.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
+				$(this.dom.panes).append(pane.dom.container);
 				continue;
 			}
 
-			returnArray.push(pane.rebuildPane(maintainSelection));
+			pane.clearData();
+			returnArray.push(
+				// Pass a boolean to say whether this is the last choice made for maintaining selections when rebuilding
+				pane.rebuildPane(
+					this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
+						pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
+						false,
+					this.s.dt.page.info().serverSide ?
+						this.s.serverData :
+						undefined,
+					null,
+					maintainSelection
+				)
+			);
+			$(this.dom.panes).append(pane.dom.container);
+		}
+
+		if (this.c.cascadePanes || this.c.viewTotal) {
+			this.redrawPanes(true);
+		}
+		else {
+			this._updateSelection();
 		}
 
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
 		this._attachPaneContainer();
+
+		this.s.dt.draw();
 
 		// If a single pane has been rebuilt then return only that pane
 		if (returnArray.length === 1) {
@@ -174,11 +217,11 @@ export default class SearchPanes {
 	/**
 	 * Redraws all of the panes
 	 */
-	public redrawPanes(): void {
+	public redrawPanes(rebuild = false): void {
 		let table = this.s.dt;
 
 		// Only do this if the redraw isn't being triggered by the panes updating themselves
-		if (!this.s.updating) {
+		if (!this.s.updating && !this.s.dt.page.info().serverSide) {
 			let filterActive: boolean = true;
 			let filterPane: number = this.s.filterPane;
 
@@ -234,7 +277,7 @@ export default class SearchPanes {
 				if (this.s.selectionList.length > 0) {
 					let last = this.s.selectionList[this.s.selectionList.length - 1].index;
 					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+						pane.s.lastSelect = (pane.s.index === last);
 					}
 				}
 
@@ -276,12 +319,11 @@ export default class SearchPanes {
 				this._updateFilterCount();
 
 				// If the length of the selections are different then some of them have been removed and a deselect has occured
-				if (newSelectionList.length > 0 && newSelectionList.length < this.s.selectionList.length) {
+				if (newSelectionList.length > 0 && (newSelectionList.length < this.s.selectionList.length || rebuild)) {
 					this._cascadeRegen(newSelectionList);
 					let last = newSelectionList[newSelectionList.length - 1].index;
-
 					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last && this.s.selectionList.length === 1);
+						pane.s.lastSelect = (pane.s.index === last);
 					}
 				}
 				else if (newSelectionList.length > 0) {
@@ -295,7 +337,6 @@ export default class SearchPanes {
 								tempFilter = false;
 								paneUpdate.s.filteringActive = false;
 							}
-
 							paneUpdate.updatePane(!tempFilter ? tempFilter : filterActive);
 						}
 					}
@@ -502,11 +543,17 @@ export default class SearchPanes {
 	 */
 	private _makeCascadeSelections(newSelectionList): void {
 		// make selections in the order they were made previously, excluding those from the pane where a deselect was made
-		for (let selection of newSelectionList) {
+		for (let i = 0; i < newSelectionList.length; i++) {
 			// As the selections may have been made across the panes in a different order to the pane index we must identify
 			//  which pane has the index of the selection. This is also important for colreorder etc
 			for (let pane of this.s.panes) {
-				if (pane.s.index === selection.index && pane.s.dtPane !== undefined) {
+				if (pane.s.index === newSelectionList[i].index && pane.s.dtPane !== undefined) {
+					// When regenerating the cascade selections we need this flag so that the panes are only ignored if it
+					//  is the last selection and the pane for that selection
+					if (i === newSelectionList.length - 1) {
+						pane.s.lastCascade = true;
+					}
+
 					// if there are any selections currently in the pane then deselect them as we are about to make our new selections
 					if (pane.s.dtPane.rows({selected: true}).data().toArray().length > 0 && pane.s.dtPane !== undefined) {
 						pane.setClear(true);
@@ -515,9 +562,13 @@ export default class SearchPanes {
 					}
 
 					// select every row in the pane that was selected previously
-					for (let row of selection.rows) {
+					for (let row of newSelectionList[i].rows) {
 						pane.s.dtPane.rows().every((rowIdx) => {
-							if (pane.s.dtPane.row(rowIdx).data().filter === row.filter) {
+							if (
+								pane.s.dtPane.row(rowIdx).data() !== undefined &&
+								row !== undefined &&
+								pane.s.dtPane.row(rowIdx).data().filter === row.filter
+							) {
 								pane.s.dtPane.row(rowIdx).select();
 							}
 						});
@@ -525,6 +576,7 @@ export default class SearchPanes {
 
 					// Update the label that shows how many filters are in place
 					this._updateFilterCount();
+					pane.s.lastCascade = false;
 				}
 			}
 		}
@@ -559,6 +611,23 @@ export default class SearchPanes {
 			this.s.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
 		}
 
+		// If a custom ordering is being used
+		if (this.c.order.length > 0) {
+			// Make a new Array of panes based upon the order
+			let newPanes = this.c.order.map((name, index, values) => {
+				return this._findPane(name);
+			});
+
+			// Remove the old panes from the dom
+			this.dom.panes.empty();
+			this.s.panes = newPanes;
+
+			// Append the panes in the correct order
+			for (let pane of this.s.panes) {
+				this.dom.panes.append(pane.dom.container);
+			}
+		}
+
 		// If this internal property is true then the DataTable has been initialised already
 		if (this.s.dt.settings()[0]._bInitComplete) {
 			this._paneStartup(table);
@@ -569,6 +638,19 @@ export default class SearchPanes {
 			this.s.dt.settings()[0].aoInitComplete.push({fn: () => {
 				this._paneStartup(table);
 			}});
+		}
+	}
+
+	/**
+	 * Finds a pane based upon the name of that pane
+	 * @param name string representing the name of the pane
+	 * @returns SearchPane The pane which has that name
+	 */
+	private _findPane(name: string): SearchPane {
+		for (let pane of this.s.panes) {
+			if (name === pane.s.name) {
+				return pane;
+			}
 		}
 	}
 
@@ -589,6 +671,114 @@ export default class SearchPanes {
 	}
 
 	/**
+	 * Works out which panes to update when data is recieved from the server and viewTotal is active
+	 */
+	private _serverTotals() {
+		let selectPresent = false;
+		let deselectPresent = false;
+		let table = this.s.dt;
+		for (let pane of this.s.panes) {
+			// Identify the pane where a selection or deselection has been made and add it to the list.
+			if (pane.s.selectPresent) {
+				this.s.selectionList.push(
+					{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
+				);
+				table.state.save();
+				pane.s.selectPresent = false;
+				selectPresent = true;
+				break;
+			}
+			else if (pane.s.deselect) {
+				let selectedData = pane.s.dtPane.rows({selected: true}).data().toArray();
+				if (selectedData.length > 0) {
+					this.s.selectionList.push({index: pane.s.index, rows: selectedData, protect: true});
+				}
+				selectPresent = true;
+				deselectPresent = true;
+			}
+		}
+
+		// Build an updated list based on any selections or deselections added
+		if (!selectPresent) {
+			this.s.selectionList = [];
+		}
+		else {
+			let newSelectionList = [];
+			for (let i: number = 0; i < this.s.selectionList.length; i++) {
+				let further: boolean = false;
+
+				// Find out if this selection is the last one in the list for that pane
+				for (let j: number = i + 1; j < this.s.selectionList.length; j++) {
+					if (this.s.selectionList[j].index === this.s.selectionList[i].index) {
+						further = true;
+					}
+				}
+
+				// If there are no selections for this pane in the list then just push this one
+				if (
+					!further &&
+					this.s.panes[this.s.selectionList[i].index].s.dtPane.rows({selected: true}).data().toArray().length > 0
+				) {
+					newSelectionList.push(this.s.selectionList[i]);
+				}
+			}
+			this.s.selectionList = newSelectionList;
+		}
+
+		let initIdx = -1;
+		// If there has been a deselect and only one pane has a selection then update everything
+		if (deselectPresent && this.s.selectionList.length === 1) {
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = false;
+				pane.s.deselect = false;
+				if (pane.s.dtPane !== undefined && pane.s.dtPane.rows({selected: true}).data().toArray().length > 0) {
+					initIdx = pane.s.index;
+				}
+			}
+		}
+		// Otherwise if there are more 1 selections then find the last one and set it to not update that pane
+		else if (this.s.selectionList.length > 0) {
+			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = (pane.s.index === last);
+				pane.s.deselect = false;
+			}
+		}
+		// Otherwise if there are no selections then find where that took place and do not update to maintain scrolling
+		else if (this.s.selectionList.length === 0) {
+			for (let pane of this.s.panes) {
+				// pane.s.lastSelect = (pane.s.deselect === true);
+				pane.s.lastSelect = false;
+				pane.s.deselect = false;
+			}
+		}
+
+		$(this.dom.panes).empty();
+
+		// Rebuild the desired panes
+		for (let pane of this.s.panes) {
+			if (!pane.s.lastSelect) {
+				pane.rebuildPane(
+					undefined,
+					this.s.dt.page.info().serverSide ? this.s.serverData : undefined,
+					pane.s.index === initIdx ? true : null,
+					true
+				);
+			}
+			else {
+				pane._setListeners();
+			}
+
+			// append all of the panes and enable select
+			$(this.dom.panes).append(pane.dom.container);
+			if (pane.s.dtPane !== undefined) {
+				$(pane.s.dtPane.table().node()).parent()[0].scrollTop = pane.s.scrollTop;
+				($.fn.dataTable as any).select.init(pane.s.dtPane);
+			}
+		}
+	}
+
+	/**
 	 * Initialises the tables previous/preset selections and initialises callbacks for events
 	 * @param table the parent table for which the searchPanes are being created
 	 */
@@ -599,8 +789,41 @@ export default class SearchPanes {
 		this._attachExtras();
 		$(this.dom.container).append(this.dom.panes);
 
+		$(this.dom.panes).empty();
+
+		if (this.c.viewTotal && !this.c.cascadePanes) {
+			let loadedFilter = this.s.dt.state.loaded();
+
+			if (
+				loadedFilter !== null &&
+				loadedFilter !== undefined &&
+				loadedFilter.searchPanes !== undefined &&
+				loadedFilter.searchPanes.panes !== undefined
+			) {
+				let filterActive = false;
+				for (let pane of loadedFilter.searchPanes.panes) {
+					if (pane.selected.length > 0) {
+						filterActive = true;
+						break;
+					}
+				}
+				if (filterActive) {
+					for (let pane of this.s.panes) {
+						pane.s.showFiltered = true;
+					}
+				}
+			}
+		}
+
 		for (let pane of this.s.panes) {
-			pane.rebuildPane();
+			pane.rebuildPane(undefined, this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
+			$(this.dom.panes).append(pane.dom.container);
+		}
+
+		if (this.c.viewTotal && !this.c.cascadePanes) {
+			for (let pane of this.s.panes) {
+				pane.updatePane();
+			}
 		}
 
 		this._updateFilterCount();
@@ -609,9 +832,13 @@ export default class SearchPanes {
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('draw.dtsps', () => {
 			this._updateFilterCount();
-			if (this.c.cascadePanes || this.c.viewTotal) {
+			if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
 				this.redrawPanes();
 			}
+			else {
+				this._updateSelection();
+			}
+
 			this.s.filterPane = -1;
 		});
 
@@ -626,16 +853,45 @@ export default class SearchPanes {
 		// If the data is reloaded from the server then it is possible that it has changed completely,
 		// so we need to rebuild the panes
 		this.s.dt.on('xhr', () => {
+			let processing = false;
+
 			if (!this.s.dt.page.info().serverSide) {
 				this.s.dt.one('draw', () => {
+					if (processing) {
+						return;
+					}
+					processing = true;
+					$(this.dom.panes).empty();
+
 					for (let pane of this.s.panes) {
 						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
-						pane.rebuildPane();
+						// Pass a boolean to say whether this is the last choice made for maintaining selections when rebuilding
+						pane.rebuildPane(
+							this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
+								pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
+								false
+						);
+						$(this.dom.panes).append(pane.dom.container);
 					}
+
+					if (this.c.cascadePanes || this.c.viewTotal) {
+						this.redrawPanes();
+					}
+					else {
+						this._updateSelection();
+					}
+
 					this._checkMessage();
 				});
 			}
 		});
+
+		if (this.s.selectionList !== undefined && this.s.selectionList.length > 0) {
+			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = (pane.s.index === last);
+			}
+		}
 
 		// If cascadePanes is active then make the previous selections in the order they were previously
 		if (this.s.selectionList.length > 0 && this.c.cascadePanes) {
@@ -669,7 +925,7 @@ export default class SearchPanes {
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
 		table.on('destroy.dtsps', () => {
 			for (let pane of this.s.panes) {
-					pane.destroy();
+				pane.destroy();
 			}
 
 			table.off('.dtsps');
@@ -685,9 +941,68 @@ export default class SearchPanes {
 			});
 		}
 
+		if (this.s.dt.page.info().serverSide) {
+			table.on('preXhr.dt', (e, settings, data) => {
+				if (data.searchPanes === undefined) {
+					data.searchPanes = {};
+				}
+
+				for (let pane of this.s.panes) {
+					let src = this.s.dt.column(pane.s.index).dataSrc();
+
+					if (data.searchPanes[src] === undefined) {
+						data.searchPanes[src] = {};
+					}
+
+					if (pane.s.dtPane !== undefined) {
+						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
+
+						for (let i = 0; i < rowData.length; i++) {
+							data.searchPanes[src][i] = rowData[i].display;
+						}
+					}
+				}
+
+				if (this.c.viewTotal) {
+					this._prepViewTotal();
+				}
+			});
+		}
+
 		table.settings()[0]._searchPanes = this;
 	}
 
+	private _prepViewTotal() {
+		let filterPane: number = this.s.filterPane;
+		let filterActive: boolean = false;
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane !== undefined) {
+				let selectLength: number = pane.s.dtPane.rows({selected: true}).data().toArray().length;
+
+				// If filterPane === -1 then a pane with a selection has not been found yet, so set filterPane to that panes index
+				if (selectLength > 0 && filterPane === -1) {
+					filterPane = pane.s.index;
+					filterActive = true;
+				}
+				// Then if another pane is found with a selection then set filterPane to null to
+				//  show that multiple panes have selections present
+				else if (selectLength > 0) {
+					filterPane = null;
+				}
+			}
+		}
+
+		// Update all of the panes to reflect the current state of the filters
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane !== undefined) {
+				pane.s.filteringActive = true;
+
+				if ((filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) || filterActive === false) {
+					pane.s.filteringActive = false;
+				}
+			}
+		}
+	}
 	/**
 	 * Updates the number of filters that have been applied in the title
 	 */
@@ -708,5 +1023,20 @@ export default class SearchPanes {
 		if (this.c.filterChanged !== undefined && typeof this.c.filterChanged === 'function') {
 			this.c.filterChanged(filterCount);
 		}
+	}
+
+	/**
+	 * Updates the selectionList when cascade is not in place
+	 */
+	private _updateSelection() {
+		this.s.selectionList = [];
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane !== undefined) {
+				this.s.selectionList.push(
+					{index: pane.s.index, rows: pane.s.dtPane.rows({selected: true}).data().toArray(), protect: false}
+				);
+			}
+		}
+		this.s.dt.state.save();
 	}
 }

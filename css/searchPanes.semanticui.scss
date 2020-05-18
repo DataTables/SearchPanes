@@ -5,6 +5,7 @@ div.dtsp-panesContainer{
     border: 2px solid #f0f0f0;
     border-radius: 10px;
     margin: 5px 0;
+    font-size: 0.9em !important;   
 
     .ui.grid {
         margin: 0px !important;
@@ -24,7 +25,6 @@ div.dtsp-panesContainer{
             padding: 0px !important;
 
             div.dtsp-topRow{
-
                 div.dtsp-narrow{
                     width: 100%;
                     text-align: right;
@@ -70,7 +70,8 @@ div.dtsp-panesContainer{
 				border: 2px solid #f0f0f0;
                 border-radius: 4px;
                 padding: 0px !important;
-				&:hover{
+
+                &:hover{
 					border: 2px solid #cfcfcf;
                 }
 
@@ -101,7 +102,6 @@ div.dtsp-panesContainer{
                             width: auto;
                             min-width: 30px;
                             color: black;
-                            font-size: 0.9em;
                             padding: 0 4px;
                         }
                     }

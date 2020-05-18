@@ -1,11 +1,11 @@
-/*! SearchPanes 1.0.1
+/*! SearchPanes 1.1.0
  * 2019-2020 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     SearchPanes
  * @description Search Panes for DataTables columns
- * @version     1.0.1
+ * @version     1.1.0
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   Copyright 2019-2020 SpryMedia Ltd.
  *
@@ -27,8 +27,8 @@ declare var define: {
 	amd: string;
 };
 
-import SearchPane from './searchPane';
-import SearchPanes from './searchPanes';
+import SearchPane, {setJQuery as searchPaneJQuery} from './searchPane';
+import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -59,6 +59,10 @@ import SearchPanes from './searchPanes';
 		factory((window as any).jQuery, window, document);
 	}
 }(function($, window, document) {
+
+	searchPaneJQuery($);
+	searchPanesJQuery($);
+	
 	let DataTable = $.fn.dataTable;
 
 	($.fn as any).dataTable.SearchPanes = SearchPanes;
