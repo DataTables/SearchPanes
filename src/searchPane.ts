@@ -787,6 +787,8 @@ export default class SearchPane {
 				// Only run populatePane if the data has not been collected yet
 				if (rowData.arrayFilter.length === 0) {
 					this._populatePane(last);
+					this.s.rowData.totalOptions = 0;
+					this._detailsPane();
 
 					if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
 						// If the index is not found then no data has been added to the state for this pane,
@@ -803,8 +805,8 @@ export default class SearchPane {
 						}
 					}
 					else {
-						rowData.arrayOriginal = rowData.arrayFilter;
-						rowData.binsOriginal = rowData.bins;
+						rowData.arrayOriginal = rowData.arrayTotals;
+						rowData.binsOriginal = rowData.binsTotal;
 					}
 				}
 
@@ -825,6 +827,7 @@ export default class SearchPane {
 				// If the option viewTotal is true then find
 				// the total count for the whole table to display alongside the displayed count
 				if (this.c.viewTotal && rowData.arrayTotals.length === 0) {
+					this.s.rowData.totalOptions = 0;
 					this._detailsPane();
 				}
 				else {

@@ -997,6 +997,13 @@ export default class SearchPanes {
 				}
 			});
 		}
+		else {
+			table.on('preXhr.dt', (e, settings, data) => {
+				for (let pane of this.s.panes) {
+					pane.clearData();
+				}
+			});
+		}
 
 		table.settings()[0]._searchPanes = this;
 	}
