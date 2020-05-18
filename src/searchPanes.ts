@@ -773,8 +773,8 @@ export default class SearchPanes {
 			$(this.dom.panes).append(pane.dom.container);
 			if (pane.s.dtPane !== undefined) {
 				$(pane.s.dtPane.table().node()).parent()[0].scrollTop = pane.s.scrollTop;
+				($.fn.dataTable as any).select.init(pane.s.dtPane);
 			}
-			($.fn.dataTable as any).select.init(pane.s.dtPane);
 		}
 	}
 
