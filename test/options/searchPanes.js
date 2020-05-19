@@ -129,9 +129,8 @@ describe('searchPanes - options - searchPanes', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				columns: dt.getTestColumns(),
-				ajax: '/base/test/data/large.txt',
+				ajax: '/base/test/data/data.txt',
 				initComplete: function(settings, json) {
-					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
 					done();
 				}
 			});
@@ -140,24 +139,25 @@ describe('searchPanes - options - searchPanes', function() {
 			await dt.sleep(1000);
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 		});
-		it('... still three after row selected and an ajax reload', async function() {
-			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(0) td:eq(0)').click()
+		it('... select a row', function() {
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(0) td:eq(0)').click();
+			expect($('div.dtsp-searchPane:visible:eq(0) tr.selected span:eq(0)').text()).toBe('Accountant');
+		});
+		it('... still selected and three panes after ajax reload', async function() {
 			table.ajax.reload();
 			await dt.sleep(1000);
 
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
-
+			expect($('div.dtsp-searchPane:visible:eq(0) tr.selected span:eq(0)').text()).toBe('Accountant');
 		});
 
 		dt.html('empty');
 		it('Load a table with searchPanes', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-	
 				columns: dt.getTestColumns(),
-				ajax: '/base/test/data/large.txt',
+				ajax: '/base/test/data/data.txt',
 				initComplete: function(settings, json) {
-					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
 					done();
 				}
 			});
@@ -166,13 +166,55 @@ describe('searchPanes - options - searchPanes', function() {
 			await dt.sleep(1000);
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 		});
-		it('... still three after row selected in middle pane and an ajax reload', async function() {
-			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(1) td:eq(0)').click()
+		it('... select a row in middle pane', function() {
+			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(1) td:eq(0)').click();
+			expect($('div.dtsp-searchPane:visible:eq(1) tr.selected span:eq(0)').text()).toBe('London');
+		});
+		it('... still three after and row selected an ajax reload', async function() {
 			table.ajax.reload();
 			await dt.sleep(1000);
 
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
+			expect($('div.dtsp-searchPane:visible:eq(1) tr.selected span:eq(0)').text()).toBe('London');
+		});
 
+		let reload = false;
+
+		dt.html('empty');
+		it('Load a table with searchPanes', function(done) {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				columns: dt.getTestColumns(),
+				ajax: {
+					url: '/base/test/data/data.txt',
+					dataSrc: function(json) {
+						if (reload) {
+							json.data.splice(4, 1);
+						}
+						return json.data;
+					}
+				},
+				initComplete: function(settings, json) {
+					done();
+				}
+			});
+		});
+		it('... three panes visible', async function() {
+			await dt.sleep(1000);
+			expect($('div.dtsp-searchPane:visible').length).toBe(3);
+		});
+		it('... select a row', function() {
+			$('div.dtsp-searchPane:visible:eq(2) tbody tr:eq(9) td:eq(0)').click();
+			expect($('div.dtsp-searchPane tr.selected').length).toBe(1);
+			expect($('div.dtsp-searchPane:visible:eq(2) tr.selected span:eq(0)').text()).toBe('33');
+		});
+		it('... still three panes but no items selected after ajax reload removes line', async function() {
+			reload = true;
+			table.ajax.reload();
+			await dt.sleep(1000);
+
+			expect($('div.dtsp-searchPane:visible').length).toBe(3);
+			expect($('div.dtsp-searchPane tr.selected').length).toBe(0);
 		});
 	});
 });
