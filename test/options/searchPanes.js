@@ -78,11 +78,6 @@ describe('searchPanes - options - searchPanes', function() {
 		it('Loading message displayed if more than 500 rows', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-				language: {
-					searchPanes: {
-						emptyPanes: 'unittest'
-					}
-				},
 				columns: dt.getTestColumns(),
 				ajax: '/base/test/data/large.txt',
 				initComplete: function(settings, json) {
@@ -100,11 +95,6 @@ describe('searchPanes - options - searchPanes', function() {
 		it('Loading message displayed if more than 500 rows', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-				language: {
-					searchPanes: {
-						emptyPanes: 'unittest'
-					}
-				},
 				columns: dt.getTestColumns(),
 				ajax: '/base/test/data/large.txt',
 				initComplete: function(settings, json) {
@@ -138,11 +128,6 @@ describe('searchPanes - options - searchPanes', function() {
 		it('Load a table with searchPanes', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-				language: {
-					searchPanes: {
-						emptyPanes: 'unittest'
-					}
-				},
 				columns: dt.getTestColumns(),
 				ajax: '/base/test/data/large.txt',
 				initComplete: function(settings, json) {
@@ -157,6 +142,32 @@ describe('searchPanes - options - searchPanes', function() {
 		});
 		it('... still three after row selected and an ajax reload', async function() {
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(0) td:eq(0)').click()
+			table.ajax.reload();
+			await dt.sleep(1000);
+
+			expect($('div.dtsp-searchPane:visible').length).toBe(3);
+
+		});
+
+		dt.html('empty');
+		it('Load a table with searchPanes', function(done) {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+	
+				columns: dt.getTestColumns(),
+				ajax: '/base/test/data/large.txt',
+				initComplete: function(settings, json) {
+					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
+					done();
+				}
+			});
+		});
+		it('... three panes visible', async function() {
+			await dt.sleep(1000);
+			expect($('div.dtsp-searchPane:visible').length).toBe(3);
+		});
+		it('... still three after row selected in middle pane and an ajax reload', async function() {
+			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(1) td:eq(0)').click()
 			table.ajax.reload();
 			await dt.sleep(1000);
 
