@@ -898,7 +898,10 @@ export default class SearchPanes {
 						pane.rebuildPane(
 							this.s.selectionList[this.s.selectionList.length - 1] !== undefined ?
 								pane.s.index === this.s.selectionList[this.s.selectionList.length - 1].index :
-								false
+								false,
+							undefined,
+							undefined,
+							true
 						);
 						$(this.dom.panes).append(pane.dom.container);
 					}

@@ -1128,6 +1128,8 @@ export default class SearchPane {
 			}
 		}
 
+		this.s.dt.draw();
+
 		// Reload the selection, searchbox entry and ordering from the previous state
 		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
 			if (!this.c.cascadePanes) {
