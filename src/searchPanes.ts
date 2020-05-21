@@ -16,7 +16,7 @@ namespace DataTables {
 import SearchPane from './searchPane';
 export default class SearchPanes {
 
-	private static version = '1.0.1';
+	private static version = '1.1.1';
 
 	private static classes: typeInterfaces.IClasses = {
 		clear: 'dtsp-clear',
