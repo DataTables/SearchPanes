@@ -990,7 +990,7 @@ export default class SearchPanes {
 						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
 
 						for (let i = 0; i < rowData.length; i++) {
-							data.searchPanes[src][i] = rowData[i].display;
+							data.searchPanes[src][i] = rowData[i].filter;
 						}
 					}
 				}
