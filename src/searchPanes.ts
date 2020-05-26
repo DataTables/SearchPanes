@@ -121,6 +121,8 @@ export default class SearchPanes {
 				this._paneDeclare(table, paneSettings, opts);
 			});
 		}
+
+		return this;
 	}
 
 	/**

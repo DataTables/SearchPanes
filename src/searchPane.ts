@@ -1128,7 +1128,10 @@ export default class SearchPane {
 			}
 		}
 
-		this.s.dt.draw();
+		// Only need to trigger a search if it is not server side processing
+		if (!this.s.dt.page.info().serverSide) {
+			this.s.dt.draw();
+		}
 
 		// Reload the selection, searchbox entry and ordering from the previous state
 		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {

@@ -62,7 +62,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 
 	searchPaneJQuery($);
 	searchPanesJQuery($);
-	
+
 	let DataTable = $.fn.dataTable;
 
 	($.fn as any).dataTable.SearchPanes = SearchPanes;
