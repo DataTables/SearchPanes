@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.clearMessage</name>
+	<summary>Set the message to be displayed in the Clear button</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init languages.searchPanes.clearMessage` option to an object which can deal with internationalisation and plurals.
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init languages.searchPanes.clearMessage` parameter is `"Clear All"`.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will set the message to be displayed in the Clear button to 'Clear All'. This property allows that message to be configured.
+        ]]>
+	</description>
+
+	<example title="Change message for the Clear button"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        language: {
+            searchPanes: {
+                clearMessage: 'Obliterate Selections'
+            }
+        }
+    });
+});
+
+]]></example>
+
+</dt-option>
