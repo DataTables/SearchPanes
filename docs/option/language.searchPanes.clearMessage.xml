@@ -6,7 +6,9 @@
 
 	<type type="string">
 		<description>
-            By setting the `-init languages.searchPanes.clearMessage` option to an object which can deal with internationalisation and plurals.
+            Setting the `-init languages.searchPanes.clearMessage` option to a string of your choice allows the Clear All button to have custom text within it.
+            
+            This property is passed through an `-api i18n()` function. 
         </description>
 	</type>
 
