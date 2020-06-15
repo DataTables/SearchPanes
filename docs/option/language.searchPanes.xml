@@ -59,8 +59,9 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related type="option">language.searchPanes.dtOpts</related>
-<related type="option">language.searchPanes.hideCount</related>
-<related type="option">language.searchPanes.options</related>
+<related type="option">language.searchPanes.count</related>
+<related type="option">language.searchPanes.countFiltered</related>
+<related type="option">searchPanes.viewTotal</related>
+<related type="option">language.searchPanes.title</related>
 
 </dt-option>
