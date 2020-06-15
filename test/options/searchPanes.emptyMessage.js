@@ -14,7 +14,9 @@ describe('searchPanes - options - searchPanes.emptyMessage', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0) span.dtsp-name:eq(0)').html()).toBe('<i>No Data</i>');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
+				'<i>No Data</i>'
+			);
 		});
 		it('Refers to expected row', function() {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0)').click();
@@ -31,7 +33,9 @@ describe('searchPanes - options - searchPanes.emptyMessage', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)').html()).toBe('<i><b>EMPTY</b></i>');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
+				'<i><b>EMPTY</b></i>'
+			);
 		});
 		it('Refers to expected row', function() {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').click();

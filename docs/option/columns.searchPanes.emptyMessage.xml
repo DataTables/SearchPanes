@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.emptyMessage</name>
+	<summary>Set custom empty messages for specific panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init columns.searchPanes.emptyMessage` option to a string, any empty cells found in that column will be represented in the pane by that string.
+
+        </description>
+	</type>
+
+	<default value="&lt;/i&gt;No Data&lt;/i&gt;">
+		The default value for the `-init columns.searchPanes.emptyMessage` parameter is `\&lt;i\&gt;No Data\&lt;/i\&gt;`.
+		</default>
+	<description>
+		<![CDATA[
+		Empty cells will be represented in the panes by the option `-init columns.searchPanes.emptyMessage` for that specific column. This is useful as it's a more user-friendly way than just having a blank cell. Note, this value will over-ride the global value `-init searchPanes.emptyMessage` for this specific column.
+		]]>
+	</description>
+
+	<example title="Set the empty message for a specific column"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:true,
+        dom: 'Pfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    emptyMessage: 'Age not provided'
+                },
+                targets: [3]
+            }
+        ]
+    });
+});
+
+]]></example>
+
+</dt-option>

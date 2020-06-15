@@ -6,7 +6,7 @@
 
 	<type type="string">
 		<description>
-			By setting the `-init searchPanes.emptyMessage` option to a string, any cells found in the table will be represented in the pane by that string.
+			By setting the `-init searchPanes.emptyMessage` option to a string, any empty cells found in the table will be represented in the pane by that string.
 		</description>
 	</type>
 
