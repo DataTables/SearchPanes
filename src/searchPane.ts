@@ -701,11 +701,19 @@ export default class SearchPane {
 		}
 
 		return this.s.dtPane.row.add({
-			display: display !== '' ? display : this.c.emptyMessage,
+			display: display !== '' ?
+				display :
+				this.s.colOpts.emptyMessage !== false ?
+					this.s.colOpts.emptyMessage :
+					this.c.emptyMessage,
 			filter,
 			index,
 			shown,
-			sort: sort !== '' ? sort : this.c.emptyMessage,
+			sort: sort !== '' ?
+				sort :
+				this.s.colOpts.emptyMessage !== false ?
+					this.s.colOpts.emptyMessage :
+					this.c.emptyMessage,
 			total,
 			type,
 		});
@@ -1088,7 +1096,8 @@ export default class SearchPane {
 					}
 				}
 				else if (!this.s.dt.page.info().serverSide) {
-					this._addRow(this.c.emptyMessage, count, count, this.c.emptyMessage, this.c.emptyMessage, this.c.emptyMessage);
+					// Just pass an empty string as the message will be calculated based on that in _addRow()
+					this._addRow('', count, count, '', '', '');
 				}
 			}
 		}
@@ -1341,10 +1350,11 @@ export default class SearchPane {
 		let table = this.s.dt;
 		// We need to reset the thresholds as if they have a value in colOpts then that value will be used
 		let defaultMutator = {
+			emptyMessage: false,
 			orthogonal: {
 				threshold: null
 			},
-			threshold: null
+			threshold: null,
 		};
 		return $.extend(
 			true,
@@ -1556,7 +1566,11 @@ export default class SearchPane {
 		let updating = this.s.updating;
 		this.s.updating = true;
 		let filters = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
-		let nullIndex: number = filters.indexOf(this.c.emptyMessage);
+		let nullIndex: number = filters.indexOf(
+			this.s.colOpts.emptyMessage !== false ?
+				this.s.colOpts.emptyMessage :
+				this.c.emptyMessage
+		);
 		let container = $(this.s.dtPane.table().container());
 
 		// If null index is found then search for empty cells as a filter.
