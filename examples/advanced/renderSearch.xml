@@ -9,14 +9,14 @@ $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../resources/objects.json',
         searchPanes:{
-            columns:[2,5],
+            columns:[0,5],
 			layout: 'columns-2',
         },
 		columnDefs:[{
 			searchPanes:{
 				show: true
 			},
-			targets: [5]
+			targets: [0,5]
 		}],
 		dom: 'Pfrtip',
         columns: [
