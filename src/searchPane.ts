@@ -1170,9 +1170,12 @@ export default class SearchPane {
 		this.s.rowData.arrayTotals = [];
 		this.s.rowData.binsTotal = {};
 		let settings = this.s.dt.settings()[0];
-		table.rows().every((rowIdx) => {
-			this._populatePaneArray(rowIdx, this.s.rowData.arrayTotals, settings, this.s.rowData.binsTotal);
-		});
+		let indexArray = table.rows().indexes();
+		if (!this.s.dt.page.info().serverSide) {
+			for (let rowIdx of indexArray) {
+				this._populatePaneArray(rowIdx, this.s.rowData.arrayTotals, settings, this.s.rowData.binsTotal);
+			}
+		}
 	}
 
 	/**
