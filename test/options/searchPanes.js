@@ -75,39 +75,13 @@ describe('searchPanes - options - searchPanes', function() {
 		});
 
 		dt.html('empty');
-		it('Loading message displayed if more than 500 rows', function(done) {
+		it('Change URL and reload table - searchPanes use new data', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				columns: dt.getTestColumns(),
-				ajax: '/base/test/data/large.txt',
-				initComplete: function(settings, json) {
-					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
-					done();
-				}
+				ajax: '/base/test/data/large.txt'
 			});
-		});
-		it('... and it will be removed once table loaded', async function() {
 			await dt.sleep(1000);
-			expect($('div.dtsp-panesContainer').text()).not.toBe('Loading Search Panes...');
-		});
-
-		dt.html('empty');
-		it('Loading message displayed if more than 500 rows', function(done) {
-			table = $('#example').DataTable({
-				dom: 'Pfrtip',
-				columns: dt.getTestColumns(),
-				ajax: '/base/test/data/large.txt',
-				initComplete: function(settings, json) {
-					expect($('div.dtsp-panesContainer').text()).toBe('Loading Search Panes...');
-					done();
-				}
-			});
-		});
-		it('... and it will be removed once table loaded', async function() {
-			await dt.sleep(1000);
-			expect($('div.dtsp-panesContainer').text()).not.toBe('Loading Search Panes...');
-		});
-		it('... change URL and reload table - searchPanes use new data', async function() {
 			table.ajax.url('/base/test/data/data.txt');
 			table.ajax.reload();
 			await dt.sleep(1000);

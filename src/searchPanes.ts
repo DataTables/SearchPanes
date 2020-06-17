@@ -661,13 +661,13 @@ export default class SearchPanes {
 
 		// If this internal property is true then the DataTable has been initialised already
 		if (this.s.dt.settings()[0]._bInitComplete) {
-			this._paneStartup(table);
+			this._startup(table);
 		}
 		else {
 			// Otherwise add the paneStartup function to the list of functions that are to be run when the table is initialised
 			// This will garauntee that the panes are initialised before the init event and init Complete callback is fired
 			this.s.dt.settings()[0].aoInitComplete.push({fn: () => {
-				this._paneStartup(table);
+				this._startup(table);
 			}});
 		}
 	}
@@ -682,22 +682,6 @@ export default class SearchPanes {
 			if (name === pane.s.name) {
 				return pane;
 			}
-		}
-	}
-
-	/**
-	 * Runs the start up functions for the panes to enable listeners and populate panes
-	 * @param table the DataTable api for the parent Table
-	 */
-	private _paneStartup(table): void {
-		// Magic number of 500 is a guess at what will be fast
-		if (this.s.dt.page.info().recordsTotal <= 500) {
-			this._startup(table);
-		}
-		else {
-			setTimeout(() => {
-				this._startup(table);
-			}, 100);
 		}
 	}
 
