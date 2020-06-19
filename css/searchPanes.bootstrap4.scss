@@ -66,6 +66,11 @@ div.dtsp-searchPane {
         }
         button {
             min-width: 35px;
+            max-width: 35px;
+        }
+
+        button.clearButton {
+            padding-left: 10px;
         }
     }
     thead{
