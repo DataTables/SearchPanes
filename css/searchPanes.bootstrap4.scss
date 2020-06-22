@@ -16,6 +16,19 @@ div.dtsp-searchPanes{
     }
 }
 
+div.dtsp-columns-1,
+div.dtsp-columns-2,
+div.dtsp-columns-3,
+div.dtsp-columns-4,
+div.dtsp-columns-5,
+div.dtsp-columns-6,
+div.dtsp-columns-7,
+div.dtsp-columns-8,
+div.dtsp-columns-9 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 div.dtsp-searchPane {
     flex-direction: row;
     flex-wrap: nowrap;
@@ -67,6 +80,11 @@ div.dtsp-searchPane {
         button {
             min-width: 35px;
             max-width: 35px;
+            border: 1px solid rgb(206, 212, 218);
+        }
+
+        div.dtsp-subRow2 {
+            margin-left: 5px;
         }
 
         button.clearButton {
@@ -113,6 +131,7 @@ div.dtsp-searchPane {
                         min-width: 30px;
                         display: inline-block;
                         line-height:1;
+                        margin-top: 3.5px;
                     }
                     td.dtsp-countColumn{
                         text-align: right;
@@ -126,6 +145,7 @@ div.dtsp-searchPane {
         display: block;
         position: relative;
         padding: 18px 13px;
+        border: 1px solid rgb(206, 212, 218);
     }
 
     div.dataTables_wrapper {
