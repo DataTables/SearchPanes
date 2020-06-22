@@ -167,10 +167,12 @@ export default class SearchPanes {
 		let returnArray: SearchPane[] = [];
 
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
-		$(this.dom.panes).empty();
+		if (targetIdx === false) {
+			$(this.dom.panes).empty();
+		}
+
 		for (let pane of this.s.panes) {
 			if (targetIdx !== false && pane.s.index !== targetIdx) {
-				$(this.dom.panes).append(pane.dom.container);
 				continue;
 			}
 

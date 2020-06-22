@@ -909,7 +909,7 @@ export default class SearchPane {
 
 		// Add the container to the document in its original location
 		if (prevEl !== null && $(this.dom.panesContainer).has(prevEl).length > 0) {
-			$(this.dom.panesContainer).insertAfter(prevEl);
+			$(this.dom.container).insertAfter(prevEl);
 		}
 		else {
 			$(this.dom.panesContainer).prepend(this.dom.container);
