@@ -102,9 +102,7 @@ export default class SearchPanes {
 				this.s.serverData = json.searchPanes.options;
 				this.s.serverData.tableLength = json.recordsTotal;
 
-				if (this.c.viewTotal  || this.c.cascadePanes) {
-					this._serverTotals();
-				}
+				this._serverTotals();
 			}
 		});
 
