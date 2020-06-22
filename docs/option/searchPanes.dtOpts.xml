@@ -40,5 +40,5 @@ $(document).ready(function() {
 });
 ]]></example>
 
-<related type="option">columns.searchPane.dtOpts</related>
+<related type="option">columns.searchPanes.dtOpts</related>
 </dt-option>
