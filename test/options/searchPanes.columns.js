@@ -1,4 +1,4 @@
-describe('searchPanes - options - columns.searchPanes.show', function() {
+describe('searchPanes - options - searchPanes.columns', function() {
 	let table;
 
 	dt.libs({
