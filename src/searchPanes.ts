@@ -917,25 +917,29 @@ export default class SearchPanes {
 		}
 
 		// PreSelect any selections which have been defined using the preSelect option
-		table
-		.columns(this.c.columns.length > 0 ? this.c.columns : undefined)
-		.eq(0)
-		.each((idx) => {
+		for (let pane of this.s.panes) {
 			if (
-				this.s.panes[idx] !== undefined &&
-				this.s.panes[idx].s.dtPane !== undefined &&
-				this.s.panes[idx].s.colOpts.preSelect !== undefined
+				pane !== undefined &&
+				pane.s.dtPane !== undefined &&
+				(pane.s.colOpts.preSelect !== undefined || pane.customPaneSettings.preSelect !== undefined)
 			) {
-				let tableLength = this.s.panes[idx].s.dtPane.rows().data().toArray().length;
+				let tableLength = pane.s.dtPane.rows().data().toArray().length;
 
 				for (let i: number = 0; i < tableLength; i++) {
-					if (this.s.panes[idx].s.colOpts.preSelect.indexOf(this.s.panes[idx].s.dtPane.cell(i, 0).data()) !== -1) {
-						this.s.panes[idx].s.dtPane.row(i).select();
-						this.s.panes[idx].updateTable();
+					if (
+						pane.s.colOpts.preSelect.indexOf(pane.s.dtPane.cell(i, 0).data()) !== -1 ||
+						(
+							pane.customPaneSettings !== null &&
+							pane.customPaneSettings.preSelect !== undefined &&
+							pane.customPaneSettings.preSelect.indexOf(pane.s.dtPane.cell(i, 0).data()) !== -1
+						)
+					) {
+						pane.s.dtPane.row(i).select();
+						pane.updateTable();
 					}
 				}
 			}
-		});
+		}
 
 		// Update the title bar to show how many filters have been selected
 		this._updateFilterCount();

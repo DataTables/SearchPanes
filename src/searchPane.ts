@@ -1102,13 +1102,13 @@ export default class SearchPane {
 			}
 		}
 
+		(DataTable as any).select.init(this.s.dtPane);
+
 		// If there are custom options set or it is a custom pane then get them
 		if (colOpts.options !== undefined ||
 			(this.customPaneSettings !== null && this.customPaneSettings.options !== undefined)) {
 				this._getComparisonRows();
 		}
-
-		(DataTable as any).select.init(this.s.dtPane);
 
 		// Display the pane
 		this.s.dtPane.draw();
@@ -1339,6 +1339,14 @@ export default class SearchPane {
 					comparisonObj.sort,
 					comparisonObj.type
 				));
+
+				if (
+					this.customPaneSettings !== null &&
+					this.customPaneSettings.preSelect !== undefined &&
+					this.customPaneSettings.preSelect.indexOf(comparisonObj.display) !== -1
+				) {
+					rows[rows.length - 1].select();
+				}
 			}
 		}
 

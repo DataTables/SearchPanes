@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.preSelect</name>
+	<summary>Define any preSelections for the custom panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="Array">
+		<description>
+            The `-init searchPanes.panes.preSelect` array allows custom options to be preSelected for Custom Panes. The array is to be populated with strings that match the `-init searchPanes.panes.options.label` string.
+        </description>
+	</type>
+
+	<default value="Undefined">
+        The default value of `-init searchPanes.panes.preSelect` is undefined as by default there should be no preSelected options.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, Custom panes have no preSelected options.
+
+        Setting `-init searchPanes.panes.preSelect` to contain strings that match the value of an options `-init searchPanes.panes.options.label` will allow SearchPanes to select that option for preSelection.
+        ]]>
+	</description>
+
+	<example title="PreSelect 'Over 50' custom pane option"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            panes: [
+                {
+                    header:'Age Range',
+                    options:[
+                        {
+                            label:'Over 50',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] > 50;
+                            }
+                        },
+                        {
+                            label:'Under 50',
+                            value: function(rowData, rowIdx){
+                                return rowData[3] < 50;
+                            }
+                        }
+                    ],
+                    preSelect: ['Over 50']
+                }
+            ]
+        },
+        dom: 'Pfrtip',
+    });
+});
+
+]]></example>
+
+<related type="option">searchPanes.panes.options.label</related>
+<related type="option">searchPanes.panes.options.value</related>
+
+</dt-option>

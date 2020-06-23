@@ -42,6 +42,7 @@ export interface IConfigPaneItem {
 	header: string;
 	options: IOption[];
 	name: string;
+	preSelect: string[];
 }
 
 export interface IDataArray {
