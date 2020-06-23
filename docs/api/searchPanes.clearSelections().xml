@@ -13,7 +13,7 @@
 	<description>
 		This method provides the ability to clear all of the selections that have been made in the panes should a change occur on the associated DataTable.
 
-		`-init searchPanes.clearSelections()` takes no argument -  all selections are cleared in every pane.
+		`-api searchPanes.clearSelections()` takes no argument -  all selections are cleared in every pane.
 
 	</description>
 
