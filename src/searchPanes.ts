@@ -845,7 +845,7 @@ export default class SearchPanes {
 		this._checkMessage();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
-		table.on('draw.dtsps', () => {
+		table.on('preDraw.dtsps', () => {
 			this._updateFilterCount();
 			if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
 				this.redrawPanes();
@@ -871,7 +871,7 @@ export default class SearchPanes {
 			let processing = false;
 
 			if (!this.s.dt.page.info().serverSide) {
-				this.s.dt.one('draw', () => {
+				this.s.dt.one('preDraw', () => {
 					if (processing) {
 						return;
 					}
