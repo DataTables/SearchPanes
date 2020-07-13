@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-button library="Select">
+<dt-button library="SearchPanes">
 	<name>button.searchPanes</name>
 	<summary>Button that is enabled when SearchPanes is to be used through a button</summary>
 	<since>1.1.0</since>
@@ -18,11 +18,11 @@
 			Initialises the SearchPanes.
 		</parameter>
 		<parameter name="action" value="function">
-            Displays the SearchPanes floating above the table with focus on them.
-        </parameter>
-        <parameter name="config" value="object">
-            Sets the config for SearchPanes in the same way as normal for the SearchPanes config.
-        </parameter>
+			Displays the SearchPanes floating above the table with focus on them.
+		</parameter>
+		<parameter name="config" value="object">
+			Sets the config for SearchPanes in the same way as normal for the SearchPanes config.
+		</parameter>
 	</defaults>
 
 	<example title="SearchPanes Button initialisation: Set the config for SearchPanes to enable the `-init cascadePanes` option"><![CDATA[
