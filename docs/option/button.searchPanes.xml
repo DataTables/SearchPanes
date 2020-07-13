@@ -27,15 +27,15 @@
 
 	<example title="SearchPanes Button initialisation: Set the config for SearchPanes to enable the `-init cascadePanes` option"><![CDATA[
 $('#example').DataTable( {
-        buttons:[
-            {
-                extend: 'searchPanes',
-                config: {
-                    cascadePanes: true
-                }
-            }
-        ],
-        dom: 'Bfrtip',
-    });
+		buttons:[
+			{
+				extend: 'searchPanes',
+				config: {
+					cascadePanes: true
+				}
+			}
+		],
+		dom: 'Bfrtip',
+	});
 ]]></example>
 </dt-button>
