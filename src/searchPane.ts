@@ -1358,14 +1358,6 @@ export default class SearchPane {
 					comparisonObj.type,
 					comparisonObj.className
 				));
-
-				if (
-					this.customPaneSettings !== null &&
-					this.customPaneSettings.preSelect !== undefined &&
-					this.customPaneSettings.preSelect.indexOf(comparisonObj.display) !== -1
-				) {
-					rows[rows.length - 1].select();
-				}
 			}
 		}
 
