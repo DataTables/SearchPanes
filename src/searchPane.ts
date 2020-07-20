@@ -686,7 +686,15 @@ export default class SearchPane {
 	 * @param sort the value to be sorted in the pane table
 	 * @param type the value of which the type is to be derived from
 	 */
-	private _addRow(display, filter, shown: number, total: number | string, sort, type): any {
+	private _addRow(
+		display,
+		filter,
+		shown: number,
+		total: number | string,
+		sort,
+		type,
+		className?: string
+	): any {
 		let index: number;
 
 		for (let entry of this.s.indexes) {
@@ -701,6 +709,7 @@ export default class SearchPane {
 		}
 
 		return this.s.dtPane.row.add({
+			className,
 			display: display !== '' ?
 				display :
 				this.s.colOpts.emptyMessage !== false ?
@@ -997,6 +1006,13 @@ export default class SearchPane {
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
+			this.s.colOpts.options !== undefined
+			? {
+				createdRow(row, data, dataIndex) {
+					$(row).addClass(data.className);
+				}
+			}
+			: undefined,
 			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
 			? this.customPaneSettings.dtOpts
 			: {}
@@ -1299,6 +1315,7 @@ export default class SearchPane {
 			// Initialise the object which is to be placed in the row
 			let insert: string = comp.label !== '' ? comp.label : this.c.emptyMessage;
 			let comparisonObj = {
+				className: comp.className,
 				display: insert,
 				filter: typeof comp.value === 'function' ? comp.value : [],
 				shown: 0,
@@ -1338,7 +1355,8 @@ export default class SearchPane {
 					comparisonObj.shown,
 					comparisonObj.total,
 					comparisonObj.sort,
-					comparisonObj.type
+					comparisonObj.type,
+					comparisonObj.className
 				));
 
 				if (
