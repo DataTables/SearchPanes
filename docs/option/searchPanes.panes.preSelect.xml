@@ -18,6 +18,8 @@
         As standard, Custom panes have no preSelected options.
 
         Setting `-init searchPanes.panes.preSelect` to contain strings that match the value of an options `-init searchPanes.panes.options.label` will allow SearchPanes to select that option for preSelection.
+
+        Note: `-init searchPanes.panes.preSelect` is not supported with `-init searchPanes.cascadePanes`. This is because in order to have the cascade operate as expected the selections need to be made in the correct order. Currently it is not possible to indicate this with preSelect.
         ]]>
 	</description>
 

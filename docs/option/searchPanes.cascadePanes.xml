@@ -18,6 +18,8 @@
 			As standard, SearchPanes will display all of the options for that column throughout its operation. When `-init searchPanes.cascadePanes` is set to `true`, the panes will remove options which are no longer present in the currently displayed DataTable. The cascade action will occur when a selection or a deselection is made in one of the panes.
 
 			This is useful when dealing with large data sets with many different options as they are narrowed down accordingly as selections proceed.
+
+			Note: `-init searchPanes.cascadePanes` is not supported with `-init searchPanes.preSelect`. This is because in order to have the cascade operate as expected the selections need to be made in the correct order. Currently it is not possible to indicate this with preSelect.
 		]]>
 	</description>
 
