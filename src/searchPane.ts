@@ -1006,7 +1006,7 @@ export default class SearchPane {
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
-			this.s.colOpts.options !== undefined
+			(this.s.colOpts.options !== undefined || !this.colExists)
 			? {
 				createdRow(row, data, dataIndex) {
 					$(row).addClass(data.className);
