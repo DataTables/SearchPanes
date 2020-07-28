@@ -1749,8 +1749,8 @@ export default class SearchPane {
 					0,
 					this.c.viewTotal
 						? selectedEl.total
-						: 0, selectedEl.filter,
-					selectedEl.filter
+						: 0, selectedEl.display,
+					selectedEl.display
 				);
 				this.s.updating = true;
 				row.select();
