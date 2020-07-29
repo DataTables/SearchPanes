@@ -189,6 +189,24 @@ div.dtsp-panesContainer {
 						padding: 0 4px;
 					}
 				}
+				div.dtsp-nameCont {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					justify-content: flex-start;
+					align-content: flex-start;
+					align-items: flex-start;
+					width: 100%;
+
+					span.dtsp-name {
+						flex-grow: 1;
+						flex-shrink: 0;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						max-width: 80%;
+						min-width: 0;
+					}
+				}
 
 				span.dtsp-pill {
 					float: right;

@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('#example td').eq(2).html('Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.');
     $('#example').DataTable( {
         searchPanes:{
-            dataLength: 15,
+            dataLength: false,
         },    
         dom: 'Pfrtip',
     });

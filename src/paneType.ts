@@ -14,6 +14,7 @@ export interface IClasses {
 	layout: string;
 	name: string;
 	nameButton: string;
+	nameCont: string;
 	narrow: string;
 	narrowButton?: string;
 	narrowSearch?: string;
