@@ -6,8 +6,17 @@
 
 	<type type="string">
 		<description>
-            The `-init searchPanes.panes.value` is the string that will be displayed to the user for the custom option in the pane.
+            If `-init searchPanes.panes.options.value` is a string then it will be used to decide whether to include rows in the results by directly comparing against the data in the table.
         </description>
+	</type>
+
+    <type type="function">
+		<description>
+            If `-init searchPanes.panes.options.value` is a function then this function will be used to decide whether a row is to be included or not. It returns a boolean value indicating this. The context of the function is the parent table. The data for the row is also provided so that the function is able to make an informed decision.
+        </description>
+        <parameter name="rowData" type="array">The data for the row that is being compared.</parameter>
+        <parameter name="rowIdx" type="number">The index of where the row that is being compared lies in the DataTable.</parameter>
+        <returns type="boolean">Boolean indicating whether the row should be included in the results or not.</returns>
 	</type>
 
 	<default value="Undefined">
@@ -15,13 +24,15 @@
     </default>
 	<description>
 		<![CDATA[
-			As standard, the value of the `value` is undefined.
+As standard, the value of the `value` is undefined.
 
-			Setting `-init searchPanes.panes.options.value` to be a function allows searchPanes to use that function to search for results from the DataTable. Returning `true` from the function will include that row in the results, conversely `false` will exclude the row.
+`-init searchPanes.panes.options.value` can be either a string or a function. If it is a string then a straight `===` comparison will be performed between it and the data in the table. It is worth noting that this cannot be the case for completely custom panes with no column attached to them as SearchPanes does not know what to compare it to. In this case SearchPanes must use a function.
 
-			Having the `value` property as a function means that comparisons can be made at a variety of different levels of complexity, all completely open to the developers needs.
+Setting `-init searchPanes.panes.options.value` to be a function allows searchPanes to use that function to search for results from the DataTable. The data from the row and the row index are passed into this function. The context is the parent DataTable. The internals of the function are down to the behaviour that you wish to create. Returning `true` from the function will include that row in the results, conversely `false` will exclude the row.
 
-			The example below shows a very simple function which compares data from multiple columns.
+Having the `value` property as a function means that comparisons can be made at a variety of different levels of complexity, all completely open to the developers needs.
+
+The example below shows a very simple function which compares data from multiple columns.
 		]]>
 	</description>
 
