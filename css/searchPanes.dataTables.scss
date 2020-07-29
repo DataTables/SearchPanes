@@ -171,6 +171,11 @@ div.dtsp-panesContainer {
 			}
 		
 			div.dataTables_scrollBody {
+
+				table {
+					table-layout: fixed;
+				}
+
 				border-bottom: none;
 
 				td.dtsp-countColumn {
@@ -189,36 +194,34 @@ div.dtsp-panesContainer {
 						padding: 0 4px;
 					}
 				}
+
+				td.dtsp-nameColumn {
+					width: 100% !important;
+				}
+
 				div.dtsp-nameCont {
-					display: flex;
-					flex-direction: row;
-					flex-wrap: wrap;
-					justify-content: flex-start;
-					align-content: flex-start;
-					align-items: flex-start;
 					width: 100%;
 
 					span.dtsp-name {
-						flex-grow: 1;
-						flex-shrink: 0;
 						text-overflow: ellipsis;
 						overflow: hidden;
-						max-width: 80%;
-						min-width: 0;
+						display: inline-block;
+						width: calc(100% - 42px);
+						vertical-align: middle;
 					}
-				}
-
-				span.dtsp-pill {
-					float: right;
-					background-color: #cfcfcf;
-					text-align: center;
-					border: 1px solid #cfcfcf;
-					border-radius: 10px;
-					width: auto;
-					min-width: 30px;
-					color: black;
-					font-size: 0.9em;
-					padding: 0 4px;
+				
+					span.dtsp-pill {
+						display: inline-block;
+						background-color: #cfcfcf;
+						text-align: center;
+						border: 1px solid #cfcfcf;
+						border-radius: 10px;
+						width: auto;
+						min-width: 30px;
+						color: black;
+						font-size: 0.9em;
+						padding: 0 4px;
+					}
 				}
 			}
 		

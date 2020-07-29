@@ -63,7 +63,6 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             layout: 'columns-1',
-            dataLength: 20
         },
         responsive: true,
         dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',

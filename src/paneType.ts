@@ -59,7 +59,6 @@ export interface IDefaults {
 	combiner: string;
 	container: (dt: any) => HTMLElement; // Function?
 	controls: boolean;
-	dataLength: number;
 	dtOpts: {[keys: string]: any}; // All dtOpts
 	emptyMessage: string;
 	hideCount: boolean;

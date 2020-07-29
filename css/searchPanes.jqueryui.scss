@@ -170,18 +170,40 @@ div.dtsp-panesContainer {
 					text-align: right;					
 				}
 
-				span.dtsp-pill {
-					float: right;
-					background-color: #cfcfcf;
-					text-align: center;
-					border: 1px solid #cfcfcf;
-					border-radius: 10px;
-					width: auto;
-					display: inline-block;
-					min-width: 30px;
-					color: black;
-					font-size: 0.9em;
-					padding: 0 4px;
+				table{
+					table-layout: fixed;
+					tbody{
+						tr{
+							td.dtsp-nameColumn {
+								width: 100% !important;
+							}
+		
+							div.dtsp-nameCont {
+								width: 100%;
+			
+								span.dtsp-name {
+									text-overflow: ellipsis;
+									overflow: hidden;
+									display: inline-block;
+									width: calc(100% - 40px);
+									vertical-align: middle;
+								}
+
+								span.dtsp-pill {
+									background-color: #cfcfcf;
+									text-align: center;
+									border: 1px solid #cfcfcf;
+									border-radius: 10px;
+									width: auto;
+									display: inline-block;
+									min-width: 30px;
+									color: black;
+									font-size: 0.9em;
+									padding: 0 4px;
+								}
+							}
+						}
+					}
 				}
 			}
 		

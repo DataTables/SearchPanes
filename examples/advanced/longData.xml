@@ -9,9 +9,6 @@
 $(document).ready(function() {
     $('#example td').eq(2).html('Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.');
     $('#example').DataTable( {
-        searchPanes:{
-            dataLength: false,
-        },    
         dom: 'Pfrtip',
     });
 });
@@ -25,9 +22,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates how to define the maximum number of characters to display for each search option in the searchPanes with `-init searchPanes.dataLength`.
-
-The default for `-init searchPanes.dataLength` is `30`.
+This example demonstrates how SearchPanes behaves when there is long data within a pane. SearchPanes will automatically truncate the string that is displayed with an ellipsis.
 
 ]]></info>
 
