@@ -1072,9 +1072,9 @@ export default class SearchPane {
 						rowData.arrayFilter[i].type
 					);
 
-					if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
-						row.select();
-					}
+					// if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
+					// 	row.select();
+					// }
 
 					for (let option of this.s.serverSelect) {
 						if (option.filter === rowData.arrayFilter[i].filter) {
@@ -1098,10 +1098,6 @@ export default class SearchPane {
 						rowData.arrayFilter[i].sort,
 						rowData.arrayFilter[i].type
 					);
-
-					if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
-						row.select();
-					}
 				}
 				else if (!this.s.dt.page.info().serverSide) {
 					// Just pass an empty string as the message will be calculated based on that in _addRow()
