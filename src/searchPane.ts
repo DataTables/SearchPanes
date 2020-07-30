@@ -1072,10 +1072,6 @@ export default class SearchPane {
 						rowData.arrayFilter[i].type
 					);
 
-					// if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
-					// 	row.select();
-					// }
-
 					for (let option of this.s.serverSelect) {
 						if (option.filter === rowData.arrayFilter[i].filter) {
 							this.s.serverSelecting = true;
@@ -1090,7 +1086,7 @@ export default class SearchPane {
 					rowData.arrayFilter[i] &&
 					(rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)
 				) {
-					let row = this._addRow(
+					this._addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
 						rowData.bins[rowData.arrayFilter[i].filter],
