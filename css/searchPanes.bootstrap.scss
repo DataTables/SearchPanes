@@ -76,15 +76,33 @@ div.dtsp-searchPane {
         }
         
         table{
+            table-layout: fixed;
+
             tbody{
                 tr{
-                    height: 20px;
-                    span.badge{
-                        float: right;
-                        min-width: 30px;
-                        display: inline-block;
-                        line-height:1;
+                    td.dtsp-nameColumn {
+                        width: 100% !important;
                     }
+
+                    div.dtsp-nameCont {
+                        width: 100%;
+    
+                        span.dtsp-name {
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            display: inline-block;
+                            width: calc(100% - 30px);
+                            vertical-align: middle;
+                        }
+                    
+                        span.badge{
+                            min-width: 30px;
+                            display: inline-block;
+                            line-height:1;
+                        }
+                        
+                    }
+                    height: 20px;
                     td.dtsp-countColumn{
                         text-align: right;
                     }

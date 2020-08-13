@@ -27,6 +27,7 @@ export default class SearchPane {
 		layout: 'dtsp-',
 		name: 'dtsp-name',
 		nameButton: 'dtsp-nameButton',
+		nameCont: 'dtsp-nameCont',
 		narrow: 'dtsp-narrow',
 		paneButton: 'dtsp-paneButton',
 		paneInputButton: 'dtsp-paneInputButton',
@@ -53,7 +54,6 @@ export default class SearchPane {
 		container(dt) {
 			return dt.table().container();
 		},
-		dataLength: 30,
 		dtOpts: {},
 		emptyMessage: '<i>No Data</i>',
 		hideCount: false,
@@ -686,7 +686,15 @@ export default class SearchPane {
 	 * @param sort the value to be sorted in the pane table
 	 * @param type the value of which the type is to be derived from
 	 */
-	private _addRow(display, filter, shown: number, total: number | string, sort, type): any {
+	private _addRow(
+		display,
+		filter,
+		shown: number,
+		total: number | string,
+		sort,
+		type,
+		className?: string
+	): any {
 		let index: number;
 
 		for (let entry of this.s.indexes) {
@@ -701,6 +709,7 @@ export default class SearchPane {
 		}
 
 		return this.s.dtPane.row.add({
+			className,
 			display: display !== '' ?
 				display :
 				this.s.colOpts.emptyMessage !== false ?
@@ -950,27 +959,17 @@ export default class SearchPane {
 
 							// We are displaying the count in the same columne as the name of the search option.
 							// This is so that there is not need to call columns.adjust(), which in turn speeds up the code
-							let displayMessage: string = '';
 							let pill: string = '<span class="' + this.classes.pill + '">' + message + '</span>';
 
 							if (this.c.hideCount || colOpts.hideCount) {
 								pill = '';
 							}
 
-							if (!this.c.dataLength) {
-								displayMessage = '<span class="' + this.classes.name + '">' + data + '</span>' + pill;
-							}
-							else if (data !== null && data.length > this.c.dataLength) {
-								displayMessage = '<span title="' + data + '" class="' + this.classes.name + '">'
-												+ data.substr(0, this.c.dataLength) + '...'
-												+ '</span>'
-												+ pill;
-							}
-							else {
-								displayMessage = '<span class="' + this.classes.name + '">' + data  + '</span>' + pill;
-							}
-
-							return displayMessage;
+							return '<div class="' + this.classes.nameCont + '"><span title="' +
+								data +
+								'" class="' + this.classes.name + '">' +
+								data  + '</span>' +
+								pill + '</div>';
 						},
 						targets: 0,
 						// Accessing the private datatables property to set type based on the original table.
@@ -989,13 +988,22 @@ export default class SearchPane {
 				deferRender: true,
 				dom: 't',
 				info: false,
+				language: this.s.dt.settings()[0].oLanguage,
 				paging: haveScroller ? true : false,
+				scrollX: false,
 				scrollY: '200px',
 				scroller: haveScroller ? true : false,
 				select: true,
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
+			(this.s.colOpts.options !== undefined || !this.colExists)
+			? {
+				createdRow(row, data, dataIndex) {
+					$(row).addClass(data.className);
+				}
+			}
+			: undefined,
 			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
 			? this.customPaneSettings.dtOpts
 			: {}
@@ -1064,10 +1072,6 @@ export default class SearchPane {
 						rowData.arrayFilter[i].type
 					);
 
-					if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
-						row.select();
-					}
-
 					for (let option of this.s.serverSelect) {
 						if (option.filter === rowData.arrayFilter[i].filter) {
 							this.s.serverSelecting = true;
@@ -1082,7 +1086,7 @@ export default class SearchPane {
 					rowData.arrayFilter[i] &&
 					(rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)
 				) {
-					let row = this._addRow(
+					this._addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
 						rowData.bins[rowData.arrayFilter[i].filter],
@@ -1090,10 +1094,6 @@ export default class SearchPane {
 						rowData.arrayFilter[i].sort,
 						rowData.arrayFilter[i].type
 					);
-
-					if (colOpts.preSelect !== undefined && colOpts.preSelect.indexOf(rowData.arrayFilter[i].filter) !== -1) {
-						row.select();
-					}
 				}
 				else if (!this.s.dt.page.info().serverSide) {
 					// Just pass an empty string as the message will be calculated based on that in _addRow()
@@ -1298,6 +1298,7 @@ export default class SearchPane {
 			// Initialise the object which is to be placed in the row
 			let insert: string = comp.label !== '' ? comp.label : this.c.emptyMessage;
 			let comparisonObj = {
+				className: comp.className,
 				display: insert,
 				filter: typeof comp.value === 'function' ? comp.value : [],
 				shown: 0,
@@ -1337,16 +1338,9 @@ export default class SearchPane {
 					comparisonObj.shown,
 					comparisonObj.total,
 					comparisonObj.sort,
-					comparisonObj.type
+					comparisonObj.type,
+					comparisonObj.className
 				));
-
-				if (
-					this.customPaneSettings !== null &&
-					this.customPaneSettings.preSelect !== undefined &&
-					this.customPaneSettings.preSelect.indexOf(comparisonObj.display) !== -1
-				) {
-					rows[rows.length - 1].select();
-				}
 			}
 		}
 
@@ -1738,8 +1732,8 @@ export default class SearchPane {
 					0,
 					this.c.viewTotal
 						? selectedEl.total
-						: 0, selectedEl.filter,
-					selectedEl.filter
+						: 0, selectedEl.display,
+					selectedEl.display
 				);
 				this.s.updating = true;
 				row.select();

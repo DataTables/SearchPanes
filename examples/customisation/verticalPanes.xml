@@ -25,6 +25,10 @@ div.dtsp-verticalContainer div.dtsp-verticalPanes{
     flex-basis: 26%;
 }
 
+div.dtsp-verticalPanes {
+    margin-right: 20px;
+}
+
 div.dtsp-title {
     margin-right: 0px !important;
     margin-top: 13px !important;
@@ -59,8 +63,8 @@ $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
             layout: 'columns-1',
-            dataLength: 20
         },
+        responsive: true,
         dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',
         pageLength: 20
     });

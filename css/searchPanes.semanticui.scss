@@ -85,6 +85,7 @@ div.dtsp-panesContainer{
 
                 table{
                     border-collapse: collapse;
+                    table-layout: fixed;
                     tr{
                         td{
                             border-top: 0px solid transparent;
@@ -93,16 +94,32 @@ div.dtsp-panesContainer{
                             text-align: right;
                         }
 
-                        span.dtsp-pill {
-                            float: right;
-                            background-color: #cfcfcf;
-                            text-align: center;
-                            border: 1px solid #cfcfcf;
-                            border-radius: 10px;
-                            width: auto;
-                            min-width: 30px;
-                            color: black;
-                            padding: 0 4px;
+                        td.dtsp-nameColumn {
+                            width: 100% !important;
+                        }
+    
+                        div.dtsp-nameCont {
+                            width: 100%;
+        
+                            span.dtsp-name {
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                display: inline-block;
+                                width: calc(100% - 30px);
+                                vertical-align: middle;
+                            }
+
+                            span.dtsp-pill {
+                                display: inline-block;
+                                background-color: #cfcfcf;
+                                text-align: center;
+                                border: 1px solid #cfcfcf;
+                                border-radius: 10px;
+                                width: auto;
+                                min-width: 30px;
+                                color: black;
+                                padding: 0 4px;
+                            }
                         }
                     }
                 }

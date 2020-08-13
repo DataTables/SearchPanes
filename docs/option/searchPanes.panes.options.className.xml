@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>searchPanes.panes.options</name>
-	<summary>Define the options for custom panes</summary>
+	<name>searchPanes.panes.options.className</name>
+	<summary>Define the class to be added to the row for an option of a custom pane</summary>
 	<since>SearchPanes 1.0.0</since>
 
-	<type type="Array">
+	<type type="string">
 		<description>
-            The `-init searchPanes.panes.options` array allows custom options to be declared for Custom Panes.
+            The `-init searchPanes.panes.className` is the class that will be added to the row for the custom option in the pane.
         </description>
 	</type>
 
 	<default value="Undefined">
-        The default value of `-init searchPanes.panes.options` is undefined as custom panes must be externally defined.
+        The default value of `-init searchPanes.panes.options.className` is undefined.
     </default>
 	<description>
 		<![CDATA[
-        As standard, Custom panes have no options.
+        As standard, the value of the `className` is undefined.
 
-        Setting `-init searchPanes.panes.options` to contain objects made up of both `-init searchPanes.panes.options.label` and `-init searchPanes.panes.options.value` will allow options to be defined within the custom panes. The `label` option is what will be displayed to the user and the `value` option is a function that will be used to search the DataTable.
+        Setting `-init searchPanes.panes.options.className` to a string value will set the class of the row for the option in the custom pane. This is particularly useful for adding custom styling to a specific row. 
         ]]>
 	</description>
 
@@ -34,7 +34,7 @@ $(document).ready(function() {
                             value: function(rowData, rowIdx){
                                 return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
                             },
-                            className: 'tokyo'
+                            className: 'tokyo
                         }
                     ]
                 }
@@ -46,7 +46,6 @@ $(document).ready(function() {
 
 ]]></example>
 
-<related type="option">searchPanes.panes.options.label</related>
 <related type="option">columns.searchPanes.options.label</related>
 <related type="option">searchPanes.panes.options.value</related>
 <related type="option">columns.searchPanes.options.value</related>

@@ -16,6 +16,8 @@
 	<description>
 		<![CDATA[
         As standard, SearchPanes will use OR logic when multiple selections have been made. However at times it may be desirable to implement AND logic instead, for example to eliminate rows from the dataset. 
+
+        Note: When using `-init columns.searchPanes.combiner` along with `-init searchPanes.cascadePanes` you must make sure that your data is appropriate for the selection that you make. `-init searchPanes.cascadePanes` was developed with the default `or` logic in mind, using `and` logic will work in the majority of cases, but may yield some unexpected results when deselecting in a _very_ small amount of cases.
         ]]>
 	</description>
 

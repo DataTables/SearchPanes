@@ -17,7 +17,8 @@ $(document).ready(function() {
                             label:'Accountants from Tokyo',
                             value: function(rowData, rowIdx){
                                 return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                            }
+                            },
+                            className: 'tokyo'
                         }
                     ],
                     dtOpts:{

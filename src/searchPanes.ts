@@ -904,18 +904,6 @@ export default class SearchPanes {
 			}
 		});
 
-		if (this.s.selectionList !== undefined && this.s.selectionList.length > 0) {
-			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
-			for (let pane of this.s.panes) {
-				pane.s.lastSelect = (pane.s.index === last);
-			}
-		}
-
-		// If cascadePanes is active then make the previous selections in the order they were previously
-		if (this.s.selectionList.length > 0 && this.c.cascadePanes) {
-			this._cascadeRegen(this.s.selectionList);
-		}
-
 		// PreSelect any selections which have been defined using the preSelect option
 		for (let pane of this.s.panes) {
 			if (
@@ -935,10 +923,22 @@ export default class SearchPanes {
 						)
 					) {
 						pane.s.dtPane.row(i).select();
-						pane.updateTable();
 					}
 				}
+				pane.updateTable();
 			}
+		}
+
+		if (this.s.selectionList !== undefined && this.s.selectionList.length > 0) {
+			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
+			for (let pane of this.s.panes) {
+				pane.s.lastSelect = (pane.s.index === last);
+			}
+		}
+
+		// If cascadePanes is active then make the previous selections in the order they were previously
+		if (this.s.selectionList.length > 0 && this.c.cascadePanes) {
+			this._cascadeRegen(this.s.selectionList);
 		}
 
 		// Update the title bar to show how many filters have been selected

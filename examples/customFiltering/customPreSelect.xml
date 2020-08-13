@@ -49,6 +49,8 @@ Technically this is also possible to do with a custom function in any of the aut
 
 The `-init searchPanes.panes` config option holds an object for each custom Pane.
 
+Note: `-init searchPanes.panes.preSelect` is not supported with `-init searchPanes.cascadePanes`. This is because in order to have the cascade operate as expected the selections need to be made in the correct order. Currently it is not possible to indicate this with preSelect.
+
 ]]></info>
 
 </dt-example>

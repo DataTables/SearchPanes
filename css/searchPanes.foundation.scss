@@ -168,14 +168,37 @@ div.dtsp-searchPane{
 		}
 
     }
-    
-    td.dtsp-countColumn {
-		text-align: right;
+	
+	table{
+		table-layout: fixed;
+		tbody{
+			tr{
+				td.dtsp-nameColumn {
+					width: 100% !important;
+					div.dtsp-nameCont {
+                        width: 100%;
+
+						span.dtsp-name {
+							text-overflow: ellipsis;
+							overflow: hidden;
+							display: inline-block;
+							width: calc(100% - 36px);
+							vertical-align: middle;
+						}
+						
+						span.badge{
+							min-width: 30px;
+							display: inline-block;
+						}
+					}
+				}
+				td.dtsp-countColumn {
+					text-align: right;
+				}
+			}
+		}
 	}
 
-	span.badge{
-		float: right;
-	}
 }
 
 div.dtsp-searchPanes{
