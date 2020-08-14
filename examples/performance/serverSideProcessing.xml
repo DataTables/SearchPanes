@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="ajax" order="8">
+
+<css lib="datatables select searchpanes editor buttons"/>
+<js lib="jquery datatables select searchpanes editor buttons">
+<![CDATA[
+
+var editor; // use a global for the submit and return data rendering in the examples
+
+$(document).ready(function() {
+    editor = new $.fn.dataTable.Editor( {
+        ajax: "../resources/controllers/searchPanes.php",
+        table: "#example",
+        fields: [ {
+                label: "First name:",
+                name: "users.first_name"
+            }, {
+                label: "Last name:",
+                name: "users.last_name"
+            }, {
+                label: "Phone #:",
+                name: "users.phone"
+            }, {
+                label: "Site:",
+                name: "users.site",
+                type: "select",
+                placeholder: "Select a location"
+            }
+        ]
+    } );
+
+    $('#example').DataTable( {
+        dom: 'PBfrtip',
+        ajax: {
+            url: "../../../Editor-PHP-Demo/controllers/searchPanes.php",
+            type: "POST"
+        },    
+        columns: [
+            { data: "users.first_name" },
+            { data: "users.last_name" },
+            { data: "users.phone" },
+            { data: "sites.name" }
+        ],
+        columnDefs:[{
+            searchPanes:{
+                show: true,
+            },
+            targets: [0, 1, 2, 3],
+        }],
+        serverSide: true,
+        select: true,
+        buttons: [
+            { extend: "create", editor: editor },
+            { extend: "edit",   editor: editor },
+            { extend: "remove", editor: editor }
+        ]
+    } );
+} );
+
+]]>
+</js>
+
+<title lib="Editor">SearchPanes Integration for Editor</title>
+
+<info><![CDATA[
+
+]]></info>
+
+<custom-table>
+	<table id="example" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Phone number</th>
+				<th>Site</th>
+			</tr>
+		</thead>
+	</table>
+</custom-table>
+
+</dt-example>
+

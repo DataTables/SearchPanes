@@ -1,3 +1,4 @@
 node_modules
 src/*.js
 css/*.js
+examples/testing
