@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-button library="SearchPanes">
 	<name>button.searchPanes</name>
-	<summary>Button that is enabled when SearchPanes is to be used through a button</summary>
+	<summary>Enable SearchPanes through a button</summary>
 	<since>1.1.0</since>
 
 	<description>
@@ -9,25 +9,26 @@ When working with SearchPanes you will typically wish to configure SearchPanes o
 
 By providing an `config` object `b-init buttons.buttons.config` the SearchPanes within the button can be customised as desired. The `config` object is structured in the same way as the SearchPanes config Object is normally.
 
-SearchPanes makes use of the following buttons properties.
+SearchPanes makes use of the following Buttons properties.
 
-* `buttons.buttons.text` - This can be configured using the `searchPanes.collapse` option of the DataTables `dt-init language` object, or using the `b-init buttons.buttons.text` option for this button.
-* `buttons.buttons.init` - Initialises the SearchPanes.
-* `buttons.buttons.action` - Displays the SearchPanes floating above the table with focus on them.
-* `buttons.buttons.config` - Sets the config for SearchPanes in the same way as normal for the SearchPanes config.
+* `b-init buttons.buttons.text` - This can be configured using the `searchPanes.collapse` option of the DataTables `dt-init language` object, or using the `b-init buttons.buttons.text` option for this button.
+* `b-init buttons.buttons.init` - Initialises the SearchPanes.
+* `b-init buttons.buttons.action` - Displays the SearchPanes floating above the table with focus on them.
+* `b-init buttons.buttons.config` - Sets the config for SearchPanes in the same way as normal for the SearchPanes config.
 	</description>
 
 	<example title="SearchPanes Button initialisation: Set the config for SearchPanes to enable the `-init cascadePanes` option"><![CDATA[
 $('#example').DataTable( {
-		buttons:[
-			{
-				extend: 'searchPanes',
-				config: {
-					cascadePanes: true
-				}
+	buttons:[
+		{
+			extend: 'searchPanes',
+			config: {
+				cascadePanes: true
 			}
-		],
-		dom: 'Bfrtip',
-	});
+		}
+	],
+	dom: 'Bfrtip',
+});
+
 ]]></example>
 </dt-button>
