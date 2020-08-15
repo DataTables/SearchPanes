@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.panes.options.className</name>
-	<summary>Define the class to be added to the row for an option of a custom pane</summary>
+	<summary>Add classes to specific options of a custom pane</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
@@ -11,37 +11,36 @@
 	</type>
 
 	<default value="Undefined">
-        The default value of `-init searchPanes.panes.options.className` is undefined.
     </default>
 	<description>
 		<![CDATA[
-        As standard, the value of the `className` is undefined.
+			As standard, the value of the `className` is undefined.
 
-        Setting `-init searchPanes.panes.options.className` to a string value will set the class of the row for the option in the custom pane. This is particularly useful for adding custom styling to a specific row. 
-        ]]>
+			Setting `-init searchPanes.panes.options.className` to a string value will set the class of the row for the option in the custom pane. This is useful for adding custom styling to specific rows. 
+		]]>
 	</description>
 
 	<example title="Define custom pane options"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes: {
-            panes: [
-                {
-                    options: [
-                        {
-                            label:'Accountants in Tokyo',
-                            value: function(rowData, rowIdx){
-                                return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-                            },
-                            className: 'tokyo
-                        }
-                    ]
-                }
-            ]
-        },
-        dom: 'Pfrtip'
-    });
+	$('#example').DataTable( {
+		searchPanes: {
+			panes: [
+				{
+					options: [
+						{
+							label:'Accountants in Tokyo',
+							value: function(rowData, rowIdx){
+								return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+							},
+							className: 'tokyo
+						}
+					]
+				}
+			]
+		},
+		dom: 'Pfrtip'
+	});
 });
 
 ]]></example>

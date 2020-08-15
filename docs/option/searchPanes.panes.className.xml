@@ -21,27 +21,27 @@
 		]]>
 	</description>
 
-	<example title="Define custom pane DataTable options"><![CDATA[
+	<example title="Add class name to custom panes"><![CDATA[
 
-        table = $('#example').DataTable({
-            dom: 'Pfrtip',
-            searchPanes: {
-                panes: [
-                    {
-                        header:'Custom',
-                        options:[
-                            {
-                                label:'Accountants from Tokyo',
-                                value: function(rowData, rowIdx){
-                                    return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                                }
-                            }
-                        ],
-                        className:"PaneSpecific"
-                    }
-                ],
-            }
-        });
+table = $('#example').DataTable({
+	dom: 'Pfrtip',
+	searchPanes: {
+		panes: [
+			{
+				header:'Custom',
+				options:[
+					{
+						label:'Accountants from Tokyo',
+						value: function(rowData, rowIdx){
+							return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+						}
+					}
+				],
+				className:"PaneSpecific"
+			}
+		],
+	}
+});
 
 ]]></example>
 
