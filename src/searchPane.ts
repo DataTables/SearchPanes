@@ -965,6 +965,10 @@ export default class SearchPane {
 								pill = '';
 							}
 
+							if ($.fn.dataTable.render.ellipsis !== undefined && data.indexOf('&#8230')) {
+                                data = data.replace(/<span class="ellipsis"[^>]*>/g, '');
+                            }
+
 							return '<div class="' + this.classes.nameCont + '"><span title="' +
 								data +
 								'" class="' + this.classes.name + '">' +
