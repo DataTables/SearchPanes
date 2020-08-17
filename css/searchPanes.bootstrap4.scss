@@ -140,6 +140,7 @@ div.dtsp-searchPane {
                             display: inline-block;
                             width: calc(100% - 30px);
                             vertical-align: middle;
+                            white-space: nowrap;
                         }
 
                         span.badge{
