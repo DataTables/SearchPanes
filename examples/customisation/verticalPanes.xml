@@ -13,7 +13,7 @@ div.dtsp-verticalContainer{
 
 div.dtsp-verticalContainer div.dtsp-verticalPanes,
 div.dtsp-verticalContainer div.dtsp-dataTable{
-    width: 50%;
+    width: 30%;
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 0;
@@ -52,7 +52,7 @@ div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-
 div.dtsp-verticalContainer div.dtsp-dataTable{
     flex-grow: 1;
     flex-shrink: 0;
-    flex-basis: 70%;
+    flex-basis: 60%;
 }
 </css>
 
