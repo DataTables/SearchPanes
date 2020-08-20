@@ -62,6 +62,7 @@ export default class SearchPane {
 		orderable: true,
 		orthogonal: {
 			display: 'display',
+			filter: 'filter',
 			hideCount: false,
 			search: 'filter',
 			show: undefined,
@@ -800,7 +801,7 @@ export default class SearchPane {
 				this.s.displayed = true;
 			}
 
-			if (!this.s.dt.page.info().serverSide) {
+			if (!this.s.dt.page.info().serverSide && dataIn === null) {
 				// Only run populatePane if the data has not been collected yet
 				if (rowData.arrayFilter.length === 0) {
 					this._populatePane(last);
@@ -893,6 +894,9 @@ export default class SearchPane {
 					this.s.displayed = false;
 					return;
 				}
+
+				this.s.rowData.arrayOriginal = this.s.rowData.arrayFilter;
+				this.s.rowData.binsOriginal = this.s.rowData.bins;
 
 				this.s.displayed = true;
 			}

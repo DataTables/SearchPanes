@@ -831,7 +831,7 @@ export default class SearchPanes {
 		}
 
 		for (let pane of this.s.panes) {
-			pane.rebuildPane(undefined, this.s.dt.page.info().serverSide ? this.s.serverData : undefined);
+			pane.rebuildPane(undefined, Object.keys(this.s.serverData).length > 0 ? this.s.serverData : undefined);
 			$(this.dom.panes).append(pane.dom.container);
 		}
 

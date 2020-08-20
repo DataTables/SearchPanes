@@ -100,6 +100,7 @@ export interface IOption {
 
 export interface IOrthogonal {
 	display: string;
+	filter: string;
 	hideCount: boolean;
 	search: string;
 	show: boolean;
