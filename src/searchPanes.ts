@@ -1050,7 +1050,7 @@ export default class SearchPanes {
 		$(this.dom.title).text(message);
 
 		if (this.c.filterChanged !== undefined && typeof this.c.filterChanged === 'function') {
-			this.c.filterChanged(filterCount);
+			this.c.filterChanged.call(this.s.dt, filterCount);
 		}
 	}
 
