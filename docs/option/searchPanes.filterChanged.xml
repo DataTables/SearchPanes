@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>searchPanes.filterChanged()</name>
-	<summary>Function normally used to update titles text when a new selection is made.</summary>
+	<name>searchPanes.filterChanged</name>
+	<summary>Function to update title text when selections are made.</summary>
 	<since>SearchPanes 1.2.0</since>
 
 	<type type="function">
         <signature>searchPanes.filterChanged(count)</signature>
-        <parameter type="number" name="count">number representing the number of options that have been selected in SearchPanes.</parameter>
-		<description>
-            This function is called every time the number of SearchPanes options that have been selected changes. As default it updates the title within the SearchPanes container so that up to date information is displayed there.
-	    </description>
+        <parameter type="number" name="count">Number of options selected in SearchPanes.</parameter>
 	</type>
 
 	<description>
@@ -24,21 +21,20 @@
             this.i18n(...);
             ```
 
-            This function could of course be used to perform other functionality, although this is down to the user requirements.
 		]]>
 	</description>
 
 	<example title="Set text for custom element"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            filterChanged: function (count) {
-                $('.SPDetails').text(this.i18n('searchPanes.collapse', {0: 'AdvancedFilter', _: 'Advancedfilter (%d)'}, count));
-            }
-        }
+	$('#example').DataTable( {
+		searchPanes:{
+			filterChanged: function (count) {
+				$('.SPDetails').text(this.i18n('searchPanes.collapse', {0: 'AdvancedFilter', _: 'Advancedfilter (%d)'}, count));
+			}
+		}
 		dom: 'Pfrtip'
-    });
+	});
 });
 
 ]]></example>
