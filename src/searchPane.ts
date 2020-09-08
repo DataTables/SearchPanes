@@ -1151,6 +1151,10 @@ export default class SearchPane {
 		if (!this.s.dt.page.info().serverSide) {
 			this.s.dt.draw();
 		}
+		// Otherwise if SSP and the table is ready, apply the search for the pane
+		else {
+			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
+		}
 
 		// Reload the selection, searchbox entry and ordering from the previous state
 		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
