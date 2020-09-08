@@ -176,15 +176,20 @@ div.dtsp-searchPane{
 				td.dtsp-nameColumn {
 					width: 100% !important;
 					div.dtsp-nameCont {
-                        width: 100%;
+						width: 100%;
+						display: flex;
+						flex-direction: row;
+						justify-content: flex-start;
+						align-content: flex-start;
+						align-items: flex-start;
 
 						span.dtsp-name {
 							text-overflow: ellipsis;
 							overflow: hidden;
 							display: inline-block;
-							width: calc(100% - 36px);
 							vertical-align: middle;
 							white-space: nowrap;
+							flex-grow: 1;
 						}
 						
 						span.badge{

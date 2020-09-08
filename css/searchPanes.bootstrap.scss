@@ -86,14 +86,19 @@ div.dtsp-searchPane {
 
                     div.dtsp-nameCont {
                         width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        align-content: flex-start;
+                        align-items: flex-start;
     
                         span.dtsp-name {
                             text-overflow: ellipsis;
                             overflow: hidden;
                             display: inline-block;
-                            width: calc(100% - 30px);
                             vertical-align: middle;
                             white-space: nowrap;
+                            flex-grow: 1;
                         }
                     
                         span.badge{
