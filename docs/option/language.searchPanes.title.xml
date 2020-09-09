@@ -6,12 +6,18 @@
 
 	<type type="string">
 		<description>
-            By setting the `-init languages.searchPanes.title` option to an object which can deal with internationalisation and plurals. 
+            As standard `-init languages.searchPanes.title` is simply a string that contains a replacement for the number of selections that have been made.
         </description>
 	</type>
 
-	<default value="undefined">
-        The default value for the `-init languages.searchPanes.title` parameter is `-type undefined`. When this is not in place the `-init i18n` function will use 'Filters Active - %d' as a default.
+    <type type="object">
+        <description>
+            It is possible to set the value of `-init language.searchPanes.title` to an object that would allow for the actual text to also change as the number of selections increases. 
+        </description>
+    </type>
+
+	<default value="Filters Active - %d">
+        The default value for the `-init languages.searchPanes.title` parameter is `Filters Active - %d`.
     </default>
 	<description>
 		<![CDATA[
@@ -19,7 +25,7 @@
         ]]>
 	</description>
 
-	<example title="Alter title messages"><![CDATA[
+	<example title="Alter title messages with an object"><![CDATA[
 
 $(document).ready(function() {
     $('#example').DataTable( {
@@ -31,6 +37,21 @@ $(document).ready(function() {
                     0: 'No Filters Selected',
                     1: 'One Filter Selected',
                 }
+            }
+        }
+    });
+});
+
+]]></example>
+
+<example title="Alter title message to be a static string"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+        language: {
+            searchPanes: {
+                title: 'Select filters below'
             }
         }
     });
