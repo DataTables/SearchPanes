@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.loadMessage</name>
+	<summary>Add internationalisation to the message shown when the panes are loading</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            The `-init languages.searchPanes.loadMessage` is displayed to the user in the SearchPanes container when the panes are loading and have not yet been displayed. This is typically only seen for large data sets or when using server-side processing. 
+        </description>
+	</type>
+
+	<default type="string" value="Loading Search Panes...">
+        The default value for the `-init languages.searchPanes.loadingMessage` parameter is `"Loading Search Panes..."`. This is so that users know that the panes are loading and there is not an error present, as some may experience delays in load times if they have older/slower devices when loading large data sets. 
+    </default>
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will display a message in the div that is meant to hold the panes once the table has been initialised and the panes are still loading. If a  custom message has been declared then this will be shown in the place of the default message.
+        ]]>
+	</description>
+
+	<example title="Alter Empty Pane Message"><![CDATA[
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+        language: {
+            searchPanes: {
+                loadingMessage: 'Loading filtering options...'
+            }
+        }
+    });
+
+    ]]></example>
+
+</dt-option>
