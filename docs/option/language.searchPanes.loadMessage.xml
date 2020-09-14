@@ -11,7 +11,7 @@
 	</type>
 
 	<default type="string" value="Loading Search Panes...">
-        The default value for the `-init languages.searchPanes.loadingMessage` parameter is `"Loading Search Panes..."`. This is so that users know that the panes are loading and there is not an error present, as some may experience delays in load times if they have older/slower devices when loading large data sets. 
+        The default value for the `-init languages.searchPanes.loadMessage` parameter is `"Loading Search Panes..."`. This is so that users know that the panes are loading and there is not an error present, as some may experience delays in load times if they have older/slower devices when loading large data sets. 
     </default>
 	<description>
 		<![CDATA[
@@ -24,7 +24,7 @@
         dom: 'Pfrtip',
         language: {
             searchPanes: {
-                loadingMessage: 'Loading filtering options...'
+                loadMessage: 'Loading filtering options...'
             }
         }
     });
