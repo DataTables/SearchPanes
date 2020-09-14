@@ -19,7 +19,7 @@
         ]]>
 	</description>
 
-	<example title="Alter Empty Pane Message"><![CDATA[
+	<example title="Alter SearchPanes Loading Message"><![CDATA[
     $('#example').DataTable( {
         dom: 'Pfrtip',
         language: {
