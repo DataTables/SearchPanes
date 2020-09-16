@@ -1149,7 +1149,6 @@ export default class SearchPane {
 
 		//  If SSP and the table is ready, apply the search for the pane
 		if (this.s.dt.page.info().serverSide) {
-			//else {
 			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
 		}
 
