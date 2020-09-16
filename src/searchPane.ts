@@ -1147,12 +1147,9 @@ export default class SearchPane {
 			}
 		}
 
-		// Only need to trigger a search if it is not server side processing
-		if (!this.s.dt.page.info().serverSide) {
-			this.s.dt.draw();
-		}
-		// Otherwise if SSP and the table is ready, apply the search for the pane
-		else {
+		//  If SSP and the table is ready, apply the search for the pane
+		if (this.s.dt.page.info().serverSide) {
+			//else {
 			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
 		}
 

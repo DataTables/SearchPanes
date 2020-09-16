@@ -193,6 +193,11 @@ export default class SearchPanes {
 			$(this.dom.panes).append(pane.dom.container);
 		}
 
+		// Only need to trigger a search if it is not server side processing
+		if (!this.s.dt.page.info().serverSide) {
+			this.s.dt.draw();
+		}
+
 		if (this.c.cascadePanes || this.c.viewTotal) {
 			this.redrawPanes(true);
 		}
@@ -791,6 +796,11 @@ export default class SearchPanes {
 				($.fn.dataTable as any).select.init(pane.s.dtPane);
 			}
 		}
+
+		// Only need to trigger a search if it is not server side processing
+		if (!this.s.dt.page.info().serverSide) {
+			this.s.dt.draw();
+		}
 	}
 
 	/**
@@ -833,6 +843,11 @@ export default class SearchPanes {
 		for (let pane of this.s.panes) {
 			pane.rebuildPane(undefined, Object.keys(this.s.serverData).length > 0 ? this.s.serverData : undefined);
 			$(this.dom.panes).append(pane.dom.container);
+		}
+
+		// Only need to trigger a search if it is not server side processing
+		if (!this.s.dt.page.info().serverSide) {
+			this.s.dt.draw();
 		}
 
 		if (this.c.viewTotal && !this.c.cascadePanes) {
@@ -890,6 +905,10 @@ export default class SearchPanes {
 							true
 						);
 						$(this.dom.panes).append(pane.dom.container);
+					}
+
+					if (!this.s.dt.page.info().serverSide) {
+						this.s.dt.draw();
 					}
 
 					if (this.c.cascadePanes || this.c.viewTotal) {
