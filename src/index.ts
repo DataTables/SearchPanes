@@ -1,11 +1,11 @@
-/*! SearchPanes 1.1.1
+/*! SearchPanes 1.2.0
  * 2019-2020 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     SearchPanes
  * @description Search Panes for DataTables columns
- * @version     1.1.1
+ * @version     1.2.0
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   Copyright 2019-2020 SpryMedia Ltd.
  *
@@ -182,5 +182,4 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	if (DataTable.ext.features) {
 		DataTable.ext.features.register('searchPanes', _init);
 	}
-
 }));
