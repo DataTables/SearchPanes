@@ -70,30 +70,6 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	($.fn as any).dataTable.SearchPane = SearchPane;
 	($.fn as any).DataTable.SearchPane = SearchPane;
 
-	DataTable.Api.register('searchPanes.rebuild()', function() {
-		return this.iterator('table', function(ctx) {
-			if (ctx._searchPanes) {
-				ctx._searchPanes.rebuild();
-			}
-		});
-	});
-
-	DataTable.Api.register('column().paneOptions()', function(options) {
-		return this.iterator('column', function(ctx, colIdx) {
-			let col = ctx.aoColumns[colIdx];
-
-			if (! col.searchPanes) {
-				col.searchPanes = {};
-			}
-
-			col.searchPanes.values = options;
-
-			if (ctx._searchPanes) {
-				ctx._searchPanes.rebuild();
-			}
-		});
-	});
-
 	let apiRegister = ($.fn.dataTable.Api as any).register;
 
 	apiRegister('searchPanes()', function() {
