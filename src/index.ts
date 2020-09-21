@@ -1,11 +1,11 @@
-/*! SearchPanes 1.2.0
+/*! SearchPanes 1.2.1-dev
  * 2019-2020 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     SearchPanes
  * @description Search Panes for DataTables columns
- * @version     1.2.0
+ * @version     1.2.1-dev
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   Copyright 2019-2020 SpryMedia Ltd.
  *
@@ -71,24 +71,25 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	($.fn as any).DataTable.SearchPane = SearchPane;
 
 	DataTable.Api.register('searchPanes.rebuild()', function() {
-		return this.iterator('table', function(this) {
-			if (this.searchPanes) {
-				this.searchPanes.rebuild();
+		return this.iterator('table', function(ctx) {
+			if (ctx._searchPanes) {
+				ctx._searchPanes.rebuild();
 			}
 		});
 	});
 
 	DataTable.Api.register('column().paneOptions()', function(options) {
-		return this.iterator('column', function(this, idx) {
-			let col = this.aoColumns[idx];
+		return this.iterator('column', function(ctx, colIdx) {
+			let col = ctx.aoColumns[colIdx];
 
-			if (!col.searchPanes) {
+			if (! col.searchPanes) {
 				col.searchPanes = {};
 			}
+
 			col.searchPanes.values = options;
 
-			if (this.searchPanes) {
-				this.searchPanes.rebuild();
+			if (ctx._searchPanes) {
+				ctx._searchPanes.rebuild();
 			}
 		});
 	});
@@ -100,20 +101,27 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	});
 
 	apiRegister('searchPanes.clearSelections()', function() {
-		let ctx = this.context[0];
-		ctx._searchPanes.clearSelections();
-		return this;
+		return this.iterator('table', function(ctx) {
+			if (ctx._searchPanes) {
+				ctx._searchPanes.clearSelections();
+			}
+		});
 	});
 
 	apiRegister('searchPanes.rebuildPane()', function(targetIdx, maintainSelections) {
-		let ctx = this.context[0];
-		ctx._searchPanes.rebuild(targetIdx, maintainSelections);
-		return this;
+		return this.iterator('table', function(ctx) {
+			if (ctx._searchPanes) {
+				ctx._searchPanes.rebuild(targetIdx, maintainSelections);
+			}
+		});
 	});
 
 	apiRegister('searchPanes.container()', function() {
 		let ctx = this.context[0];
-		return ctx._searchPanes.getNode();
+
+		return ctx._searchPanes
+			? ctx._searchPanes.getNode()
+			: null;
 	});
 
 	$.fn.dataTable.ext.buttons.searchPanesClear = {
