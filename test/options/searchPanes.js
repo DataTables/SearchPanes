@@ -1,4 +1,4 @@
-describe('searchPanes - options - searchPanes', function() {
+describe('searchPanes - options - searchPanes', function () {
 	let table;
 
 	dt.libs({
@@ -6,7 +6,7 @@ describe('searchPanes - options - searchPanes', function() {
 		css: ['datatables', 'select', 'searchpanes']
 	});
 
-	describe('Functional tests', function() {
+	describe('Functional tests', function () {
 		dt.html('basic');
 		it('Check defaults', function() {
 			table = $('#example').DataTable({
@@ -189,6 +189,23 @@ describe('searchPanes - options - searchPanes', function() {
 
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 			expect($('div.dtsp-searchPane tr.selected').length).toBe(0);
+		});
+
+		dt.html('basic');
+		it('Load a table with HTML with searchPanes', function () {
+			$('#example tbody').append(
+				'<tr><td>Aaa</td><td><span class=test>Bbb</span></td><td>2</td><td>3</td><td>4</td><td>5</td></tr>'
+			);
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+			// DD-1666
+			// expect(
+			// 	$(
+			// 		'div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)'
+			// 	).text()
+			// ).toBe('Bbb');
 		});
 	});
 });
