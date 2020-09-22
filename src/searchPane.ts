@@ -970,7 +970,7 @@ export default class SearchPane {
 							}
 
 							return '<div class="' + this.classes.nameCont + '"><span title="' +
-								data +
+								data.replace(/<[^>]*>/g, "") +
 								'" class="' + this.classes.name + '">' +
 								data  + '</span>' +
 								pill + '</div>';
