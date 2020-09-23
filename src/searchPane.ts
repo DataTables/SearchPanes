@@ -1436,7 +1436,13 @@ export default class SearchPane {
 			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
 		}
 		else {
+			
 			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.search);
+
+			if(typeof filter === "string") {
+				filter = filter.replace(/<[^>]*>/g, "");
+			}
+			
 			this.s.rowData.filterMap.set(rowIdx, filter);
 
 			if (!bins[filter]) {
