@@ -200,12 +200,11 @@ describe('searchPanes - options - searchPanes', function () {
 				dom: 'Pfrtip',
 				searchPanes: true
 			});
-			// DD-1666
-			// expect(
-			// 	$(
-			// 		'div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)'
-			// 	).text()
-			// ).toBe('Bbb');
+			expect(
+				$(
+					'div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)'
+				).text()
+			).toBe('Bbb');
 		});
 	});
 });

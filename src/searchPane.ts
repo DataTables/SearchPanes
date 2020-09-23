@@ -970,7 +970,7 @@ export default class SearchPane {
 							}
 
 							return '<div class="' + this.classes.nameCont + '"><span title="' +
-								data.replace(/<[^>]*>/g, "") +
+								(typeof data === "string" && data.match(/<[^>]*>/) !== null ? data.replace(/<[^>]*>/g, "") : data) +
 								'" class="' + this.classes.name + '">' +
 								data  + '</span>' +
 								pill + '</div>';
