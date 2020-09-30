@@ -89,6 +89,7 @@ export default class SearchPanes {
 			panes: [],
 			selectionList: [],
 			serverData: {},
+			stateRead: false,
 			updating: false,
 		};
 
@@ -816,9 +817,9 @@ export default class SearchPanes {
 
 		$(this.dom.panes).empty();
 
-		if (this.c.viewTotal && !this.c.cascadePanes) {
-			let loadedFilter = this.s.dt.state.loaded();
+		let loadedFilter = this.s.dt.state.loaded();
 
+		if (this.c.viewTotal && !this.c.cascadePanes) {
 			if (
 				loadedFilter !== null &&
 				loadedFilter !== undefined &&
@@ -849,6 +850,14 @@ export default class SearchPanes {
 		if (!this.s.dt.page.info().serverSide) {
 			this.s.dt.draw();
 		}
+
+		// Reset the paging if that has been saved in the state
+		if (!this.s.stateRead && loadedFilter !== null && loadedFilter !== undefined) {
+			this.s.dt.page((loadedFilter.start / this.s.dt.page.len()));
+			this.s.dt.draw('page');
+		}
+
+		this.s.stateRead = true;
 
 		if (this.c.viewTotal && !this.c.cascadePanes) {
 			for (let pane of this.s.panes) {

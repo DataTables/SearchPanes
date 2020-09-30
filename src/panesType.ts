@@ -54,6 +54,7 @@ export interface IS {
 	panes: SearchPane[];
 	selectionList: ISelectItem[];
 	serverData: {[keys: string]: any};
+	stateRead: boolean;
 	updating: boolean;
 }
 
