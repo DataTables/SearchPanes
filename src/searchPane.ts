@@ -970,7 +970,7 @@ export default class SearchPane {
 							}
 
 							return '<div class="' + this.classes.nameCont + '"><span title="' +
-								(typeof data === "string" && data.match(/<[^>]*>/) !== null ? data.replace(/<[^>]*>/g, "") : data) +
+								(typeof data === 'string' && data.match(/<[^>]*>/) !== null ? data.replace(/<[^>]*>/g, '') : data) +
 								'" class="' + this.classes.name + '">' +
 								data  + '</span>' +
 								pill + '</div>';
@@ -1436,13 +1436,13 @@ export default class SearchPane {
 			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
 		}
 		else {
-			
+
 			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.search);
 
-			if(typeof filter === "string") {
-				filter = filter.replace(/<[^>]*>/g, "");
+			if (typeof filter === 'string') {
+				filter = filter.replace(/<[^>]*>/g, '');
 			}
-			
+
 			this.s.rowData.filterMap.set(rowIdx, filter);
 
 			if (!bins[filter]) {
