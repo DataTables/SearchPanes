@@ -223,7 +223,7 @@ export default class SearchPane {
 				return true;
 			}
 
-			let filter: string | string[] = '';
+			let filter: string | string[] = null;
 
 			if (this.colExists) {
 				// Get the current filtered data
@@ -1543,7 +1543,11 @@ export default class SearchPane {
 			}
 			// otherwise if the two filter values are equal then return true
 			// Loose type checking incase number type in column comparing to a string
-			else if (filter == colSelect.filter) {
+			else if (
+				(filter === colSelect.filter) ||
+				(!(typeof filter === 'string' && filter.length === 0) && filter == colSelect.filter) ||
+				(colSelect.filter === null && typeof filter === 'string' && filter === '')
+			) {
 				return true;
 			}
 		}
