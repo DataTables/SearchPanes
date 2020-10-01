@@ -1542,7 +1542,8 @@ export default class SearchPane {
 				}
 			}
 			// otherwise if the two filter values are equal then return true
-			else if (filter === colSelect.filter) {
+			// Loose type checking incase number type in column comparing to a string
+			else if (filter == colSelect.filter) {
 				return true;
 			}
 		}
