@@ -808,7 +808,14 @@ export default class SearchPane {
 				this.s.displayed = true;
 			}
 
-			if (!this.s.dt.page.info().serverSide && dataIn === null) {
+			if (
+				!this.s.dt.page.info().serverSide &&
+				(
+					dataIn === null ||
+					dataIn.searchPanes === null ||
+					dataIn.searchPanes.options === null
+				)
+			) {
 				// Only run populatePane if the data has not been collected yet
 				if (rowData.arrayFilter.length === 0) {
 					this._populatePane(last);
@@ -862,7 +869,7 @@ export default class SearchPane {
 				this.dom.container.addClass(this.classes.show);
 				this.s.displayed = true;
 			}
-			else if (dataIn !== null) {
+			else if (dataIn !== null && dataIn.searchPanes !== null && dataIn.searchPanes.options !== null) {
 				if (dataIn.tableLength !== undefined) {
 					this.s.tableLength = dataIn.tableLength;
 					this.s.rowData.totalOptions = this.s.tableLength;
@@ -873,8 +880,9 @@ export default class SearchPane {
 				}
 
 				let colTitle = table.column(this.s.index).dataSrc();
-				if (dataIn[colTitle] !== undefined) {
-					for (let dataPoint of dataIn[colTitle]) {
+
+				if (dataIn.searchPanes.options[colTitle] !== undefined) {
+					for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
 						this.s.rowData.arrayFilter.push({
 							display: dataPoint.label,
 							filter: dataPoint.value,
@@ -1160,7 +1168,16 @@ export default class SearchPane {
 		}
 
 		// Reload the selection, searchbox entry and ordering from the previous state
-		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.panes) {
+		// Need to check here if SSP that this is the first draw, otherwise it will infinite loop
+		if (
+			loadedFilter &&
+			loadedFilter.searchPanes &&
+			loadedFilter.searchPanes.panes &&
+			(
+				dataIn === null ||
+				dataIn.draw === 1
+			)
+		) {
 			if (!this.c.cascadePanes) {
 				this._reloadSelect(loadedFilter);
 			}
@@ -1510,8 +1527,9 @@ export default class SearchPane {
 				}
 
 				if (id > -1) {
+					this.s.serverSelecting = true;
 					table.row(id).select();
-					this.s.dt.state.save();
+					this.s.serverSelecting = false;
 				}
 			}
 

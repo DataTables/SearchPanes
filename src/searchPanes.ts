@@ -96,21 +96,41 @@ export default class SearchPanes {
 		if (table.settings()[0]._searchPanes !== undefined) {
 			return;
 		}
+
+		this._getState();
+
+		if (this.s.dt.page.info().serverSide) {
+			table.on('preXhr.dt', (e, settings, data) => {
+				if (data.searchPanes === undefined) {
+					data.searchPanes = {};
+				}
+
+				for (let selection of this.s.selectionList) {
+					let src = this.s.dt.column(selection.index).dataSrc();
+
+					if (data.searchPanes[src] === undefined) {
+						data.searchPanes[src] = {};
+					}
+
+					for (let i = 0; i < selection.rows.length; i++) {
+						data.searchPanes[src][i] = selection.rows[i].filter;
+					}
+				}
+			});
+		}
+
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
 		table.on('xhr', (e, settings, json, xhr) => {
 			if (json.searchPanes && json.searchPanes.options) {
-				this.s.serverData = json.searchPanes.options;
+				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
-
 				this._serverTotals();
 			}
 		});
 
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', 'Clear All'));
-
-		this._getState();
 
 		if (this.s.dt.settings()[0]._bInitComplete || fromInit) {
 			this._paneDeclare(table, paneSettings, opts);
@@ -889,11 +909,46 @@ export default class SearchPanes {
 			data.searchPanes.selectionList = this.s.selectionList;
 		});
 
+		if (this.s.dt.page.info().serverSide) {
+			table.off('preXhr.dt');
+			table.on('preXhr.dt', (e, settings, data) => {
+				if (data.searchPanes === undefined) {
+					data.searchPanes = {};
+				}
+
+				for (let pane of this.s.panes) {
+					let src = this.s.dt.column(pane.s.index).dataSrc();
+
+					if (data.searchPanes[src] === undefined) {
+						data.searchPanes[src] = {};
+					}
+
+					if (pane.s.dtPane !== undefined) {
+						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
+
+						for (let i = 0; i < rowData.length; i++) {
+							data.searchPanes[src][i] = rowData[i].filter;
+						}
+					}
+				}
+
+				if (this.c.viewTotal) {
+					this._prepViewTotal();
+				}
+			});
+		}
+		else {
+			table.on('preXhr.dt', (e, settings, data) => {
+				for (let pane of this.s.panes) {
+					pane.clearData();
+				}
+			});
+		}
+
 		// If the data is reloaded from the server then it is possible that it has changed completely,
 		// so we need to rebuild the panes
-		this.s.dt.on('xhr', () => {
+		this.s.dt.on('xhr', (e, settings, json, xhr) => {
 			let processing = false;
-
 			if (!this.s.dt.page.info().serverSide) {
 				this.s.dt.one('preDraw', () => {
 					if (processing) {
@@ -988,41 +1043,6 @@ export default class SearchPanes {
 		if (this.c.clear) {
 			$(this.dom.clearAll).on('click.dtsps', () => {
 				this.clearSelections();
-			});
-		}
-
-		if (this.s.dt.page.info().serverSide) {
-			table.on('preXhr.dt', (e, settings, data) => {
-				if (data.searchPanes === undefined) {
-					data.searchPanes = {};
-				}
-
-				for (let pane of this.s.panes) {
-					let src = this.s.dt.column(pane.s.index).dataSrc();
-
-					if (data.searchPanes[src] === undefined) {
-						data.searchPanes[src] = {};
-					}
-
-					if (pane.s.dtPane !== undefined) {
-						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
-
-						for (let i = 0; i < rowData.length; i++) {
-							data.searchPanes[src][i] = rowData[i].filter;
-						}
-					}
-				}
-
-				if (this.c.viewTotal) {
-					this._prepViewTotal();
-				}
-			});
-		}
-		else {
-			table.on('preXhr.dt', (e, settings, data) => {
-				for (let pane of this.s.panes) {
-					pane.clearData();
-				}
 			});
 		}
 
