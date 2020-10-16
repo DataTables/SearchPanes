@@ -954,6 +954,8 @@ export default class SearchPanes {
 					if (processing) {
 						return;
 					}
+
+					let page = this.s.dt.page();
 					processing = true;
 					$(this.dom.panes).empty();
 
@@ -983,6 +985,10 @@ export default class SearchPanes {
 					}
 
 					this._checkMessage();
+
+					this.s.dt.one('draw', () => {
+						this.s.dt.page(page).draw(false);
+					});
 				});
 			}
 		});
