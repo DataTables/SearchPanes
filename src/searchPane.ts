@@ -534,6 +534,13 @@ export default class SearchPane {
 				data.searchPanes.panes = [];
 			}
 
+			for (let i = 0; i <  data.searchPanes.panes.length; i++) {
+				if (data.searchPanes.panes[i].id === this.s.index) {
+					data.searchPanes.panes.splice(i, 1);
+					i--;
+				}
+			}
+
 			// Add the panes data to the state object
 			data.searchPanes.panes.push({
 				arrayFilter,
