@@ -1,6 +1,13 @@
 @import './common.scss';
 div.dtsp-searchPanes{
+    margin-left: 0px;
+    margin-right: 0px;
     padding-top: 10px;
+
+    div.row{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
     
     button.clearAll{
         max-width: 50px;
@@ -19,11 +26,6 @@ div.dtsp-searchPanes{
     }
 }
 
-div.dtsp-searchPanes,
-div.row{
-    margin-left: 0px;
-    margin-right: 0px;
-}
 
 div.dtsp-searchPane {
     margin: 10px;
