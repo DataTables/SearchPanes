@@ -998,7 +998,14 @@ export default class SearchPanes {
 			if (
 				pane !== undefined &&
 				pane.s.dtPane !== undefined &&
-				(pane.s.colOpts.preSelect !== undefined || pane.customPaneSettings.preSelect !== undefined)
+				(
+					(pane.s.colOpts.preSelect !== undefined && pane.s.colOpts.preSelect.length > 0) ||
+					(
+						pane.customPaneSettings !== null &&
+						pane.customPaneSettings.preSelect !== undefined &&
+						pane.customPaneSettings.preSelect.length > 0
+					)
+				)
 			) {
 				let tableLength = pane.s.dtPane.rows().data().toArray().length;
 
