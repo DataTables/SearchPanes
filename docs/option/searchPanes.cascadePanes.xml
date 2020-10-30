@@ -25,7 +25,7 @@
 
 			Note: When using `-init columns.searchPanes.combiner` along with `-init searchPanes.cascadePanes` you must make sure that your data is appropriate for the selection that you make. `-init searchPanes.cascadePanes` was developed with the default `or` logic in mind, using `and` logic will work in the majority of cases, but may yield some unexpected results when deselecting in a _very_ small amount of cases.
 		
-			Note: When loading SearchPanes options over ajax, but then using `-init serverSide` processing, neither `-init searchPanes.cascadePanes` or `-init searchPanes.viewTotal` are supported. This is due to the requirements for users to procide accurate data for the SearchPanes options, whos values change when using these two options. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
+			Note: When loading SearchPanes options over ajax, but then not using `-init serverSide` processing, neither `-init searchPanes.cascadePanes` or `-init searchPanes.viewTotal` are supported. This is due to the requirements for users to provide accurate data for the SearchPanes options, whos values change when using these two options. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
 		]]>
 	</description>
 
