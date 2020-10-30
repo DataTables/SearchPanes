@@ -756,11 +756,19 @@ export default class SearchPanes {
 				}
 
 				// If there are no selections for this pane in the list then just push this one
-				if (
-					!further &&
-					this.s.panes[this.s.selectionList[i].index].s.dtPane.rows({selected: true}).data().toArray().length > 0
-				) {
-					newSelectionList.push(this.s.selectionList[i]);
+				if (!further) {
+					let push = false;
+					for (let pane of this.s.panes) {
+						if (
+							pane.s.index === this.s.selectionList[i].index &&
+							pane.s.dtPane.rows({selected: true}).data().toArray().length > 0
+						) {
+							push = true;
+						}
+					}
+					if (push) {
+						newSelectionList.push(this.s.selectionList[i]);
+					}
 				}
 			}
 			this.s.selectionList = newSelectionList;
