@@ -1547,6 +1547,12 @@ export default class SearchPane {
 
 		// For each item selected in the pane, check if it is available in the cell
 		for (let colSelect of this.selections) {
+			if (typeof colSelect.filter === 'string') {
+				// The filter value will not have the &amp; in place but a &,
+				//  so we need to do a replace to make sure that they will match
+				colSelect.filter = colSelect.filter.replaceAll('&amp;', '&');
+			}
+
 			// if the filter is an array then is the column present in it
 			if (Array.isArray(filter)) {
 				if (filter.indexOf(colSelect.filter) !== -1) {
