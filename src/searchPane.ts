@@ -1429,8 +1429,8 @@ export default class SearchPane {
 		//  being displayed for their functionality. Also make sure that this was not the last pane to have a selection made
 		if (!this.s.dt.page.info().serverSide) {
 			let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
-			table.rows({search: 'applied'}).indexes() :
-			table.rows().indexes();
+				table.rows({search: 'applied'}).indexes() :
+				table.rows().indexes();
 
 			for (let index of indexArray.toArray()) {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
@@ -1462,6 +1462,11 @@ export default class SearchPane {
 		else {
 
 			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal.search);
+
+			// Null and empty string are to be considered the same value
+			if (filter === null) {
+				filter = '';
+			}
 
 			if (typeof filter === 'string') {
 				filter = filter.replace(/<[^>]*>/g, '');
