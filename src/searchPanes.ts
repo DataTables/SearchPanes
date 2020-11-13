@@ -924,6 +924,9 @@ export default class SearchPanes {
 					data.searchPanes = {};
 				}
 
+				// Count how many filters are being applied
+				let filterCount = 0;
+
 				for (let pane of this.s.panes) {
 					let src = this.s.dt.column(pane.s.index).dataSrc();
 
@@ -936,12 +939,20 @@ export default class SearchPanes {
 
 						for (let i = 0; i < rowData.length; i++) {
 							data.searchPanes[src][i] = rowData[i].filter;
+							filterCount++;
 						}
 					}
 				}
 
 				if (this.c.viewTotal) {
 					this._prepViewTotal();
+				}
+
+				// If there is a filter to be applied, then we need to read from the start of the result set
+				//  and set the paging to 0. This matches the behaviour of client side processing
+				if (filterCount > 0) {
+					data.start = 0;
+					this.s.dt.page(0);
 				}
 			});
 		}
