@@ -85,7 +85,9 @@ export default class SearchPanes {
 		this.s = {
 			colOpts: [],
 			dt: table,
+			filterCount: 0,
 			filterPane: -1,
+			page: 0,
 			panes: [],
 			selectionList: [],
 			serverData: {},
@@ -918,6 +920,11 @@ export default class SearchPanes {
 		});
 
 		if (this.s.dt.page.info().serverSide) {
+			table.off('page');
+			table.on('page', () => {
+				this.s.page = this.s.dt.page();
+			});
+
 			table.off('preXhr.dt');
 			table.on('preXhr.dt', (e, settings, data) => {
 				if (data.searchPanes === undefined) {
@@ -951,8 +958,19 @@ export default class SearchPanes {
 				// If there is a filter to be applied, then we need to read from the start of the result set
 				//  and set the paging to 0. This matches the behaviour of client side processing
 				if (filterCount > 0) {
-					data.start = 0;
-					this.s.dt.page(0);
+					// If the number of filters has changed we need to read from the start of the result set and reset the paging
+					if (filterCount !== this.s.filterCount) {
+						data.start = 0;
+						this.s.page = 0;
+					}
+					// Otherwise it is a paging request and we need to read from whatever the paging has been set to
+					else {
+						data.start = this.s.page * this.s.dt.page.len();
+					}
+
+					this.s.dt.page(this.s.page);
+					this.s.page = 0;
+					this.s.filterCount = filterCount;
 				}
 			});
 		}

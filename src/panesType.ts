@@ -50,7 +50,9 @@ export interface IOption {
 export interface IS {
 	colOpts: any[];
 	dt: any; // DataTable Instance
+	filterCount: number;
 	filterPane: number;
+	page: number;
 	panes: SearchPane[];
 	selectionList: ISelectItem[];
 	serverData: {[keys: string]: any};
