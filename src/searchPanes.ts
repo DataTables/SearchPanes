@@ -969,7 +969,6 @@ export default class SearchPanes {
 					}
 
 					this.s.dt.page(this.s.page);
-					this.s.page = 0;
 					this.s.filterCount = filterCount;
 				}
 			});
