@@ -50,6 +50,11 @@ div.dtsp-topRow {
     }
 }
 
+div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane table thead th,
+div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane table thead td {
+  width: 100% !important;
+}
+
 div.dt-button-collection {
     z-index: 2002;
 }
