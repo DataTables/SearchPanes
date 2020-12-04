@@ -940,6 +940,7 @@ export default class SearchPane {
 		let errMode: string = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
 		let haveScroller = (DataTable as any).Scroller;
+
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
 			true,
 			{
@@ -1016,15 +1017,25 @@ export default class SearchPane {
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
 			(this.s.colOpts.options !== undefined || !this.colExists)
-			? {
-				createdRow(row, data, dataIndex) {
-					$(row).addClass(data.className);
+				? {
+					createdRow(row, data, dataIndex) {
+						$(row).addClass(data.className);
+					}
 				}
-			}
-			: undefined,
+				: undefined,
 			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
-			? this.customPaneSettings.dtOpts
-			: {}
+				? this.customPaneSettings.dtOpts
+				: {},
+			$.fn.dataTable.versionCheck('2')
+				? {
+					layout: {
+						topLeft: null,
+						topRight: null,
+						bottomLeft: null,
+						bottomRight: null
+					}
+				}
+				: {}
 		));
 
 		$(this.dom.dtP).addClass(this.classes.table);
