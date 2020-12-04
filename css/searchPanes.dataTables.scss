@@ -239,6 +239,11 @@ div.dtsp-panesContainer {
 			td.dtsp-countColumn {
 				text-align: right;
 			}
+
+			// DT2 has a little padding around its layout cells
+			div.dataTables_layout_cell {
+				padding: 0;
+			}
 		}
 	}
 
