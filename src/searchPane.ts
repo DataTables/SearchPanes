@@ -1035,20 +1035,27 @@ export default class SearchPane {
 						bottomRight: null
 					}
 				}
-				: {}
+				: {},
 		));
 
 		$(this.dom.dtP).addClass(this.classes.table);
 
-		// This is hacky but necessary for when datatables is generating the column titles automatically
-		$(this.dom.searchBox).attr(
-			'placeholder',
-			colOpts.header !== undefined
-			? colOpts.header
-			: this.colExists
-				? table.settings()[0].aoColumns[this.s.index].sTitle
-				: this.customPaneSettings.header || 'Custom Pane'
-		);
+		// Getting column titles is a little messy
+		let headerText = 'Custom Pane';
+
+		if (this.customPaneSettings && this.customPaneSettings.header) {
+			headerText = this.customPaneSettings.header;
+		}
+		else if (colOpts.header) {
+			headerText = colOpts.header;
+		}
+		else if (this.colExists) {
+			headerText = $.fn.dataTable.versionCheck('2')
+				? table.column(this.s.index).title()
+				: table.settings()[0].aoColumns[this.s.index].sTitle;
+		}
+
+		this.dom.searchBox.attr('placeholder', headerText);
 
 		// As the pane table is not in the document yet we must initialise select ourselves
 		($.fn.dataTable as any).select.init(this.s.dtPane);
