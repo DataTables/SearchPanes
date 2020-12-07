@@ -62,6 +62,11 @@ export interface IDefaults {
 	dtOpts: {[keys: string]: any}; // All dtOpts
 	emptyMessage: string;
 	hideCount: boolean;
+	i18n: {
+		clearPane: string;
+		count: string;
+		countFiltered: string;
+	};
 	layout: string;
 	name: string;
 	orderable: boolean;

@@ -57,6 +57,11 @@ export default class SearchPane {
 		dtOpts: {},
 		emptyMessage: '<i>No Data</i>',
 		hideCount: false,
+		i18n: {
+			clearPane: '&times;',
+			count: '{total}',
+			countFiltered: '{shown} ({total})',
+		},
 		layout: 'columns-3',
 		name: undefined,
 		orderable: true,
@@ -187,7 +192,7 @@ export default class SearchPane {
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions();
 		let colOpts =  this.s.colOpts;
 		let clear: JQuery<HTMLElement> = $('<button type="button">X</button>').addClass(this.classes.paneButton);
-		$(clear).text(table.i18n('searchPanes.clearPane', 'X'));
+		$(clear).text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
 		this.dom.container.addClass(colOpts.className);
 		this.dom.container.addClass(
 			(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
@@ -773,8 +778,8 @@ export default class SearchPane {
 		let rowData = this.s.rowData;
 
 		// Other Variables
-		let countMessage: string = table.i18n('searchPanes.count', '{total}');
-		let filteredMessage: string = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
+		let countMessage: string = table.i18n('searchPanes.count', this.c.i18n.count);
+		let filteredMessage: string = table.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
 		let loadedFilter = table.state.loaded();
 
 		// If the listeners have not been set yet then using the latest state may result in funny errors

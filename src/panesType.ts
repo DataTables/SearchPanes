@@ -25,6 +25,19 @@ export interface IDefaults {
 	columns: number[];
 	container: (dt: any) => any;
 	filterChanged: (count: number) => any;
+	i18n: {
+		clearMessage: string;
+		clearPane: string;
+		collapse: {
+			0: string;
+			_: string;
+		},
+		count: string;
+		countFiltered: string;
+		emptyPanes: string;
+		loadMessage: string;
+		title: string;
+	};
 	layout: string;
 	order: string[];
 	panes: IConfigPaneItem[];

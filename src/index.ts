@@ -120,23 +120,27 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 			let panes = new $.fn.dataTable.SearchPanes(dt, $.extend(
 				{
 					filterChanged(count) {
-						dt.button(node).text(dt.i18n('searchPanes.collapse', {0: 'SearchPanes', _: 'SearchPanes (%d)'}, count));
+						dt.button(node).text(dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, count));
 					}
 				},
 				config.config
 			));
-			let message = dt.i18n('searchPanes.collapse', 'SearchPanes', 0);
+			let message = dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0);
 			dt.button(node).text(message);
 			config._panes = panes;
 		},
 		text: 'Search Panes',
 	};
 
-	function _init(settings, fromPre = false) {
+	function _init(settings, options = null, fromPre = false) {
 		let api = new DataTable.Api(settings);
-		let opts = api.init().searchPanes || DataTable.defaults.searchPanes;
-		let searchPanes =  new SearchPanes(api, opts, fromPre);
+		let opts = options
+			? options
+			: api.init().searchPanes || DataTable.defaults.searchPanes;
+
+		let searchPanes = new SearchPanes(api, opts, fromPre);
 		let node = searchPanes.getNode();
+
 		return node;
 	}
 
@@ -151,7 +155,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 			DataTable.defaults.searchPanes
 		) {
 			if (!settings._searchPanes) {
-				_init(settings, true);
+				_init(settings, null, true);
 			}
 		}
 	});
