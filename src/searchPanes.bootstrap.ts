@@ -53,19 +53,13 @@ $.extend(true, DataTable.SearchPane.classes, {
 	search: 'col-sm form-control search',
 	searchCont: 'input-group dtsp-searchCont',
 	searchLabelCont: 'input-group-btn',
-	show: 'col',
 	subRow1: 'dtsp-subRow1 text-right',
 	subRow2: 'dtsp-subRow2 text-right',
 	table: 'table table-condensed',
-	topRow: 'dtsp-topRow',
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll col-1 btn btn-light',
-	container: 'dtsp-searchPanes row',
-	panes: 'dtsp-panesContainer',
-	title: 'dtsp-title col-10',
-	titleRow: 'row',
+	clearAll: 'dtsp-clearAll btn btn-light',
 });
 
 return DataTable.searchPanes;

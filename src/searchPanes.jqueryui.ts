@@ -46,7 +46,10 @@ $.extend(true, DataTable.SearchPane.classes, {
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll ui-button'
+	clearAll: 'dtsp-clearAll ui-button',
+	container: 'dtsp-searchPanes',
+	panes: 'dtsp-panesContainer fg-toolbar ui-toolbar ui-widget-header'
 });
 return DataTable.searchPanes;
 }));
+
