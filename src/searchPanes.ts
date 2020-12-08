@@ -666,7 +666,6 @@ export default class SearchPanes {
 	 * @param opts the options passed into the constructor
 	 */
 	private _paneDeclare(table, paneSettings, opts): void {
-		console.log('cont', opts);
 		// Create Panes
 		table
 			.columns(this.c.columns.length > 0 ? this.c.columns : undefined)
