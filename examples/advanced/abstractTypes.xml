@@ -8,9 +8,6 @@
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        searchPanes:{
-            layout: 'columns-2',
-        },
         dom: 'Pfrtip',
         columnDefs: [
             { type: 'ip-address', targets:1 },

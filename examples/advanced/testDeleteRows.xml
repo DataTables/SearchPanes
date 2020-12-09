@@ -7,9 +7,6 @@
 <![CDATA[
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        searchPanes: {
-            layout: 'columns-2'
-        },
 		dom: 'Pfrtip'
     });
     $('#rebuild').click(function(){

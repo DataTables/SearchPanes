@@ -9,8 +9,7 @@ $(document).ready(function() {
     $('#example').DataTable( {
         ajax: '../resources/objects.json',
         searchPanes:{
-            columns: [5],
-            layout: 'columns-1',
+            columns: [5]
         },
         columnDefs:[
             {

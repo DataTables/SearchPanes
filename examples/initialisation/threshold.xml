@@ -8,18 +8,17 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:{
-            threshold: 0.4,
-            layout: 'columns-2',
+            threshold: 0.4
         },
         dom: 'Pfrtip',
         columnDefs:[
             {
                 searchPanes:{
-                    threshold: 1,
+                    threshold: 1
                 },
                 targets:[0]
-            },
-        ],
+            }
+        ]
     });
 });
 
