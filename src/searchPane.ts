@@ -720,17 +720,23 @@ export default class SearchPane {
 			className,
 			display: display !== '' ?
 				display :
-				this.s.colOpts.emptyMessage !== false ?
-					this.s.colOpts.emptyMessage :
-					this.c.emptyMessage,
+				this.s.dt.i18n(
+					'searchPanes.emptyMessage',
+					this.s.colOpts.emptyMessage !== false ?
+						this.s.colOpts.emptyMessage :
+						this.c.emptyMessage
+				),
 			filter,
 			index,
 			shown,
 			sort: sort !== '' ?
 				sort :
-				this.s.colOpts.emptyMessage !== false ?
-					this.s.colOpts.emptyMessage :
-					this.c.emptyMessage,
+				this.s.dt.i18n(
+					'searchPanes.emptyMessage',
+					this.s.colOpts.emptyMessage !== false ?
+						this.s.colOpts.emptyMessage :
+						this.c.emptyMessage
+				),
 			total,
 			type,
 		});
@@ -1323,7 +1329,14 @@ export default class SearchPane {
 
 		for (let comp of options) {
 			// Initialise the object which is to be placed in the row
-			let insert: string = comp.label !== '' ? comp.label : this.c.emptyMessage;
+			let insert: string = comp.label !== '' ?
+				comp.label :
+				this.s.dt.i18n(
+					'searchPanes.emptyMessage',
+					this.s.colOpts.emptyMessage !== false ?
+						this.s.colOpts.emptyMessage :
+						this.c.emptyMessage
+				);
 			let comparisonObj = {
 				className: comp.className,
 				display: insert,
@@ -1622,9 +1635,12 @@ export default class SearchPane {
 		this.s.updating = true;
 		let filters = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
 		let nullIndex: number = filters.indexOf(
-			this.s.colOpts.emptyMessage !== false ?
-				this.s.colOpts.emptyMessage :
-				this.c.emptyMessage
+			this.s.dt.i18n(
+				'searchPanes.emptyMessage', 
+				this.s.colOpts.emptyMessage !== false ?
+					this.s.colOpts.emptyMessage :
+					this.c.emptyMessage
+			)
 		);
 		let container = $(this.s.dtPane.table().container());
 

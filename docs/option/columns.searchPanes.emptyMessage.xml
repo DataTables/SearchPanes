@@ -16,7 +16,9 @@
 		</default>
 	<description>
 		<![CDATA[
-		Empty cells will be represented in the panes by the option `-init columns.searchPanes.emptyMessage` for that specific column. This is useful as it's a more user-friendly way than just having a blank cell. Note, this value will over-ride the global value `-init searchPanes.emptyMessage` for this specific column.
+		Empty cells will be represented in the panes by the option `-init columns.searchPanes.emptyMessage` for that specific column. This is useful as it's a more user-friendly way than just having a blank cell. The value is passed through the `-api i18n()` function.
+		
+		Note, this value is only used if `-init language.searchPanes.emptyMessage is undefined. If this is the case then this value will over-ride the global value `-init searchPanes.emptyMessage` for this specific column.
 		]]>
 	</description>
 
@@ -38,5 +40,8 @@ $(document).ready(function() {
 });
 
 ]]></example>
+
+<related type="option">searchPanes.emptyMessage</related>
+<related type="option">language.searchPanes.emptyMessage</related>
 
 </dt-option>
