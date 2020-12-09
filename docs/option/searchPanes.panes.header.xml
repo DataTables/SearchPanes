@@ -24,7 +24,7 @@
 	<example title="Define custom pane header"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             panes: [
                 {
@@ -32,7 +32,7 @@ $(document).ready(function() {
                     options: [
                         {
                             label: 'Accountants in Tokyo',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
                             }
                         }

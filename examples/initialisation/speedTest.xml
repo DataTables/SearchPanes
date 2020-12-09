@@ -7,9 +7,9 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            columns:[3,2,1],
+    $('#example').DataTable({
+        searchPanes: {
+            columns: [3,2,1]
         },
         dom: 'Plfrtip'
     });

@@ -129,7 +129,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 			dt.button(node).text(message);
 			config._panes = panes;
 		},
-		text: 'Search Panes',
+		text: 'Search Panes'
 	};
 
 	function _init(settings, options = null, fromPre = false) {
@@ -163,7 +163,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	// DataTables `dom` feature option
 	DataTable.ext.feature.push({
 		cFeature: 'P',
-		fnInit: _init,
+		fnInit: _init
 	});
 
 	// DataTables 2 layout feature

@@ -26,14 +26,14 @@
 	<example title="Pre-select values in a pane"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         columnDefs: [
             {
                 searchPanes: {
                     preSelect: ['Edinburgh','London']
                 },
-                targets:[3]
+                targets: [3]
             }
         ]
     });

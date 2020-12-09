@@ -30,7 +30,7 @@
 	<example title="Change the threshold of the uniqueness ratio"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             threshold: 0.4
         },

@@ -6,10 +6,10 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
 		dom: 'Plfrtip'
     });
-    $('#rebuild').click(function(){
+    $('#rebuild').click(function() {
         $('#example').DataTable().row(0).remove().draw().searchPanes.rebuildPane();
     });
 });

@@ -45,7 +45,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	narrow: 'col narrow',
 	narrowSub: 'row',
 	pane: {
-		container: 'table',
+		container: 'table'
 	},
 	paneButton: 'btn btn-light',
 	pill: 'badge badge-pill badge-light pill',
@@ -54,7 +54,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	searchLabelCont: 'input-group-btn',
 	subRow1: 'dtsp-subRow1 text-right',
 	subRow2: 'dtsp-subRow2 text-right',
-	table: 'table table-condensed',
+	table: 'table table-condensed'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {

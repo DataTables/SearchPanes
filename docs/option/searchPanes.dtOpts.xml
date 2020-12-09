@@ -27,7 +27,7 @@
 
 	<example title="Alter searching and info of the Panes:"><![CDATA[
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             dtOpts: {
                 paging: true,

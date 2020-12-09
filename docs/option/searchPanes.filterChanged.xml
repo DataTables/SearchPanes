@@ -27,9 +27,9 @@
 	<example title="Set text for custom element"><![CDATA[
 
 $(document).ready(function() {
-	$('#example').DataTable( {
-		searchPanes:{
-			filterChanged: function (count) {
+	$('#example').DataTable({
+		searchPanes: {
+			filterChanged: function(count) {
 				$('.SPDetails').text(this.i18n('searchPanes.collapse', {0: 'AdvancedFilter', _: 'Advancedfilter (%d)'}, count));
 			}
 		}

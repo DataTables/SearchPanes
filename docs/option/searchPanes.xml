@@ -37,7 +37,7 @@
 	<example title="Enable SearchPanes"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip'
     });
 });

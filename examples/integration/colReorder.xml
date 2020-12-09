@@ -7,7 +7,7 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         colReorder: true
     });

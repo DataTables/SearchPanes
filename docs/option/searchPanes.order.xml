@@ -26,7 +26,7 @@
 	<example title="Set the order of the panes"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             order: ['Age', 'Office', 'Position']
         },
@@ -39,11 +39,11 @@ $(document).ready(function() {
 <example title="Set the order of the panes including a custom name"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             order: ['Length of Life', 'Office', 'Position']
         },
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
                     name: 'Length of Life'

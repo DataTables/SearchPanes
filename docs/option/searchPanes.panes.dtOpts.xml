@@ -32,21 +32,21 @@
         searchPanes: {
             panes: [
                 {
-                    header:'Custom',
-                    options:[
+                    header: 'Custom',
+                    options: [
                         {
-                            label:'Accountants from Tokyo',
-                            value: function(rowData, rowIdx){
+                            label: 'Accountants from Tokyo',
+                            value: function(rowData, rowIdx) {
                                 return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
                             }
                         }
                     ],
-                    dtOpts:{
+                    dtOpts: {
                         paging: true,
                         order: [[1, 'desc']]
-                    },
+                    }
                 }
-            ],
+            ]
         }
     });
 

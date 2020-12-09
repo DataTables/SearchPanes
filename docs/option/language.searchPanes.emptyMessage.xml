@@ -24,13 +24,13 @@
 	<example title="Altering Empty Message"><![CDATA[
 
  $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         language: {
             searchPanes: {
-                emptyMessage:"</i></b>EMPTY</b></i>"
-            },
+                emptyMessage: "</i></b>EMPTY</b></i>"
+            }
         }
-		dom: 'Plfrtip',
+		dom: 'Plfrtip'
     });
 });
 

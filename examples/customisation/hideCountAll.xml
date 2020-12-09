@@ -7,9 +7,9 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            viewCount: false,
+    $('#example').DataTable({
+        searchPanes: {
+            viewCount: false
         },
         dom: 'Plfrtip'
     });

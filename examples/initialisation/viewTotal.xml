@@ -7,16 +7,16 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            viewTotal: true ,
+    $('#example').DataTable({
+        searchPanes: {
+            viewTotal: true 
         },
         dom: 'Plfrtip',
-        language:{
-            searchPanes:{
+        language: {
+            searchPanes: {
                 count: '{total} found',
                 countFiltered: '{shown} / {total}'
-            },
+            }
         }
     });
 });

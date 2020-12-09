@@ -7,12 +7,12 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             cascadePanes: true,
-            viewTotal: true,
+            viewTotal: true
         },
-        dom: 'Plfrtip',
+        dom: 'Plfrtip'
     });
 });
 

@@ -60,9 +60,9 @@ div.dtsp-verticalContainer div.dtsp-dataTable{
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            layout: 'columns-1',
+    $('#example').DataTable({
+        searchPanes: {
+            layout: 'columns-1'
         },
         responsive: true,
         dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',

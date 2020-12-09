@@ -50,14 +50,14 @@ $.extend(true, DataTable.SearchPane.classes, {
 	search: 'search',
 	searchLabelCont: 'searchCont',
 	show: 'col',
-	table: 'unstriped',
+	table: 'unstriped'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll button secondary',
 	disabledButton: 'disabled',
 	panes: 'panes dtsp-panesContainer',
-	title: 'dtsp-title',
+	title: 'dtsp-title'
 });
 
 return DataTable.searchPanes;

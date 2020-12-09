@@ -6,9 +6,9 @@
 <![CDATA[
 
 $(document).ready(function() {
-    let dt = $('#example').DataTable( {
+    let dt = $('#example').DataTable({
         ajax: '../resources/arrayData.json',
-        searchPanes:{
+        searchPanes: {
 			columns: [ 3 ]
         },
 		dom: 'Plfrtip',
@@ -26,19 +26,19 @@ $(document).ready(function() {
 				data: "permission",
 				render: {
 					_: '[, ].name',
-					sp:'[].name'
+					sp: '[].name'
 				},
 				searchPanes: {
-					orthogonal:'sp'
+					orthogonal: 'sp'
 				}
 			}
 		],
 		columnDefs: [
             {
-                searchPanes:{
+                searchPanes: {
                     show: true
                 },
-                targets:[3]
+                targets: [3]
             }
         ],
 		initComplete: function() {

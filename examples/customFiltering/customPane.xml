@@ -7,28 +7,28 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             panes: [
                 {
-                    header:'Custom',
-                    options:[
+                    header: 'Custom',
+                    options: [
                         {
-                            label:'Accountants from Tokyo',
-                            value: function(rowData, rowIdx){
+                            label: 'Accountants from Tokyo',
+                            value: function(rowData, rowIdx) {
                                 return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
                             },
                             className: 'tokyo'
                         }
                     ],
-                    dtOpts:{
+                    dtOpts: {
                         searching: false,
                         order: [[1, 'desc']]
                     }
                 }
             ]
         },
-        dom: 'Plfrtip',
+        dom: 'Plfrtip'
     });
 });
 

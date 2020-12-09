@@ -24,24 +24,24 @@
 	<example title="Altering Empty Message"><![CDATA[
 
  $(document).ready(function() {
-    var dt = $('#example').DataTable( {
-        searchPanes:{
-            emptyMessage:"</i></b>EMPTY</b></i>"
+    var dt = $('#example').DataTable({
+        searchPanes: {
+            emptyMessage: "</i></b>EMPTY</b></i>"
         },
-		dom: 'Plfrtip',
+		    dom: 'Plfrtip'
     });
 });
 
 ]]></example>
 
 	<example title="Altering Empty Message for each column"><![CDATA[
-	$(document).ready( function () {
+	$(document).ready( function() {
   var table = $('#example').DataTable({
     dom: 'Plfrtip',
-    columnDefs:[
+    columnDefs: [
       {
-         searchPanes:{
-            emptyMessage:"</i></b>EMPTY</b></i>"
+         searchPanes: {
+            emptyMessage: "</i></b>EMPTY</b></i>"
         },
         targets: [2]
       }

@@ -26,7 +26,7 @@
 	<example title="Hide count for all panes"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
 		dom: 'Plfrtip',
         searchPanes: {
             hideCount: true

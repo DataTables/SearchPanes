@@ -30,20 +30,20 @@
 	<example title="Force panes to hide and show"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
-                searchPanes:{
-                    show: true,
+                searchPanes: {
+                    show: true
                 },
-                targets: [0],
+                targets: [0]
             },
             {
-                searchPanes:{
-                    show: false,
+                searchPanes: {
+                    show: false
                 },
-                targets: [2],
+                targets: [2]
             }
         ]
     });

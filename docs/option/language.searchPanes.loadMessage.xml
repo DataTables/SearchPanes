@@ -19,7 +19,7 @@
 	</description>
 
 	<example title="Alter SearchPanes Loading Message"><![CDATA[
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {

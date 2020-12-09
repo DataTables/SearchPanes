@@ -11,33 +11,33 @@ div.myCustomClass{
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             panes: [
                 {
-                    header:'Custom',
-                    options:[
+                    header: 'Custom',
+                    options: [
                         {
-                            label:'Accountants from Tokyo',
-                            value: function(rowData, rowIdx){
+                            label: 'Accountants from Tokyo',
+                            value: function(rowData, rowIdx) {
                                 return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
                             }
                         }
                     ],
                     dtOpts: {
-                        dom:"tp",
+                        dom: "tp",
                         paging: true,
                         order: [[1, 'desc']]
                     },
                     className: 'myCustomClass'
                 }
-            ],
+            ]
         },
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    className: 'myCustomClass',
+                    className: 'myCustomClass'
                 },
                 targets: [3]
             }

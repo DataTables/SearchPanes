@@ -20,7 +20,7 @@
 	</description>
 
 	<example title="Alter Empty Pane Message"><![CDATA[
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {
@@ -32,7 +32,7 @@
     ]]></example>
 
     <example title="Hide the div that is meant to contain the SearchPanes"><![CDATA[
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {

@@ -7,15 +7,15 @@
 <![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip',
         columnDefs: [
-            { type: 'ip-address', targets:1 },
+            {type: 'ip-address', targets: 1},
             {
-                searchPanes:{
+                searchPanes: {
                     show: true
                 },
-                targets:['_all']
+                targets: ['_all']
             }
         ]
     });

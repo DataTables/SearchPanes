@@ -23,14 +23,14 @@
 	<example title="Define custom pane options"><![CDATA[
 
 $(document).ready(function() {
-	$('#example').DataTable( {
+	$('#example').DataTable({
 		searchPanes: {
 			panes: [
 				{
 					options: [
 						{
-							label:'Accountants in Tokyo',
-							value: function(rowData, rowIdx){
+							label: 'Accountants in Tokyo',
+							value: function(rowData, rowIdx) {
 								return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
 							},
 							className: 'tokyo

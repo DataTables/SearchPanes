@@ -26,7 +26,7 @@
 	<example title="Alter searching and info of the third columns pane"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         columnDefs: [
             {

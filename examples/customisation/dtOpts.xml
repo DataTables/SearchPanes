@@ -12,22 +12,22 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            dtOpts:{
-                dom:"tp",
+    $('#example').DataTable({
+        searchPanes: {
+            dtOpts: {
+                dom: "tp",
                 paging: true,
                 pagingType: 'numbers',
-                searching: false,
+                searching: false
             }
         },
         dom: 'Plfrtip',
         columnDefs: [
             {
-                searchPanes:{
-                    dtOpts:{
-                        dom:"ti",
-                        info: true,
+                searchPanes: {
+                    dtOpts: {
+                        dom: "ti",
+                        info: true
                     }
                 },
                 targets: [2]

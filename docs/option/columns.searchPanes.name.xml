@@ -22,9 +22,9 @@
 	<example title="Set the Name of the Pane to a custom string"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
                     name: 'Length of Life'

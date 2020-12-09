@@ -6,17 +6,17 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             threshold: 0.4
         },
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
-                searchPanes:{
+                searchPanes: {
                     threshold: 1
                 },
-                targets:[0]
+                targets: [0]
             }
         ]
     });

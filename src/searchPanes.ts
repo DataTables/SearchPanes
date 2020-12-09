@@ -51,12 +51,12 @@ export default class SearchPanes {
 			countFiltered: '{shown} ({total})',
 			emptyPanes: 'No SearchPanes',
 			loadMessage: 'Loading Search Panes...',
-			title: 'Filters Active - %d',
+			title: 'Filters Active - %d'
 		},
 		layout: 'auto',
 		order: [],
 		panes: [],
-		viewTotal: false,
+		viewTotal: false
 	};
 
 	public classes: typeInterfaces.IClasses;
@@ -93,7 +93,7 @@ export default class SearchPanes {
 			panes: $('<div/>').addClass(this.classes.container),
 			title: $('<div/>').addClass(this.classes.title),
 			titleRow: $('<div/>').addClass(this.classes.titleRow),
-			wrapper: $('<div/>'),
+			wrapper: $('<div/>')
 		};
 
 		this.s = {
@@ -106,7 +106,7 @@ export default class SearchPanes {
 			selectionList: [],
 			serverData: {},
 			stateRead: false,
-			updating: false,
+			updating: false
 		};
 
 		if (table.settings()[0]._searchPanes !== undefined) {

@@ -7,8 +7,8 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             cascadePanes: true
         },
         dom: 'Plfrtip'

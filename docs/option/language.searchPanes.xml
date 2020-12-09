@@ -21,10 +21,10 @@
 		]]>
 	</description>
 
-	<example title="Alter title messages:"><![CDATA[
+	<example title="Alter title messages: "><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {
@@ -43,8 +43,8 @@ $(document).ready(function() {
 <example title="Change messages for viewTotal:"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             viewTotal: true
         },
         dom: 'Plfrtip',

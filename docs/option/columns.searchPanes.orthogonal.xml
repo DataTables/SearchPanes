@@ -64,10 +64,10 @@
     data: "permission",
     render: {
         _: '[, ].name',
-        sp:'[].name'
+        sp: '[].name'
     },
     searchPanes: {
-        orthogonal:'sp'
+        orthogonal: 'sp'
     },
     dom: 'Plfrtip'
 }

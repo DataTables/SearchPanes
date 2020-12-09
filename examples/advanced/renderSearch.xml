@@ -6,30 +6,30 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         ajax: '../resources/objects.json',
-        searchPanes:{
-            columns:[0,5]
+        searchPanes: {
+            columns: [0,5]
         },
-		columnDefs:[{
-			searchPanes:{
+		columnDefs: [{
+			searchPanes: {
 				show: true
 			},
 			targets: [0,5]
 		}],
 		dom: 'Plfrtip',
         columns: [
-			{ data: null, render: function ( data, type, row ) {
+			{data: null, render: function(data, type, row) {
 				// Combine the first and last names into a single table field
-				return data.first_name+' '+data.last_name;
-			} },
-			{ data: "position" },
-			{ data: "office" },
-			{ data: "extn" },
-			{ data: "start_date" },
+				return data.first_name + ' ' + data.last_name;
+			}},
+			{data: "position"},
+			{data: "office"},
+			{data: "extn"},
+			{data: "start_date"},
 			{ 
 				data: "salary", 
-				render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) 
+				render: $.fn.dataTable.render.number(',', '.', 0, '$') 
 			}
 		]
     });

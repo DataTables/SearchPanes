@@ -30,8 +30,8 @@
 	<example title="Enable viewTotal"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             viewTotal: true
         },
         dom: 'Plfrtip'

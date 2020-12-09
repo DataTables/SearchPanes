@@ -7,17 +7,17 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         language: {
             searchPanes: {
                 clearMessage: 'Obliterate Selections',
                 collapse: {0: 'Search Options', _: 'Search Options (%d)'}
             }
         },
-        buttons:[
+        buttons: [
             'searchPanes'
         ],
-        dom: 'Bfrtip',
+        dom: 'Bfrtip'
     });
 });
 

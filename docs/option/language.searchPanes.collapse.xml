@@ -23,7 +23,7 @@
 
 	<example title="Change message for SearchPanes button which also displays selection count:"><![CDATA[
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         language: {
             searchPanes: {
                 collapse: {
@@ -33,10 +33,10 @@ $(document).ready(function() {
 				}
             }
         },
-        buttons:[
+        buttons: [
             'searchPanes'
         ],
-        dom: 'Bfrtip',
+        dom: 'Bfrtip'
     });
 });
 
@@ -44,16 +44,16 @@ $(document).ready(function() {
 
 	<example title="Change message for SearchPanes button to only be a string:"><![CDATA[
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         language: {
             searchPanes: {
                 collapse: 'Search Options"
             }
         },
-        buttons:[
+        buttons: [
             'searchPanes'
         ],
-        dom: 'Bfrtip',
+        dom: 'Bfrtip'
     });
 });
 

@@ -7,9 +7,9 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
-            clear:false,
+    $('#example').DataTable({
+        searchPanes: {
+            clear: false
         },
         dom: 'Plfrtip'
     });

@@ -6,15 +6,15 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:true,
+    $('#example').DataTable({
+        searchPanes: true,
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    preSelect:['Edinburgh','London']
+                    preSelect: ['Edinburgh','London']
                 },
-                targets:[2],
+                targets: [2]
             }
         ]
     });

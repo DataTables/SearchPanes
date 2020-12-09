@@ -7,7 +7,7 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
 		ajax: '../../../../examples/ajax/data/data_5k.txt',
 		columns: [

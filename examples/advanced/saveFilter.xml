@@ -7,9 +7,9 @@
 <![CDATA[
 
 table = $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip',
-        stateSave:true
+        stateSave: true
     });
 });
 

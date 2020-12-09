@@ -7,13 +7,13 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:true,
+    $('#example').DataTable({
+        searchPanes: true,
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    viewCount: false,
+                    viewCount: false
                 },
                 targets: [3]
             }

@@ -24,7 +24,7 @@
 	<example title="Set the number of panes in a row to 2"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             layout: 'columns-2'
         },

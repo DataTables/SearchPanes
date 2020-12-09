@@ -24,7 +24,7 @@
 	<example title="Disable Clear Buttons"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         searchPanes: {
             clear: false
         },

@@ -26,21 +26,21 @@
 	<example title="PreSelect 'Over 50' custom pane option"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             panes: [
                 {
-                    header:'Age Range',
-                    options:[
+                    header: 'Age Range',
+                    options: [
                         {
-                            label:'Over 50',
-                            value: function(rowData, rowIdx){
+                            label: 'Over 50',
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] > 50;
                             }
                         },
                         {
-                            label:'Under 50',
-                            value: function(rowData, rowIdx){
+                            label: 'Under 50',
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] < 50;
                             }
                         }
@@ -49,7 +49,7 @@ $(document).ready(function() {
                 }
             ]
         },
-        dom: 'Plfrtip',
+        dom: 'Plfrtip'
     });
 });
 

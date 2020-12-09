@@ -7,11 +7,11 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        buttons:[
+    $('#example').DataTable({
+        buttons: [
             'searchPanes'
         ],
-        dom: 'Bfrtip',
+        dom: 'Bfrtip'
     });
 });
 

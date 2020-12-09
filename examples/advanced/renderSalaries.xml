@@ -6,41 +6,40 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         ajax: '../resources/objects.json',
-        searchPanes:{
+        searchPanes: {
             columns: [5]
         },
-        columnDefs:[
-            {
-                searchPanes:{
-                    show: true,
-                },
-                targets: [5],
-            }],
+        columnDefs: [{
+            searchPanes: {
+                show: true
+            },
+            targets: [5]
+        }],
         dom: 'Plfrtip',
         columns: [
-			{ data: null, render: function ( data, type, row ) {
+			{data: null, render: function(data, type, row) {
 				// Combine the first and last names into a single table field
-				return data.first_name+' '+data.last_name;
-			} },
-			{ data: "position" },
-			{ data: "office" },
-			{ data: "extn" },
-			{ data: "start_date" },
+				return data.first_name + ' ' + data.last_name;
+			}},
+			{data: "position"},
+			{data: "office"},
+			{data: "extn"},
+			{data: "start_date"},
 			{ 
 				data: "salary", 
-				render: function(data, type, row){
-                    if(type === 'sort' || type === 'type'){
+				render: function(data, type, row) {
+                    if (type === 'sort' || type === 'type') {
                         return row.salary;
                     }
-                    if(row.salary <= 200000){
+                    if (row.salary <= 200000) {
                         return "Low";
                     }
-                    else if (row.salary <=800000){
+                    else if (row.salary <=800000) {
                         return "Medium";
                     }
-                    else{
+                    else {
                         return "High";
                     }
                 } 

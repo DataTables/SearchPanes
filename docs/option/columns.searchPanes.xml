@@ -24,13 +24,13 @@
 	<example title="Alter searching and info of the third columns pane"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
-                dtOpts:{
-                    searching:false,
-                    info: true,
+                dtOpts: {
+                    searching: false,
+                    info: true
                 },
                 targets[2]
             }
@@ -43,12 +43,12 @@ $(document).ready(function() {
 <example title="Hide count for the 5th columns pane:"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         columnDefs: [
             {
                 searchPanes: {
-                    viewCount: false,
+                    viewCount: false
                 }
                 targets: [4]
             }
@@ -60,72 +60,72 @@ $(document).ready(function() {
 	<example title="Define custom Options for a specific pane"><![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[ 
+        columnDefs: [ 
             {
                 searchPanes: {
-                    options:[
+                    options: [
                         {
                             label: 'Under 20',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] < 20;
                             }
                         },
                         {
                             label: '20 to 30',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 30 && rowData[4] >=20;
                             }
                         },
                          {
                             label: '30 to 40',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 40 && rowData[4] >=30;
                             }
                         },
                          {
                             label: '40 to 50',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 50 && rowData[4] >=40;
                             }
                         },
                          {
                             label: '50 to 60',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 60 && rowData[4] >=50;
                             }
                         },
                          {
                             label: 'Over 60',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] > 60;
                             }
-                        },
+                        }
                     ]
                 },
-                targets:[4],
+                targets: [4]
             },
             {
                 searchPanes: {
-                    options:[
+                    options: [
                         {
                             label: 'Not Edinburgh',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] !== 'Edinburgh';
                             }
                         },
                         {
                             label: 'Not London',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] !== 'London';
                             }
                         }
-                    ],
+                    ]
                 },
                 targets: [3]
             }
-        ],
+        ]
 });
 
 ]]></example>
@@ -133,14 +133,14 @@ $(document).ready(function() {
 <example title="Pre-Select Values in a Pane"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    preSelect:['Edinburgh','London']
+                    preSelect: ['Edinburgh','London']
                 },
-                targets:[3],
+                targets: [3]
             }
         ]
     });
@@ -151,20 +151,20 @@ $(document).ready(function() {
 <example title="Force panes to hide and show"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
-                searchPanes:{
-                    show: true,
+                searchPanes: {
+                    show: true
                 },
-                targets: [0],
+                targets: [0]
             },
             {
-                searchPanes:{
-                    show: false,
+                searchPanes: {
+                    show: false
                 },
-                targets: [2],
+                targets: [2]
             }
         ]
     });
@@ -175,16 +175,16 @@ $(document).ready(function() {
 <example title="Change the threshold of the uniqueness ratio for a specific column"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
-                searchPanes:{
-                    threshold: 0.99,
+                searchPanes: {
+                    threshold: 0.99
                 },
-                targets:[0]
-            },
-        ],
+                targets: [0]
+            }
+        ]
     });
 });
 

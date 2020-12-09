@@ -7,14 +7,14 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {
-                title:{
+                title: {
                     _: 'Filters Selected - %d',
                     0: 'No Filters Selected',
-                    1: 'One Filter Selected',
+                    1: 'One Filter Selected'
                 }
             }
         }

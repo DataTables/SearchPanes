@@ -26,12 +26,12 @@
 	<example title="Hide count for the 5th columns pane"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    viewCount: false,
+                    viewCount: false
                 },
                 targets: [4]
             }

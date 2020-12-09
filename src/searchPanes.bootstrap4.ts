@@ -44,7 +44,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	disabledButton: 'disabled',
 	narrow: 'col',
 	pane: {
-		container: 'table',
+		container: 'table'
 	},
 	paneButton: 'btn btn-light',
 	pill: 'pill badge badge-pill badge-secondary',
@@ -54,7 +54,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	subRow1: 'dtsp-subRow1',
 	subRow2: 'dtsp-subRow2',
 	table: 'table table-sm table-borderless',
-	topRow: 'dtsp-topRow',
+	topRow: 'dtsp-topRow'
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
@@ -63,7 +63,7 @@ $.extend(true, DataTable.SearchPanes.classes, {
 	disabledButton: 'disabled',
 	panes: 'dtsp-panes dtsp-panesContainer',
 	title: 'dtsp-title',
-	titleRow: 'dtsp-titleRow',
+	titleRow: 'dtsp-titleRow'
 });
 
 return DataTable.searchPanes;

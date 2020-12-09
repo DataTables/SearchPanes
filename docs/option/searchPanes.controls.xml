@@ -24,7 +24,7 @@
 	<example title="Hide control buttons and disable searching for all panes"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
 		dom: 'Plfrtip',
         searchPanes: {
             controls: false

@@ -40,7 +40,7 @@
 	<example title="Delete a row and redraw the first pane"><![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip'
     });
 
@@ -52,7 +52,7 @@ $(document).ready(function() {
 <example title="Delete a row and redraw all of the panes"><![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip'
     });
 
@@ -64,7 +64,7 @@ $(document).ready(function() {
 	<example title="Redraw the first pane while maintaining selections"><![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip'
     });
 

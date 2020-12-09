@@ -41,7 +41,7 @@ export default class SearchPane {
 		subRow2: 'dtsp-subRow2',
 		subRowsContainer: 'dtsp-subRowsContainer',
 		title: 'dtsp-title',
-		topRow: 'dtsp-topRow',
+		topRow: 'dtsp-topRow'
 	};
 
 	// Define SearchPanes default options
@@ -59,7 +59,7 @@ export default class SearchPane {
 		i18n: {
 			clearPane: '&times;',
 			count: '{total}',
-			countFiltered: '{shown} ({total})',
+			countFiltered: '{shown} ({total})'
 		},
 		layout: 'auto',
 		name: undefined,
@@ -78,7 +78,7 @@ export default class SearchPane {
 		preSelect: [],
 		threshold: 0.6,
 		viewCount: true,
-		viewTotal: false,
+		viewTotal: false
 	};
 
 	public classes: typeInterfaces.IClasses;
@@ -153,7 +153,7 @@ export default class SearchPane {
 			serverSelecting: false,
 			showFiltered: false,
 			tableLength: null,
-			updating: false,
+			updating: false
 		};
 
 		let rowLength: number = table.columns().eq(0).toArray().length;
@@ -190,7 +190,7 @@ export default class SearchPane {
 			searchCont: $('<div/>').addClass(this.classes.searchCont),
 			searchLabelCont: $('<div/>').addClass(this.classes.searchLabelCont),
 			topRow: $('<div/>').addClass(this.classes.topRow),
-			upper: $('<div/>').addClass(this.classes.subRow1).addClass(this.classes.narrowSearch),
+			upper: $('<div/>').addClass(this.classes.subRow1).addClass(this.classes.narrowSearch)
 		};
 
 		this.s.displayed = false;
@@ -327,7 +327,7 @@ export default class SearchPane {
 			binsOriginal: {},
 			binsTotal: {},
 			filterMap: new Map(),
-			totalOptions: 0,
+			totalOptions: 0
 		};
 	}
 
@@ -602,7 +602,7 @@ export default class SearchPane {
 				id: this.s.index,
 				order,
 				searchTerm,
-				selected,
+				selected
 			});
 		});
 
@@ -785,7 +785,7 @@ export default class SearchPane {
 			shown,
 			sort,
 			total,
-			type,
+			type
 		});
 	}
 
@@ -1019,7 +1019,7 @@ export default class SearchPane {
 						// This is null if not defined by the user, meaning that automatic type detection would take place
 						type: table.settings()[0].aoColumns[this.s.index] !== undefined ?
 							table.settings()[0].aoColumns[this.s.index]._sManualType :
-							null,
+							null
 					},
 					{
 						className: 'dtsp-countColumn ' + this.classes.badgePill,
@@ -1043,7 +1043,7 @@ export default class SearchPane {
 				scrollY: '200px',
 				scroller: haveScroller ? true : false,
 				select: true,
-				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false,
+				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
 			(this.s.colOpts.options !== undefined || !this.colExists)
@@ -1386,7 +1386,7 @@ export default class SearchPane {
 				shown: 0,
 				sort: insert,
 				total: 0,
-				type: insert,
+				type: insert
 			};
 
 			// If a custom function is in place
@@ -1441,7 +1441,7 @@ export default class SearchPane {
 			orthogonal: {
 				threshold: null
 			},
-			threshold: null,
+			threshold: null
 		};
 		let columnOptions = table.settings()[0].aoColumns[this.s.index].searchPanes;
 

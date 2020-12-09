@@ -6,90 +6,90 @@
 <![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         searchPanes: {
             viewTotal: true,
-            columns: [0, 3, 4],
+            columns: [0, 3, 4]
         },
         dom: 'Plfrtip',
-        columnDefs:[ 
+        columnDefs: [ 
             {
                 orderable: false,
                 className: 'select-checkbox',
                 searchPanes: {
                     show: true,
-                    options:[
+                    options: [
                         {
                             label: 'Checked',
-                            value: function(rowData,rowIdx){
+                            value: function(rowData,rowIdx) {
                                 return this.row(rowIdx, {selected: true}).any();
-                            },
+                            }
                         },
                         {
                             label: 'Un-Checked',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return this.row(rowIdx, {selected: true}).any() === false;
-                            },
-                        },
-                    ],
+                            }
+                        }
+                    ]
                 },
                 targets: [0]
             },
             {
                 searchPanes: {
-                    options:[
+                    options: [
                         {
                             label: 'Under 20',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] < 20;
                             }
                         },
                         {
                             label: '20 to 30',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 30 && rowData[4] >=20;
                             }
                         },
                          {
                             label: '30 to 40',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 40 && rowData[4] >=30;
                             }
                         },
                          {
                             label: '40 to 50',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 50 && rowData[4] >=40;
                             }
                         },
                          {
                             label: '50 to 60',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] <= 60 && rowData[4] >=50;
                             }
                         },
                          {
                             label: 'Over 60',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[4] > 60;
                             }
-                        },
+                        }
                     ]
                 },
-                targets:[4],
+                targets: [4]
             },
             {
                 searchPanes: {
-                    options:[
+                    options: [
                         {
                             label: 'Not Edinburgh',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] !== 'Edinburgh';
                             }
                         },
                         {
                             label: 'Not London',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] !== 'London';
                             }
                         }

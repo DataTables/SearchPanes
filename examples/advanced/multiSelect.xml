@@ -7,15 +7,15 @@
 <![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
-        searchPanes:{
+    var dt = $('#example').DataTable({
+        searchPanes: {
             dtOpts: {
 				select: {
 					style: 'multi'
 				}
 			}
         },
-        dom: 'Plfrtip',
+        dom: 'Plfrtip'
     });
 });
 

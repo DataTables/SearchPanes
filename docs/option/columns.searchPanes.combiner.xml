@@ -24,12 +24,12 @@
 	<example title="Set the Combiner Option to and Logic"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[
+        columnDefs: [
             {
                 searchPanes: {
-                    combiner: 'and',
+                    combiner: 'and'
                 },
                 targets: [4]
             }
@@ -42,21 +42,21 @@ $(document).ready(function() {
 <example title="Using the combiner option to eliminate rows"><![CDATA[
 
 $(document).ready(function() {
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip',
-        columnDefs:[ 
+        columnDefs: [ 
             {
                 searchPanes: {
-                    options:[
+                    options: [
                         {
                             label: 'Not Edinburgh',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] !== 'Edinburgh';
                             }
                         },
                         {
                             label: 'Not London',
-                            value: function(rowData, rowIdx){
+                            value: function(rowData, rowIdx) {
                                 return rowData[3] !== 'London';
                             }
                         }

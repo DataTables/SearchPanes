@@ -30,14 +30,14 @@
 	<example title="Change the threshold of the uniqueness ratio for a specific column"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         columnDefs: [
             {
                 searchPanes: {
                     threshold: 0.99
                 },
-                targets:[0]
+                targets: [0]
             }
         ]
     });

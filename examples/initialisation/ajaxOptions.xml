@@ -282,7 +282,7 @@ var json = {
           "total": "1",
           "value": "Wilder",
           "count": "1"
-        },
+        }
       ],
       "users.phone": [
         {
@@ -435,22 +435,22 @@ var json = {
   ]
 };
 
-$(document).ready( function () {
+$(document).ready( function() {
   var table = $('#example').DataTable({
-    dom:'Plfrtip',
+    dom: 'Plfrtip',
     columns: [
         { data: "users.first_name" },
         { data: "users.last_name" },
         { data: "users.phone" },
         { data: "sites.name" }
     ],
-    columnDefs:[{
-        searchPanes:{
-            show: true,
+    columnDefs: [{
+        searchPanes: {
+            show: true
         },
-        targets: [0, 1, 2, 3],
+        targets: [0, 1, 2, 3]
     }],
-    ajax: function (data, success) {
+    ajax: function(data, success) {
       return success(json);
     }
   });

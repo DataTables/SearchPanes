@@ -7,8 +7,8 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        buttons:[
+    $('#example').DataTable({
+        buttons: [
             {
                 extend: 'searchPanes',
                 config: {
@@ -16,7 +16,7 @@ $(document).ready(function() {
                 }
             }
         ],
-        dom: 'Bfrtip',
+        dom: 'Bfrtip'
     });
 });
 

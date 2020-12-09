@@ -21,7 +21,7 @@
 	</description>
 
 	<example title="Add a class to the searchPanes container:"><![CDATA[
-    var dt = $('#example').DataTable( {
+    var dt = $('#example').DataTable({
         dom: 'Plfrtip'
     });
 	dt.searchPanes.container().addClass('sp_class');

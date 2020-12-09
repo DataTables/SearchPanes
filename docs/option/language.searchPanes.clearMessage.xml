@@ -24,7 +24,7 @@
 	<example title="Change message for the Clear button"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         language: {
             searchPanes: {
                 clearMessage: 'Obliterate Selections'

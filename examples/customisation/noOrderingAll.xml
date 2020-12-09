@@ -7,11 +7,11 @@
 <![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
-        searchPanes:{
+    $('#example').DataTable({
+        searchPanes: {
             orderable: false
         },
-        dom: 'Plfrtip',
+        dom: 'Plfrtip'
     });
 });
 

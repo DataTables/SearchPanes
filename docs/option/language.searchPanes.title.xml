@@ -28,14 +28,14 @@
 	<example title="Alter title messages with an object"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {
-                title:{
+                title: {
                     _: 'Filters Selected - %d',
                     0: 'No Filters Selected',
-                    1: 'One Filter Selected',
+                    1: 'One Filter Selected'
                 }
             }
         }
@@ -47,7 +47,7 @@ $(document).ready(function() {
 <example title="Alter title message to be a static string"><![CDATA[
 
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#example').DataTable({
         dom: 'Plfrtip',
         language: {
             searchPanes: {
