@@ -60,6 +60,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 
 $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll btn btn-light',
+	disabledButton: 'disabled'
 });
 
 return DataTable.searchPanes;

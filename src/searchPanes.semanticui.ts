@@ -51,6 +51,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 
 $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll ui button',
+	dull: 'disabled'
 });
 
 // This override is required for the integrated search Icon in sematic ui

@@ -2,7 +2,6 @@
 
 div.dtsp-panesContainer {
 	div.dtsp-searchPanes {
-
 		div.dtsp-searchPane {
 			div.dataTables_wrapper {
 				border: 2px solid #f0f0f0;
@@ -27,15 +26,6 @@ div.dtsp-panesContainer {
 					input.dtsp-search{
 						border: none;
 						padding-left: 3px;
-					}
-				}
-
-				button.dtsp-dull {
-					cursor: context-menu !important;
-					color: rgb(124, 124, 124);
-
-					&:hover{
-						background-color: transparent;
 					}
 				}
 			}
@@ -71,6 +61,16 @@ div.dtsp-panesContainer {
 		&:hover{
 			background-color: #f0f0f0;
 			border-radius: 2px;
+			cursor: pointer;
+		}
+	}
+
+	button.dtsp-dull {
+		cursor: context-menu !important;
+		color: rgb(124, 124, 124);
+
+		&:hover{
+			background-color: transparent;
 		}
 	}
 }

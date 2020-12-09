@@ -1,36 +1,41 @@
 @import './common.scss';
-
-div.dtsp-searchPane {
-    div.dtsp-topRow {
-        margin: 0.5em 0;
-
-        div.dtsp-subRow2 {
-            margin-left: 0.5em;
+div.dtsp-panesContainer {
+    div.dtsp-searchPane {
+        div.dtsp-topRow {
+            margin: 0.5em 0;
+    
+            div.dtsp-subRow2 {
+                margin-left: 0.5em;
+            }
+    
+            button {
+                border: 1px solid #ced4da;
+                width: 35px;
+                line-height: 20px;
+            }
+    
+            div.dtsp-subRow1 button {
+                border-right: none;
+            }
         }
-
-        button {
-            border: 1px solid #ced4da;
-            width: 35px;
-            line-height: 20px;
-        }
-
-        div.dtsp-subRow1 button {
-            border-right: none;
+    
+        div.dataTables_wrapper {
+            border: 2px #f0f0f0 solid;
+            border-radius: 4px;
+    
+            &:hover {
+                border: 2px solid #cfcfcf !important;
+            }
+    
+            div.dtsp-nameCont span.badge {
+                min-width: 30px;
+                line-height: 1.25em;
+                margin-top: 3.5px;
+            }
         }
     }
 
-    div.dataTables_wrapper {
-        border: 2px #f0f0f0 solid;
-        border-radius: 4px;
-
-        &:hover {
-            border: 2px solid #cfcfcf !important;
-        }
-
-        div.dtsp-nameCont span.badge {
-            min-width: 30px;
-            line-height: 1.25em;
-            margin-top: 3.5px;
-        }
+    button.disabled {
+        cursor: not-allowed;
     }
 }

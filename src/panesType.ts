@@ -4,6 +4,8 @@ export interface IClasses {
 	clear: string;
 	clearAll: string;
 	container: string;
+	disabledButton: string;
+	dull: string;
 	emptyMessage: string;
 	hide: string;
 	panes: string;

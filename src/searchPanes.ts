@@ -22,6 +22,8 @@ export default class SearchPanes {
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		container: 'dtsp-searchPanes',
+		dull: 'dtsp-dull',
+		disabledButton: 'dtsp-disabledButton',
 		emptyMessage: 'dtsp-emptyMessage',
 		hide: 'dtsp-hidden',
 		panes: 'dtsp-panesContainer',
@@ -1161,6 +1163,13 @@ export default class SearchPanes {
 
 		if (this.c.filterChanged !== undefined && typeof this.c.filterChanged === 'function') {
 			this.c.filterChanged.call(this.s.dt, filterCount);
+		}
+
+		if (filterCount === 0) {
+			$(this.dom.clearAll).addClass(this.classes.dull).addClass(this.classes.disabledButton);
+		}
+		else {
+			$(this.dom.clearAll).removeClass(this.classes.dull).removeClass(this.classes.disabledButton);
 		}
 	}
 
