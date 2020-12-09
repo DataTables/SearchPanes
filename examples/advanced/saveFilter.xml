@@ -8,7 +8,7 @@
 
 table = $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         stateSave:true
     });
 });

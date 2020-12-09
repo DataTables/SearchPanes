@@ -11,7 +11,7 @@ $(document).ready(function() {
         searchPanes:{
             layout: 'columns-6'
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs:[
             {
                 searchPanes:{

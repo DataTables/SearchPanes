@@ -11,7 +11,7 @@ $(document).ready(function() {
         searchPanes:{
 			columns: [ 3 ]
         },
-		dom: 'Pfrtip',
+		dom: 'Plfrtip',
         columns: [
 			{ 
 				data: "users.first_name"

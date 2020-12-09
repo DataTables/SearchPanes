@@ -16,7 +16,7 @@ $(document).ready(function() {
         searchPanes:{
             viewTotal: true,
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
     });
 
      table.columns().every( function () {

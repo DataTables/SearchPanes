@@ -8,14 +8,14 @@
 
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs: [
             { type: 'ip-address', targets:1 },
             {
                 searchPanes:{
                     show: true
                 },
-                targets:[0,1]
+                targets:['_all']
             }
         ]
     });

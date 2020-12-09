@@ -437,7 +437,7 @@ var json = {
 
 $(document).ready( function () {
   var table = $('#example').DataTable({
-    dom:'Pfrtip',
+    dom:'Plfrtip',
     columns: [
         { data: "users.first_name" },
         { data: "users.last_name" },

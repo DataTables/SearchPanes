@@ -11,7 +11,7 @@ $(document).ready(function() {
         searchPanes:{
             viewCount: false,
         },
-        dom: 'Pfrtip'
+        dom: 'Plfrtip'
     });
 });
 

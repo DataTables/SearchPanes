@@ -10,7 +10,7 @@ $(document).ready(function() {
         searchPanes:{
             threshold: 0.4
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs:[
             {
                 searchPanes:{

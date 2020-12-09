@@ -33,7 +33,7 @@ $(document).ready(function() {
             },
             targets: ['_all']
         }],
-        dom: 'Pfrtip'
+        dom: 'Plfrtip'
     });
 });
 

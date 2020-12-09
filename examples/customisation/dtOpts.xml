@@ -21,7 +21,7 @@ $(document).ready(function() {
                 searching: false,
             }
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs: [
             {
                 searchPanes:{

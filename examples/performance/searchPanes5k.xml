@@ -8,7 +8,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
 		ajax: '../../../../examples/ajax/data/data_5k.txt',
 		columns: [
             { data: "name" },

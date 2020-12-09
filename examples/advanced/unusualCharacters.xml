@@ -23,7 +23,7 @@ $(document).ready(function() {
             },
             targets: [3],
         }],
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         paging: false
     });
 });

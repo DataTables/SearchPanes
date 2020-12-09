@@ -7,7 +7,7 @@
 <![CDATA[
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
-		dom: 'Pfrtip'
+		dom: 'Plfrtip'
     });
     $('#rebuild').click(function(){
         $('#example').DataTable().row(0).remove().draw().searchPanes.rebuildPane();

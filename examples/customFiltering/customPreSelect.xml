@@ -30,7 +30,7 @@ $(document).ready(function() {
                 }
             ]
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
     });
 });
 

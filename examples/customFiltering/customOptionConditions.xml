@@ -11,7 +11,7 @@ $(document).ready(function() {
             viewTotal: true,
             columns: [0, 3, 4],
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs:[ 
             {
                 orderable: false,
