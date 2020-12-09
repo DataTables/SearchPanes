@@ -61,7 +61,7 @@ export default class SearchPane {
 			count: '{total}',
 			countFiltered: '{shown} ({total})',
 		},
-		layout: 'columns-3',
+		layout: 'auto',
 		name: undefined,
 		orderable: true,
 		orthogonal: {
@@ -160,7 +160,7 @@ export default class SearchPane {
 		this.colExists = this.s.index < rowLength;
 
 		// Add extra elements to DOM object including clear and hide buttons
-		this.c.layout = layout;
+		this.c.layout = layout;	
 		let layVal: number = parseInt(layout.split('-')[1], 10);
 
 		this.dom = {
@@ -169,8 +169,11 @@ export default class SearchPane {
 					.addClass(this.classes.disabledButton)
 					.addClass(this.classes.paneButton)
 					.addClass(this.classes.clearButton),
-			container: $('<div/>').addClass(this.classes.container).addClass(this.classes.layout +
-					(layVal < 10 ? layout : layout.split('-')[0] + '-9')),
+			container: $('<div/>')
+				.addClass(this.classes.container)
+				.addClass(this.classes.layout +
+					(layVal < 10 ? layout : layout.split('-')[0] + '-9')
+				),
 			countButton:  $('<button type="button"></button>')
 							.addClass(this.classes.paneButton)
 							.addClass(this.classes.countButton),
@@ -272,16 +275,12 @@ export default class SearchPane {
 		//  weird if the width of the panes is lower than expected, this fixes the design.
 		// Equally this may occur when the table is resized.
 		table.on('draw.dtsp', () => {
-			this._adjustTopRow();
+			this.adjustTopRow();
 		});
 
 		table.on('buttons-action', () => {
-			this._adjustTopRow();
+			this.adjustTopRow();
 		});
-
-		$(window).on('resize.dtsp', DataTable.util.throttle(() => {
-			this._adjustTopRow();
-		}));
 
 		// When column-reorder is present and the columns are moved, it is necessary to
 		//  reassign all of the panes indexes to the new index of the column.
@@ -290,6 +289,29 @@ export default class SearchPane {
 		});
 
 		return this;
+	}
+
+	/**
+	 * Adjusts the layout of the top row when the screen is resized
+	 */
+	public adjustTopRow(): void {
+		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
+		let subRow1 = this.dom.container.find('.dtsp-subRow1');
+		let subRow2 = this.dom.container.find('.dtsp-subRow2');
+		let topRow = this.dom.container.find('.' + this.classes.topRow);
+
+		// If the width is 0 then it is safe to assume that the pane has not yet been displayed.
+		//  Even if it has, if the width is 0 it won't make a difference if it has the narrow class or not
+		if (($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) && $(subContainers[0]).width() !== 0) {
+			$(subContainers[0]).addClass(this.classes.narrow);
+			$(subRow1[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
+			$(subRow2[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
+		}
+		else {
+			$(subContainers[0]).removeClass(this.classes.narrow);
+			$(subRow1[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
+			$(subRow2[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
+		}
 	}
 
 	/**
@@ -410,6 +432,28 @@ export default class SearchPane {
 	public removePane(): void {
 		this.s.displayed = false;
 		$(this.dom.container).hide();
+	}
+
+	/**
+	 * Resizes the pane based on the layout that is passed in
+	 * @param layout the layout to be applied to this pane
+	 */
+	public resize(layout: string): void {
+		this.c.layout = layout;
+		let layVal: number = parseInt(layout.split('-')[1], 10);
+		$(this.dom.container)
+			.removeClass()
+			.addClass(this.classes.container)
+			.addClass(this.classes.layout +
+				(layVal < 10 ? layout : layout.split('-')[0] + '-9'))
+			.addClass(this.s.colOpts.className)
+			.addClass(
+				(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
+					? this.customPaneSettings.className
+					: ''
+			)
+			.addClass(this.classes.show)
+			this.adjustTopRow();
 	}
 
 	/**
@@ -567,7 +611,7 @@ export default class SearchPane {
 		});
 
 		this.s.dtPane.on('draw.dtsp', () => {
-			this._adjustTopRow();
+			this.adjustTopRow();
 		});
 
 		// When the button to order by the name of the options is clicked then
@@ -743,29 +787,6 @@ export default class SearchPane {
 			total,
 			type,
 		});
-	}
-
-	/**
-	 * Adjusts the layout of the top row when the screen is resized
-	 */
-	private _adjustTopRow(): void {
-		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
-		let subRow1 = this.dom.container.find('.dtsp-subRow1');
-		let subRow2 = this.dom.container.find('.dtsp-subRow2');
-		let topRow = this.dom.container.find('.' + this.classes.topRow);
-
-		// If the width is 0 then it is safe to assume that the pane has not yet been displayed.
-		//  Even if it has, if the width is 0 it won't make a difference if it has the narrow class or not
-		if (($(subContainers[0]).width() < 252 || $(topRow[0]).width() < 252) && $(subContainers[0]).width() !== 0) {
-			$(subContainers[0]).addClass(this.classes.narrow);
-			$(subRow1[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowSearch);
-			$(subRow2[0]).addClass(this.classes.narrowSub).removeClass(this.classes.narrowButton);
-		}
-		else {
-			$(subContainers[0]).removeClass(this.classes.narrow);
-			$(subRow1[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowSearch);
-			$(subRow2[0]).removeClass(this.classes.narrowSub).addClass(this.classes.narrowButton);
-		}
 	}
 
 	/**
@@ -1157,7 +1178,7 @@ export default class SearchPane {
 
 		// Display the pane
 		this.s.dtPane.draw();
-		this._adjustTopRow();
+		this.adjustTopRow();
 
 		if (!this.s.listSet) {
 			this._setListeners();
