@@ -8,7 +8,6 @@ export interface IClasses {
 	container: string;
 	countButton: string;
 	disabledButton: string;
-	dull: string;
 	hidden: string;
 	hide: string;
 	layout: string;

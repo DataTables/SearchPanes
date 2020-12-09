@@ -21,7 +21,6 @@ export default class SearchPane {
 		container: 'dtsp-searchPane',
 		countButton: 'dtsp-countButton',
 		disabledButton: 'dtsp-disabledButton',
-		dull: 'dtsp-dull',
 		hidden: 'dtsp-hidden',
 		hide: 'dtsp-hide',
 		layout: 'dtsp-',
@@ -161,7 +160,6 @@ export default class SearchPane {
 		this.dom = {
 			buttonGroup: $('<div/>').addClass(this.classes.buttonGroup),
 			clear: $('<button type="button">&#215;</button>')
-					.addClass(this.classes.dull)
 					.addClass(this.classes.disabledButton)
 					.addClass(this.classes.paneButton)
 					.addClass(this.classes.clearButton),
@@ -473,7 +471,7 @@ export default class SearchPane {
 				}
 			}
 			else {
-				$(this.dom.clear).removeClass(this.classes.dull).removeClass(this.classes.disabledButton);
+				$(this.dom.clear).removeClass(this.classes.disabledButton);
 				this.s.selectPresent = true;
 
 				if (!this.s.updating) {
@@ -499,7 +497,7 @@ export default class SearchPane {
 					this.s.deselect = true;
 
 					if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
-						$(this.dom.clear).addClass(this.classes.dull).addClass(this.classes.disabledButton);
+						$(this.dom.clear).addClass(this.classes.disabledButton);
 					}
 
 					this._makeSelection();

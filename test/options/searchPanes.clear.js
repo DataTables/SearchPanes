@@ -14,7 +14,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 
 				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton').length).toBe(3);
 				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').text()).toBe('×');
-				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').hasClass('dtsp-dull')).toBe(
+				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').hasClass('dtsp-disabledButton')).toBe(
 					true
 				);
 			});

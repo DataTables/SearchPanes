@@ -5,7 +5,6 @@ export interface IClasses {
 	clearAll: string;
 	container: string;
 	disabledButton: string;
-	dull: string;
 	emptyMessage: string;
 	hide: string;
 	panes: string;

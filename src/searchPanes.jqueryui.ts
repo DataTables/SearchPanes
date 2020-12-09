@@ -40,7 +40,7 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-	disabledButton: 'dtsp-paneInputButton dtsp-dull',
+	disabledButton: 'dtsp-paneInputButton dtsp-disabledButton',
 	paneButton: 'dtsp-paneButton ui-button',
 	topRow: 'dtsp-topRow ui-state-default',
 });

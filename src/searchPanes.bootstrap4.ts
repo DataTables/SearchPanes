@@ -42,7 +42,6 @@ let DataTable = $.fn.dataTable;
 $.extend(true, DataTable.SearchPane.classes, {
 	buttonGroup: 'btn-group',
 	disabledButton: 'disabled',
-	dull: '',
 	narrow: 'col',
 	pane: {
 		container: 'table',
