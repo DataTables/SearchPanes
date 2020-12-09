@@ -1,4 +1,4 @@
-describe('searchPanes - options - columns.searchPanes.header', function() {
+describe('searchPanes - options - columns.searchPanes.emptyMessage', function() {
 	let table;
 
 	dt.libs({
@@ -16,15 +16,15 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
 				'<i>No Data</i>'
 			);
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(16) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
 				'<i>No Data</i>'
 			);
 		});
 		it('Refers to expected row', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0)').click();
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 
