@@ -24,7 +24,6 @@
 	<example title="Setting a custom class on a pane"><![CDATA[
 
     $('#example').DataTable({
-        searchPanes: true,
         dom: 'Plfrtip',
         columnDefs: [
             {
