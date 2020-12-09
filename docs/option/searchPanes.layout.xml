@@ -12,7 +12,7 @@
         </description>
 	</type>
 
-	<default value="false">
+	<default value="'columns-3'">
         The default value for the `-init searchPanes.layout` parameter is `columns-3`. 
     </default>
 	<description>
