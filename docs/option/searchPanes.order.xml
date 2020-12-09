@@ -12,8 +12,8 @@
 		</description>
 	</type>
 
-	<default value="false">
-		The default value for the `-init searchPanes.layout` parameter is `columns-3`. 
+	<default value="[]">
+		The default value for the `-init searchPanes.order` parameter is an empty array allowing SearchPanes to use the default order.. 
 	</default>
 	<description>
 		<![CDATA[
