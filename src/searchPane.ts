@@ -733,14 +733,7 @@ export default class SearchPane {
 			filter,
 			index,
 			shown,
-			sort: sort !== '' ?
-				sort :
-				this.s.dt.i18n(
-					'searchPanes.emptyMessage',
-					this.s.colOpts.emptyMessage !== false ?
-						this.s.colOpts.emptyMessage :
-						this.c.emptyMessage
-				),
+			sort,
 			total,
 			type,
 		});
