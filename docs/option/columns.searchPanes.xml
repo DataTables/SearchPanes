@@ -48,7 +48,7 @@ $(document).ready(function() {
         columnDefs: [
             {
                 searchPanes: {
-                    hideCount: true,
+                    viewCount: false,
                 }
                 targets: [4]
             }
@@ -191,7 +191,7 @@ $(document).ready(function() {
 ]]></example>
 
 <related type="option">columns.searchPanes.dtOpts</related>
-<related type="option">columns.searchPanes.hideCount</related>
+<related type="option">columns.searchPanes.viewCount</related>
 <related type="option">columns.searchPanes.options</related>
 <related type="option">columns.searchPanes.preSelect</related>
 <related type="option">columns.searchPanes.show</related>

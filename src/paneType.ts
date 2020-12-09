@@ -72,6 +72,7 @@ export interface IDefaults {
 	orthogonal: IOrthogonal;
 	preSelect: any;
 	threshold: number;
+	viewCount: boolean;
 	viewTotal: boolean;
 }
 
@@ -106,6 +107,7 @@ export interface IOrthogonal {
 	display: string;
 	filter: string;
 	hideCount: boolean;
+	viewCount: boolean;
 	search: string;
 	show: boolean;
 	sort: string;

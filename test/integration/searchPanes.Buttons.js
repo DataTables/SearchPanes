@@ -50,7 +50,7 @@ describe('searchPanes - integrations - Buttons', function() {
 					{
 						extend: 'searchPanes',
 						config: {
-							hideCount: true
+							viewCount: false
 							// cascadePanes: true
 						}
 					}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.hideCount</name>
-	<summary>Hide the count column in all panes</summary>
+	<summary>Deprecated. Hide the count column in all panes</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="boolean">
@@ -15,6 +15,8 @@
 	</default>
 	<description>
 		<![CDATA[
+			This option is deprecated from version 1.2.1+. It was replaced by `-init columns.searchPanes.viewCount` to maintain consistency with `-init searchPanes.viewTotal`. For now this option can still be used, but it will be removed in the future.
+			
 			As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init searchPanes.hideCount` is set to `true` then the count column won't be displayed in any of the panes.
 
 			The count column can be hidden for individual panes by the `-init columns.searchPanes.hideCount` option.

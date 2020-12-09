@@ -31,12 +31,12 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 		});
 
 		dt.html('basic');
-		it('Not shown if hideCount set', function() {
+		it('Not shown if viewCount set to false', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
 					viewTotal: true,
-					hideCount: true
+					viewCount: false
 				}
 			});
 

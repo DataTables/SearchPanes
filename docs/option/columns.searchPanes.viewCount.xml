@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.viewCount</name>
+	<summary>Hide the count column in the pane of a specific column</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+			By setting the `-init columns.searchPanes.viewCount` option to `false` the count column will be hidden in the pane for that specific column.
+		</description>
+	</type>
+
+	<default value="true">
+		The default value for the `-init columns.searchPanes.viewCount` parameter is `true`, meaning that as standard the count column will be included in the pane.
+	</default>
+	<description>
+		<![CDATA[		
+			As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init columns.searchPanes.viewCount` is set to `false` then the count column won't be displayed.
+
+			The count column can be hidden for all of the panes by making use of `-init searchPanes.viewCount`.
+
+			This option replaces the deprecated `-init columns.searchPanes.hideCount` from version 1.2.1+. It was replaced to maintain consistency with `-init searchPanes.viewTotal`. 
+		]]>
+	</description>
+
+	<example title="Hide count for the 5th columns pane"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Pfrtip',
+        columnDefs:[
+            {
+                searchPanes: {
+                    viewCount: false,
+                },
+                targets: [4]
+            }
+        ]
+    });
+});
+
+]]></example>
+
+<related type="option">searchPanes.viewCount</related>
+
+</dt-option>

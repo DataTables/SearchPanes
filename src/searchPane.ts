@@ -68,6 +68,7 @@ export default class SearchPane {
 			display: 'display',
 			filter: 'filter',
 			hideCount: false,
+			viewCount: true,
 			search: 'filter',
 			show: undefined,
 			sort: 'sort',
@@ -76,6 +77,7 @@ export default class SearchPane {
 		},
 		preSelect: [],
 		threshold: 0.6,
+		viewCount: true,
 		viewTotal: false,
 	};
 
@@ -111,6 +113,10 @@ export default class SearchPane {
 
 		// Get options from user
 		this.c = $.extend(true, {}, SearchPane.defaults, opts);
+
+		if(opts !== undefined && opts.hideCount !== undefined && opts.viewCount === undefined) {
+			this.c.viewCount = !this.c.hideCount;
+		}
 
 		this.customPaneSettings = panes;
 
@@ -977,7 +983,7 @@ export default class SearchPane {
 							// This is so that there is not need to call columns.adjust(), which in turn speeds up the code
 							let pill: string = '<span class="' + this.classes.pill + '">' + message + '</span>';
 
-							if (this.c.hideCount || colOpts.hideCount) {
+							if (!this.c.viewCount || !colOpts.viewCount) {
 								pill = '';
 							}
 
@@ -1281,8 +1287,8 @@ export default class SearchPane {
 
 		// If the count column is hidden then don't display the ordering button for it
 		if (
-			!this.c.hideCount &&
-			!colOpts.hideCount &&
+			this.c.viewCount &&
+			colOpts.viewCount &&
 			this.c.orderable &&
 			colOpts.orderable &&
 			this.c.controls &&
@@ -1416,13 +1422,21 @@ export default class SearchPane {
 			},
 			threshold: null,
 		};
-		return $.extend(
+		let columnOptions = table.settings()[0].aoColumns[this.s.index].searchPanes;
+
+		let colOpts = $.extend(
 			true,
 			{},
 			SearchPane.defaults,
 			defaultMutator,
-			table.settings()[0].aoColumns[this.s.index].searchPanes
+			columnOptions	
 		);
+
+		if(columnOptions !== undefined && columnOptions.hideCount !== undefined && columnOptions.viewCount === undefined) {
+			colOpts.viewCount = !columnOptions.hideCount;
+		}
+
+		return colOpts;
 	}
 
 	/**
