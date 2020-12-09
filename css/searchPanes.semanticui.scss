@@ -1,190 +1,53 @@
 @import './common.scss';
 
-div.dtsp-panesContainer{
-    padding: 5px;
-    border: 2px solid #f0f0f0;
-    border-radius: 10px;
-    margin: 5px 0;
-    font-size: 0.9em !important;   
+div.dtsp-searchPane {
+    div.dtsp-topRow {
+        margin: 0.5em 0;
 
-    .ui.grid {
-        margin: 0px !important;
-        justify-content: space-evenly;
-    }
-
-    div.dtsp-searchPanes{
-
-        div.dtsp-hidden{
-            display: none !important;
+        div.dtsp-subRow2 {
+            margin-left: 0.5em;
         }
 
-        div.dtsp-searchPane{
-            margin: 10px !important;
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
-            padding: 0px !important;
+        input {
+            min-height: 37px;
+        }
 
-            div.dtsp-topRow{
-                div.dtsp-narrow{
-                    width: 100%;
-                    text-align: right;
-                    margin-top: 3px;
+        button {
+            border: 1px solid #ced4da;
+            // width: 35px;
+        }
 
-                    .ui.icon{
-                        width: 98%;
-                    }
-                }
-                
-                .ui.button{
-                    max-width: 35px;
-                    min-width: 35px;
-                    padding: 0px;
-                    height: 35px;
-                }
-
-                .ui.icon {
-                    width: 98%;
-                    padding: 0px;
-
-                    input.dtsp-search{
-                        padding: 0px !important;
-                        padding-left: 3px !important;
-                        min-height: 35px;
-                    }
-
-                    .dtsp-searchButtonCont{
-                        min-width: 35px;
-                        max-width: 35px;
-                        display: inline-block;
-                    }
-                }
-
-                .ui.buttons {
-                    min-width: 105px;
-                    padding: 0px;
-                }
-            }
-
-            div.dataTables_wrapper {
-                border-bottom: 2px solid #f0f0f0;
-				border: 2px solid #f0f0f0;
-                border-radius: 4px;
-                padding: 0px !important;
-
-                &:hover{
-					border: 2px solid #cfcfcf;
-                }
-
-                .sixteen.wide.column{
-                    padding: 0px !important;
-                }
-
-                div.row{
-                    padding: 0px !important;
-                }
-
-                table{
-                    border-collapse: collapse;
-                    table-layout: fixed;
-                    tr{
-                        td{
-                            border-top: 0px solid transparent;
-                        }
-                        td.dtsp-countColumn {
-                            text-align: right;
-                        }
-
-                        td.dtsp-nameColumn {
-                            width: 100% !important;
-                        }
+        i.search {
+			position: absolute;
+			top: 7px;
+			right: 3px;
+            bottom: 0;
+        }
+    }
     
-                        div.dtsp-nameCont {
-                            width: 100%;
-                            display: flex;
-                            flex-direction: row;
-                            justify-content: flex-start;
-                            align-content: flex-start;
-                            align-items: flex-start;
 
-        
-                            span.dtsp-name {
-                                text-overflow: ellipsis;
-                                overflow: hidden;
-                                display: inline-block;
-                                vertical-align: middle;
-                                white-space: nowrap;
-                                flex-grow: 1;
-                            }
+    div.dataTables_wrapper {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
 
-                            span.dtsp-pill {
-                                display: inline-block;
-                                background-color: #cfcfcf;
-                                text-align: center;
-                                border: 1px solid #cfcfcf;
-                                border-radius: 10px;
-                                width: auto;
-                                min-width: 30px;
-                                color: black;
-                                padding: 0 4px;
-                            }
-                        }
-                    }
-                }
-
-                div.dataTables_filter {
-                    display: none;
-                }
-
-                div.dataTables_scrollHead {
-                    display: none !important;
-                }
-            }
-
-            tr > th,
-			tr > td{
-				padding: 5px 10px;
-			}
-
+        div.column {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
     }
 
-    div.dtsp-title {
-		float: left;
-		margin: 20px;
-		margin-bottom: 0px;
-		margin-top: 10px;
-    }
-    
-    button.dtsp-clearAll{
-		float: right;
-		margin: 20px;
-		padding: 10px;
-		margin-bottom: 0px;
-		margin-top: 5px;
-    }
-    
-    div.dtsp-titleRow{
-        min-height: 40px;
-    }
-}
+    div.dataTables_wrapper {
+        border: 2px #f0f0f0 solid;
+        text-align: left;
 
+        &:hover {
+            border: 2px solid #cfcfcf !important;
+        }
 
-@media screen and (max-width: 767px) {
-	
-	div.dtsp-columns-4,
-	div.dtsp-columns-5,
-	div.dtsp-columns-6{
-		max-width: 31% !important;
-		min-width: 31% !important;
-	}
-}
-
-@media screen and (max-width: 640px) {
-	div.dtsp-searchPanes {
-			flex-direction: column !important;
-	}
-	div.dtsp-searchPane{
-		max-width: 98% !important;
-		min-width: 98% !important;
-	}
+        div.dtsp-nameCont span.badge {
+            min-width: 30px;
+            line-height: 1.25em;
+            margin-top: 3.5px;
+        }
+    }
 }

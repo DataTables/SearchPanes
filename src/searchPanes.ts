@@ -16,7 +16,7 @@ namespace DataTables {
 import SearchPane from './searchPane';
 export default class SearchPanes {
 
-	private static version = '1.2.1';
+	private static version = '1.2.2';
 
 	private static classes: typeInterfaces.IClasses = {
 		clear: 'dtsp-clear',
@@ -39,6 +39,19 @@ export default class SearchPanes {
 		},
 		columns: [],
 		filterChanged: undefined,
+		i18n: {
+			clearMessage: 'Clear All',
+			clearPane: '&times;',
+			collapse: {
+				0: 'SearchPanes',
+				_: 'SearchPanes (%d)'
+			},
+			count: '{total}',
+			countFiltered: '{shown} ({total})',
+			emptyPanes: 'No SearchPanes',
+			loadMessage: 'Loading Search Panes...',
+			title: 'Filters Active - %d',
+		},
 		layout: 'columns-3',
 		order: [],
 		panes: [],
@@ -72,7 +85,7 @@ export default class SearchPanes {
 		this.dom = {
 			clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
 			container: $('<div/>').addClass(this.classes.panes).text(
-				table.i18n('searchPanes.loadMessage', 'Loading Search Panes...')
+				table.i18n('searchPanes.loadMessage', this.c.i18n.loadMessage)
 			),
 			emptyMessage: $('<div/>').addClass(this.classes.emptyMessage),
 			options: $('<div/>').addClass(this.classes.container),
@@ -132,7 +145,7 @@ export default class SearchPanes {
 		});
 
 		table.settings()[0]._searchPanes = this;
-		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', 'Clear All'));
+		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', this.c.i18n.clearMessage));
 
 		if (this.s.dt.settings()[0]._bInitComplete || fromInit) {
 			this._paneDeclare(table, paneSettings, opts);
@@ -489,7 +502,7 @@ export default class SearchPanes {
 		let message: string;
 
 		try {
-			message = this.s.dt.i18n('searchPanes.emptyPanes', 'No SearchPanes');
+			message = this.s.dt.i18n('searchPanes.emptyPanes', this.c.i18n.emptyPanes);
 		}
 		catch (error) {
 			message = null;
@@ -1143,7 +1156,7 @@ export default class SearchPanes {
 		}
 
 		// Run the message through the internationalisation method to improve readability
-		let message: string = this.s.dt.i18n('searchPanes.title', 'Filters Active - %d', filterCount);
+		let message: string = this.s.dt.i18n('searchPanes.title', this.c.i18n.title, filterCount);
 		$(this.dom.title).text(message);
 
 		if (this.c.filterChanged !== undefined && typeof this.c.filterChanged === 'function') {

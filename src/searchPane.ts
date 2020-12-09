@@ -57,6 +57,11 @@ export default class SearchPane {
 		dtOpts: {},
 		emptyMessage: '<i>No Data</i>',
 		hideCount: false,
+		i18n: {
+			clearPane: '&times;',
+			count: '{total}',
+			countFiltered: '{shown} ({total})',
+		},
 		layout: 'columns-3',
 		name: undefined,
 		orderable: true,
@@ -187,7 +192,7 @@ export default class SearchPane {
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions();
 		let colOpts =  this.s.colOpts;
 		let clear: JQuery<HTMLElement> = $('<button type="button">X</button>').addClass(this.classes.paneButton);
-		$(clear).text(table.i18n('searchPanes.clearPane', 'X'));
+		$(clear).text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
 		this.dom.container.addClass(colOpts.className);
 		this.dom.container.addClass(
 			(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
@@ -779,8 +784,8 @@ export default class SearchPane {
 		let rowData = this.s.rowData;
 
 		// Other Variables
-		let countMessage: string = table.i18n('searchPanes.count', '{total}');
-		let filteredMessage: string = table.i18n('searchPanes.countFiltered', '{shown} ({total})');
+		let countMessage: string = table.i18n('searchPanes.count', this.c.i18n.count);
+		let filteredMessage: string = table.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
 		let loadedFilter = table.state.loaded();
 
 		// If the listeners have not been set yet then using the latest state may result in funny errors
@@ -946,6 +951,7 @@ export default class SearchPane {
 		let errMode: string = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
 		let haveScroller = (DataTable as any).Scroller;
+
 		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
 			true,
 			{
@@ -1022,28 +1028,45 @@ export default class SearchPane {
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
 			(this.s.colOpts.options !== undefined || !this.colExists)
-			? {
-				createdRow(row, data, dataIndex) {
-					$(row).addClass(data.className);
+				? {
+					createdRow(row, data, dataIndex) {
+						$(row).addClass(data.className);
+					}
 				}
-			}
-			: undefined,
+				: undefined,
 			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
-			? this.customPaneSettings.dtOpts
-			: {}
+				? this.customPaneSettings.dtOpts
+				: {},
+			$.fn.dataTable.versionCheck('2')
+				? {
+					layout: {
+						topLeft: null,
+						topRight: null,
+						bottomLeft: null,
+						bottomRight: null
+					}
+				}
+				: {},
 		));
 
 		$(this.dom.dtP).addClass(this.classes.table);
 
-		// This is hacky but necessary for when datatables is generating the column titles automatically
-		$(this.dom.searchBox).attr(
-			'placeholder',
-			colOpts.header !== undefined
-			? colOpts.header
-			: this.colExists
-				? table.settings()[0].aoColumns[this.s.index].sTitle
-				: this.customPaneSettings.header || 'Custom Pane'
-		);
+		// Getting column titles is a little messy
+		let headerText = 'Custom Pane';
+
+		if (this.customPaneSettings && this.customPaneSettings.header) {
+			headerText = this.customPaneSettings.header;
+		}
+		else if (colOpts.header) {
+			headerText = colOpts.header;
+		}
+		else if (this.colExists) {
+			headerText = $.fn.dataTable.versionCheck('2')
+				? table.column(this.s.index).title()
+				: table.settings()[0].aoColumns[this.s.index].sTitle;
+		}
+
+		this.dom.searchBox.attr('placeholder', headerText);
 
 		// As the pane table is not in the document yet we must initialise select ourselves
 		($.fn.dataTable as any).select.init(this.s.dtPane);

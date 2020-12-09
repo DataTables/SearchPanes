@@ -24,9 +24,7 @@ declare var define: {
 				$ = require('datatables.net-bs4')(root, $).$;
 			}
 
-			console.log($.fn.dataTable);
 			if (! $.fn.dataTable.SearchPanes) {
-				console.log("not present");
 				require('datatables.net-searchpanes')(root, $);
 			}
 
@@ -42,7 +40,7 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-	buttonGroup: 'btn-group col justify-content-end',
+	buttonGroup: 'btn-group',
 	disabledButton: 'disabled',
 	dull: '',
 	narrow: 'col',
@@ -51,21 +49,21 @@ $.extend(true, DataTable.SearchPane.classes, {
 	},
 	paneButton: 'btn btn-light',
 	pill: 'pill badge badge-pill badge-secondary',
-	search: 'col-sm form-control search',
-	searchCont: 'input-group col-sm',
+	search: 'form-control search',
+	searchCont: 'input-group',
 	searchLabelCont: 'input-group-append',
 	subRow1: 'dtsp-subRow1',
 	subRow2: 'dtsp-subRow2',
 	table: 'table table-sm table-borderless',
-	topRow: 'dtsp-topRow row',
+	topRow: 'dtsp-topRow',
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll col-auto btn btn-light',
+	clearAll: 'dtsp-clearAll btn btn-light',
 	container: 'dtsp-searchPanes',
-	panes: 'dtsp-panes dtsp-container',
-	title: 'dtsp-title col',
-	titleRow: 'dtsp-titleRow row',
+	panes: 'dtsp-panes dtsp-panesContainer',
+	title: 'dtsp-title',
+	titleRow: 'dtsp-titleRow',
 });
 
 return DataTable.searchPanes;
