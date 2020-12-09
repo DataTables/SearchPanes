@@ -2,7 +2,7 @@
 <dt-option library="SearchPanes">
 	<name>searchPanes.viewCount</name>
 	<summary>Show the count column in all panes</summary>
-	<since>SearchPanes 1.0.0</since>
+	<since>SearchPanes 1.3.0</since>
 
 	<type type="boolean">
 		<description>
