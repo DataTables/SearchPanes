@@ -25,7 +25,7 @@
 
     $('#example').DataTable( {
         searchPanes:true,
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs: [
             {
                 searchPanes: {
@@ -40,7 +40,7 @@
 
     <example title="Setting a custom class on a custom pane"><![CDATA[
         table = $('#example').DataTable({
-            dom: 'Pfrtip',
+            dom: 'Plfrtip',
             searchPanes: {
                 panes: [
                     {

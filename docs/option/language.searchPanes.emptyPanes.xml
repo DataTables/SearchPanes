@@ -21,7 +21,7 @@
 
 	<example title="Alter Empty Pane Message"><![CDATA[
     $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         language: {
             searchPanes: {
                  emptyPanes: 'There are no panes to display. :/'
@@ -33,7 +33,7 @@
 
     <example title="Hide the div that is meant to contain the SearchPanes"><![CDATA[
     $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         language: {
             searchPanes: {
                  emptyPanes: null

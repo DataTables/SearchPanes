@@ -69,7 +69,7 @@
     searchPanes: {
         orthogonal:'sp'
     },
-    dom: 'Pfrtip'
+    dom: 'Plfrtip'
 }
 ]]></example>
 

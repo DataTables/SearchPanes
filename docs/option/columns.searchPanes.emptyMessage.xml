@@ -27,7 +27,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         searchPanes:true,
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         columnDefs:[
             {
                 searchPanes: {

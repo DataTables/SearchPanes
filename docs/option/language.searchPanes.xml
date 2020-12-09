@@ -25,7 +25,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         language: {
             searchPanes: {
                 title: {
@@ -47,7 +47,7 @@ $(document).ready(function() {
         searchPanes:{
             viewTotal: true
         },
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         language: {
             searchPanes: {
                 count: '{total} found',

@@ -27,7 +27,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-		dom: 'Pfrtip',
+		dom: 'Plfrtip',
         searchPanes: {
             viewCount: false
         }

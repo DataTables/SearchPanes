@@ -30,7 +30,7 @@ $(document).ready(function() {
         searchPanes: {
             order: ['Age', 'Office', 'Position']
         },
-        dom: 'Pfrtip'
+        dom: 'Plfrtip'
     });
 });
 
@@ -51,7 +51,7 @@ $(document).ready(function() {
                 targets: [3]
             }
         ],
-        dom: 'Pfrtip'
+        dom: 'Plfrtip'
     });
 });
 

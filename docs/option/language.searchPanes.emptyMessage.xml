@@ -30,7 +30,7 @@
                 emptyMessage:"</i></b>EMPTY</b></i>"
             },
         }
-		dom: 'Pfrtip',
+		dom: 'Plfrtip',
     });
 });
 

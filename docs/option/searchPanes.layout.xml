@@ -28,7 +28,7 @@ $(document).ready(function() {
         searchPanes: {
             layout: 'columns-2'
         },
-        dom: 'Pfrtip'
+        dom: 'Plfrtip'
     });
 });
 

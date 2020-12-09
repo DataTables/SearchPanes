@@ -28,7 +28,7 @@
 	<example title="Define custom pane DataTable options"><![CDATA[
 
     table = $('#example').DataTable({
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         searchPanes: {
             panes: [
                 {

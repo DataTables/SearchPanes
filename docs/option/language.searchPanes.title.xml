@@ -29,7 +29,7 @@
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         language: {
             searchPanes: {
                 title:{
@@ -48,7 +48,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        dom: 'Pfrtip',
+        dom: 'Plfrtip',
         language: {
             searchPanes: {
                 title: 'Select filters below'

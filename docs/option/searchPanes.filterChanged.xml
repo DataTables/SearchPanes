@@ -33,7 +33,7 @@ $(document).ready(function() {
 				$('.SPDetails').text(this.i18n('searchPanes.collapse', {0: 'AdvancedFilter', _: 'Advancedfilter (%d)'}, count));
 			}
 		}
-		dom: 'Pfrtip'
+		dom: 'Plfrtip'
 	});
 });
 
