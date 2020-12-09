@@ -15,7 +15,7 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will consider all of the columns when creating searchPanes. When `-init searchPanes.columns` is defined with an array of numbers, then only the columns with those indexes will be considered when creating panes. Note they still may not be displayed based upon the calculations of `-init searchPanes.threshold` or `-init columns.searchPanes.threshold`.
+			As standard, SearchPanes will consider all of the columns when creating searchPanes. When `-init searchPanes.columns` is defined with an array of numbers, then only the columns with those indexes will be considered when creating panes. Note they still may not be displayed based upon the calculations of `-init searchPanes.threshold` or `-init columns.searchPanes.threshold`, but can be forced to show using `-init columns.searchPanes.show`.
 
 			The `-init searchPanes.columns` functionality is useful when wanting to restrict which columns will be considered when displaying panes. This may result in faster load times as there is not as much validation to be done. 
 		]]>
@@ -36,5 +36,6 @@ $(document).ready(function() {
 
 <related type="option">searchPanes.threshold</related>
 <related type="option">columns.searchPanes.threshold</related>
+<related type="option">columns.searchPanes.show</related>
 
 </dt-option>

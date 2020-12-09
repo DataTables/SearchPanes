@@ -9,12 +9,17 @@
 $(document).ready(function() {
     var dt = $('#example').DataTable( {
         searchPanes:{
-            threshold: 1,
             layout: 'columns-2',
         },
         dom: 'Pfrtip',
         columnDefs: [
-            { type: 'ip-address', targets:1 }
+            { type: 'ip-address', targets:1 },
+            {
+                searchPanes:{
+                    show: true
+                },
+                targets:[0,1]
+            }
         ]
     });
 

@@ -36,7 +36,7 @@ This example shows how `-init searchPanes.threshold` allows the user to define t
 
 The ratio of uniqueness is the number of different values throughout the table divided by the total number of values, i.e. as the number approaches 1 the more unique the values are.
 
-Thresholds can also be set for individual columns using the `-init columns.searchPanes.threshold` option. Here we set the threshold of the Name column to be 1, meaning even though the column consists entirely of unique values, the searchPane will still be displayed.
+Thresholds can also be set for individual columns using the `-init columns.searchPanes.threshold` option. Here we set the threshold of the Name column to be 1, meaning even though the column consists entirely of unique values, the searchPane will still be displayed. This is discouraged, to force a pane to show the `-init columns.searchPanes.show` options should be used.
 
 The default for `-init searchPanes.threshold` is 0.6.
 

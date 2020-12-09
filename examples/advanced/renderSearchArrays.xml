@@ -9,7 +9,6 @@ $(document).ready(function() {
     let dt = $('#example').DataTable( {
         ajax: '../resources/arrayData.json',
         searchPanes:{
-            threshold: 1,
 			columns: [ 3 ]
         },
 		dom: 'Pfrtip',
@@ -34,6 +33,14 @@ $(document).ready(function() {
 				}
 			}
 		],
+		columnDefs: [
+            {
+                searchPanes:{
+                    show: true
+                },
+                targets:[3]
+            }
+        ],
 		initComplete: function() {
 			this.api().searchPanes.rebuildPane();
 		}
