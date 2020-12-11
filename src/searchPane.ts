@@ -54,12 +54,13 @@ export default class SearchPane {
 			return dt.table().container();
 		},
 		dtOpts: {},
-		emptyMessage: '<i>No Data</i>',
+		emptyMessage: null,
 		hideCount: false,
 		i18n: {
 			clearPane: '&times;',
 			count: '{total}',
-			countFiltered: '{shown} ({total})'
+			countFiltered: '{shown} ({total})',
+			emptyMessage: '<em>No data</em>',
 		},
 		layout: 'auto',
 		name: undefined,
@@ -774,12 +775,7 @@ export default class SearchPane {
 			className,
 			display: display !== '' ?
 				display :
-				this.s.dt.i18n(
-					'searchPanes.emptyMessage',
-					this.s.colOpts.emptyMessage !== false ?
-						this.s.colOpts.emptyMessage :
-						this.c.emptyMessage
-				),
+				this._emptyMessage(),
 			filter,
 			index,
 			shown,
@@ -1324,6 +1320,25 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Getting the legacy message is a little complex due a legacy parameter
+	 */
+	private _emptyMessage(): string {
+		let def = this.c.i18n.emptyMessage;
+
+		// Legacy parameter support
+		if (this.c.emptyMessage) {
+			def = this.c.emptyMessage;
+		}
+
+		// Override per column
+		if (this.s.colOpts.emptyMessage !== false) {
+			def = this.s.colOpts.emptyMessage;
+		}
+
+		return this.s.dt.i18n('searchPanes.emptyMessage', def);
+	}
+
+	/**
 	 * Gets the options for the row for the customPanes
 	 * @returns {object} The options for the row extended to include the options from the user.
 	 */
@@ -1373,12 +1388,7 @@ export default class SearchPane {
 			// Initialise the object which is to be placed in the row
 			let insert: string = comp.label !== '' ?
 				comp.label :
-				this.s.dt.i18n(
-					'searchPanes.emptyMessage',
-					this.s.colOpts.emptyMessage !== false ?
-						this.s.colOpts.emptyMessage :
-						this.c.emptyMessage
-				);
+				this._emptyMessage();
 			let comparisonObj = {
 				className: comp.className,
 				display: insert,
@@ -1684,14 +1694,7 @@ export default class SearchPane {
 		let updating = this.s.updating;
 		this.s.updating = true;
 		let filters = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
-		let nullIndex: number = filters.indexOf(
-			this.s.dt.i18n(
-				'searchPanes.emptyMessage', 
-				this.s.colOpts.emptyMessage !== false ?
-					this.s.colOpts.emptyMessage :
-					this.c.emptyMessage
-			)
-		);
+		let nullIndex: number = filters.indexOf(this._emptyMessage());
 		let container = $(this.s.dtPane.table().container());
 
 		// If null index is found then search for empty cells as a filter.

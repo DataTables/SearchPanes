@@ -35,6 +35,7 @@ export interface IDefaults {
 		},
 		count: string;
 		countFiltered: string;
+		emptyMessage: string;
 		emptyPanes: string;
 		loadMessage: string;
 		title: string;

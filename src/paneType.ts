@@ -65,6 +65,7 @@ export interface IDefaults {
 		clearPane: string;
 		count: string;
 		countFiltered: string;
+		emptyMessage: string;
 	};
 	layout: string;
 	name: string;

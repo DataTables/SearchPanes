@@ -49,6 +49,7 @@ export default class SearchPanes {
 			},
 			count: '{total}',
 			countFiltered: '{shown} ({total})',
+			emptyMessage: '<em>No data</em>',
 			emptyPanes: 'No SearchPanes',
 			loadMessage: 'Loading Search Panes...',
 			title: 'Filters Active - %d'

@@ -9,7 +9,9 @@
 $(document).ready(function() {
     var dt = $('#example').DataTable({
         searchPanes: {
-            emptyMessage: "<i><b>EMPTY</b></i>"
+            i18n: {
+                emptyMessage: "<i><b>EMPTY</b></i>"
+            }
         },
         dom: 'Plfrtip'
     });
@@ -31,7 +33,7 @@ $(document).ready(function() {
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates sorting on cells when no data is present. As an empty cell isn't very clear in a pane, a string can be used instead to denote the empty value. The default for `-init searchPanes.emptyMessage` is "<i>No Data</i>".
+This example demonstrates sorting on cells when no data is present. As an empty cell isn't very clear in a pane, a string can be used instead to denote the empty value. The default for `-init searchPanes.i18n.emptyMessage` is "<i>No Data</i>".
 
 ]]></info>
 
