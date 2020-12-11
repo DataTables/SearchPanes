@@ -1331,7 +1331,7 @@ export default class SearchPane {
 		}
 
 		// Override per column
-		if (this.s.colOpts.emptyMessage !== false) {
+		if (this.s.colOpts.emptyMessage !== false && this.s.colOpts.emptyMessage !== null) {
 			def = this.s.colOpts.emptyMessage;
 		}
 
