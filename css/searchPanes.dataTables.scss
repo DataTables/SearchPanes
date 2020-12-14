@@ -69,8 +69,12 @@ div.dtsp-panesContainer {
 		cursor: context-menu !important;
 		color: rgb(124, 124, 124);
 
-		&:hover{
+		&:hover {
 			background-color: transparent;
+		}
+
+		&:focus {
+			outline: none;
 		}
 	}
 }
