@@ -32,9 +32,9 @@ This is the searchPanes extension for DataTables. It allows results to be filter
 
 This example demonstrates the `-init searchPanes.viewTotal` option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
 
-`-init language.searchPanes.count` - this is the format of the count column when no filters have been applied to the table.
+`-init searchPanes.i18n.count` - this is the format of the count column when no filters have been applied to the table.
 
-`-init language.searchPanes.countFiltered` - this is the format of the count column when filters have been applied to the table.
+`-init searchPanes.i18n.countFiltered` - this is the format of the count column when filters have been applied to the table.
 
 `{total}` - This is the token which is replaced by the total count of that value in the table.
 

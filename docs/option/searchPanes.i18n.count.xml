@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>language.searchPanes.count</name>
+	<name>searchPanes.i18n.count</name>
 	<summary>Set the message to be displayed in the count column when not searching</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
 		<description>
-			`-init language.searchPanes.count` changes what will be displayed in the count column if not filtering.
+			`-init searchPanes.i18n.count` changes what will be displayed in the count column if not filtering.
 		</description>
 	</type>
 
 	<default value="{total}">
-		The default value for the `-init language.searchPanes.count` parameter is `{total}`. 
+		The default value for the `-init searchPanes.i18n.count` parameter is `{total}`. 
 	</default>
 	<description>
 		<![CDATA[
@@ -21,7 +21,9 @@
 
 			Both of the above strings can be included in the count message although they will be the same when no filtering is taking place.
 
-			This message will be shown regardless of the value of `-init searchPanes.viewTotal`, although it will only change to the message in `-init language.searchPanes.countFiltered` when `-init searchPanes.viewTotal` is true.
+			This message will be shown regardless of the value of `-init searchPanes.viewTotal`, although it will only change to the message in `-init searchPanes.i18n.countFiltered` when `-init searchPanes.viewTotal` is true.
+
+			This overrides any default value that is used in `language.searchPanes.count`.
 		]]>
 	</description>
 
@@ -30,21 +32,19 @@
 $(document).ready(function() {
     $('#example').DataTable({
         searchPanes: {
-            viewTotal: true
-        },
-        dom: 'Plfrtip',
-        language: {
-            searchPanes: {
+            viewTotal: true,
+			i18n: {
                 count: '{total} found',
                 countFiltered: '{shown} ({total})'
             }
-        }
+        },
+        dom: 'Plfrtip'
     });
 });
 
 ]]></example>
 
-<related type="option">language.searchPanes.countFiltered</related>
+<related type="option">searchPanes.i18n.countFiltered</related>
 <related type="option">searchPanes.viewTotal</related>
 
 </dt-option>

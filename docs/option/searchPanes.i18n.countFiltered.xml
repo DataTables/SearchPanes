@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>language.searchPanes.countFiltered</name>
+	<name>searchPanes.i18n.countFiltered</name>
 	<summary>Set the message to be displayed in the count column when searching</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="string">
 		<description>
-		`-init language.searchPanes.countFiltered` changes what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and filtering is taking place.
+		`-init searchPanes.i18n.countFiltered` changes what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and filtering is taking place.
 	</description>
 	</type>
 
 	<default value="{shown} ({total})">
-		The default value for the `-init language.searchPanes.countFiltered` parameter is `{shown} ({total})`.
+		The default value for the `-init searchPanes.i18n.countFiltered` parameter is `{shown} ({total})`.
 	</default>
 	<description>
 		<![CDATA[
@@ -20,6 +20,8 @@
 			SearchPanes replace two strings when creating the output for the count column: `{shown}` is the count for each different value that is currently displayed in the DataTable, `{total}` is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will be the same value.
 
 			This message will not be displayed if `-init searchPanes.viewTotal` is not set to be `true`.
+
+			This overrides any default value that is used in `language.searchPanes.countFiltered`.
 		]]>
 	</description>
 
@@ -28,15 +30,13 @@
 $(document).ready(function() {
     $('#example').DataTable({
         searchPanes: {
-            viewTotal: true
-        },
-        dom: 'Plfrtip',
-        language: {
-            searchPanes: {
-                count: '{total} found',
+            viewTotal: true,
+			i18n: {
+				count: '{total} found',
                 countFiltered: '{shown} ({total})'
             }
-        }
+        },
+        dom: 'Plfrtip'
     });
 });
 

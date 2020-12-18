@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
-	<name>language.searchPanes.collapse</name>
+	<name>searchPanes.i18n.collapse</name>
 	<summary>Set the message to be displayed in the SearchPanes Button</summary>
 	<since>SearchPanes 1.1.0</since>
 
 	<type type="string | object">
 		<description>
-			`-init language.searchPanes.collapse` changes what will be displayed in the text of the SearchPanes Button. It can also display the count of selections across the panes.
+			`-init searchPanes.i18n.collapse` changes what will be displayed in the text of the SearchPanes Button. It can also display the count of selections across the panes.
 		</description>
 	</type>
 
 	<default value="{0: 'SearchPanes', _: 'SearchPanes (%d)'}">
-		The default value for the `-init language.searchPanes.collapse` parameter is `{0: 'SearchPanes', _: 'SearchPanes (%d)'}`. 
+		The default value for the `-init searchPanes.i18n.collapse` parameter is `{0: 'SearchPanes', _: 'SearchPanes (%d)'}`. 
 	</default>
 	<description>
 		<![CDATA[
 			As standard, SearchPanes will set the SearchPanes Button to display the total number of selections across the panes alongside the SearchPanes title.
 
-            The value of `-init language.searchPanes.collapse` is passed into an `-api i18n()` function, `%d` is replaced by the count of selections across the panes. To just set the Button text to be a string no matter the count, just set `-init language.searchPanes.collapse` to the desired `-type string`.
+            The value of `-init searchPanes.i18n.collapse` is passed into an `-api i18n()` function, `%d` is replaced by the count of selections across the panes. To just set the Button text to be a string no matter the count, just set `-init searchPanes.i18n.collapse` to the desired `-type string`.
+
+            This overrides any default value that is used in `language.searchPanes.collapse`.
 		]]>
 	</description>
 
 	<example title="Change message for SearchPanes button which also displays selection count:"><![CDATA[
 $(document).ready(function() {
     $('#example').DataTable({
-        language: {
-            searchPanes: {
+        searchPanes: {
+            i18n: {
                 collapse: {
 					0: 'Search Options',
 					1: 'Search (one selected)',
@@ -45,8 +47,8 @@ $(document).ready(function() {
 	<example title="Change message for SearchPanes button to only be a string:"><![CDATA[
 $(document).ready(function() {
     $('#example').DataTable({
-        language: {
-            searchPanes: {
+        searchPanes: {
+            i18n: {
                 collapse: 'Search Options"
             }
         },

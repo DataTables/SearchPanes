@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n</name>
+	<summary>Container for options for language</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+			This option is capable of holding all of the sub-options for languages for the panes for specific applications.
+		</description>
+	</type>
+
+	<default value="object">
+		The default value for the `-init searchPanes.i18n` is an object containing all of the default values for the `searchPanes.i18n.*` options. These are the default values that SearchPanes uses.
+	</default>
+	<description>
+		<![CDATA[
+			As standard, no custom options will be applied to the pane specific language options if `-init searchPanes.i18n` is unaltered. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propogate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
+
+            This is a set of values if set here override anything set by `-init language.searchPanes`.
+            
+			This is useful as it means that the language options can be set for panes leading to increased internationalisation.
+		]]>
+	</description>
+
+	<example title="Alter title messages: "><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable({
+        dom: 'Plfrtip',
+        searchPanes: {
+            i18n: {
+                title: {
+                    _: 'Filters Selected - %d',
+                    0: 'No Filters Selected',
+                    1: 'One Filter Selected'
+                }
+            }
+        }
+    });
+});
+
+]]></example>
+
+<example title="Change messages for viewTotal:"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable({
+        searchPanes: {
+            viewTotal: true,
+            i18n: {
+                count: '{total} found',
+                countFiltered: '{shown} ({total})'
+            }
+        },
+        dom: 'Plfrtip'
+    });
+});
+
+]]></example>
+
+<related type="option">searchPanes.i18n.count</related>
+<related type="option">searchPanes.i18n.countFiltered</related>
+<related type="option">searchPanes.viewTotal</related>
+<related type="option">searchPanes.i18n.title</related>
+
+</dt-option>

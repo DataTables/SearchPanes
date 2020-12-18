@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.emptyPanes</name>
+	<summary>Add internationalisation to the message shown when no panes are displayed</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init searchPanes.i18n.emptyPanes` option to a message, if there are no panes to be displayed then this message will be displayed in their place. 
+        </description>
+	</type>
+
+	<default type="string" value="No searchPanes">
+        The default value for the `-init searchPanes.i18n.emptyPanes` parameter is `"No SearchPanes"`. This is so that it is easier for devs to realise when there are no SearchPanes to be shown rather than mistaking the lack of a div for an error. 
+    </default>
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will display a message in the div that is meant to hold the panes if there are none to display. If a  custom message has been declared then this will be shown in the place of the default message. If the value of `-init searchPanes.i18n.emptyPanes` is set to null then the div will not be shown.
+
+        This overrides any default value that is used in `language.searchPanes.emptyPanes`.
+        ]]>
+	</description>
+
+	<example title="Alter Empty Pane Message"><![CDATA[
+    $('#example').DataTable({
+        dom: 'Plfrtip',
+        searchPanes: {
+            i18n: {
+                emptyPanes: 'There are no panes to display. :/'
+            }
+        }
+    });
+
+    ]]></example>
+
+    <example title="Hide the div that is meant to contain the SearchPanes"><![CDATA[
+    $('#example').DataTable({
+        dom: 'Plfrtip',
+        searchPanes: {
+            i18n: {
+                emptyPanes: null
+            }
+        }
+    });
+
+    ]]></example>
+
+</dt-option>
