@@ -17,7 +17,7 @@
 		<![CDATA[
 			Empty cells will be represented in the panes by the option `-init language.searchPanes.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell. The value is passed through the `-api i18n()` function.
 
-            This value superseeds `-init searchPanes.emptyMessage` and `-init columns.searchPanes.emptyMessage`. If it is desired for those values to be used `-init language.searchPanes.emptyMessage` should be undefined, as it is by default. When this is the case the two previous options will be used.
+            This value superseeds `-init searchPanes.emptyMessage` (deprecated) and `-init columns.searchPanes.emptyMessage`. If it is desired for those values to be used `-init language.searchPanes.emptyMessage` should be undefined, as it is by default. When this is the case the two previous options will be used.
 		]]>
 	</description>
 
