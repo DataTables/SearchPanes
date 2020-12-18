@@ -1495,9 +1495,9 @@ export default class SearchPane {
 		//  being displayed for their functionality. Also make sure that this was not the last pane to have a selection made
 		if (!this.s.dt.page.info().serverSide) {
 			let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
-				table.rows({search: 'applied'}).indexes() :
-				table.rows().indexes();
-
+			table.rows({search: 'applied'}).indexes() :
+			table.rows().indexes();
+			
 			for (let index of indexArray.toArray()) {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
