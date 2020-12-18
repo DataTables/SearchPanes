@@ -11,19 +11,29 @@
 	</type>
 
 	<default value="0.6">
-        The default value for the `-init searchPanes.threshold` parameter is `0.6`, this will be the default value for all of the columns unless otherwise specified by either `-init searchPanes.thresold` or `-init columns.searchPanes.threshold`. When this default value is in place it will mean that columns where the ratio of different values in the column to total rows is less than `0.6` then the pane will be shown. If the value is overwritten then if the ratio is less than that value then the pane will be shown.
+        The default value for the `-init searchPanes.threshold` parameter is `0.6`, this will be the default value for all of the columns unless otherwise specified by either `-init searchPanes.thresold`.
     </default>
 	<description>
 		<![CDATA[
-			As standard columns must have a uniqueness ratio of 0.6 (ratio of different values throughout the column to the number of total rows).
+			As standard, SearchPanes will automatically determine which columns should be used for filtering. It does this by calculating the ratio of distinct values in a column to the total number of values within the same column. This ratio is then compared to the value of `-init searchPanes.threshold`. If the ratio is less than or equal to this value then the pane will be displayed to the user.
 
-			By setting the `-init columns.searchPanes.threshold` option to a different decimal value, the uniqueness ratio must be less than this value to display the pane for the column specified.
+			Consider a table with 4 rows and 4 columns. For column 1, each row has a different distinct value. This will give a value of 1 for our ratio and therefore a pane will not be displayed for this column.
 
-			This is useful as it determines at what point a pane for the specified column should be shown. If all panes for tables with lots of columns were shown, the searching may become confusing. This adjustment allows searchPanes to internally make the decisions to display a simpler, less cluttered user interface.
+			Column 2 has one distinct value in rows 1 and 2, and a different distinct value in rows 3 and 4. Our ratio for this column therefore will be 0.5 (2 distinct values to 4 total values) and the pane will be displayed.
 
-			The threshold of the uniqueness ratio can also be set for all of the columns by making use of the `-init searchPanes.threshold` option.
+			Column 3 has one distinct value in rows 1 and 2, and 2 different distinct values in rows 3 and 4. Our ratio for this column is 0.75 (3 distinct values to 4 total values) and the pane will not be displayed.
 
-			If you desire to force specific panes to show and other specific panes to hide without having searchPanes automatically work it out, make use of the `-init columns.searchPanes.show` option.
+			Column 4 has a single distinct value that is the same across all of the rows. This pane will not be subject to the threshold check as there is only one distinct value in the whole column - it makes no sense to filter on it.
+
+			In effect, as the value of the ratio rises towards 1, the more "unique" the data in that column is.  
+
+			This system can also be applied to columns which have arrays in place. As the total number of options are calculated rather than just using the row count it is still possible to preform an accurate calculation. Say you have a column that uses arrays with 2 rows. Row 1 contains 4 distinct values and row 2 contains 4 values 2 of which are shared with row 1, the remaining 2 are distinct to the set. This means there are a total of 6 distinct options within the column, across the 8 values that are presented giving a ratio of 0.75 (6/8).
+
+			Therefore by setting the `-init searchPanes.threshold` option to a different decimal value, the point at which the panes are displayed can be altered. This is useful for keeping a clean user interface and only displaying the panes that are likely to provide "useful" filtering.
+
+			This `-init columns.searchPanes.threshold` option allows the threshold for an individual column to be set rather than a blanket value for all of the columns.
+
+			If you want to force specific panes to always be present, or to always be hidden, use the `-init columns.searchPanes.show` option. This is a much cleaner way of forcing panes to show/hide.
 		]]>
 	</description>
 
