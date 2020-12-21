@@ -586,9 +586,21 @@ export default class SearchPanes {
 
 			pane.setClear(false);
 		}
-
+		
 		// Rebin panes
 		this.s.dt.draw();
+
+		// While all of the selections have been removed, check the table lengths
+		// If they are different, another filter is in place and we need to force viewTotal to be used
+		let noSelectionsTableLength = this.s.dt.rows({search: 'applied'}).data().toArray().length;
+		let tableLength = this.s.dt.rows().data().toArray().length;
+
+		if(tableLength !== noSelectionsTableLength) {
+			for (let pane of this.s.panes) {
+				pane.s.forceViewTotal = true;
+			}
+		}
+
 		for(let pane of this.s.panes) {
 			pane.updatePane(true);
 		}
@@ -605,6 +617,13 @@ export default class SearchPanes {
 		}
 
 		this.regenerating = false;
+
+		// ViewTotal has already been forced at this point so can cancel that for future
+		if(tableLength !== noSelectionsTableLength) {
+			for (let pane of this.s.panes) {
+				pane.s.forceViewTotal = false;
+			}
+		}
 	}
 
 	/**
@@ -1006,7 +1025,7 @@ export default class SearchPanes {
 		table.on('preDraw.dtsps', () => {
 			this._updateFilterCount();
 			if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
-				this.redrawPanes();
+				this.redrawPanes(this.c.viewTotal);
 			}
 			else {
 				this._updateSelection();

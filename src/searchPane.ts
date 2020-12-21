@@ -130,6 +130,7 @@ export default class SearchPane {
 			dt: table,
 			dtPane: undefined,
 			filteringActive: false,
+			forceViewTotal: false,
 			index: idx,
 			indexes: [],
 			lastCascade: false,
@@ -348,7 +349,6 @@ export default class SearchPane {
 	public destroy(): void {
 		$(this.s.dtPane).off('.dtsp');
 		$(this.s.dt).off('.dtsp');
-
 		$(this.dom.nameButton).off('.dtsp');
 		$(this.dom.countButton).off('.dtsp');
 		$(this.dom.clear).off('.dtsp');
@@ -983,7 +983,7 @@ export default class SearchPane {
 							}
 
 							let message: string;
-							(this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal
+							((this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal) || (this.c.viewTotal && this.s.forceViewTotal)
 								? message = filteredMessage.replace(/{total}/, row.total)
 								: message = countMessage.replace(/{total}/, row.total) ;
 							message = message.replace(/{shown}/, row.shown);
