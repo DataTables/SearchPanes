@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="SearchPanes">
+	<name>searchPanes.resizePanes()</name>
+	<summary>Resize all of the panes to fill the SearchPanes container appropriately.</summary>
+	<since>1.3.0</since>
+
+	<type type="function">
+		<signature>searchPanes.resizePanes()</signature>
+		<returns type="DataTables.Api">DataTables API instance.</returns>
+		<description>Resize all of the panes to fill the SearchPanes container appropriately</description>
+	</type>
+
+	<description>
+		This method provides the ability to resize the panes to fill the SearchPanes container appropriately. SearchPanes uses this method itself when `-init searchPanes.layout` is left at it's default value of `auto`. For any other value of layout, this method will not do anything.
+
+		This method should be called when initialising and inserting SearchPanes through the API, immediately after the container has been inserted, otherwise the panes will display in a single column. It can also be called at any other time to attempt to resize the panes to their best fit, although SearchPanes should do this automatically.
+	</description>
+
+	<example title="Initialise SearchPanes, Insert into dom and resize."><![CDATA[
+
+$(document).ready(function() {
+    var table = $('#example').DataTable({
+        searchPanes: true
+    });
+    table.searchPanes.container().prependTo(table.table().container());
+	table.searchPanes.resizePanes();
+});
+]]></example>
+
+<related type="option">searchPanes.layout</related>
+</dt-api>

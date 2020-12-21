@@ -92,6 +92,14 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 		});
 	});
 
+	apiRegister('searchPanes.resizePanes()', function() {
+		let ctx = this.context[0];
+
+		return ctx._searchPanes ?
+			ctx._searchPanes.resizePanes() :
+			null;
+	});
+
 	apiRegister('searchPanes.container()', function() {
 		let ctx = this.context[0];
 
