@@ -19,7 +19,7 @@
 		<![CDATA[
         As standard, SearchPanes will set the message to be displayed in the Clear button to 'Clear All'. This property allows that message to be configured.
 
-        This overrides any default value that is used in `language.searchPanes.clearMessage`.
+        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.clearMessage` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
         ]]>
 	</description>
 

@@ -15,11 +15,9 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, no custom options will be applied to the pane specific language options if `-init searchPanes.i18n` is unaltered. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propogate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
+        As standard, no custom options will be applied to the pane specific language options if `-init searchPanes.i18n` is unaltered. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propogate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
 
-            This is a set of values if set here override anything set by `-init language.searchPanes`.
-            
-			This is useful as it means that the language options can be set for panes leading to increased internationalisation.
+        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
 		]]>
 	</description>
 

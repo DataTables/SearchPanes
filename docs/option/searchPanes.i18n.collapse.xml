@@ -6,7 +6,7 @@
 
 	<type type="string | object">
 		<description>
-			`-init searchPanes.i18n.collapse` changes what will be displayed in the text of the SearchPanes Button. It can also display the count of selections across the panes.
+        `-init searchPanes.i18n.collapse` changes what will be displayed in the text of the SearchPanes Button. It can also display the count of selections across the panes.
 		</description>
 	</type>
 
@@ -15,11 +15,11 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will set the SearchPanes Button to display the total number of selections across the panes alongside the SearchPanes title.
+        As standard, SearchPanes will set the SearchPanes Button to display the total number of selections across the panes alongside the SearchPanes title.
 
-            The value of `-init searchPanes.i18n.collapse` is passed into an `-api i18n()` function, `%d` is replaced by the count of selections across the panes. To just set the Button text to be a string no matter the count, just set `-init searchPanes.i18n.collapse` to the desired `-type string`.
+        The value of `-init searchPanes.i18n.collapse` is passed into an `-api i18n()` function, `%d` is replaced by the count of selections across the panes. To just set the Button text to be a string no matter the count, just set `-init searchPanes.i18n.collapse` to the desired `-type string`.
 
-            This overrides any default value that is used in `language.searchPanes.collapse`.
+        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.collapse` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
 		]]>
 	</description>
 

@@ -22,6 +22,8 @@
 	<description>
 		<![CDATA[
         As standard, SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'. This property allows that message to be configured.
+        
+        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.title` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
         ]]>
 	</description>
 

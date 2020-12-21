@@ -16,7 +16,7 @@
 		<![CDATA[
         As standard, SearchPanes will display a message in the div that is meant to hold the panes once the table has been initialised and the panes are still loading. If a  custom message has been declared then this will be shown in the place of the default message.
 
-        This overrides any default value that is used in `language.searchPanes.loadMessage`.
+        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.loadMessage` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
         ]]>
 	</description>
 
