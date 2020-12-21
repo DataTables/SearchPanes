@@ -69,12 +69,12 @@ export default class SearchPane {
 			display: 'display',
 			filter: 'filter',
 			hideCount: false,
-			viewCount: true,
 			search: 'filter',
 			show: undefined,
 			sort: 'sort',
 			threshold: 0.6,
-			type: 'type'
+			type: 'type',
+			viewCount: true
 		},
 		preSelect: [],
 		threshold: 0.6,
@@ -115,7 +115,7 @@ export default class SearchPane {
 		// Get options from user
 		this.c = $.extend(true, {}, SearchPane.defaults, opts);
 
-		if(opts !== undefined && opts.hideCount !== undefined && opts.viewCount === undefined) {
+		if (opts !== undefined && opts.hideCount !== undefined && opts.viewCount === undefined) {
 			this.c.viewCount = !this.c.hideCount;
 		}
 
@@ -162,7 +162,7 @@ export default class SearchPane {
 		this.colExists = this.s.index < rowLength;
 
 		// Add extra elements to DOM object including clear and hide buttons
-		this.c.layout = layout;	
+		this.c.layout = layout;
 		let layVal: number = parseInt(layout.split('-')[1], 10);
 
 		this.dom = {
@@ -453,8 +453,8 @@ export default class SearchPane {
 					? this.customPaneSettings.className
 					: ''
 			)
-			.addClass(this.classes.show)
-			this.adjustTopRow();
+			.addClass(this.classes.show);
+		this.adjustTopRow();
 	}
 
 	/**
@@ -983,7 +983,8 @@ export default class SearchPane {
 							}
 
 							let message: string;
-							((this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal) || (this.c.viewTotal && this.s.forceViewTotal)
+							((this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal) ||
+							(this.c.viewTotal && this.s.forceViewTotal)
 								? message = filteredMessage.replace(/{total}/, row.total)
 								: message = countMessage.replace(/{total}/, row.total) ;
 							message = message.replace(/{shown}/, row.shown);
@@ -1460,10 +1461,10 @@ export default class SearchPane {
 			{},
 			SearchPane.defaults,
 			defaultMutator,
-			columnOptions	
+			columnOptions
 		);
 
-		if(columnOptions !== undefined && columnOptions.hideCount !== undefined && columnOptions.viewCount === undefined) {
+		if (columnOptions !== undefined && columnOptions.hideCount !== undefined && columnOptions.viewCount === undefined) {
 			colOpts.viewCount = !columnOptions.hideCount;
 		}
 
@@ -1497,7 +1498,7 @@ export default class SearchPane {
 			let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
 			table.rows({search: 'applied'}).indexes() :
 			table.rows().indexes();
-			
+
 			for (let index of indexArray.toArray()) {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}

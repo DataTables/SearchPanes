@@ -52,4 +52,3 @@ $.extend(true, DataTable.SearchPanes.classes, {
 });
 return DataTable.searchPanes;
 }));
-

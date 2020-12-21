@@ -586,7 +586,7 @@ export default class SearchPanes {
 
 			pane.setClear(false);
 		}
-		
+
 		// Rebin panes
 		this.s.dt.draw();
 
@@ -595,13 +595,13 @@ export default class SearchPanes {
 		let noSelectionsTableLength = this.s.dt.rows({search: 'applied'}).data().toArray().length;
 		let tableLength = this.s.dt.rows().data().toArray().length;
 
-		if(tableLength !== noSelectionsTableLength) {
+		if (tableLength !== noSelectionsTableLength) {
 			for (let pane of this.s.panes) {
 				pane.s.forceViewTotal = true;
 			}
 		}
 
-		for(let pane of this.s.panes) {
+		for (let pane of this.s.panes) {
 			pane.updatePane(true);
 		}
 
@@ -619,7 +619,7 @@ export default class SearchPanes {
 		this.regenerating = false;
 
 		// ViewTotal has already been forced at this point so can cancel that for future
-		if(tableLength !== noSelectionsTableLength) {
+		if (tableLength !== noSelectionsTableLength) {
 			for (let pane of this.s.panes) {
 				pane.s.forceViewTotal = false;
 			}
@@ -773,22 +773,22 @@ export default class SearchPanes {
 	 * Resizes all of the panes
 	 */
 	private _resizePanes() {
-		if(this.c.layout === 'auto') {
+		if (this.c.layout === 'auto') {
 			let contWidth = $(this.s.dt.searchPanes.container()).width();
 			let target = Math.floor(contWidth / 260.0); // The neatest number of panes per row
 			let highest = 1;
 			let highestmod = 0;
 			let dispIndex = [];
-	
+
 			// Get the indexes of all of the displayed panes
-			for(let pane of this.s.panes) {
-				if(pane.s.displayed) {
+			for (let pane of this.s.panes) {
+				if (pane.s.displayed) {
 					dispIndex.push(pane.s.index);
 				}
 			}
-	
+
 			let displayCount = dispIndex.length;
-	
+
 			// If the neatest number is the number we have then use this.
 			if (target === displayCount) {
 				highest = target;
@@ -796,36 +796,34 @@ export default class SearchPanes {
 			else {
 				// Go from the target down and find the value with the most panes left over, this will be the best fit
 				for (let ppr = target; ppr > 1; ppr--) {
-					let rem = displayCount%ppr;
-	
-					if(rem === 0) {
+					let rem = displayCount % ppr;
+
+					if (rem === 0) {
 						highest = ppr;
 						highestmod = 0;
 						break;
 					}
 					// If there are more left over at this amount of panes per row (ppr) then it fits better so new values
-					else if(rem > highestmod) {
+					else if (rem > highestmod) {
 						highest = ppr;
 						highestmod = rem;
 					}
 				}
 			}
-	
+
 			// If there is a perfect fit then none are to be wider
 			let widerIndexes = highestmod !== 0 ? dispIndex.slice(dispIndex.length - highestmod, dispIndex.length) : [];
-	
-			for (let i = 0; i < this.s.panes.length; i++) {
-				let pane = this.s.panes[i];
-	
+
+			for (let pane of this.s.panes) {
 				// Resize the pane with the new layout
 				if (pane.s.displayed) {
-					let layout = "columns-" + (widerIndexes.indexOf(pane.s.index) === -1 ? highest : highestmod);
+					let layout = 'columns-' + (widerIndexes.indexOf(pane.s.index) === -1 ? highest : highestmod);
 					pane.resize(layout);
 				}
 			}
 		}
 		else {
-			for(let pane of this.s.panes) {
+			for (let pane of this.s.panes) {
 				pane.adjustTopRow();
 			}
 		}
@@ -1246,8 +1244,8 @@ export default class SearchPanes {
 			}
 		}
 
-		if(selectTotal !== null && selectTotal !== 0) {
-			filterPane === null;
+		if (selectTotal !== null && selectTotal !== 0) {
+			filterPane = null;
 		}
 
 		// Update all of the panes to reflect the current state of the filters
