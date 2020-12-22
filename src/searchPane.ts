@@ -294,6 +294,51 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Adds a row to the panes table
+	 * @param display the value to be displayed to the user
+	 * @param filter the value to be filtered on when searchpanes is implemented
+	 * @param shown the number of rows in the table that are currently visible matching this criteria
+	 * @param total the total number of rows in the table that match this criteria
+	 * @param sort the value to be sorted in the pane table
+	 * @param type the value of which the type is to be derived from
+	 */
+	public addRow(
+		display,
+		filter,
+		shown: number,
+		total: number | string,
+		sort,
+		type,
+		className?: string
+	): any {
+		let index: number;
+
+		for (let entry of this.s.indexes) {
+			if (entry.filter === filter) {
+				index = entry.index;
+			}
+		}
+
+		if (index === undefined) {
+			index = this.s.indexes.length;
+			this.s.indexes.push({filter, index});
+		}
+
+		return this.s.dtPane.row.add({
+			className,
+			display: display !== '' ?
+				display :
+				this.emptyMessage(),
+			filter,
+			index,
+			shown,
+			sort,
+			total,
+			type
+		});
+	}
+
+	/**
 	 * Adjusts the layout of the top row when the screen is resized
 	 */
 	public adjustTopRow(): void {
@@ -369,6 +414,25 @@ export default class SearchPane {
 		}
 
 		this.s.listSet = false;
+	}
+
+	/**
+	 * Getting the legacy message is a little complex due a legacy parameter
+	 */
+	public emptyMessage(): string {
+		let def = this.c.i18n.emptyMessage;
+
+		// Legacy parameter support
+		if (this.c.emptyMessage) {
+			def = this.c.emptyMessage;
+		}
+
+		// Override per column
+		if (this.s.colOpts.emptyMessage !== false && this.s.colOpts.emptyMessage !== null) {
+			def = this.s.colOpts.emptyMessage;
+		}
+
+		return this.s.dt.i18n('searchPanes.emptyMessage', def);
 	}
 
 	/**
@@ -741,51 +805,6 @@ export default class SearchPane {
 	}
 
 	/**
-	 * Adds a row to the panes table
-	 * @param display the value to be displayed to the user
-	 * @param filter the value to be filtered on when searchpanes is implemented
-	 * @param shown the number of rows in the table that are currently visible matching this criteria
-	 * @param total the total number of rows in the table that match this criteria
-	 * @param sort the value to be sorted in the pane table
-	 * @param type the value of which the type is to be derived from
-	 */
-	private _addRow(
-		display,
-		filter,
-		shown: number,
-		total: number | string,
-		sort,
-		type,
-		className?: string
-	): any {
-		let index: number;
-
-		for (let entry of this.s.indexes) {
-			if (entry.filter === filter) {
-				index = entry.index;
-			}
-		}
-
-		if (index === undefined) {
-			index = this.s.indexes.length;
-			this.s.indexes.push({filter, index});
-		}
-
-		return this.s.dtPane.row.add({
-			className,
-			display: display !== '' ?
-				display :
-				this._emptyMessage(),
-			filter,
-			index,
-			shown,
-			sort,
-			total,
-			type
-		});
-	}
-
-	/**
 	 * Method to construct the actual pane.
 	 * @param selectedRows previously selected Rows to be reselected
 	 * @last boolean to indicate whether this pane was the last one to have a selection made
@@ -1122,7 +1141,7 @@ export default class SearchPane {
 						selected
 					)
 				) {
-					let row = this._addRow(
+					let row = this.addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
 						init ?
@@ -1149,7 +1168,7 @@ export default class SearchPane {
 					rowData.arrayFilter[i] &&
 					(rowData.bins[rowData.arrayFilter[i].filter] !== undefined || !this.c.cascadePanes)
 				) {
-					this._addRow(
+					this.addRow(
 						rowData.arrayFilter[i].display,
 						rowData.arrayFilter[i].filter,
 						rowData.bins[rowData.arrayFilter[i].filter],
@@ -1159,8 +1178,8 @@ export default class SearchPane {
 					);
 				}
 				else if (!this.s.dt.page.info().serverSide) {
-					// Just pass an empty string as the message will be calculated based on that in _addRow()
-					this._addRow('', count, count, '', '', '');
+					// Just pass an empty string as the message will be calculated based on that in addRow()
+					this.addRow('', count, count, '', '', '');
 				}
 			}
 		}
@@ -1321,25 +1340,6 @@ export default class SearchPane {
 	}
 
 	/**
-	 * Getting the legacy message is a little complex due a legacy parameter
-	 */
-	private _emptyMessage(): string {
-		let def = this.c.i18n.emptyMessage;
-
-		// Legacy parameter support
-		if (this.c.emptyMessage) {
-			def = this.c.emptyMessage;
-		}
-
-		// Override per column
-		if (this.s.colOpts.emptyMessage !== false && this.s.colOpts.emptyMessage !== null) {
-			def = this.s.colOpts.emptyMessage;
-		}
-
-		return this.s.dt.i18n('searchPanes.emptyMessage', def);
-	}
-
-	/**
 	 * Gets the options for the row for the customPanes
 	 * @returns {object} The options for the row extended to include the options from the user.
 	 */
@@ -1389,7 +1389,7 @@ export default class SearchPane {
 			// Initialise the object which is to be placed in the row
 			let insert: string = comp.label !== '' ?
 				comp.label :
-				this._emptyMessage();
+				this.emptyMessage();
 			let comparisonObj = {
 				className: comp.className,
 				display: insert,
@@ -1425,7 +1425,7 @@ export default class SearchPane {
 
 			// If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
 			if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
-				rows.push(this._addRow(
+				rows.push(this.addRow(
 					comparisonObj.display,
 					comparisonObj.filter,
 					comparisonObj.shown,
@@ -1695,7 +1695,7 @@ export default class SearchPane {
 		let updating = this.s.updating;
 		this.s.updating = true;
 		let filters = this.s.dtPane.rows({selected: true}).data().pluck('filter').toArray();
-		let nullIndex: number = filters.indexOf(this._emptyMessage());
+		let nullIndex: number = filters.indexOf(this.emptyMessage());
 		let container = $(this.s.dtPane.table().container());
 
 		// If null index is found then search for empty cells as a filter.
@@ -1796,7 +1796,7 @@ export default class SearchPane {
 						|| !this.c.cascadePanes
 						|| this.s.clearing
 					)) {
-						let row = this._addRow(
+						let row = this.addRow(
 							dataP.display,
 							dataP.filter,
 							!this.c.viewTotal
@@ -1842,11 +1842,10 @@ export default class SearchPane {
 					}
 				}
 			}
-
 			// Add search options which were previously selected but whos results are no
 			// longer present in the resulting data set.
 			for (let selectedEl of selected) {
-				let row = this._addRow(
+				let row = this.addRow(
 					selectedEl.display,
 					selectedEl.filter,
 					0,

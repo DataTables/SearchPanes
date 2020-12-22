@@ -274,21 +274,27 @@ export default class SearchPanes {
 			let filterPane: number = this.s.filterPane;
 			let selectTotal = null;
 
+			for (let pane of this.s.panes) {
+				if (pane.s.dtPane !== undefined) {
+					selectTotal += pane.s.dtPane.rows({selected: true}).data().toArray().length;
+				}
+			}
+
 			// If the number of rows currently visible is equal to the number of rows in the table
 			//  then there can't be any filtering taking place
-			if (table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length) {
+			if (
+				selectTotal === 0 &&
+				table.rows({search: 'applied'}).data().toArray().length === table.rows().data().toArray().length
+			) {
 				filterActive = false;
 			}
 			// Otherwise if viewTotal is active then it is necessary to determine which panes a select is present in.
 			//  If there is only one pane with a selection present then it should not show the filtered message as
 			//  more selections may be made in that pane.
 			else if (this.c.viewTotal) {
-				selectTotal = 0;
-
 				for (let pane of this.s.panes) {
 					if (pane.s.dtPane !== undefined) {
 						let selectLength: number = pane.s.dtPane.rows({selected: true}).data().toArray().length;
-						selectTotal += selectLength;
 
 						if (selectLength === 0) {
 							for (let selection of this.s.selectionList) {
@@ -740,16 +746,34 @@ export default class SearchPanes {
 
 					// select every row in the pane that was selected previously
 					for (let row of newSelectionList[i].rows) {
+						let found = false;
 						pane.s.dtPane.rows().every((rowIdx) => {
 							if (
 								pane.s.dtPane.row(rowIdx).data() !== undefined &&
 								row !== undefined &&
 								pane.s.dtPane.row(rowIdx).data().filter === row.filter
 							) {
+								found = true;
 								pane.s.dtPane.row(rowIdx).select();
 							}
 						});
+
+						if (!found) {
+							let newRow = pane.addRow(
+								row.display,
+								row.filter,
+								0,
+								row.total,
+								row.sort,
+								row.type,
+								row.className
+							);
+
+							newRow.select();
+						}
 					}
+
+					pane.s.dtPane.draw();
 
 					// Update the label that shows how many filters are in place
 					this._updateFilterCount();
