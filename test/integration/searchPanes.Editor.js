@@ -1,7 +1,7 @@
 describe('searchPanes - integrations - Editor', function() {
 	dt.libs({
-		js: ['jquery', 'datatables', 'select', 'editor', 'searchpanes'],
-		css: ['datatables', 'select', 'editor', 'searchpanes']
+		js: ['jquery', 'datatables', 'select', 'editor', 'searchpanes', 'datetime'],
+		css: ['datatables', 'select', 'editor', 'searchpanes', 'datetime']
 	});
 
 	describe('Check the behaviour', function() {
