@@ -1,0 +1,346 @@
+{
+  "data": [
+    {
+      "DT_RowId": "row_32",
+      "users": {
+        "first_name": "Alexa",
+        "last_name": "Wilder",
+        "phone": "1-727-307-1997",
+        "site": "2"
+      },
+      "sites": {
+        "name": "London"
+      }
+    },
+    {
+      "DT_RowId": "row_11",
+      "users": {
+        "first_name": "Avram",
+        "last_name": "Allison",
+        "phone": "1-751-507-2640",
+        "site": "5"
+      },
+      "sites": {
+        "name": "Singapore"
+      }
+    },
+    {
+      "DT_RowId": "row_28",
+      "users": {
+        "first_name": "Basia",
+        "last_name": "Harrell",
+        "phone": "1-528-238-4178",
+        "site": "4"
+      },
+      "sites": {
+        "name": "New York"
+      }
+    },
+    {
+      "DT_RowId": "row_8",
+      "users": {
+        "first_name": "Bryar",
+        "last_name": "Long",
+        "phone": "1-918-114-8083",
+        "site": "2"
+      },
+      "sites": {
+        "name": "London"
+      }
+    },
+    {
+      "DT_RowId": "row_3",
+      "users": {
+        "first_name": "Cruz",
+        "last_name": "Reynolds",
+        "phone": "1-776-102-6352",
+        "site": "3"
+      },
+      "sites": {
+        "name": "Paris"
+      }
+    },
+    {
+      "DT_RowId": "row_30",
+      "users": {
+        "first_name": "Dexter",
+        "last_name": "Burton",
+        "phone": "1-275-332-8186",
+        "site": "6"
+      },
+      "sites": {
+        "name": "Los Angeles"
+      }
+    },
+    {
+      "DT_RowId": "row_6",
+      "users": {
+        "first_name": "Dustin",
+        "last_name": "Rosa",
+        "phone": "1-875-919-3188",
+        "site": "6"
+      },
+      "sites": {
+        "name": "Los Angeles"
+      }
+    },
+    {
+      "DT_RowId": "row_29",
+      "users": {
+        "first_name": "Hamilton",
+        "last_name": "Blackburn",
+        "phone": "1-676-857-1423",
+        "site": "5"
+      },
+      "sites": {
+        "name": "Singapore"
+      }
+    },
+    {
+      "DT_RowId": "row_27",
+      "users": {
+        "first_name": "Ifeoma",
+        "last_name": "Mays",
+        "phone": "1-103-883-0962",
+        "site": "3"
+      },
+      "sites": {
+        "name": "Paris"
+      }
+    },
+    {
+      "DT_RowId": "row_10",
+      "users": {
+        "first_name": "Indigo",
+        "last_name": "Brennan",
+        "phone": "1-756-756-8161",
+        "site": "4"
+      },
+      "sites": {
+        "name": "New York"
+      }
+    }
+  ],
+  "searchPanes": {
+    "options": {
+      "users.first_name": [
+        {
+          "label": "Alexa",
+          "total": "1",
+          "value": "Alexa",
+          "count": "1"
+        },
+        {
+          "label": "Avram",
+          "total": "1",
+          "value": "Avram",
+          "count": "1"
+        },
+        {
+          "label": "Basia",
+          "total": "1",
+          "value": "Basia",
+          "count": "1"
+        },
+        {
+          "label": "Bryar",
+          "total": "1",
+          "value": "Bryar",
+          "count": "1"
+        },
+        {
+          "label": "Cruz",
+          "total": "1",
+          "value": "Cruz",
+          "count": "1"
+        },
+        {
+          "label": "Dexter",
+          "total": "1",
+          "value": "Dexter",
+          "count": "1"
+        },
+        {
+          "label": "Dustin",
+          "total": "1",
+          "value": "Dustin",
+          "count": "1"
+        },
+        {
+          "label": "Hamilton",
+          "total": "1",
+          "value": "Hamilton",
+          "count": "1"
+        },
+        {
+          "label": "Ifeoma",
+          "total": "1",
+          "value": "Ifeoma",
+          "count": "1"
+        },
+        {
+          "label": "Indigo",
+          "total": "1",
+          "value": "Indigo",
+          "count": "1"
+        }
+      ],
+      "users.last_name": [
+        {
+          "label": "Allison",
+          "total": "1",
+          "value": "Allison",
+          "count": "1"
+        },
+        {
+          "label": "Blackburn",
+          "total": "1",
+          "value": "Blackburn",
+          "count": "1"
+        },
+        {
+          "label": "Brennan",
+          "total": "1",
+          "value": "Brennan",
+          "count": "1"
+        },
+        {
+          "label": "Burton",
+          "total": "1",
+          "value": "Burton",
+          "count": "1"
+        },
+        {
+          "label": "Harrell",
+          "total": "2",
+          "value": "Harrell",
+          "count": "2"
+        },
+        {
+          "label": "Long",
+          "total": "1",
+          "value": "Long",
+          "count": "1"
+        },
+        {
+          "label": "Mays",
+          "total": "1",
+          "value": "Mays",
+          "count": "1"
+        },
+        {
+          "label": "Reynolds",
+          "total": "1",
+          "value": "Reynolds",
+          "count": "1"
+        },
+        {
+          "label": "Rosa",
+          "total": "1",
+          "value": "Rosa",
+          "count": "1"
+        },
+        {
+          "label": "Wilder",
+          "total": "1",
+          "value": "Wilder",
+          "count": "1"
+        }
+      ],
+      "users.phone": [
+        {
+          "label": "1-103-883-0962",
+          "total": "1",
+          "value": "1-103-883-0962",
+          "count": "1"
+        },
+        {
+          "label": "1-275-332-8186",
+          "total": "1",
+          "value": "1-275-332-8186",
+          "count": "1"
+        },
+        {
+          "label": "1-528-238-4178",
+          "total": "1",
+          "value": "1-528-238-4178",
+          "count": "1"
+        },
+        {
+          "label": "1-676-857-1423",
+          "total": "1",
+          "value": "1-676-857-1423",
+          "count": "1"
+        },
+        {
+          "label": "1-727-307-1997",
+          "total": "1",
+          "value": "1-727-307-1997",
+          "count": "1"
+        },
+        {
+          "label": "1-751-507-2640",
+          "total": "1",
+          "value": "1-751-507-2640",
+          "count": "1"
+        },
+        {
+          "label": "1-756-756-8161",
+          "total": "1",
+          "value": "1-756-756-8161",
+          "count": "1"
+        },
+        {
+          "label": "1-776-102-6352",
+          "total": "1",
+          "value": "1-776-102-6352",
+          "count": "1"
+        },
+        {
+          "label": "1-875-919-3188",
+          "total": "1",
+          "value": "1-875-919-3188",
+          "count": "1"
+        },
+        {
+          "label": "1-918-114-8083",
+          "total": "1",
+          "value": "1-918-114-8083",
+          "count": "1"
+        }
+      ],
+      "sites.name": [
+        {
+          "label": "London",
+          "total": "2",
+          "value": "London",
+          "count": "2"
+        },
+        {
+          "label": "Los Angeles",
+          "total": "2",
+          "value": "Los Angeles",
+          "count": "2"
+        },
+        {
+          "label": "New York",
+          "total": "2",
+          "value": "New York",
+          "count": "2"
+        },
+        {
+          "label": "Paris",
+          "total": "2",
+          "value": "Paris",
+          "count": "2"
+        },
+        {
+          "label": "Singapore",
+          "total": "2",
+          "value": "Singapore",
+          "count": "2"
+        }
+      ]
+    }
+  }
+}
