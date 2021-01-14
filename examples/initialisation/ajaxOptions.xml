@@ -451,7 +451,10 @@ $(document).ready( function() {
         targets: [0, 1, 2, 3]
     }],
     ajax: function(data, success) {
-      return success(json);
+      // Simulate an async action
+      setTimeout( function () {
+        return success(json);
+      }, 500);
     }
   });
 } );
@@ -460,7 +463,7 @@ $(document).ready( function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Options form Ajax</title>
+<title lib="searchPanes">Options from Ajax</title>
 
 <info><![CDATA[
 
