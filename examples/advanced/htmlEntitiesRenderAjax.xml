@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="13">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+	jQuery.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {	
+		return function ( d, type, row ) {
+			// Order, search and type get the original data
+			if ( type !== 'display' ) {
+				return d;
+			}
+	
+			if ( typeof d !== 'number' && typeof d !== 'string' ) {
+				return d;
+			}
+	
+			d = d.toString(); // cast numbers
+	
+			if ( d.length <= cutoff ) {
+				return d;
+			}
+	
+			var shortened = d.substr(0, cutoff-1);
+	
+			// Find the last white space character in the string
+			if ( wordbreak ) {
+				shortened = shortened.replace(/\s([^\s]*)$/, '');
+			}
+	
+			return '<span class="ellipsis" title="'+d+'">'+shortened+'&#8230;</span>';
+		};
+	};
+
+$(document).ready( function () {
+  var table = $('#example').DataTable({
+    ajax: '../resources/arrayDataEntities.json',
+    dom: 'Plfrtip',
+    columns: [
+			{ 
+				data: "users.first_name"
+			},
+			{ 
+				data: "users.last_name"
+			},
+			{ 
+				data: "sites.name",
+				searchPanes: {
+					show: true
+				},
+				render: $.fn.dataTable.render.ellipsis(10)
+			},
+			{ 
+				data: "permission",
+				render: {
+					_: '[, ].name',
+					sp: '[].name'
+				},
+				searchPanes: {
+					orthogonal: 'sp',
+          show: true
+				}
+			}
+		]
+  });
+} );
+
+]]>
+</js>
+
+<title lib="searchPanes">HTML Entites from an Ajax Request with a Rendering Function</title>
+
+<info><![CDATA[
+
+This example shows how SearchPanes interacts and works with html entity replacement characters "&amp;lt;", "&amp;gt;" and "&amp;amp;" when they are present in the ajax data and a rendering function is being used.
+
+]]></info>
+
+<custom-table>
+	<table id="example" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Location</th>
+				<th>Permissions</th>
+			</tr>
+		</thead>
+
+		<tfoot>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Location</th>
+				<th>Permissions</th>
+			</tr>
+		</tfoot>
+	</table>
+</custom-table>
+</dt-example>

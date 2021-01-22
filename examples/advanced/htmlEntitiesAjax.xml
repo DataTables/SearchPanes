@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="13">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+
+$(document).ready( function () {
+  var table = $('#example').DataTable({
+    ajax: '../resources/arrayDataEntities.json',
+    dom: 'Plfrtip',
+    columns: [
+			{ 
+				data: "users.first_name"
+			},
+			{ 
+				data: "users.last_name"
+			},
+			{ 
+				data: "sites.name",
+        searchPanes: {
+          show: true
+        }
+			},
+			{ 
+				data: "permission",
+				render: {
+					_: '[, ].name',
+					sp: '[].name'
+				},
+				searchPanes: {
+					orthogonal: 'sp',
+          			show: true
+				}
+			}
+		]
+  });
+} );
+
+]]>
+</js>
+
+<title lib="searchPanes">HTML Entites from Ajax</title>
+
+<info><![CDATA[
+
+This example shows how SearchPanes interacts and works with html entity replacement characters "&amp;lt;", "&amp;gt;" and "&amp;amp;" when they are present in the ajax data.
+
+]]></info>
+
+<custom-table>
+	<table id="example" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Location</th>
+				<th>Permissions</th>
+			</tr>
+		</thead>
+
+		<tfoot>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Location</th>
+				<th>Permissions</th>
+			</tr>
+		</tfoot>
+	</table>
+</custom-table>
+</dt-example>

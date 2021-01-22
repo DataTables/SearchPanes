@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="13">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+
+$(document).ready( function () {
+  var table = $('#example').DataTable({
+    dom: 'Plfrtip',
+    columnDefs: [{
+      targets: [2,3],
+      searchPanes: {
+        show: true
+      }
+    }]
+  });
+} );
+
+]]>
+</js>
+
+<title lib="searchPanes">HTML Entites from the DOM</title>
+
+<info><![CDATA[
+
+This example shows how SearchPanes interacts and works with html entity replacement characters "&amp;lt;", "&amp;gt;" and "&amp;amp;" when they are present in the DOM. 
+
+]]></info>
+
+<custom-table>
+  <table id="example" class="display nowrap" width="100%">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </tfoot>
+
+          <tbody>
+            <tr>
+              <td>Tiger Nixon</td>
+              <td>System Architect</td>
+              <td>Edinburgh &amp; Paris</td>
+              <td>61</td>
+              <td>2011/04/25</td>
+              <td>$3,120</td>
+            </tr>
+            <tr>
+              <td>Garrett Winters</td>
+              <td>Director</td>
+              <td>Edinburgh</td>
+              <td>&gt; 63</td>
+              <td>2011/07/25</td>
+              <td>$5,300</td>
+            </tr>
+            <tr>
+              <td>Ashton Cox</td>
+              <td>Technical Author</td>
+              <td>San &lt;&lt; Francisco</td>
+              <td>66</td>
+              <td>2009/01/12</td>
+              <td>$4,800</td>
+            </tr>
+        
+          </tbody>
+        </table>
+
+</custom-table>
+</dt-example>

@@ -1,0 +1,75 @@
+{
+    "data": [
+      {
+        "DT_RowId": "row_1",
+        "users": {
+          "first_name": "Quynn",
+          "last_name": "Contreras",
+          "site": "1"
+        },
+        "sites": {
+          "name": "Edinburgh &amp; Paris"
+        },
+        "permission": [
+          {
+            "id": "3",
+            "name": "Desktop"
+          },
+          {
+            "id": "1",
+            "name": "Printer"
+          },
+          {
+            "id": "4",
+            "name": "VMs"
+          }
+        ]
+      },
+      {
+        "DT_RowId": "row_2",
+        "users": {
+          "first_name": "Xantha",
+          "last_name": "George",
+          "site": "1"
+        },
+        "sites": {
+          "name": "London"
+        },
+        "permission": [
+          {
+            "id": "2",
+            "name": "&lt; 10 Servers"
+          }
+        ]
+      },
+      {
+        "DT_RowId": "row_3",
+        "users": {
+          "first_name": "Lael",
+          "last_name": "Kim",
+          "site": "1"
+        },
+        "sites": {
+          "name": "Edinburgh"
+        },
+        "permission": [
+          {
+            "id": "6",
+            "name": "Accounts"
+          },
+          {
+            "id": "3",
+            "name": "Desktop"
+          },
+          {
+            "id": "1",
+            "name": "&gt; 50 Printers"
+          },
+          {
+            "id": "2",
+            "name": "Servers"
+          }
+        ]
+      }
+    ]
+  }
