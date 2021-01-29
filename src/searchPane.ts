@@ -262,7 +262,7 @@ export default class SearchPane {
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
 			$(clear).on('click', () => {
-				let searches = this.dom.container.find(this.classes.search);
+				let searches = this.dom.container.find('.' + this.classes.search.replace(/ /g, '.'));
 
 				searches.each(function() {
 					$(this).val('');
@@ -342,10 +342,10 @@ export default class SearchPane {
 	 * Adjusts the layout of the top row when the screen is resized
 	 */
 	public adjustTopRow(): void {
-		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer);
-		let subRow1 = this.dom.container.find('.dtsp-subRow1');
-		let subRow2 = this.dom.container.find('.dtsp-subRow2');
-		let topRow = this.dom.container.find('.' + this.classes.topRow);
+		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer.replace(/ /g, '.'));
+		let subRow1 = this.dom.container.find('.' + this.classes.subRow1.replace(/ /g, '.'));
+		let subRow2 = this.dom.container.find('.' + this.classes.subRow2.replace(/ /g, '.'));
+		let topRow = this.dom.container.find('.' + this.classes.topRow.replace(/ /g, '.'));
 
 		// If the width is 0 then it is safe to assume that the pane has not yet been displayed.
 		//  Even if it has, if the width is 0 it won't make a difference if it has the narrow class or not
@@ -697,7 +697,7 @@ export default class SearchPane {
 
 		// When the clear button is clicked reset the pane
 		$(this.dom.clear).on('click.dtsp', () => {
-			let searches = this.dom.container.find('.' + this.classes.search);
+			let searches = this.dom.container.find('.' + this.classes.search.replace(/ /g, '.'));
 
 			searches.each(function() {
 				// set the value of the search box to be an empty string and then search on that, effectively reseting
@@ -716,7 +716,17 @@ export default class SearchPane {
 		// When a character is inputted into the searchbox search the pane for matching values.
 		// Doing it this way means that no button has to be clicked to trigger a search, it is done asynchronously
 		$(this.dom.searchBox).on('input.dtsp', () => {
-			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
+			let searchval = $(this.dom.searchBox).val();
+			this.s.dtPane.search(searchval).draw();
+			if (
+				searchval.length > 0 ||
+				(searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0)
+			) {
+				this.dom.clear.removeClass(this.classes.disabledButton);
+			}
+			else {
+				this.dom.clear.addClass(this.classes.disabledButton);
+			}
 			this.s.dt.state.save();
 		});
 

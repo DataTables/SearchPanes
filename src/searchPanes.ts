@@ -166,7 +166,7 @@ export default class SearchPanes {
 	 */
 	public clearSelections(): SearchPane[] {
 		// Load in all of the searchBoxes in the documents
-		let searches = this.dom.container.find(this.classes.search);
+		let searches = this.dom.container.find('.' + this.classes.search.replace(/ /g, '.'));
 
 		// For each searchBox set the input text to be empty and then trigger
 		//  an input on them so that they no longer filter the panes
