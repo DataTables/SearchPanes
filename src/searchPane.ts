@@ -1024,6 +1024,10 @@ export default class SearchPane {
 								pill = '';
 							}
 
+							if (type === 'filter') {
+								return typeof data === 'string' && data.match(/<[^>]*>/) !== null ? data.replace(/<[^>]*>/g, '') : data;
+							}
+
 							return '<div class="' + this.classes.nameCont + '"><span title="' +
 								(typeof data === 'string' && data.match(/<[^>]*>/) !== null ? data.replace(/<[^>]*>/g, '') : data) +
 								'" class="' + this.classes.name + '">' +
