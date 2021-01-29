@@ -19,6 +19,7 @@
         "src/panesType.ts",
         "src/searchPanes.dataTables.ts",
         "src/searchPanes.bootstrap4.ts",
+        "src/searchPanes.bootstrap5.ts",
         "src/searchPanes.bootstrap.ts",
         "src/searchPanes.foundation.ts",
         "src/searchPanes.jqueryui.ts",
