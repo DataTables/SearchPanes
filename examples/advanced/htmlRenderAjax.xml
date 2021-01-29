@@ -33,7 +33,7 @@ $(document).ready( function () {
 				},
 				searchPanes: {
 					orthogonal: 'sp',
-          show: true
+					show: true
 				}
 			}
 		]
@@ -43,7 +43,7 @@ $(document).ready( function () {
 ]]>
 </js>
 
-<title lib="searchPanes">Unencoded html characters from the Ajax with a Rendering Function</title>
+<title lib="searchPanes">Unencoded HTML characters with a Rendering Function from Ajax</title>
 
 <info><![CDATA[
 
