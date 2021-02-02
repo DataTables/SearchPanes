@@ -23,7 +23,7 @@
 
 			It is possible to adjust the messages shown both when searching is taking place and when it isn't, by using the `-init searchPanes.i18n.count` and `-init searchPanes.i18n.countFiltered` options. The `-init searchPanes.i18n.countFiltered` message will only be shown when `-init searchPanes.viewtotal` is set to true, otherwise only `-init searchPanes.i18n.count` will be shown.
 		
-			Note: When loading SearchPanes options over ajax, but then using `-init serverSide` processing, neither `-init searchPanes.viewTotal` or `-init searchPanes.cascadePanes` are supported. This is due to the requirements for users to procide accurate data for the SearchPanes options, whos values change when using these two options. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
+			Note: When loading SearchPanes options over ajax, but then using `-init serverSide` processing, neither `-init searchPanes.viewTotal` or `-init searchPanes.cascadePanes` are supported. This is due to the requirements for users to provide accurate data for the SearchPanes options, whose values change when using these two options. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
 		]]>
 	</description>
 
