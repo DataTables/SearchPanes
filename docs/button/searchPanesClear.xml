@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-button library="SearchPanes">
+	<name>searchPanesClear</name>
+	<summary>A single button that clears the SearchPanes selections.</summary>
+	<since>1.0.0</since>
+
+	<description>
+		This button clears all of the SearchPanes options that have been selected, resetting the search that is applied.
+	</description>
+
+	<option name="text" type="string" default="Clear Panes">
+		This options allows the text within the button to be configured.
+	</option>
+	<option name="action" type="function">
+		The action function for the SearchPanesClear button calls the `-api searchPanes.clearSelections()` method.
+	</option>
+
+	<example title="Basic SearchPanesClear button initialisation"><![CDATA[
+
+$('#myTable').DataTable( {
+    buttons: [
+        'searchPanesClear'
+    ],
+} );
+
+]]></example>
+
+</dt-button>
