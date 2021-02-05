@@ -24,9 +24,9 @@
 	<example title="Basic SearchPanes button initialisation"><![CDATA[
 
 $('#myTable').DataTable( {
-    buttons: [
-        'searchPanes'
-    ],
+	buttons: [
+		'searchPanes'
+	],
 } );
 
 ]]></example>
@@ -34,14 +34,14 @@ $('#myTable').DataTable( {
 	<example title="SearchPanes configuration using a button"><![CDATA[
 
 new $.fn.dataTable.Buttons( table, {
-    buttons: [
-        {
-            extend: 'searchPanes',
-            config: {
-                cascadePanes: true
-            }
-        }
-    ],
+	buttons: [
+		{
+			extend: 'searchPanes',
+			config: {
+				cascadePanes: true
+			}
+		}
+	],
 } );
 
 ]]></example>

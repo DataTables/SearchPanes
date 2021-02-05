@@ -18,9 +18,11 @@
 	<example title="Basic SearchPanesClear button initialisation"><![CDATA[
 
 $('#myTable').DataTable( {
-    buttons: [
-        'searchPanesClear'
-    ],
+	dom: 'Bfrtip',
+	buttons: [
+		'searchPanesClear',
+		'searchPanes'
+	]
 } );
 
 ]]></example>
