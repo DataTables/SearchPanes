@@ -184,8 +184,6 @@ export default class SearchPanes {
 			}
 		}
 
-		this.s.dt.draw();
-
 		return returnArray;
 	}
 
@@ -229,11 +227,6 @@ export default class SearchPanes {
 				)
 			);
 			$(this.dom.panes).append(pane.dom.container);
-		}
-
-		// Only need to trigger a search if it is not server side processing
-		if (!this.s.dt.page.info().serverSide) {
-			this.s.dt.draw();
 		}
 
 		if (this.c.cascadePanes || this.c.viewTotal) {
@@ -969,11 +962,6 @@ export default class SearchPanes {
 				($.fn.dataTable as any).select.init(pane.s.dtPane);
 			}
 		}
-
-		// Only need to trigger a search if it is not server side processing
-		if (!this.s.dt.page.info().serverSide) {
-			this.s.dt.draw();
-		}
 	}
 
 	/**
@@ -1021,11 +1009,6 @@ export default class SearchPanes {
 		// If the layout is set to auto then the panes need to be resized to their best fit
 		if (this.c.layout === 'auto') {
 			this.resizePanes();
-		}
-
-		// Only need to trigger a search if it is not server side processing
-		if (!this.s.dt.page.info().serverSide) {
-			this.s.dt.draw();
 		}
 
 		// Reset the paging if that has been saved in the state

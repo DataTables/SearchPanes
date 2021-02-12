@@ -75,6 +75,8 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 		});
 		it('Clear All still works', async function() {
 			$('button.dtsp-clearAll').click();
+			await dt.sleep(200); // There is a slight pause before running the deselect draw so can't test the below instantly
+
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
 		});
 
