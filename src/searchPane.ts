@@ -587,13 +587,12 @@ export default class SearchPane {
 			}
 			else {
 				$(this.dom.clear).removeClass(this.classes.disabledButton);
-				this.s.selectPresent = true;
 
 				if (!this.s.updating) {
+					this.s.selectPresent = true;
 					this._makeSelection();
+					this.s.selectPresent = false;
 				}
-
-				this.s.selectPresent = false;
 			}
 		});
 
