@@ -192,7 +192,7 @@ describe('searchPanes - options - searchPanes', function () {
 		});
 
 		dt.html('basic');
-		it('Load a table with HTML with searchPanes', function () {
+		it('Load a table with HTML', function () {
 			$('#example tbody').append(
 				'<tr><td>Aaa</td><td><span class=test>Bbb</span></td><td>2</td><td>3</td><td>4</td><td>5</td></tr>'
 			);
@@ -205,6 +205,23 @@ describe('searchPanes - options - searchPanes', function () {
 					'div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)'
 				).text()
 			).toBe('Bbb');
+		});
+
+		dt.html('basic');
+		it('Load a table with with special character', function () {
+			$('#example tbody').append(
+				'<tr><td>Aaa</td><td>Aaa "\'single quote\' & ^£<aa> "double"</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>'
+			);
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span:eq(0)').text()).toBe('Aaa "\'single quote\' & ^£ "double"');
+		});
+		it('... and it is clickable', function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span:eq(0)').click()
+			expect($('#example tbody tr:eq(0)').length).toBe(1);
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Aaa');
 		});
 	});
 });
