@@ -410,7 +410,11 @@ export default class SearchPanes {
 							let tempFilter: boolean = true;
 							paneUpdate.s.filteringActive = true;
 
-							if ((filterPane !== -1 && filterPane !== null && filterPane === paneUpdate.s.index) || filterActive === false) {
+							if (
+								(filterPane !== -1 && filterPane !== null && filterPane === paneUpdate.s.index) ||
+								filterActive === false ||
+								paneUpdate.s.index === solePane
+							) {
 								tempFilter = false;
 								paneUpdate.s.filteringActive = false;
 							}

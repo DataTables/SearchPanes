@@ -1773,7 +1773,7 @@ export default class SearchPane {
 			if (this.colExists) {
 				// Only run populatePane if the data has not been collected yet
 				if (rowData.arrayFilter.length === 0) {
-					this._populatePane();
+					this._populatePane(!this.s.filteringActive);
 				}
 				// If cascadePanes is active and the table has returned to its default state then
 				//  there is a need to update certain parts ofthe rowData.
@@ -1786,7 +1786,7 @@ export default class SearchPane {
 				}
 				// Otherwise if viewTotal or cascadePanes is active then the data from the table must be read.
 				else if (this.c.viewTotal || this.c.cascadePanes) {
-					this._populatePane();
+					this._populatePane(!this.s.filteringActive);
 				}
 
 				// If the viewTotal option is selected then find the totals for the table
