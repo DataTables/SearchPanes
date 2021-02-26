@@ -1034,15 +1034,17 @@ export default class SearchPanes {
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('preDraw.dtsps', () => {
-			this._updateFilterCount();
-			if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
-				this.redrawPanes(this.c.viewTotal);
-			}
-			else {
-				this._updateSelection();
-			}
+			if (!this.s.updating) {
+				this._updateFilterCount();
+				if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
+					this.redrawPanes(this.c.viewTotal);
+				}
+				else {
+					this._updateSelection();
+				}
 
-			this.s.filterPane = -1;
+				this.s.filterPane = -1;
+			}
 		});
 
 		$(window).on('resize.dtsp', DataTable.util.throttle(() => {
@@ -1131,6 +1133,7 @@ export default class SearchPanes {
 
 					let page = this.s.dt.page();
 					processing = true;
+					this.s.updating = true;
 					$(this.dom.panes).empty();
 
 					for (let pane of this.s.panes) {
@@ -1151,6 +1154,8 @@ export default class SearchPanes {
 						this.s.dt.draw();
 					}
 
+					this.s.updating = false;
+
 					if (this.c.cascadePanes || this.c.viewTotal) {
 						this.redrawPanes(this.c.cascadePanes);
 					}
@@ -1161,7 +1166,9 @@ export default class SearchPanes {
 					this._checkMessage();
 
 					this.s.dt.one('draw', () => {
+						this.s.updating = true;
 						this.s.dt.page(page).draw(false);
+						this.s.updating = false;
 					});
 				});
 			}
