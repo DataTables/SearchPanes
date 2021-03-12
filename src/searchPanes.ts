@@ -1302,10 +1302,10 @@ export default class SearchPanes {
 		}
 
 		if (filterCount === 0) {
-			$(this.dom.clearAll).addClass(this.classes.disabledButton);
+			$(this.dom.clearAll).addClass(this.classes.disabledButton).attr('disabled', 'true');
 		}
 		else {
-			$(this.dom.clearAll).removeClass(this.classes.disabledButton);
+			$(this.dom.clearAll).removeClass(this.classes.disabledButton).attr('disabled', 'false');
 		}
 	}
 

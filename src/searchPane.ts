@@ -169,6 +169,7 @@ export default class SearchPane {
 			buttonGroup: $('<div/>').addClass(this.classes.buttonGroup),
 			clear: $('<button type="button">&#215;</button>')
 					.addClass(this.classes.disabledButton)
+					.attr('disabled', 'true')
 					.addClass(this.classes.paneButton)
 					.addClass(this.classes.clearButton),
 			container: $('<div/>')
@@ -586,7 +587,7 @@ export default class SearchPane {
 				}
 			}
 			else {
-				$(this.dom.clear).removeClass(this.classes.disabledButton);
+				$(this.dom.clear).removeClass(this.classes.disabledButton).attr('disabled', 'false');
 
 				if (!this.s.updating) {
 					this.s.selectPresent = true;
@@ -611,7 +612,7 @@ export default class SearchPane {
 					this.s.deselect = true;
 
 					if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
-						$(this.dom.clear).addClass(this.classes.disabledButton);
+						$(this.dom.clear).addClass(this.classes.disabledButton).attr('disabled', 'true');
 					}
 
 					this._makeSelection();
@@ -721,10 +722,10 @@ export default class SearchPane {
 				searchval.length > 0 ||
 				(searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0)
 			) {
-				this.dom.clear.removeClass(this.classes.disabledButton);
+				this.dom.clear.removeClass(this.classes.disabledButton).attr('disabled', 'false');
 			}
 			else {
-				this.dom.clear.addClass(this.classes.disabledButton);
+				this.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
 			}
 			this.s.dt.state.save();
 		});
@@ -1318,7 +1319,8 @@ export default class SearchPane {
 		) {
 			$(this.dom.searchBox).attr('disabled', 'disabled')
 				.removeClass(this.classes.paneInputButton)
-				.addClass(this.classes.disabledButton);
+				.addClass(this.classes.disabledButton)
+				.attr('disabled', 'true');
 		}
 
 		$(this.dom.searchBox).appendTo(this.dom.searchCont);

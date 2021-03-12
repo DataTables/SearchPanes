@@ -40,14 +40,14 @@ declare var define: {
 let DataTable = $.fn.dataTable;
 
 $.extend(true, DataTable.SearchPane.classes, {
-	disabledButton: 'is-static',
+	disabledButton: 'is-disabled',
 	paneButton: 'button dtsp-paneButton is-white',
 	search: 'input search',
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll button',
-	disabledButton: 'is-static',
+	disabledButton: 'is-disabled',
 });
 
 return DataTable.searchPanes;
