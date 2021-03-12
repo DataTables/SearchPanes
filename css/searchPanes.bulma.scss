@@ -1,0 +1,22 @@
+@import './common.scss';
+div.dtsp-panesContainer {
+	div.dtsp-searchPanes {
+		div.dtsp-searchPane {
+            input.dtsp-paneInputButton,
+			button.dtsp-paneButton {
+				height: 35px;
+                width: 35px;
+            }
+
+            div.dtsp-searchCont {
+                margin-right: 3px;
+                button.dtsp-searchIcon {
+                    height: 33px;
+                    width: 33px;
+                    margin-top: 1px;
+                    margin-right: 1px;
+                }
+            }
+        }
+    }
+}

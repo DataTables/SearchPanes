@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="7" framework="bulma">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    var table = $('#example').DataTable({
+        searchPanes: true
+    });
+    table.searchPanes.container().prependTo(table.table().container());
+    table.searchPanes.resizePanes();
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Bulma</title>
+
+<info><![CDATA[
+
+This example shows DataTables and the SearchPanes extension being used with [Bulma](https://bulma.io/) providing the styling. The DataTables / Bulma integration provides seamless integration for DataTables to be used in a Bulma page.
+
+]]></info>
+
+</dt-example>
