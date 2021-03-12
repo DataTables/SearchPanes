@@ -5,6 +5,7 @@
     ],
     "rules": {
         "prefer-const": false,
+        "semicolon": true,
         "quotemark": [
             true,
             "single"
