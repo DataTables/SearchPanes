@@ -1305,7 +1305,7 @@ export default class SearchPanes {
 			$(this.dom.clearAll).addClass(this.classes.disabledButton).attr('disabled', 'true');
 		}
 		else {
-			$(this.dom.clearAll).removeClass(this.classes.disabledButton).attr('disabled', 'false');
+			$(this.dom.clearAll).removeClass(this.classes.disabledButton).removeAttr('disabled');
 		}
 	}
 

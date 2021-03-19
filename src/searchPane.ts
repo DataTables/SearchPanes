@@ -587,7 +587,7 @@ export default class SearchPane {
 				}
 			}
 			else {
-				$(this.dom.clear).removeClass(this.classes.disabledButton).attr('disabled', 'false');
+				$(this.dom.clear).removeClass(this.classes.disabledButton).removeAttr('disabled');
 
 				if (!this.s.updating) {
 					this.s.selectPresent = true;
@@ -722,7 +722,7 @@ export default class SearchPane {
 				searchval.length > 0 ||
 				(searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0)
 			) {
-				this.dom.clear.removeClass(this.classes.disabledButton).attr('disabled', 'false');
+				this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
 			}
 			else {
 				this.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
@@ -1317,7 +1317,7 @@ export default class SearchPane {
 				this.customPaneSettings.dtOpts.searching !== undefined &&
 				!this.customPaneSettings.dtOpts.searching)
 		) {
-			$(this.dom.searchBox).attr('disabled', 'disabled')
+			$(this.dom.searchBox)
 				.removeClass(this.classes.paneInputButton)
 				.addClass(this.classes.disabledButton)
 				.attr('disabled', 'true');
