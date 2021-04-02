@@ -700,6 +700,7 @@ export default class SearchPanes {
 			if (pane.s.displayed === true) {
 				// Ensure that the empty message is removed if a pane is displayed
 				$(this.dom.emptyMessage).remove();
+				$(this.dom.titleRow).removeClass(this.classes.hide);
 				return;
 			}
 		}
