@@ -698,6 +698,8 @@ export default class SearchPanes {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
+				// Ensure that the empty message is removed if a pane is displayed
+				$(this.dom.emptyMessage).remove();
 				return;
 			}
 		}
