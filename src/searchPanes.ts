@@ -969,6 +969,8 @@ export default class SearchPanes {
 				($.fn.dataTable as any).select.init(pane.s.dtPane);
 			}
 		}
+
+		this._updateSelection();
 	}
 
 	/**
@@ -1244,6 +1246,7 @@ export default class SearchPanes {
 		}
 
 		table.settings()[0]._searchPanes = this;
+		this.s.dt.state.save();
 	}
 
 	private _prepViewTotal(selectTotal) {
