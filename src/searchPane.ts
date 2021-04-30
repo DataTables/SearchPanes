@@ -263,7 +263,7 @@ export default class SearchPane {
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
 			$(clear).on('click', () => {
-				let searches = this.dom.container.find('.' + this.classes.search.replace(/ /g, '.'));
+				let searches = this.dom.container.find('.' + this.classes.search.replace(/\s+/g, '.'));
 
 				searches.each(function() {
 					$(this).val('');
@@ -343,10 +343,10 @@ export default class SearchPane {
 	 * Adjusts the layout of the top row when the screen is resized
 	 */
 	public adjustTopRow(): void {
-		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer.replace(/ /g, '.'));
-		let subRow1 = this.dom.container.find('.' + this.classes.subRow1.replace(/ /g, '.'));
-		let subRow2 = this.dom.container.find('.' + this.classes.subRow2.replace(/ /g, '.'));
-		let topRow = this.dom.container.find('.' + this.classes.topRow.replace(/ /g, '.'));
+		let subContainers = this.dom.container.find('.' + this.classes.subRowsContainer.replace(/\s+/g, '.'));
+		let subRow1 = this.dom.container.find('.' + this.classes.subRow1.replace(/\s+/g, '.'));
+		let subRow2 = this.dom.container.find('.' + this.classes.subRow2.replace(/\s+/g, '.'));
+		let topRow = this.dom.container.find('.' + this.classes.topRow.replace(/\s+/g, '.'));
 
 		// If the width is 0 then it is safe to assume that the pane has not yet been displayed.
 		//  Even if it has, if the width is 0 it won't make a difference if it has the narrow class or not
