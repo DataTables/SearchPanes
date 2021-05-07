@@ -1129,6 +1129,10 @@ export default class SearchPanes {
 		// If the data is reloaded from the server then it is possible that it has changed completely,
 		// so we need to rebuild the panes
 		this.s.dt.on('xhr', (e, settings, json, xhr) => {
+			if(settings.nTable !== this.s.dt.table().node()) {
+				return;
+			}
+
 			let processing = false;
 			if (!this.s.dt.page.info().serverSide) {
 				this.s.dt.one('preDraw', () => {
