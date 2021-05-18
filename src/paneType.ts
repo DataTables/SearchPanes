@@ -40,8 +40,8 @@ export interface IConfigPaneItem {
 	className: string;
 	dtOpts: {[keys: string]: any}; // All dtOpts
 	header: string;
-	options: IOption[];
 	name: string;
+	options: IOption[];
 	preSelect: string[];
 }
 
@@ -86,8 +86,8 @@ export interface IDOM {
 	lower: JQuery<HTMLElement>;
 	nameButton: JQuery<HTMLElement>;
 	panesContainer: JQuery<HTMLElement>;
-	searchButton: JQuery<HTMLElement>;
 	searchBox: JQuery<HTMLElement>;
+	searchButton: JQuery<HTMLElement>;
 	searchCont: JQuery<HTMLElement>;
 	searchLabelCont: JQuery<HTMLElement>;
 	topRow: JQuery<HTMLElement>;
@@ -108,12 +108,12 @@ export interface IOrthogonal {
 	display: string;
 	filter: string;
 	hideCount: boolean;
-	viewCount: boolean;
 	search: string;
 	show: boolean;
 	sort: string;
 	threshold: number;
 	type: string;
+	viewCount: boolean;
 }
 
 export interface IRowData {

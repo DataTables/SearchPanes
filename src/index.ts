@@ -10,7 +10,7 @@
  * @copyright   Copyright 2019-2020 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
- *   MIT license - http://datatables.net/license/mit
+ * MIT license - http://datatables.net/license/mit
  *
  * This source file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,12 +19,12 @@
  * For details please refer to: http://www.datatables.net
  */
 
- /// <reference path = '../node_modules/@types/jquery/index.d.ts'
+/// <reference path = '../node_modules/@types/jquery/index.d.ts'
 
 // Hack to allow TypeScript to compile our UMD
-declare var define: {
-	(string, Function): any;
+declare let define: {
 	amd: string;
+	(stringValue, Function): any;
 };
 
 import SearchPane, {setJQuery as searchPaneJQuery} from './searchPane';
@@ -48,6 +48,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 			}
 
 			if (! $ || ! $.fn.dataTable) {
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				$ = require('datatables.net')(root, $).$;
 			}
 
@@ -63,7 +64,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	searchPaneJQuery($);
 	searchPanesJQuery($);
 
-	let DataTable = $.fn.dataTable;
+	let dataTable = $.fn.dataTable;
 
 	($.fn as any).dataTable.SearchPanes = SearchPanes;
 	($.fn as any).DataTable.SearchPanes = SearchPanes;
@@ -109,10 +110,10 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	});
 
 	$.fn.dataTable.ext.buttons.searchPanesClear = {
-		text: 'Clear Panes',
 		action(e, dt, node, config) {
 			dt.searchPanes.clearSelections();
-		}
+		},
+		text: 'Clear Panes'
 	};
 
 	$.fn.dataTable.ext.buttons.searchPanes = {
@@ -141,10 +142,10 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	};
 
 	function _init(settings, options = null, fromPre = false) {
-		let api = new DataTable.Api(settings);
+		let api = new dataTable.Api(settings);
 		let opts = options
 			? options
-			: api.init().searchPanes || DataTable.defaults.searchPanes;
+			: api.init().searchPanes || dataTable.defaults.searchPanes;
 
 		let searchPanes = new SearchPanes(api, opts, fromPre);
 		let node = searchPanes.getNode();
@@ -160,7 +161,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 		}
 
 		if (settings.oInit.searchPanes ||
-			DataTable.defaults.searchPanes
+			dataTable.defaults.searchPanes
 		) {
 			if (!settings._searchPanes) {
 				_init(settings, null, true);
@@ -169,13 +170,13 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	});
 
 	// DataTables `dom` feature option
-	DataTable.ext.feature.push({
+	dataTable.ext.feature.push({
 		cFeature: 'P',
 		fnInit: _init
 	});
 
 	// DataTables 2 layout feature
-	if (DataTable.ext.features) {
-		DataTable.ext.features.register('searchPanes', _init);
+	if (dataTable.ext.features) {
+		dataTable.ext.features.register('searchPanes', _init);
 	}
 }));

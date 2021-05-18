@@ -1,11 +1,6 @@
 /*! Bootstrap 5 integration for DataTables' SearchPanes
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
-// Hack to allow TypeScript to compile our UMD
-declare var define: {
-	(string, Function): any;
-	amd: string;
-};
 (function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD
@@ -21,10 +16,12 @@ declare var define: {
 			}
 
 			if (! $ || ! $.fn.dataTable) {
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				$ = require('datatables.net-bs5')(root, $).$;
 			}
 
 			if (! $.fn.dataTable.SearchPanes) {
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				require('datatables.net-searchpanes')(root, $);
 			}
 
@@ -36,31 +33,31 @@ declare var define: {
 		factory(jQuery, window, document);
 	}
 }(function($, window, document) {
-'use strict';
-let DataTable = $.fn.dataTable;
+	'use strict';
+	let dataTable = $.fn.dataTable;
 
-$.extend(true, DataTable.SearchPane.classes, {
-	buttonGroup: 'btn-group',
-	disabledButton: 'disabled',
-	narrow: 'col',
-	pane: {
-		container: 'table'
-	},
-	paneButton: 'btn btn-light',
-	pill: 'badge rounded-pill bg-secondary',
-	search: 'form-control search',
-	table: 'table table-sm table-borderless',
-	topRow: 'dtsp-topRow'
-});
+	$.extend(true, dataTable.SearchPane.classes, {
+		buttonGroup: 'btn-group',
+		disabledButton: 'disabled',
+		narrow: 'col',
+		pane: {
+			container: 'table'
+		},
+		paneButton: 'btn btn-light',
+		pill: 'badge rounded-pill bg-secondary',
+		search: 'form-control search',
+		table: 'table table-sm table-borderless',
+		topRow: 'dtsp-topRow'
+	});
 
-$.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll btn btn-light',
-	container: 'dtsp-searchPanes',
-	disabledButton: 'disabled',
-	panes: 'dtsp-panes dtsp-panesContainer',
-	title: 'dtsp-title',
-	titleRow: 'dtsp-titleRow'
-});
+	$.extend(true, dataTable.SearchPanes.classes, {
+		clearAll: 'dtsp-clearAll btn btn-light',
+		container: 'dtsp-searchPanes',
+		disabledButton: 'disabled',
+		panes: 'dtsp-panes dtsp-panesContainer',
+		title: 'dtsp-title',
+		titleRow: 'dtsp-titleRow'
+	});
 
-return DataTable.searchPanes;
+	return dataTable.searchPanes;
 }));

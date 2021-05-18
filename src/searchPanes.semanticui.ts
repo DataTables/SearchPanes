@@ -1,11 +1,6 @@
 /*! semantic ui integration for DataTables' SearchPanes
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
-// Hack to allow TypeScript to compile our UMD
-declare var define: {
-	(string, Function): any;
-	amd: string;
-};
 (function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD
@@ -21,10 +16,12 @@ declare var define: {
 			}
 
 			if (! $ || ! $.fn.dataTable) {
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				$ = require('datatables.net-se')(root, $).$;
 			}
 
 			if (! $.fn.dataTable.SearchPanes) {
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				require('datatables.net-searchpanes')(root, $);
 			}
 
@@ -36,28 +33,28 @@ declare var define: {
 		factory(jQuery, window, document);
 	}
 }(function($, window, document) {
-'use strict';
-let DataTable = $.fn.dataTable;
+	'use strict';
+	let dataTable = $.fn.dataTable;
 
-$.extend(true, DataTable.SearchPane.classes, {
-	buttonGroup: 'right floated ui buttons column',
-	disabledButton: 'disabled',
-	narrowSearch: 'dtsp-narrowSearch',
-	narrowSub: 'dtsp-narrow',
-	paneButton: 'ui button',
-	paneInputButton: 'circular search link icon',
-	topRow: 'row dtsp-topRow'
-});
+	$.extend(true, dataTable.SearchPane.classes, {
+		buttonGroup: 'right floated ui buttons column',
+		disabledButton: 'disabled',
+		narrowSearch: 'dtsp-narrowSearch',
+		narrowSub: 'dtsp-narrow',
+		paneButton: 'ui button',
+		paneInputButton: 'circular search link icon',
+		topRow: 'row dtsp-topRow'
+	});
 
-$.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll ui button',
-	disabledButton: 'disabled'
-});
+	$.extend(true, dataTable.SearchPanes.classes, {
+		clearAll: 'dtsp-clearAll ui button',
+		disabledButton: 'disabled'
+	});
 
-// This override is required for the integrated search Icon in sematic ui
-DataTable.SearchPane.prototype._searchContSetup = function() {
-	$('<i class="' + this.classes.paneInputButton + '"></i>').appendTo(this.dom.searchCont);
-};
+	// This override is required for the integrated search Icon in sematic ui
+	dataTable.SearchPane.prototype._searchContSetup = function() {
+		$('<i class="' + this.classes.paneInputButton + '"></i>').appendTo(this.dom.searchCont);
+	};
 
-return DataTable.searchPanes;
+	return dataTable.searchPanes;
 }));

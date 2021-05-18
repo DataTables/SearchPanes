@@ -32,7 +32,7 @@ export interface IDefaults {
 		collapse: {
 			0: string;
 			_: string;
-		},
+		};
 		count: string;
 		countFiltered: string;
 		emptyMessage: string;
