@@ -68,7 +68,9 @@ rm \
     $OUT_DIR/js/searchPane.js \
     $OUT_DIR/js/searchPanes.js \
     src/*.js \
-    src/*.d.ts
+    # src/*.d.ts
+
+mv src/*.d.ts types/
 
 js_compress $OUT_DIR/js/dataTables.searchPanes.js
 
