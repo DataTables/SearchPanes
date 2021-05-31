@@ -121,6 +121,9 @@ export default class SearchPanes {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
+				if (data.searchPanes_null === undefined) {
+					data.searchPanes_null = {};
+				}
 
 				for (let selection of this.s.selectionList) {
 					let src = this.s.dt.column(selection.index).dataSrc();
@@ -128,12 +131,15 @@ export default class SearchPanes {
 					if (data.searchPanes[src] === undefined) {
 						data.searchPanes[src] = {};
 					}
+					if (data.searchPanes_null[src] === undefined) {
+						data.searchPanes_null[src] = {};
+					}
 
 					for (let i = 0; i < selection.rows.length; i++) {
 						data.searchPanes[src][i] = selection.rows[i].filter;
 
 						if(data.searchPanes[src][i] === null) {
-							data.searchPanes[src][i+'_null'] = true;
+							data.searchPanes_null[src][i] = true;
 						}
 					}
 				}
