@@ -1110,6 +1110,9 @@ export default class SearchPanes {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
+				if (data.searchPanes_null === undefined) {
+					data.searchPanes_null = {};
+				}
 
 				// Count how many filters are being applied
 				let filterCount = 0;
@@ -1120,6 +1123,9 @@ export default class SearchPanes {
 					if (data.searchPanes[src] === undefined) {
 						data.searchPanes[src] = {};
 					}
+					if (data.searchPanes_null[src] === undefined) {
+						data.searchPanes_null[src] = {};
+					}
 
 					if (pane.s.dtPane !== undefined) {
 						let rowData =  pane.s.dtPane.rows({selected: true}).data().toArray();
@@ -1128,7 +1134,7 @@ export default class SearchPanes {
 							data.searchPanes[src][i] = rowData[i].filter;
 
 							if(data.searchPanes[src][i] === null) {
-								data.searchPanes[src][i+'_null'] = true;
+								data.searchPanes_null[src][i] = true;
 							}
 
 							filterCount++;
