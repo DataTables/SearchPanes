@@ -131,6 +131,7 @@ export default class SearchPanes {
 
 					for (let i = 0; i < selection.rows.length; i++) {
 						data.searchPanes[src][i] = selection.rows[i].filter;
+
 						if(data.searchPanes[src][i] === null) {
 							data.searchPanes[src][i+'_null'] = true;
 						}
@@ -1119,6 +1120,11 @@ export default class SearchPanes {
 
 						for (let i = 0; i < rowData.length; i++) {
 							data.searchPanes[src][i] = rowData[i].filter;
+
+							if(data.searchPanes[src][i] === null) {
+								data.searchPanes[src][i+'_null'] = true;
+							}
+
 							filterCount++;
 						}
 					}
