@@ -2,8 +2,9 @@
 /// <reference types="datatables.net"/>
 
 
+import * as paneType from './paneType';
+
 declare namespace DataTables {
-	import * as paneType from './paneType';
 
 	interface Settings {
 		/**
