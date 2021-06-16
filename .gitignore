@@ -3,3 +3,8 @@ src/*.js
 css/*.js
 examples/testing
 .sass-cache
+
+types/criteria.d.ts
+types/group.d.ts
+types/index.d.ts
+types/searchBuilder.*d.ts
