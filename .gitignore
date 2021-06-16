@@ -4,7 +4,9 @@ css/*.js
 examples/testing
 .sass-cache
 
-types/criteria.d.ts
-types/group.d.ts
 types/index.d.ts
-types/searchBuilder.*d.ts
+types/panesType.d.ts
+types/panesType.d.ts
+types/searchPane.d.ts
+types/searchPanes.d.ts
+types/searchPanes.*d.ts
