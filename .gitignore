@@ -7,6 +7,7 @@ examples/testing
 types/index.d.ts
 types/panesType.d.ts
 types/panesType.d.ts
+types/paneType.d.ts
 types/searchPane.d.ts
 types/searchPanes.d.ts
 types/searchPanes.*d.ts
