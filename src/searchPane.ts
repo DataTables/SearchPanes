@@ -1235,6 +1235,7 @@ export default class SearchPane {
 
 		// Display the pane
 		this.s.dtPane.draw();
+		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 		this.adjustTopRow();
 
 		if (!this.s.listSet) {
