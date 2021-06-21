@@ -800,7 +800,9 @@ export default class SearchPanes {
 						}
 					}
 
+					pane.s.scrollTop = $(pane.s.dtPane.table().node()).parent()[0].scrollTop;
 					pane.s.dtPane.draw();
+					pane.s.dtPane.table().node().parentNode.scrollTop = pane.s.scrollTop;
 
 					// Update the label that shows how many filters are in place
 					this._updateFilterCount();
