@@ -1818,7 +1818,6 @@ export default class SearchPane {
 		) {
 			let colOpts = this.s.colOpts;
 			let selected = this.s.dtPane.rows({selected: true}).data().toArray();
-			let scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
 			let rowData = this.s.rowData;
 
 			// Clear the pane in preparation for adding the updated search options
@@ -1934,7 +1933,7 @@ export default class SearchPane {
 			}
 
 			this.s.dtPane.draw();
-			this.s.dtPane.table().node().parentNode.scrollTop = scrollTop;
+			this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 		}
 	}
 
