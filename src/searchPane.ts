@@ -611,6 +611,7 @@ export default class SearchPane {
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.on('deselect.dtsp', () => {
 			t0 = setTimeout(() => {
+				this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
 				if (this.s.dt.page.info().serverSide && !this.s.updating) {
 					if (!this.s.serverSelecting) {
 						this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
@@ -1239,6 +1240,7 @@ export default class SearchPane {
 		this.s.dtPane.draw();
 		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 		this.adjustTopRow();
+
 
 		if (!this.s.listSet) {
 			this._setListeners();
