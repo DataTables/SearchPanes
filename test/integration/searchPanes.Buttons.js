@@ -1,4 +1,4 @@
-describe('searchPanes - integrations - Buttons', function() {
+describe('searchPanes - integrations - Buttons', function () {
 	let table;
 
 	dt.libs({
@@ -42,16 +42,15 @@ describe('searchPanes - integrations - Buttons', function() {
 		});
 	});
 
-	describe('Functional tests', function() {
+	describe('Functional tests', function () {
 		dt.html('basic');
-		it('Can have options in a SeachPanes button', function() {
+		it('Can have options in a SeachPanes button', function () {
 			table = $('#example').DataTable({
 				buttons: [
 					{
 						extend: 'searchPanes',
 						config: {
 							viewCount: false
-							// cascadePanes: true
 						}
 					}
 				],
@@ -61,18 +60,18 @@ describe('searchPanes - integrations - Buttons', function() {
 			expect($('button.dt-button').text()).toBe('SearchPanes');
 			expect($('div.dt-button-collection').length).toBe(0);
 		});
-		it('... clicking the button opens the SearchPanes', async function() {
+		it('... clicking the button opens the SearchPanes', async function () {
 			$('button.dt-button').click();
 
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
 		});
 
 		dt.html('basic');
-		it('Can have options in a SeachPanes button', function() {
+		it('Can have options in a SeachPanes button', function () {
 			table = $('#example').DataTable({
 				language: {
 					searchPanes: {
-						collapse: { 0: 'Search 0', 1: 'Search 1 %d', _: 'Search other %d' }
+						collapse: {0: 'Search 0', 1: 'Search 1 %d', _: 'Search other %d'}
 					}
 				},
 				buttons: ['searchPanes'],
@@ -81,25 +80,44 @@ describe('searchPanes - integrations - Buttons', function() {
 
 			expect($('button.dt-button').text()).toBe('Search 0');
 		});
-		it('... clicking the button opens the SearchPanes', async function() {
+		it('... clicking the button opens the SearchPanes', async function () {
 			$('button.dt-button').click();
 			expect($('button.dt-button').text()).toBe('Search 0');
 		});
-		it('... clicking one filter changes title', async function() {
+		it('... clicking one filter changes title', async function () {
 			$('div.dtsp-searchPane:eq(1) tbody tr:eq(3) td:eq(0)').click();
 			expect($('button.dt-button').text()).toBe('Search 1 1');
 		});
-		it('... clicking another filter changes title', async function() {
+		it('... clicking another filter changes title', async function () {
 			$('div.dtsp-searchPane:eq(2) tbody tr:eq(3) td:eq(0)').click();
 			expect($('button.dt-button').text()).toBe('Search other 2');
 		});
-		it('... clicking another filter changes title', async function() {
+		it('... clicking another filter changes title', async function () {
 			$('div.dtsp-searchPane:eq(3) tbody tr:eq(3) td:eq(0)').click();
 			expect($('button.dt-button').text()).toBe('Search other 3');
 		});
-		it('... closing keeps string', async function() {
+		it('... closing keeps string', async function () {
 			$('div.dt-button-background').click();
 			expect($('button.dt-button').text()).toBe('Search other 3');
+		});
+
+		dt.html('basic');
+		it('Paging is not changed when button opens', function () {
+			table = $('#example').DataTable({
+				buttons: ['searchPanes'],
+				dom: 'Bfrtip'
+			});
+
+			table.page(2).draw(false);
+
+			expect(table.page()).toBe(2);
+		});
+		it('... clicking the button opens the SearchPanes', async function () {
+			$('button.dt-button').click();
+			expect($('div.dtsp-title').text()).toBe('Filters Active - 0');
+		});
+		it('... closing keeps paging as it was', async function () {
+			expect(table.page()).toBe(2);
 		});
 	});
 });
