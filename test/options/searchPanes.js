@@ -223,5 +223,20 @@ describe('searchPanes - options - searchPanes', function () {
 			expect($('#example tbody tr:eq(0)').length).toBe(1);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Aaa');
 		});
+
+		dt.html('basic');
+		it('Can change page when a pane item is selected', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: true
+			});
+
+			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(2) td:eq(0)').click();
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Brielle Williamson');
+		});
+		it('Change page', function () {
+			$('.dataTables_paginate span a.paginate_button:eq(1)').click();
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Zenaida Frank');
+		});
 	});
 });
