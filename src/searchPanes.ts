@@ -188,6 +188,9 @@ export default class SearchPanes {
 
 		let returnArray: SearchPane[] = [];
 
+		// Clear the selectionList to prevent cascadePanes from reselecting rows
+		this.s.selectionList = [];
+
 		// For every pane, clear the selections in the pane
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane !== undefined) {
