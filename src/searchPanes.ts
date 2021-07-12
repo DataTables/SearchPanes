@@ -103,6 +103,7 @@ export default class SearchPanes {
 			filterCount: 0,
 			filterPane: -1,
 			page: 0,
+			paging: false,
 			panes: [],
 			selectionList: [],
 			serverData: {},
@@ -1078,7 +1079,9 @@ export default class SearchPanes {
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
 		table.on('preDraw.dtsps', () => {
-			if (!this.s.updating) {
+			// Check that the panes are not updating to avoid infinite loops
+			// Also check that this draw is not due to paging
+			if (!this.s.updating && !this.s.paging) {
 				this._updateFilterCount();
 				if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
 					this.redrawPanes(this.c.viewTotal);
@@ -1089,6 +1092,9 @@ export default class SearchPanes {
 
 				this.s.filterPane = -1;
 			}
+
+			// Paging flag reset - we only need to dodge the draw once
+			this.s.paging = false;
 		});
 
 		$(window).on('resize.dtsp', dataTable.util.throttle(() => {
@@ -1103,12 +1109,14 @@ export default class SearchPanes {
 			data.searchPanes.selectionList = this.s.selectionList;
 		});
 
-		if (this.s.dt.page.info().serverSide) {
-			table.off('page');
-			table.on('page', () => {
-				this.s.page = this.s.dt.page();
-			});
+		// Listener for paging on main table
+		table.off('page');
+		table.on('page', () => {
+			this.s.paging = true;
+			this.s.page = this.s.dt.page();
+		});
 
+		if (this.s.dt.page.info().serverSide) {
 			table.off('preXhr.dt');
 			table.on('preXhr.dt', (e, settings, data) => {
 				if (data.searchPanes === undefined) {

@@ -68,6 +68,7 @@ export interface IS {
 	filterCount: number;
 	filterPane: number;
 	page: number;
+	paging: boolean;
 	panes: SearchPane[];
 	selectionList: ISelectItem[];
 	serverData: {[keys: string]: any};
