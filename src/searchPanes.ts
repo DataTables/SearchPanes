@@ -345,7 +345,6 @@ export default class SearchPanes {
 							protect: false,
 							rows: pane.s.dtPane.rows({selected: true}).data().toArray()
 						});
-						table.state.save();
 						break;
 					}
 					else if (pane.s.deselect) {
@@ -816,9 +815,6 @@ export default class SearchPanes {
 				}
 			}
 		}
-
-		// Make sure that the state is saved after all of these selections
-		this.s.dt.state.save();
 	}
 
 	/**
@@ -906,7 +902,6 @@ export default class SearchPanes {
 					protect: false,
 					rows: pane.s.dtPane.rows({selected: true}).data().toArray()
 				});
-				table.state.save();
 				pane.s.selectPresent = false;
 				selectPresent = true;
 				break;
@@ -1313,6 +1308,8 @@ export default class SearchPanes {
 		}
 
 		table.settings()[0]._searchPanes = this;
+
+		// This state save is required so that state is maintained over multiple refreshes if no actions are made
 		this.s.dt.state.save();
 	}
 
@@ -1400,6 +1397,5 @@ export default class SearchPanes {
 				});
 			}
 		}
-		this.s.dt.state.save();
 	}
 }

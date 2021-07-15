@@ -628,7 +628,6 @@ export default class SearchPane {
 
 					this._makeSelection();
 					this.s.deselect = false;
-					this.s.dt.state.save();
 				}
 			}, 50);
 		});
@@ -695,6 +694,7 @@ export default class SearchPane {
 		$(this.dom.nameButton).on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+			// This state save is required so that the ordering of the panes is maintained
 			this.s.dt.state.save();
 		});
 
@@ -703,6 +703,7 @@ export default class SearchPane {
 		$(this.dom.countButton).on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
+			// This state save is required so that the ordering of the panes is maintained
 			this.s.dt.state.save();
 		});
 
@@ -738,11 +739,10 @@ export default class SearchPane {
 			else {
 				this.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
 			}
+
+			// This state save is required so that the searching on the panes is maintained
 			this.s.dt.state.save();
 		});
-
-		// Make sure to save the state once the pane has been built
-		this.s.dt.state.save();
 
 		return true;
 	}
@@ -1291,15 +1291,16 @@ export default class SearchPane {
 
 			for (let pane of loadedFilter.searchPanes.panes) {
 				if (pane.id === this.s.index) {
-					$(this.dom.searchBox).val(pane.searchTerm);
-					$(this.dom.searchBox).trigger('input');
+					// Save some time by only triggering an input if there is a value
+					if(pane.searchTerm.length > 0) {
+						$(this.dom.searchBox).val(pane.searchTerm);
+						$(this.dom.searchBox).trigger('input');
+					}
 					this.s.dtPane.order(pane.order).draw();
 				}
 			}
 		}
 
-		// Make sure to save the state once the pane has been built
-		this.s.dt.state.save();
 		return true;
 	}
 
