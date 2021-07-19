@@ -1036,11 +1036,11 @@ export default class SearchPane {
 								countMessage.replace(/{total}/, row.total) ;
 							message = message.replace(/{shown}/, row.shown);
 
-							while (message.indexOf('{total}') !== -1) {
+							while (message.includes('{total}')) {
 								message = message.replace(/{total}/, row.total);
 							}
 
-							while (message.indexOf('{shown}') !== -1) {
+							while (message.includes('{shown}')) {
 								message = message.replace(/{shown}/, row.shown);
 							}
 
@@ -1696,7 +1696,7 @@ export default class SearchPane {
 
 			// if the filter is an array then is the column present in it
 			if (Array.isArray(filter)) {
-				if (filter.indexOf(colSelect.filter) !== -1) {
+				if (filter.includes(colSelect.filter)) {
 					return true;
 				}
 			}

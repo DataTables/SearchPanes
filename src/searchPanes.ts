@@ -531,7 +531,7 @@ export default class SearchPanes {
 			for (let pane of this.s.panes) {
 				// Resize the pane with the new layout
 				if (pane.s.displayed) {
-					let layout = 'columns-' + (widerIndexes.indexOf(pane.s.index) === -1 ? highest : highestmod);
+					let layout = 'columns-' + (!widerIndexes.includes(pane.s.index) ? highest : highestmod);
 					pane.resize(layout);
 				}
 			}
@@ -1259,11 +1259,11 @@ export default class SearchPanes {
 
 				for (let i = 0; i < tableLength; i++) {
 					if (
-						pane.s.colOpts.preSelect.indexOf(pane.s.dtPane.cell(i, 0).data()) !== -1 ||
+						pane.s.colOpts.preSelect.includes(pane.s.dtPane.cell(i, 0).data()) ||
 						(
 							pane.customPaneSettings !== null &&
 							pane.customPaneSettings.preSelect !== undefined &&
-							pane.customPaneSettings.preSelect.indexOf(pane.s.dtPane.cell(i, 0).data()) !== -1
+							pane.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())
 						)
 					) {
 						pane.s.dtPane.row(i).select();
