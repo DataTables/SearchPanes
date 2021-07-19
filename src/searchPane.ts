@@ -206,7 +206,7 @@ export default class SearchPane {
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions();
 		let colOpts = this.s.colOpts;
 		let clear: JQuery<HTMLElement> = $('<button type="button">X</button>').addClass(this.classes.paneButton);
-		$(clear).text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
+		clear.text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
 		this.dom.container.addClass(colOpts.className);
 		this.dom.container.addClass(
 			(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
@@ -265,7 +265,7 @@ export default class SearchPane {
 
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
-			$(clear).on('click', () => {
+			clear.on('click', () => {
 				let searches = this.dom.container.find('.' + this.classes.search.replace(/\s+/g, '.'));
 
 				searches.each(function() {
@@ -397,14 +397,17 @@ export default class SearchPane {
 	 * Strips all of the SearchPanes elements from the document and turns all of the listeners for the buttons off
 	 */
 	public destroy(): void {
-		$(this.s.dtPane).off('.dtsp');
-		$(this.s.dt).off('.dtsp');
-		$(this.dom.nameButton).off('.dtsp');
-		$(this.dom.countButton).off('.dtsp');
-		$(this.dom.clear).off('.dtsp');
-		$(this.dom.searchButton).off('.dtsp');
+		if(this.s.dtPane !== undefined) {
+			this.s.dtPane.off('.dtsp');
+		}
 
-		$(this.dom.container).remove();
+		this.s.dt.off('.dtsp');
+		this.dom.nameButton.off('.dtsp');
+		this.dom.countButton.off('.dtsp');
+		this.dom.clear.off('.dtsp');
+		this.dom.searchButton.off('.dtsp');
+
+		this.dom.container.remove();
 
 		let searchIdx: number = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
 
@@ -476,7 +479,7 @@ export default class SearchPane {
 			}
 
 			this.s.dtPane.clear().destroy();
-			prevEl = $(this.dom.container).prev();
+			prevEl = this.dom.container.prev();
 			this.destroy();
 			this.s.dtPane = undefined;
 			$.fn.dataTable.ext.search.push(this.s.searchFunction);
@@ -502,7 +505,7 @@ export default class SearchPane {
 	 */
 	public removePane(): void {
 		this.s.displayed = false;
-		$(this.dom.container).hide();
+		this.dom.container.hide();
 	}
 
 	/**
@@ -513,7 +516,7 @@ export default class SearchPane {
 	public resize(layout: string): void {
 		this.c.layout = layout;
 		let layVal: number = parseInt(layout.split('-')[1], 10);
-		$(this.dom.container)
+		this.dom.container
 			.removeClass()
 			.addClass(this.classes.container)
 			.addClass(this.classes.layout +
@@ -597,7 +600,7 @@ export default class SearchPane {
 				}
 			}
 			else {
-				$(this.dom.clear).removeClass(this.classes.disabledButton).removeAttr('disabled');
+				this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
 
 				if (!this.s.updating) {
 					this.s.selectPresent = true;
@@ -623,7 +626,7 @@ export default class SearchPane {
 					this.s.deselect = true;
 
 					if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
-						$(this.dom.clear).addClass(this.classes.disabledButton).attr('disabled', 'true');
+						this.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
 					}
 
 					this._makeSelection();
@@ -649,7 +652,7 @@ export default class SearchPane {
 			// Get all of the data needed for the state save from the pane
 			if (this.s.dtPane !== undefined) {
 				selected = this.s.dtPane.rows({selected: true}).data().map(item => item.filter.toString()).toArray();
-				searchTerm = $(this.dom.searchBox).val();
+				searchTerm = this.dom.searchBox.val();
 				order = this.s.dtPane.order();
 				bins = rowData.binsOriginal;
 				arrayFilter = rowData.arrayOriginal;
@@ -691,7 +694,7 @@ export default class SearchPane {
 
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
-		$(this.dom.nameButton).on('click.dtsp', () => {
+		this.dom.nameButton.on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
 			// This state save is required so that the ordering of the panes is maintained
@@ -700,7 +703,7 @@ export default class SearchPane {
 
 		// When the button to order by the number of entries in the column is clicked then
 		//  change the ordering to whatever it isn't currently
-		$(this.dom.countButton).on('click.dtsp', () => {
+		this.dom.countButton.on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
 			// This state save is required so that the ordering of the panes is maintained
@@ -708,7 +711,7 @@ export default class SearchPane {
 		});
 
 		// When the clear button is clicked reset the pane
-		$(this.dom.clear).on('click.dtsp', () => {
+		this.dom.clear.on('click.dtsp', () => {
 			let searches = this.dom.container.find('.' + this.classes.search.replace(/ /g, '.'));
 
 			searches.each(function() {
@@ -721,18 +724,21 @@ export default class SearchPane {
 		});
 
 		// When the search button is clicked then draw focus to the search box
-		$(this.dom.searchButton).on('click.dtsp', () => {
-			$(this.dom.searchBox).focus();
+		this.dom.searchButton.on('click.dtsp', () => {
+			this.dom.searchBox.focus();
 		});
 
 		// When a character is inputted into the searchbox search the pane for matching values.
 		// Doing it this way means that no button has to be clicked to trigger a search, it is done asynchronously
-		$(this.dom.searchBox).on('input.dtsp', () => {
-			let searchval = $(this.dom.searchBox).val();
+		this.dom.searchBox.on('input.dtsp', () => {
+			let searchval = this.dom.searchBox.val();
 			this.s.dtPane.search(searchval).draw();
 			if (
-				searchval.length > 0 ||
-				(searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0)
+				typeof searchval === 'string' &&
+				(
+					searchval.length > 0 ||
+					(searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0)
+				)
 			) {
 				this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
 			}
@@ -1000,11 +1006,11 @@ export default class SearchPane {
 		}
 
 		// Add the container to the document in its original location
-		if (prevEl !== null && $(this.dom.panesContainer).has(prevEl).length > 0) {
-			$(this.dom.container).insertAfter(prevEl);
+		if (prevEl !== null && this.dom.panesContainer.has(prevEl).length > 0) {
+			this.dom.container.insertAfter(prevEl);
 		}
 		else {
-			$(this.dom.panesContainer).prepend(this.dom.container);
+			this.dom.panesContainer.prepend(this.dom.container);
 		}
 
 		// Declare the datatable for the pane
@@ -1012,7 +1018,7 @@ export default class SearchPane {
 		$.fn.dataTable.ext.errMode = 'none';
 		let haveScroller = (dataTable as any).Scroller;
 
-		this.s.dtPane = $(this.dom.dtP).DataTable($.extend(
+		this.s.dtPane = this.dom.dtP.DataTable($.extend(
 			true,
 			{
 				columnDefs: [
@@ -1126,7 +1132,7 @@ export default class SearchPane {
 				: {},
 		));
 
-		$(this.dom.dtP).addClass(this.classes.table);
+		this.dom.dtP.addClass(this.classes.table);
 
 		// Getting column titles is a little messy
 		let headerText = 'Custom Pane';
@@ -1271,7 +1277,7 @@ export default class SearchPane {
 
 		//  If SSP and the table is ready, apply the search for the pane
 		if (this.s.dt.page.info().serverSide) {
-			this.s.dtPane.search($(this.dom.searchBox).val()).draw();
+			this.s.dtPane.search(this.dom.searchBox.val()).draw();
 		}
 
 		// Reload the selection, searchbox entry and ordering from the previous state
@@ -1293,8 +1299,8 @@ export default class SearchPane {
 				if (pane.id === this.s.index) {
 					// Save some time by only triggering an input if there is a value
 					if(pane.searchTerm && pane.searchTerm.length > 0) {
-						$(this.dom.searchBox).val(pane.searchTerm);
-						$(this.dom.searchBox).trigger('input');
+						this.dom.searchBox.val(pane.searchTerm);
+						this.dom.searchBox.trigger('input');
 					}
 					this.s.dtPane.order(pane.order).draw();
 				}
@@ -1329,20 +1335,20 @@ export default class SearchPane {
 		let layVal: number = parseInt(this.c.layout.split('-')[1], 10);
 
 		// Empty everything to start again
-		$(this.dom.topRow).empty();
-		$(this.dom.dtP).empty();
-		$(this.dom.topRow).addClass(this.classes.topRow);
+		this.dom.topRow.empty();
+		this.dom.dtP.empty();
+		this.dom.topRow.addClass(this.classes.topRow);
 
 		// If there are more than 3 columns defined then make there be a smaller gap between the panes
 		if (layVal > 3) {
-			$(this.dom.container).addClass(this.classes.smallGap);
+			this.dom.container.addClass(this.classes.smallGap);
 		}
 
-		$(this.dom.topRow).addClass(this.classes.subRowsContainer);
-		$(this.dom.upper).appendTo(this.dom.topRow);
-		$(this.dom.lower).appendTo(this.dom.topRow);
-		$(this.dom.searchCont).appendTo(this.dom.upper);
-		$(this.dom.buttonGroup).appendTo(this.dom.lower);
+		this.dom.topRow.addClass(this.classes.subRowsContainer);
+		this.dom.upper.appendTo(this.dom.topRow);
+		this.dom.lower.appendTo(this.dom.topRow);
+		this.dom.searchCont.appendTo(this.dom.upper);
+		this.dom.buttonGroup.appendTo(this.dom.lower);
 
 		// If no selections have been made in the pane then disable the clear button
 		if (this.c.dtOpts.searching === false ||
@@ -1354,24 +1360,24 @@ export default class SearchPane {
 				this.customPaneSettings.dtOpts.searching !== undefined &&
 				!this.customPaneSettings.dtOpts.searching)
 		) {
-			$(this.dom.searchBox)
+			this.dom.searchBox
 				.removeClass(this.classes.paneInputButton)
 				.addClass(this.classes.disabledButton)
 				.attr('disabled', 'true');
 		}
 
-		$(this.dom.searchBox).appendTo(this.dom.searchCont);
+		this.dom.searchBox.appendTo(this.dom.searchCont);
 
 		// Create the contents of the searchCont div. Worth noting that this function will change when using semantic ui
 		this._searchContSetup();
 
 		// If the clear button is allowed to show then display it
 		if (this.c.clear && this.c.controls && colOpts.controls) {
-			$(this.dom.clear).appendTo(this.dom.buttonGroup);
+			this.dom.clear.appendTo(this.dom.buttonGroup);
 		}
 
 		if (this.c.orderable && colOpts.orderable && this.c.controls && colOpts.controls) {
-			$(this.dom.nameButton).appendTo(this.dom.buttonGroup);
+			this.dom.nameButton.appendTo(this.dom.buttonGroup);
 		}
 
 		// If the count column is hidden then don't display the ordering button for it
@@ -1383,12 +1389,12 @@ export default class SearchPane {
 			this.c.controls &&
 			colOpts.controls
 		) {
-			$(this.dom.countButton).appendTo(this.dom.buttonGroup);
+			this.dom.countButton.appendTo(this.dom.buttonGroup);
 		}
 
-		$(this.dom.topRow).prependTo(this.dom.container);
-		$(container).append(this.dom.dtP);
-		$(container).show();
+		this.dom.topRow.prependTo(this.dom.container);
+		container.append(this.dom.dtP);
+		container.show();
 	}
 
 	/**
@@ -1743,7 +1749,7 @@ export default class SearchPane {
 	 */
 	private _searchContSetup(): void {
 		if (this.c.controls && this.s.colOpts.controls) {
-			$(this.dom.searchButton).appendTo(this.dom.searchLabelCont);
+			this.dom.searchButton.appendTo(this.dom.searchLabelCont);
 		}
 
 		if (
@@ -1754,7 +1760,7 @@ export default class SearchPane {
 				this.customPaneSettings.dtOpts.searching !== undefined &&
 				!this.customPaneSettings.dtOpts.searching))
 		) {
-			$(this.dom.searchLabelCont).appendTo(this.dom.searchCont);
+			this.dom.searchLabelCont.appendTo(this.dom.searchCont);
 		}
 	}
 
