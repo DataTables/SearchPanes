@@ -178,7 +178,7 @@ export default class SearchPane {
 				.addClass(this.classes.layout +
 					(layVal < 10 ? layout : layout.split('-')[0] + '-9')
 				),
-			countButton:  $('<button type="button"></button>')
+			countButton: $('<button type="button"></button>')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.countButton),
 			dtP: $('<table><thead><tr><th>' +
@@ -204,7 +204,7 @@ export default class SearchPane {
 		table = this.s.dt;
 		this.selections = [];
 		this.s.colOpts = this.colExists ? this._getOptions() : this._getBonusOptions();
-		let colOpts =  this.s.colOpts;
+		let colOpts = this.s.colOpts;
 		let clear: JQuery<HTMLElement> = $('<button type="button">X</button>').addClass(this.classes.paneButton);
 		$(clear).text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
 		this.dom.container.addClass(colOpts.className);
@@ -663,7 +663,7 @@ export default class SearchPane {
 				data.searchPanes.panes = [];
 			}
 
-			for (let i = 0; i <  data.searchPanes.panes.length; i++) {
+			for (let i = 0; i < data.searchPanes.panes.length; i++) {
 				if (data.searchPanes.panes[i].id === this.s.index) {
 					data.searchPanes.panes.splice(i, 1);
 					i--;
@@ -837,7 +837,7 @@ export default class SearchPane {
 		this.selections = [];
 		let table = this.s.dt;
 		let column = table.column(this.colExists ? this.s.index : 0);
-		let colOpts =  this.s.colOpts;
+		let colOpts = this.s.colOpts;
 		let rowData = this.s.rowData;
 
 		// Other Variables
@@ -912,7 +912,7 @@ export default class SearchPane {
 					(colOpts.show === undefined && colOpts.threshold === null ?
 						uniqueRatio > this.c.threshold :
 						uniqueRatio > colOpts.threshold)
-					|| (colOpts.show !== true  && binLength <= 1))
+					|| (colOpts.show !== true && binLength <= 1))
 				) {
 					this.dom.container.addClass(this.classes.hidden);
 					this.s.displayed = false;
@@ -967,7 +967,7 @@ export default class SearchPane {
 					(colOpts.show === undefined && colOpts.threshold === null ?
 						uniqueRatio > this.c.threshold :
 						uniqueRatio > colOpts.threshold)
-					|| (colOpts.show !== true  && binLength <= 1))
+					|| (colOpts.show !== true && binLength <= 1))
 				) {
 					this.dom.container.addClass(this.classes.hidden);
 					this.s.displayed = false;
@@ -1066,7 +1066,7 @@ export default class SearchPane {
 										data
 								) +
 								'" class="' + this.classes.name + '">' +
-								data  + '</span>' +
+								data + '</span>' +
 								pill + '</div>';
 						},
 						targets: 0,
@@ -1168,7 +1168,7 @@ export default class SearchPane {
 			for (let i = 0, ien = rowData.arrayFilter.length; i < ien; i++) {
 				let selected = false;
 
-				for (let option of this.s.serverSelect)  {
+				for (let option of this.s.serverSelect) {
 					if (option.filter === rowData.arrayFilter[i].filter) {
 						selected = true;
 					}
@@ -1325,10 +1325,10 @@ export default class SearchPane {
 	 */
 	private _displayPane(): void {
 		let container = this.dom.container;
-		let colOpts =  this.s.colOpts;
+		let colOpts = this.s.colOpts;
 		let layVal: number = parseInt(this.c.layout.split('-')[1], 10);
 
-		//  Empty everything to start again
+		// Empty everything to start again
 		$(this.dom.topRow).empty();
 		$(this.dom.dtP).empty();
 		$(this.dom.topRow).addClass(this.classes.topRow);
@@ -1366,7 +1366,7 @@ export default class SearchPane {
 		this._searchContSetup();
 
 		// If the clear button is allowed to show then display it
-		if (this.c.clear  && this.c.controls && colOpts.controls) {
+		if (this.c.clear && this.c.controls && colOpts.controls) {
 			$(this.dom.clear).appendTo(this.dom.buttonGroup);
 		}
 
@@ -1554,7 +1554,7 @@ export default class SearchPane {
 		let settings = this.s.dt.settings()[0];
 
 		// If cascadePanes or viewTotal are active it is necessary to get the data which is currently
-		//  being displayed for their functionality.
+		// being displayed for their functionality.
 		// Also make sure that this was not the last pane to have a selection made
 		if (!this.s.dt.page.info().serverSide) {
 			let indexArray = (this.c.cascadePanes || this.c.viewTotal) && (!this.s.clearing && !last) ?
@@ -1583,7 +1583,7 @@ export default class SearchPane {
 		let colOpts = this.s.colOpts;
 
 		// Retrieve the rendered data from the cell using the fnGetCellData function
-		//  rather than the cell().render API method for optimisation
+		// rather than the cell().render API method for optimisation
 		if (typeof colOpts.orthogonal === 'string') {
 			let rendered = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, colOpts.orthogonal);
 			this.s.rowData.filterMap.set(rowIdx, rendered);
@@ -1686,7 +1686,7 @@ export default class SearchPane {
 		for (let colSelect of this.selections) {
 			if (typeof colSelect.filter === 'string' && typeof filter === 'string') {
 				// The filter value will not have the &amp; in place but a &,
-				//  so we need to do a replace to make sure that they will match
+				// so we need to do a replace to make sure that they will match
 				colSelect.filter = colSelect.filter
 					.replace(/&amp;/g, '&')
 					.replace(/&lt;/g, '<')
@@ -1708,7 +1708,7 @@ export default class SearchPane {
 					}
 				}
 				// If the combiner is an "and" then we need to check against all possible selections
-				//  so if it fails here then the and is not met and return false
+				// so if it fails here then the and is not met and return false
 				else if (colOpts.combiner === 'and') {
 					return false;
 				}
@@ -1726,7 +1726,7 @@ export default class SearchPane {
 		}
 
 		// If the combiner is an and then we need to check against all possible selections
-		//  so return true here if so because it would have returned false earlier if it had failed
+		// so return true here if so because it would have returned false earlier if it had failed
 		if (colOpts.combiner === 'and') {
 			return true;
 		}
@@ -1835,7 +1835,7 @@ export default class SearchPane {
 					this._populatePane(!this.s.filteringActive);
 				}
 				// If cascadePanes is active and the table has returned to its default state then
-				//  there is a need to update certain parts ofthe rowData.
+				// there is a need to update certain parts ofthe rowData.
 				else if (
 					this.c.cascadePanes &&
 					this.s.dt.rows().data().toArray().length ===
@@ -1863,7 +1863,7 @@ export default class SearchPane {
 
 				for (let dataP of rowData.arrayFilter) {
 					// If both view Total and cascadePanes have been selected and the count of the row
-					//  is not 0 then add it to pane
+					// is not 0 then add it to pane
 					// Do this also if the viewTotal option has been selected and cascadePanes has not
 					if (dataP && (
 						(
@@ -1889,7 +1889,7 @@ export default class SearchPane {
 						);
 
 						// Find out if the filter was selected in the previous search,
-						//  if so select it and remove from array.
+						// if so select it and remove from array.
 						let selectIndex: number = selected.findIndex(function(element) {
 							return element.filter === dataP.filter;
 						});
