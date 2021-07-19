@@ -73,6 +73,7 @@ export default class SearchPanes {
 		}
 
 		// Check that Select is included
+		// eslint-disable-next-line no-extra-parens
 		if (! (dataTable as any).select) {
 			throw new Error('SearchPane requires Select');
 		}
@@ -364,7 +365,7 @@ export default class SearchPanes {
 					let last = this.s.selectionList[this.s.selectionList.length - 1].index;
 
 					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last);
+						pane.s.lastSelect = pane.s.index === last;
 					}
 				}
 
@@ -401,7 +402,7 @@ export default class SearchPanes {
 						pane.s.filteringActive = true;
 
 						if (
-							(filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) ||
+							filterPane !== -1 && filterPane !== null && filterPane === pane.s.index ||
 							filterActive === false ||
 							pane.s.index === solePane
 						) {
@@ -423,7 +424,7 @@ export default class SearchPanes {
 					let last = newSelectionList[newSelectionList.length - 1].index;
 
 					for (let pane of this.s.panes) {
-						pane.s.lastSelect = (pane.s.index === last);
+						pane.s.lastSelect = pane.s.index === last;
 					}
 				}
 				else if (newSelectionList.length > 0) {
@@ -434,7 +435,7 @@ export default class SearchPanes {
 							paneUpdate.s.filteringActive = true;
 
 							if (
-								(filterPane !== -1 && filterPane !== null && filterPane === paneUpdate.s.index) ||
+								filterPane !== -1 && filterPane !== null && filterPane === paneUpdate.s.index ||
 								filterActive === false ||
 								paneUpdate.s.index === solePane
 							) {
@@ -460,7 +461,7 @@ export default class SearchPanes {
 						pane.s.filteringActive = true;
 
 						if (
-							(filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) ||
+							filterPane !== -1 && filterPane !== null && filterPane === pane.s.index ||
 							filterActive === false ||
 							pane.s.index === solePane
 						) {
@@ -670,7 +671,7 @@ export default class SearchPanes {
 			pane.setClear(true);
 
 			// If this is the same as the pane with the only selection then pass it as a parameter into clearPane
-			if ((pane.s.dtPane !== undefined && pane.s.index === solePane) || pane.s.dtPane !== undefined) {
+			if (pane.s.dtPane !== undefined && pane.s.index === solePane || pane.s.dtPane !== undefined) {
 				pane.clearPane();
 			}
 
@@ -970,7 +971,7 @@ export default class SearchPanes {
 		else if (this.s.selectionList.length > 0) {
 			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
 			for (let pane of this.s.panes) {
-				pane.s.lastSelect = (pane.s.index === last);
+				pane.s.lastSelect = pane.s.index === last;
 				pane.s.deselect = false;
 			}
 		}
@@ -1003,6 +1004,7 @@ export default class SearchPanes {
 			this.dom.panes.append(pane.dom.container);
 			if (pane.s.dtPane !== undefined) {
 				$(pane.s.dtPane.table().node()).parent()[0].scrollTop = pane.s.scrollTop;
+				// eslint-disable-next-line no-extra-parens
 				($.fn.dataTable as any).select.init(pane.s.dtPane);
 			}
 		}
@@ -1060,7 +1062,7 @@ export default class SearchPanes {
 
 		// Reset the paging if that has been saved in the state
 		if (!this.s.stateRead && loadedFilter !== null && loadedFilter !== undefined) {
-			this.s.dt.page((loadedFilter.start / this.s.dt.page.len()));
+			this.s.dt.page(loadedFilter.start / this.s.dt.page.len());
 			this.s.dt.draw('page');
 		}
 
@@ -1247,12 +1249,10 @@ export default class SearchPanes {
 				pane !== undefined &&
 				pane.s.dtPane !== undefined &&
 				(
-					(pane.s.colOpts.preSelect !== undefined && pane.s.colOpts.preSelect.length > 0) ||
-					(
-						pane.customPaneSettings !== null &&
-						pane.customPaneSettings.preSelect !== undefined &&
-						pane.customPaneSettings.preSelect.length > 0
-					)
+					pane.s.colOpts.preSelect !== undefined && pane.s.colOpts.preSelect.length > 0 ||
+					pane.customPaneSettings !== null &&
+					pane.customPaneSettings.preSelect !== undefined &&
+					pane.customPaneSettings.preSelect.length > 0
 				)
 			) {
 				let tableLength = pane.s.dtPane.rows().data().toArray().length;
@@ -1260,11 +1260,9 @@ export default class SearchPanes {
 				for (let i = 0; i < tableLength; i++) {
 					if (
 						pane.s.colOpts.preSelect.includes(pane.s.dtPane.cell(i, 0).data()) ||
-						(
-							pane.customPaneSettings !== null &&
-							pane.customPaneSettings.preSelect !== undefined &&
-							pane.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())
-						)
+						pane.customPaneSettings !== null &&
+						pane.customPaneSettings.preSelect !== undefined &&
+						pane.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())
 					) {
 						pane.s.dtPane.row(i).select();
 					}
@@ -1276,7 +1274,7 @@ export default class SearchPanes {
 		if (this.s.selectionList !== undefined && this.s.selectionList.length > 0) {
 			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
 			for (let pane of this.s.panes) {
-				pane.s.lastSelect = (pane.s.index === last);
+				pane.s.lastSelect = pane.s.index === last;
 			}
 		}
 
@@ -1345,7 +1343,7 @@ export default class SearchPanes {
 				pane.s.filteringActive = true;
 
 				if (
-					(filterPane !== -1 && filterPane !== null && filterPane === pane.s.index) ||
+					filterPane !== -1 && filterPane !== null && filterPane === pane.s.index ||
 					filterActive === false
 				) {
 					pane.s.filteringActive = false;

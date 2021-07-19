@@ -105,6 +105,7 @@ export default class SearchPane {
 		}
 
 		// Check that Select is included
+		// eslint-disable-next-line no-extra-parens
 		if (! (dataTable as any).select) {
 			throw new Error('SearchPane requires Select');
 		}
@@ -209,7 +210,7 @@ export default class SearchPane {
 		clear.text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
 		this.dom.container.addClass(colOpts.className);
 		this.dom.container.addClass(
-			(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
+			this.customPaneSettings !== null && this.customPaneSettings.className !== undefined
 				? this.customPaneSettings.className
 				: ''
 		);
@@ -252,7 +253,8 @@ export default class SearchPane {
 					// get the filter value from the map
 					filter = this.s.rowData.filterMap.get(dataIndex);
 
-					if ((filter as any) instanceof $.fn.dataTable.Api) {
+					if (filter as any instanceof $.fn.dataTable.Api) {
+						// eslint-disable-next-line no-extra-parens
 						filter = (filter as any).toArray();
 					}
 				}
@@ -523,7 +525,7 @@ export default class SearchPane {
 				(layVal < 10 ? layout : layout.split('-')[0] + '-9'))
 			.addClass(this.s.colOpts.className)
 			.addClass(
-				(this.customPaneSettings !== null && this.customPaneSettings.className !== undefined)
+				this.customPaneSettings !== null && this.customPaneSettings.className !== undefined
 					? this.customPaneSettings.className
 					: ''
 			)
@@ -737,7 +739,7 @@ export default class SearchPane {
 				typeof searchval === 'string' &&
 				(
 					searchval.length > 0 ||
-					(searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0)
+					searchval.length === 0 && this.s.dtPane.rows({selected: true}).data().toArray().length > 0
 				)
 			) {
 				this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
@@ -870,8 +872,11 @@ export default class SearchPane {
 			}
 
 			// Perform checks that do not require populate pane to run
-			if ((colOpts.show === false
-				|| (colOpts.show !== undefined && colOpts.show !== true)) &&
+			if (
+				(
+					colOpts.show === false ||
+					colOpts.show !== undefined && colOpts.show !== true
+				) &&
 				idx === -1
 			) {
 				this.dom.container.addClass(this.classes.hidden);
@@ -914,11 +919,16 @@ export default class SearchPane {
 
 				// Don't show the pane if there isn't enough variance in the data, or there is only 1 entry
 				//  for that pane
-				if (this.s.displayed === false && (
-					(colOpts.show === undefined && colOpts.threshold === null ?
-						uniqueRatio > this.c.threshold :
-						uniqueRatio > colOpts.threshold)
-					|| (colOpts.show !== true && binLength <= 1))
+				if (
+					this.s.displayed === false &&
+					(
+						(
+							colOpts.show === undefined && colOpts.threshold === null ?
+								uniqueRatio > this.c.threshold :
+								uniqueRatio > colOpts.threshold
+						) ||
+						colOpts.show !== true && binLength <= 1
+					)
 				) {
 					this.dom.container.addClass(this.classes.hidden);
 					this.s.displayed = false;
@@ -969,11 +979,16 @@ export default class SearchPane {
 				let uniqueRatio: number = this._uniqueRatio(binLength, this.s.tableLength);
 
 				// Don't show the pane if there isnt enough variance in the data, or there is only 1 entry for that pane
-				if (this.s.displayed === false && (
-					(colOpts.show === undefined && colOpts.threshold === null ?
-						uniqueRatio > this.c.threshold :
-						uniqueRatio > colOpts.threshold)
-					|| (colOpts.show !== true && binLength <= 1))
+				if (
+					this.s.displayed === false &&
+					(
+						(
+							colOpts.show === undefined && colOpts.threshold === null ?
+								uniqueRatio > this.c.threshold :
+								uniqueRatio > colOpts.threshold
+						) ||
+						colOpts.show !== true && binLength <= 1
+					)
 				) {
 					this.dom.container.addClass(this.classes.hidden);
 					this.s.displayed = false;
@@ -1016,6 +1031,7 @@ export default class SearchPane {
 		// Declare the datatable for the pane
 		let errMode: string = $.fn.dataTable.ext.errMode;
 		$.fn.dataTable.ext.errMode = 'none';
+		// eslint-disable-next-line no-extra-parens
 		let haveScroller = (dataTable as any).Scroller;
 
 		this.s.dtPane = this.dom.dtP.DataTable($.extend(
@@ -1034,12 +1050,11 @@ export default class SearchPane {
 							}
 
 							let message: string;
-							message = (
-								(this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal
-							) ||
-							(this.c.viewTotal && this.s.forceViewTotal) ?
-								filteredMessage.replace(/{total}/, row.total):
-								countMessage.replace(/{total}/, row.total) ;
+							message =
+								(this.s.filteringActive || this.s.showFiltered) && this.c.viewTotal ||
+								this.c.viewTotal && this.s.forceViewTotal ?
+									filteredMessage.replace(/{total}/, row.total):
+									countMessage.replace(/{total}/, row.total) ;
 							message = message.replace(/{shown}/, row.shown);
 
 							while (message.includes('{total}')) {
@@ -1110,16 +1125,16 @@ export default class SearchPane {
 				stateSave: table.settings()[0].oFeatures.bStateSave ? true : false
 			},
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
-			(this.s.colOpts.options !== undefined || !this.colExists)
-				? {
+			this.s.colOpts.options !== undefined || !this.colExists ?
+				{
 					createdRow(row, data, dataIndex) {
 						$(row).addClass(data.className);
 					}
-				}
-				: undefined,
-			(this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined)
-				? this.customPaneSettings.dtOpts
-				: {},
+				}:
+				undefined,
+			this.customPaneSettings !== null && this.customPaneSettings.dtOpts !== undefined ?
+				this.customPaneSettings.dtOpts :
+				{},
 			$.fn.dataTable.versionCheck('2')
 				? {
 					layout: {
@@ -1152,6 +1167,7 @@ export default class SearchPane {
 		this.dom.searchBox.attr('placeholder', headerText);
 
 		// As the pane table is not in the document yet we must initialise select ourselves
+		// eslint-disable-next-line no-extra-parens
 		($.fn.dataTable as any).select.init(this.s.dtPane);
 		$.fn.dataTable.ext.errMode = errMode;
 
@@ -1184,8 +1200,8 @@ export default class SearchPane {
 					this.s.dt.page.info().serverSide &&
 					(
 						!this.c.cascadePanes ||
-						(this.c.cascadePanes && rowData.bins[rowData.arrayFilter[i].filter] !== 0) ||
-						(this.c.cascadePanes && init !== null) ||
+						this.c.cascadePanes && rowData.bins[rowData.arrayFilter[i].filter] !== 0 ||
+						this.c.cascadePanes && init !== null ||
 						selected
 					)
 				) {
@@ -1232,12 +1248,13 @@ export default class SearchPane {
 			}
 		}
 
+		// eslint-disable-next-line no-extra-parens
 		(dataTable as any).select.init(this.s.dtPane);
 
 		// If there are custom options set or it is a custom pane then get them
 		if (
 			colOpts.options !== undefined ||
-			(this.customPaneSettings !== null && this.customPaneSettings.options !== undefined)
+			this.customPaneSettings !== null && this.customPaneSettings.options !== undefined
 		) {
 			this._getComparisonRows();
 		}
@@ -1351,14 +1368,14 @@ export default class SearchPane {
 		this.dom.buttonGroup.appendTo(this.dom.lower);
 
 		// If no selections have been made in the pane then disable the clear button
-		if (this.c.dtOpts.searching === false ||
-			(colOpts.dtOpts !== undefined &&
-			colOpts.dtOpts.searching === false) ||
+		if (
+			this.c.dtOpts.searching === false ||
+			colOpts.dtOpts !== undefined && colOpts.dtOpts.searching === false ||
 			(!this.c.controls || !colOpts.controls) ||
-			(this.customPaneSettings !== null &&
-				this.customPaneSettings.dtOpts !== undefined &&
-				this.customPaneSettings.dtOpts.searching !== undefined &&
-				!this.customPaneSettings.dtOpts.searching)
+			this.customPaneSettings !== null &&
+			this.customPaneSettings.dtOpts !== undefined &&
+			this.customPaneSettings.dtOpts.searching !== undefined &&
+			!this.customPaneSettings.dtOpts.searching
 		) {
 			this.dom.searchBox
 				.removeClass(this.classes.paneInputButton)
@@ -1484,7 +1501,7 @@ export default class SearchPane {
 			}
 
 			// If cascadePanes is not active or if it is and the comparisonObj should be shown then add it to the pane
-			if (!this.c.cascadePanes || (this.c.cascadePanes && comparisonObj.shown !== 0)) {
+			if (!this.c.cascadePanes || this.c.cascadePanes && comparisonObj.shown !== 0) {
 				rows.push(this.addRow(
 					comparisonObj.display,
 					comparisonObj.filter,
@@ -1721,11 +1738,11 @@ export default class SearchPane {
 			}
 			// otherwise if the two filter values are equal then return true
 			else if (
-				(filter === colSelect.filter) ||
+				filter === colSelect.filter ||
 				// Loose type checking incase number type in column comparing to a string
 				// eslint-disable-next-line eqeqeq
-				(!(typeof filter === 'string' && filter.length === 0) && filter == colSelect.filter) ||
-				(colSelect.filter === null && typeof filter === 'string' && filter === '')
+				!(typeof filter === 'string' && filter.length === 0) && filter == colSelect.filter ||
+				colSelect.filter === null && typeof filter === 'string' && filter === ''
 			) {
 				return true;
 			}
@@ -1753,12 +1770,14 @@ export default class SearchPane {
 		}
 
 		if (
-			!(this.c.dtOpts.searching === false ||
-			this.s.colOpts.dtOpts.searching === false ||
-			(this.customPaneSettings !== null &&
+			!(
+				this.c.dtOpts.searching === false ||
+				this.s.colOpts.dtOpts.searching === false ||
+				this.customPaneSettings !== null &&
 				this.customPaneSettings.dtOpts !== undefined &&
 				this.customPaneSettings.dtOpts.searching !== undefined &&
-				!this.customPaneSettings.dtOpts.searching))
+				!this.customPaneSettings.dtOpts.searching
+			)
 		) {
 			this.dom.searchLabelCont.appendTo(this.dom.searchCont);
 		}
@@ -1801,8 +1820,8 @@ export default class SearchPane {
 		if (
 			rowCount > 0 &&
 			(
-				(this.s.rowData.totalOptions > 0 && !this.s.dt.page.info().serverSide) ||
-				(this.s.dt.page.info().serverSide && this.s.tableLength > 0)
+				this.s.rowData.totalOptions > 0 && !this.s.dt.page.info().serverSide ||
+				this.s.dt.page.info().serverSide && this.s.tableLength > 0
 			)
 		) {
 			return bins / this.s.rowData.totalOptions;
@@ -1871,14 +1890,16 @@ export default class SearchPane {
 					// If both view Total and cascadePanes have been selected and the count of the row
 					// is not 0 then add it to pane
 					// Do this also if the viewTotal option has been selected and cascadePanes has not
-					if (dataP && (
+					if (
+						dataP &&
 						(
 							rowData.bins[dataP.filter] !== undefined &&
-							rowData.bins[dataP.filter] !== 0 && this.c.cascadePanes
-						) ||
-						!this.c.cascadePanes ||
-						this.s.clearing
-					)) {
+							rowData.bins[dataP.filter] !== 0 &&
+							this.c.cascadePanes ||
+							!this.c.cascadePanes ||
+							this.s.clearing
+						)
+					) {
 						let row = this.addRow(
 							dataP.display,
 							dataP.filter,
@@ -1908,9 +1929,11 @@ export default class SearchPane {
 				}
 			}
 
-			if ((colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined) ||
+			if (
+				colOpts.searchPanes !== undefined && colOpts.searchPanes.options !== undefined ||
 				colOpts.options !== undefined ||
-				(this.customPaneSettings !== null && this.customPaneSettings.options !== undefined)) {
+				this.customPaneSettings !== null && this.customPaneSettings.options !== undefined
+			) {
 				let rows = this._getComparisonRows();
 
 				for (let row of rows) {

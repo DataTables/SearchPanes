@@ -57,6 +57,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	}
 	else {
 		// Browser - assume jQuery has already been loaded
+		// eslint-disable-next-line no-extra-parens
 		factory((window as any).jQuery, window, document);
 	}
 }(function($, window, document) {
@@ -65,12 +66,16 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 	searchPanesJQuery($);
 
 	let dataTable = $.fn.dataTable;
-
+	// eslint-disable-next-line no-extra-parens
 	($.fn as any).dataTable.SearchPanes = SearchPanes;
+	// eslint-disable-next-line no-extra-parens
 	($.fn as any).DataTable.SearchPanes = SearchPanes;
+	// eslint-disable-next-line no-extra-parens
 	($.fn as any).dataTable.SearchPane = SearchPane;
+	// eslint-disable-next-line no-extra-parens
 	($.fn as any).DataTable.SearchPane = SearchPane;
 
+	// eslint-disable-next-line no-extra-parens
 	let apiRegister = ($.fn.dataTable.Api as any).register;
 
 	apiRegister('searchPanes()', function() {
