@@ -47,7 +47,7 @@
 			}
 			```
 
-			and `-init columns.searchPanes.orthogonal` to `'sp'`, the original array will be displayed in the dataTable as a list seperated by ', ', where as in the SearchPane each individual element will be displayed. It is then possible to search by individual element rather than the entire array combination. 
+			and `-init columns.searchPanes.orthogonal` to `'sp'`, the original array will be displayed in the dataTable as a list separated by ', ', where as in the SearchPane each individual element will be displayed. It is then possible to search by individual element rather than the entire array combination. 
 		]]>
 	</description>
 

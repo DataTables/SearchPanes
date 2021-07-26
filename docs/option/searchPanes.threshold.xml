@@ -27,7 +27,7 @@
 
 			In effect, as the value of the ratio rises towards 1, the more "unique" the data in that column is.  
 
-			This system can also be applied to columns which have arrays in place. As the total number of options are calculated rather than just using the row count it is still possible to preform an accurate calculation. Say you have a column that uses arrays with 2 rows. Row 1 contains 4 distinct values and row 2 contains 4 values 2 of which are shared with row 1, the remaining 2 are distinct to the set. This means there are a total of 6 distinct options within the column, across the 8 values that are presented giving a ratio of 0.75 (6/8).
+			This system can also be applied to columns which have arrays in place. As the total number of options are calculated rather than just using the row count it is still possible to perform an accurate calculation. Say you have a column that uses arrays with 2 rows. Row 1 contains 4 distinct values and row 2 contains 4 values 2 of which are shared with row 1, the remaining 2 are distinct to the set. This means there are a total of 6 distinct options within the column, across the 8 values that are presented giving a ratio of 0.75 (6/8).
 
 			Therefore by setting the `-init searchPanes.threshold` option to a different decimal value, the point at which the panes are displayed can be altered. This is useful for keeping a clean user interface and only displaying the panes that are likely to provide "useful" filtering.
 

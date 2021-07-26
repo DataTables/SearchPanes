@@ -15,7 +15,7 @@
 	</default>
 	<description>
 		<![CDATA[
-		By setting a class name, specific panes can be targetted for custom styling.
+		By setting a class name, specific panes can be targeted for custom styling.
 
 		Custom Panes can have custom classes applied in a similar way to how `-init columns.searchPanes.dtOpts` are applied to panes. You can declare the `-init columns.searchPanes.className` option within an object of the `dt-init columnDefs` array - this will apply the custom class to that pane.
 		]]>

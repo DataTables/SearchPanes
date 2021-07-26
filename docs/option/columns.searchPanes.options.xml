@@ -24,7 +24,7 @@
 		<![CDATA[
 			As standard, SearchPanes will not add any custom options to the panes.
 
-			When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function recieves the following parameters.
+			When `columns.searchPanes.options.value` is a function, this function is used when searching the table. The function receives the following parameters.
 
 			* `rowData` - the data from the current row being compared as an array with one element from each column
 			* `rowIdx` - the index of the row currently being compared

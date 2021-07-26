@@ -13,7 +13,7 @@
 	</type>
 	<type type="object">
 		<description>
-			By setting the `-init searchPanes` option to an object, SearchPanes will be enabled for the relevant DataTable, with the SearchPanes defaults (`$.fn.dataTable.SearchPanes.defaults`) extended and overwritten by any conflicting options procided in the object as defined by the programmer.
+			By setting the `-init searchPanes` option to an object, SearchPanes will be enabled for the relevant DataTable, with the SearchPanes defaults (`$.fn.dataTable.SearchPanes.defaults`) extended and overwritten by any conflicting options provided in the object as defined by the programmer.
 		</description>
 	</type>
 
@@ -22,7 +22,7 @@
 	</default>
 	<description>
 		<![CDATA[
-			SearchPanes is an extension that allows for clearer more accesible searching functionality. 
+			SearchPanes is an extension that allows for clearer more accesisble searching functionality. 
 
 			When a selection is made in one of the associated panes, the DataTable will be searched for records that meet the criteria of the selections made in the panes. These records will then be displayed while all of the records that do not meet the criteria will not be included in the DataTable.
 

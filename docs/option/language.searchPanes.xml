@@ -15,7 +15,7 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, no custom options will be applied to the pane specific language options if `-init language.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propogate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
+			As standard, no custom options will be applied to the pane specific language options if `-init language.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propagate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
 
             This is a set of default values that can be set, they are overridden by `-init searchPanes.i18n` for case specific options.
             
