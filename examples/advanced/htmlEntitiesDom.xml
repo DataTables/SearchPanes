@@ -22,7 +22,7 @@ $(document).ready( function () {
 ]]>
 </js>
 
-<title lib="searchPanes">HTML Entites from the DOM</title>
+<title lib="searchPanes">HTML Entities from the DOM</title>
 
 <info><![CDATA[
 

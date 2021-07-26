@@ -42,7 +42,7 @@ $(document).ready( function () {
 ]]>
 </js>
 
-<title lib="searchPanes">HTML Entites from Ajax</title>
+<title lib="searchPanes">HTML Entities from Ajax</title>
 
 <info><![CDATA[
 

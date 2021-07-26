@@ -69,7 +69,7 @@ $(document).ready( function () {
 ]]>
 </js>
 
-<title lib="searchPanes">HTML Entites from an Ajax Request with a Rendering Function</title>
+<title lib="searchPanes">HTML Entities from an Ajax Request with a Rendering Function</title>
 
 <info><![CDATA[
 
