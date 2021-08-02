@@ -591,6 +591,7 @@ export default class SearchPane {
 
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
+		this.s.dtPane.off('select.dtsp');
 		this.s.dtPane.on('select.dtsp', () => {
 			clearTimeout(t0);
 			if (this.s.dt.page.info().serverSide && !this.s.updating) {
@@ -614,6 +615,7 @@ export default class SearchPane {
 
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
+		this.s.dtPane.off('deselect.dtsp');
 		this.s.dtPane.on('deselect.dtsp', () => {
 			t0 = setTimeout(() => {
 				this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
@@ -686,16 +688,19 @@ export default class SearchPane {
 			});
 		});
 
+		this.s.dtPane.off('user-select.dtsp');
 		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
 		});
 
+		// this.s.dtPane.off('draw.dtsp');
 		this.s.dtPane.on('draw.dtsp', () => {
 			this.adjustTopRow();
 		});
 
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
+		this.dom.nameButton.off('click.dtsp');
 		this.dom.nameButton.on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([0, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
@@ -705,6 +710,7 @@ export default class SearchPane {
 
 		// When the button to order by the number of entries in the column is clicked then
 		//  change the ordering to whatever it isn't currently
+		this.dom.countButton.off('click.dtsp');
 		this.dom.countButton.on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
@@ -713,6 +719,7 @@ export default class SearchPane {
 		});
 
 		// When the clear button is clicked reset the pane
+		this.dom.clear.off('click.dtsp');
 		this.dom.clear.on('click.dtsp', () => {
 			let searches = this.dom.container.find('.' + this.classes.search.replace(/ /g, '.'));
 
@@ -726,12 +733,14 @@ export default class SearchPane {
 		});
 
 		// When the search button is clicked then draw focus to the search box
+		this.dom.searchButton.off('click.dtsp');
 		this.dom.searchButton.on('click.dtsp', () => {
 			this.dom.searchBox.focus();
 		});
 
 		// When a character is inputted into the searchbox search the pane for matching values.
 		// Doing it this way means that no button has to be clicked to trigger a search, it is done asynchronously
+		this.dom.searchBox.off('click.dtsp');
 		this.dom.searchBox.on('input.dtsp', () => {
 			let searchval = this.dom.searchBox.val();
 			this.s.dtPane.search(searchval).draw();

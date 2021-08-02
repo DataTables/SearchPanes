@@ -244,6 +244,12 @@ export default class SearchPanes {
 			this.dom.panes.append(pane.dom.container);
 		}
 
+		for(let pane of this.s.panes) {
+			if(pane.s.dtPane !== undefined) {
+				pane._setListeners();
+			}
+		}
+
 		if (this.c.cascadePanes || this.c.viewTotal) {
 			this.redrawPanes(true);
 		}
