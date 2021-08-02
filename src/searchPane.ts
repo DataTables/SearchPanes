@@ -602,15 +602,13 @@ export default class SearchPane {
 					this.s.dt.draw(false);
 				}
 			}
-			else {
-				this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
-
-				if (!this.s.updating) {
-					this.s.selectPresent = true;
-					this._makeSelection();
-					this.s.selectPresent = false;
-				}
+			else if (!this.s.updating) {
+				this.s.selectPresent = true;
+				this._makeSelection();
+				this.s.selectPresent = false;
 			}
+
+			this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
 		});
 
 		// When an item is deselected on the pane, re add the currently selected items to the array
@@ -628,13 +626,12 @@ export default class SearchPane {
 				}
 				else {
 					this.s.deselect = true;
-
-					if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
-						this.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
-					}
-
 					this._makeSelection();
 					this.s.deselect = false;
+				}
+
+				if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {
+					this.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
 				}
 			}, 50);
 		});
