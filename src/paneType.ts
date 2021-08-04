@@ -136,6 +136,7 @@ export interface IS {
 	dt: any; // Parent DataTable
 	dtPane: any; // Pane DataTable Instance
 	filteringActive: boolean;
+	firstSet: boolean;
 	forceViewTotal: boolean;
 	index: number;
 	indexes: IIndexes[];

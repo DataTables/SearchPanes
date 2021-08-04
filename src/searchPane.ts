@@ -132,6 +132,7 @@ export default class SearchPane {
 			dt: table,
 			dtPane: undefined,
 			filteringActive: false,
+			firstSet: true,
 			forceViewTotal: false,
 			index: idx,
 			indexes: [],
@@ -403,7 +404,6 @@ export default class SearchPane {
 			this.s.dtPane.off('.dtsp');
 		}
 
-		this.s.dt.off('.dtsp');
 		this.dom.nameButton.off('.dtsp');
 		this.dom.countButton.off('.dtsp');
 		this.dom.clear.off('.dtsp');
@@ -636,61 +636,71 @@ export default class SearchPane {
 			}, 50);
 		});
 
-		// When saving the state store all of the selected rows for preselection next time around
-		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
-			// If the data being passed in is empty then state clear must have occured so clear the panes state as well
-			if ($.isEmptyObject(data)) {
-				this.s.dtPane.state.clear();
-				return;
-			}
-
-			let selected = [];
-			let searchTerm: string | number | string[];
-			let order;
-			let bins;
-			let arrayFilter;
-
-			// Get all of the data needed for the state save from the pane
-			if (this.s.dtPane !== undefined) {
-				selected = this.s.dtPane.rows({selected: true}).data().map(item => item.filter.toString()).toArray();
-				searchTerm = this.dom.searchBox.val();
-				order = this.s.dtPane.order();
-				bins = rowData.binsOriginal;
-				arrayFilter = rowData.arrayOriginal;
-			}
-
-			if (data.searchPanes === undefined) {
-				data.searchPanes = {};
-			}
-
-			if (data.searchPanes.panes === undefined) {
-				data.searchPanes.panes = [];
-			}
-
-			for (let i = 0; i < data.searchPanes.panes.length; i++) {
-				if (data.searchPanes.panes[i].id === this.s.index) {
-					data.searchPanes.panes.splice(i, 1);
-					i--;
+		// If we attempty to turn off this event then it will ruin behaviour in other panes
+		//  so need to make sure that it is only done once
+		if(this.s.firstSet) {
+			this.s.firstSet = false;
+			// When saving the state store all of the selected rows for preselection next time around
+			this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
+				// If the data being passed in is empty then state clear must have occured
+				// so clear the panes state as well
+				if ($.isEmptyObject(data)) {
+					this.s.dtPane.state.clear();
+					return;
 				}
-			}
 
-			// Add the panes data to the state object
-			data.searchPanes.panes.push({
-				arrayFilter,
-				bins,
-				id: this.s.index,
-				order,
-				searchTerm,
-				selected
+				let selected = [];
+				let searchTerm: string | number | string[];
+				let order;
+				let bins;
+				let arrayFilter;
+
+				// Get all of the data needed for the state save from the pane
+				if (this.s.dtPane !== undefined) {
+					selected = this.s.dtPane
+						.rows({selected: true})
+						.data()
+						.map(item => item.filter.toString())
+						.toArray();
+					searchTerm = this.dom.searchBox.val();
+					order = this.s.dtPane.order();
+					bins = rowData.binsOriginal;
+					arrayFilter = rowData.arrayOriginal;
+				}
+
+				if (data.searchPanes === undefined) {
+					data.searchPanes = {};
+				}
+
+				if (data.searchPanes.panes === undefined) {
+					data.searchPanes.panes = [];
+				}
+
+				for (let i = 0; i < data.searchPanes.panes.length; i++) {
+					if (data.searchPanes.panes[i].id === this.s.index) {
+						data.searchPanes.panes.splice(i, 1);
+						i--;
+					}
+				}
+
+				// Add the panes data to the state object
+				data.searchPanes.panes.push({
+					arrayFilter,
+					bins,
+					id: this.s.index,
+					order,
+					searchTerm,
+					selected
+				});
 			});
-		});
+		}
 
 		this.s.dtPane.off('user-select.dtsp');
 		this.s.dtPane.on('user-select.dtsp', (e, _dt, type, cell, originalEvent) => {
 			originalEvent.stopPropagation();
 		});
 
-		// this.s.dtPane.off('draw.dtsp');
+		this.s.dtPane.off('draw.dtsp');
 		this.s.dtPane.on('draw.dtsp', () => {
 			this.adjustTopRow();
 		});
