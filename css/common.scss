@@ -163,6 +163,11 @@ div.dtsp-panesContainer {
 				align-content: flex-start;
 				align-items: flex-start;
 
+				span.dtsp-name,
+				span.dtsp-pill {
+					cursor: default;
+				}
+
 				span.dtsp-name {
 					text-overflow: ellipsis;
 					overflow: hidden;
