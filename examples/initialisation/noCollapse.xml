@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display nowrap" order="1">
+
+<css lib="datatables searchpanes select"/>
+
+<js lib="jquery datatables searchpanes select">
+<![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable({
+        dom: 'Plfrtip',
+        searchPanes: {
+            collapse: false
+        }
+    });
+});
+
+]]>
+</js>
+
+<title lib="searchPanes">Deactivate SearchPanes Collapsing Functionality</title>
+
+<info><![CDATA[
+
+This example shows how the `-init searchPanes.collapse` option can be used to disallow the collapsing of all of the panes. To do this the `-init searchPanes.collapse` option must also be set to false.
+
+]]></info>
+
+</dt-example>
