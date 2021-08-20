@@ -13,11 +13,14 @@ export default class SearchPane {
 	private static version = '1.3.0';
 
 	private static classes: typeInterfaces.IClasses = {
+		bordered: 'dtsp-bordered',
 		buttonGroup: 'dtsp-buttonGroup',
 		buttonSub: 'dtsp-buttonSub',
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		clearButton: 'clearButton',
+		collapseAll: 'dtsp-collapseAll',
+		collapseButton: 'dtsp-collapseButton',
 		container: 'dtsp-searchPane',
 		countButton: 'dtsp-countButton',
 		disabledButton: 'dtsp-disabledButton',
@@ -31,6 +34,7 @@ export default class SearchPane {
 		paneButton: 'dtsp-paneButton',
 		paneInputButton: 'dtsp-paneInputButton',
 		pill: 'dtsp-pill',
+		rotated: 'dtsp-rotated',
 		search: 'dtsp-search',
 		searchCont: 'dtsp-searchCont',
 		searchIcon: 'dtsp-searchIcon',
@@ -48,6 +52,7 @@ export default class SearchPane {
 	private static defaults: typeInterfaces.IDefaults = {
 		cascadePanes: false,
 		clear: true,
+		collapse: true,
 		combiner: 'or',
 		container(dt) {
 			return dt.table().container();
@@ -62,6 +67,7 @@ export default class SearchPane {
 			countFiltered: '{shown} ({total})',
 			emptyMessage: '<em>No data</em>',
 		},
+		initCollapsed: false,
 		layout: 'auto',
 		name: undefined,
 		orderable: true,
@@ -175,6 +181,9 @@ export default class SearchPane {
 				.attr('disabled', 'true')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.clearButton),
+			collapseButton: $('<button type="button"><span class="dtsp-caret">&#x5e;</span></button>')
+				.addClass(this.classes.paneButton)
+				.addClass(this.classes.collapseButton),
 			container: $('<div/>')
 				.addClass(this.classes.container)
 				.addClass(this.classes.layout +
@@ -397,6 +406,26 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Collapses the pane so that only the header is displayed
+	 */
+	public collapse(): void {
+		if (!this.s.displayed) {
+			return;
+		}
+
+		this.dom.collapseButton.addClass(this.classes.rotated);
+		$(this.s.dtPane.table().container()).addClass(this.classes.hidden);
+		this.dom.topRow.addClass(this.classes.bordered);
+		this.dom.countButton.addClass(this.classes.disabledButton);
+		this.dom.nameButton.addClass(this.classes.disabledButton);
+		this.dom.searchButton.addClass(this.classes.disabledButton);
+
+		this.dom.topRow.one('click', () => {
+			this.show();
+		});
+	}
+
+	/**
 	 * Strips all of the SearchPanes elements from the document and turns all of the listeners for the buttons off
 	 */
 	public destroy(): void {
@@ -405,6 +434,7 @@ export default class SearchPane {
 		}
 
 		this.dom.nameButton.off('.dtsp');
+		this.dom.collapseButton.off('.dtsp');
 		this.dom.countButton.off('.dtsp');
 		this.dom.clear.off('.dtsp');
 		this.dom.searchButton.off('.dtsp');
@@ -555,6 +585,22 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Expands the pane from the collapsed state
+	 */
+	public show(): void {
+		if (!this.s.displayed) {
+			return;
+		}
+
+		this.dom.collapseButton.removeClass(this.classes.rotated);
+		$(this.s.dtPane.table().container()).removeClass(this.classes.hidden);
+		this.dom.topRow.removeClass(this.classes.bordered);
+		this.dom.countButton.removeClass(this.classes.disabledButton);
+		this.dom.nameButton.removeClass(this.classes.disabledButton);
+		this.dom.searchButton.removeClass(this.classes.disabledButton);
+	}
+
+	/**
 	 * Updates the values of all of the panes
 	 *
 	 * @param draw whether this has been triggered by a draw event or not
@@ -654,6 +700,7 @@ export default class SearchPane {
 				let order;
 				let bins;
 				let arrayFilter;
+				let collapsed;
 
 				// Get all of the data needed for the state save from the pane
 				if (this.s.dtPane !== undefined) {
@@ -666,6 +713,7 @@ export default class SearchPane {
 					order = this.s.dtPane.order();
 					bins = rowData.binsOriginal;
 					arrayFilter = rowData.arrayOriginal;
+					collapsed = this.dom.collapseButton.hasClass(this.classes.rotated);
 				}
 
 				if (data.searchPanes === undefined) {
@@ -687,6 +735,7 @@ export default class SearchPane {
 				data.searchPanes.panes.push({
 					arrayFilter,
 					bins,
+					collapsed,
 					id: this.s.index,
 					order,
 					searchTerm,
@@ -723,6 +772,33 @@ export default class SearchPane {
 			this.s.dtPane.order([1, currentOrder === 'asc' ? 'desc' : 'asc']).draw();
 			// This state save is required so that the ordering of the panes is maintained
 			this.s.dt.state.save();
+		});
+
+		// When the button to order by the number of entries in the column is clicked then
+		//  change the ordering to whatever it isn't currently
+		this.dom.collapseButton.off('click.dtsp');
+		this.dom.collapseButton.on('click.dtsp', (e) => {
+			e.stopPropagation();
+			let container = $(this.s.dtPane.table().container());
+
+			// Toggle the classes
+			this.dom.collapseButton.toggleClass(this.classes.rotated);
+			container.toggleClass(this.classes.hidden);
+			this.dom.topRow.toggleClass(this.classes.bordered);
+			this.dom.countButton.toggleClass(this.classes.disabledButton);
+			this.dom.nameButton.toggleClass(this.classes.disabledButton);
+			this.dom.searchButton.toggleClass(this.classes.disabledButton);
+
+			if (container.hasClass(this.classes.hidden)) {
+				this.dom.topRow.on('click', () => this.dom.collapseButton.click());
+			}
+			else {
+				this.dom.topRow.off('click');
+			}
+
+			this.s.dt.state.save();
+
+			return;
 		});
 
 		// When the clear button is clicked reset the pane
@@ -1303,6 +1379,10 @@ export default class SearchPane {
 			this.s.dtPane.search(this.dom.searchBox.val()).draw();
 		}
 
+		if (this.s.colOpts.initCollapsed && this.s.colOpts.collapse) {
+			this.collapse();
+		}
+
 		// Reload the selection, searchbox entry and ordering from the previous state
 		// Need to check here if SSP that this is the first draw, otherwise it will infinite loop
 		if (
@@ -1321,11 +1401,19 @@ export default class SearchPane {
 			for (let pane of loadedFilter.searchPanes.panes) {
 				if (pane.id === this.s.index) {
 					// Save some time by only triggering an input if there is a value
-					if(pane.searchTerm && pane.searchTerm.length > 0) {
+					if (pane.searchTerm && pane.searchTerm.length > 0) {
 						this.dom.searchBox.val(pane.searchTerm);
 						this.dom.searchBox.trigger('input');
 					}
 					this.s.dtPane.order(pane.order).draw();
+
+					// Is the pane to be hidden or shown?
+					if (pane.collapsed) {
+						this.collapse();
+					}
+					else {
+						this.show();
+					}
 				}
 			}
 		}
@@ -1413,6 +1501,10 @@ export default class SearchPane {
 			colOpts.controls
 		) {
 			this.dom.countButton.appendTo(this.dom.buttonGroup);
+		}
+
+		if (this.c.collapse && colOpts.collapse && this.c.controls && colOpts.controls) {
+			this.dom.collapseButton.appendTo(this.dom.buttonGroup);
 		}
 
 		this.dom.topRow.prependTo(this.dom.container);

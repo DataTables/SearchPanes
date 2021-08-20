@@ -1,5 +1,10 @@
 @import './common.scss';
 div.dtsp-panesContainer {
+    button.dtsp-clearAll,
+    button.dtsp-showAll {
+        margin-left: 3px;
+    }
+
 	div.dtsp-searchPanes {
 		div.dtsp-searchPane {
             input.dtsp-paneInputButton,
@@ -15,6 +20,17 @@ div.dtsp-panesContainer {
                     width: 33px;
                     margin-top: 1px;
                     margin-right: 1px;
+                }
+            }
+
+            div.dtsp-topRow.dtsp-bordered:hover {
+                button.is-disabled {
+                    cursor: pointer !important;
+                    pointer-events: none;
+                }
+            
+                input.dtsp-paneInputButton {
+                    pointer-events: none;
                 }
             }
         }

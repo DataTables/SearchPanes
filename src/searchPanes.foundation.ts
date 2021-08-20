@@ -52,8 +52,10 @@
 
 	$.extend(true, dataTable.SearchPanes.classes, {
 		clearAll: 'dtsp-clearAll button secondary',
+		collapseAll: 'dtsp-collapseAll button secondary',
 		disabledButton: 'disabled',
 		panes: 'panes dtsp-panesContainer',
+		showAll: 'dtsp-showAll button secondary',
 		title: 'dtsp-title'
 	});
 

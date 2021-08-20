@@ -21,12 +21,14 @@ export default class SearchPanes {
 	private static classes: typeInterfaces.IClasses = {
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
+		collapseAll: 'dtsp-collapseAll',
 		container: 'dtsp-searchPanes',
 		disabledButton: 'dtsp-disabledButton',
 		emptyMessage: 'dtsp-emptyMessage',
 		hide: 'dtsp-hidden',
 		panes: 'dtsp-panesContainer',
 		search: 'dtsp-search',
+		showAll: 'dtsp-showAll',
 		title: 'dtsp-title',
 		titleRow: 'dtsp-titleRow'
 	};
@@ -35,6 +37,7 @@ export default class SearchPanes {
 	private static defaults: typeInterfaces.IDefaults = {
 		cascadePanes: false,
 		clear: true,
+		collapse: true,
 		columns: [],
 		container(dt) {
 			return dt.table().container();
@@ -47,11 +50,13 @@ export default class SearchPanes {
 				0: 'SearchPanes',
 				_: 'SearchPanes (%d)'
 			},
+			collapseMessage: 'Collapse All',
 			count: '{total}',
 			countFiltered: '{shown} ({total})',
 			emptyMessage: '<em>No data</em>',
 			emptyPanes: 'No SearchPanes',
 			loadMessage: 'Loading Search Panes...',
+			showMessage: 'Show All',
 			title: 'Filters Active - %d'
 		},
 		layout: 'auto',
@@ -87,12 +92,17 @@ export default class SearchPanes {
 		// Add extra elements to DOM object including clear
 		this.dom = {
 			clearAll: $('<button type="button">Clear All</button>').addClass(this.classes.clearAll),
+			collapseAll: $('<button type="button">Collapse All</button>').addClass(this.classes.collapseAll),
 			container: $('<div/>').addClass(this.classes.panes).text(
 				table.i18n('searchPanes.loadMessage', this.c.i18n.loadMessage)
 			),
 			emptyMessage: $('<div/>').addClass(this.classes.emptyMessage),
 			options: $('<div/>').addClass(this.classes.container),
 			panes: $('<div/>').addClass(this.classes.container),
+			showAll: $('<button type="button">Show All</button>')
+				.addClass(this.classes.showAll)
+				.addClass(this.classes.disabledButton)
+				.attr('disabled', 'true'),
 			title: $('<div/>').addClass(this.classes.title),
 			titleRow: $('<div/>').addClass(this.classes.titleRow),
 			wrapper: $('<div/>')
@@ -160,6 +170,8 @@ export default class SearchPanes {
 
 		table.settings()[0]._searchPanes = this;
 		this.dom.clearAll.text(table.i18n('searchPanes.clearMessage', this.c.i18n.clearMessage));
+		this.dom.collapseAll.text(table.i18n('searchPanes.collapseMessage', this.c.i18n.collapseMessage));
+		this.dom.showAll.text(table.i18n('searchPanes.showMessage', this.c.i18n.showMessage));
 
 		if (this.s.dt.settings()[0]._bInitComplete || fromInit) {
 			this._paneDeclare(table, paneSettings, opts);
@@ -563,6 +575,10 @@ export default class SearchPanes {
 			});
 		}
 
+		if (this.c.collapse) {
+			this._setCollapseListener();
+		}
+
 		this.dom.titleRow.appendTo(this.dom.container);
 
 		// Attach the container for each individual pane to the overall container
@@ -592,6 +608,12 @@ export default class SearchPanes {
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
 			this.dom.clearAll.appendTo(this.dom.titleRow);
+		}
+
+		// If collapsing is permitted attach those buttons
+		if (this.c.collapse) {
+			this.dom.showAll.appendTo(this.dom.titleRow);
+			this.dom.collapseAll.appendTo(this.dom.titleRow);
 		}
 
 		this.dom.titleRow.appendTo(this.dom.container);
@@ -733,6 +755,51 @@ export default class SearchPanes {
 
 		// Otherwise attach the custom message or remove the container from the display
 		return this._attachMessage();
+	}
+
+	/**
+	 * Checks which panes are collapsed and then performs relevant actions to the collapse/show all buttons
+	 *
+	 * @param pane The pane to be checked
+	 */
+	private _checkCollapse(): void {
+		let disableClose = true;
+		let disableShow = true;
+
+		for(let pane of this.s.panes) {
+			if (pane.s.displayed) {
+				// It the pane is not collapsed
+				if (!pane.dom.collapseButton.hasClass(pane.classes.rotated)) {
+					// Enable the collapse all button
+					this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+					disableClose = false;
+				}
+				else {
+					// Otherwise enable the show all button
+					this.dom.showAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+					disableShow = false;
+				}
+			}
+		}
+
+		// If this flag is still true, no panes are open so the close button should be disabled
+		if (disableClose) {
+			this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+		}
+
+		// If this flag is still true, no panes are closed so the show button should be disabled
+		if (disableShow) {
+			this.dom.showAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+		}
+	}
+
+	/**
+	 * Collapses all of the panes
+	 */
+	private _collapseAll(): void {
+		for(let pane of this.s.panes) {
+			pane.collapse();
+		}
 	}
 
 	/**
@@ -1010,6 +1077,41 @@ export default class SearchPanes {
 		}
 
 		this._updateSelection();
+	}
+
+	/**
+	 * Sets the listeners for the collapse and show all buttons
+	 * Also sets and performs checks on current panes to see if they are collapsed
+	 */
+	private _setCollapseListener() {
+		this.dom.collapseAll.on('click.dtsps', () => {
+			this._collapseAll();
+			this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+			this.dom.showAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+			this.s.dt.state.save();
+		});
+		this.dom.showAll.on('click.dtsps', () => {
+			this._showAll();
+			this.dom.showAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+			this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+			this.s.dt.state.save();
+		});
+
+		for(let pane of this.s.panes) {
+			// We want to make the same check whenever there is a collapse/expand
+			pane.dom.collapseButton.on('click', () => this._checkCollapse());
+		}
+
+		this._checkCollapse();
+	}
+
+	/**
+	 * Shows all of the panes
+	 */
+	private _showAll() {
+		for(let pane of this.s.panes) {
+			pane.show();
+		}
 	}
 
 	/**
@@ -1293,10 +1395,16 @@ export default class SearchPanes {
 			}
 
 			table.off('.dtsps');
+			this.dom.collapseAll.off('.dtsps');
+			this.dom.showAll.off('.dtsps');
 			this.dom.clearAll.off('.dtsps');
 			this.dom.container.remove();
 			this.clearSelections();
 		});
+
+		if (this.c.collapse) {
+			this._setCollapseListener();
+		}
 
 		// When the clear All button has been pressed clear all of the selections in the panes
 		if (this.c.clear) {

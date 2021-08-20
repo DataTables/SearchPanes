@@ -52,9 +52,11 @@
 
 	$.extend(true, dataTable.SearchPanes.classes, {
 		clearAll: 'dtsp-clearAll btn btn-light',
+		collapseAll: 'dtsp-collapseAll btn btn-light',
 		container: 'dtsp-searchPanes',
 		disabledButton: 'disabled',
 		panes: 'dtsp-panes dtsp-panesContainer',
+		showAll: 'dtsp-showAll btn btn-light',
 		title: 'dtsp-title',
 		titleRow: 'dtsp-titleRow'
 	});

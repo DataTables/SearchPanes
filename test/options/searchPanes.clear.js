@@ -12,7 +12,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 			it('Individual panes: ' + JSON.stringify(config), function() {
 				table = $('#example').DataTable(config);
 
-				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton').length).toBe(3);
+				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton').length).toBe(4);
 				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').text()).toBe('×');
 				expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-subRow2:eq(0) div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').hasClass('dtsp-disabledButton')).toBe(
 					true
@@ -53,7 +53,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton').length).toBe(3);
+			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-paneButton').length).toBe(4);
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-topRow button.dtsp-clearButton').length).toBe(0);
 		});
 

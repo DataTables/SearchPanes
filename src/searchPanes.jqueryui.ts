@@ -44,8 +44,10 @@
 
 	$.extend(true, dataTable.SearchPanes.classes, {
 		clearAll: 'dtsp-clearAll ui-button',
+		collapseAll: 'dtsp-collapseAll ui-button',
 		container: 'dtsp-searchPanes',
-		panes: 'dtsp-panesContainer fg-toolbar ui-toolbar ui-widget-header'
+		panes: 'dtsp-panesContainer fg-toolbar ui-toolbar ui-widget-header',
+		showAll: 'dtsp-showAll ui-button'
 	});
 	return dataTable.searchPanes;
 }));

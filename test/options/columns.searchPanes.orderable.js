@@ -2,7 +2,7 @@ describe('searchPanes - options - columns.searchPanes.orderable', function() {
 	let table;
 
 	function checkElementsPresent(pane, expected) {
-		expect($('div.dtsp-searchPane:eq(' + pane + ') .dtsp-paneButton').length === 4).toBe(expected);
+		expect($('div.dtsp-searchPane:eq(' + pane + ') .dtsp-paneButton').length === 5).toBe(expected);
 	}
 
 	dt.libs({

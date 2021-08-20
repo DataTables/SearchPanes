@@ -2,6 +2,8 @@ div.dtsp-topRow {
     display:flex;
     flex-direction: row;
     flex-wrap: nowrap;
+	border: 2px solid  rgba(0,0,0,0);
+	border-radius: 3px;
     justify-content: space-around;
     align-content: flex-start;
 	align-items: flex-start;
@@ -67,6 +69,31 @@ div.dtsp-topRow {
         background-size: 18px;
         vertical-align: bottom;
     }
+
+	button.dtsp-collapseButton {
+		span.dtsp-caret {
+			position: relative;
+			top: 2px;
+			display: inline-block;
+		}
+	}
+
+	button.dtsp-collapseButton.dtsp-rotated{
+		transform: rotate(180deg);
+	}
+}
+
+div.dtsp-topRow.dtsp-bordered {
+	border: 2px solid #f0f0f0;
+	border-radius: 3px;
+}
+
+div.dtsp-topRow.dtsp-bordered:hover {
+	background-color: #f0f0f0;
+	opacity: 0.6;
+	border: 2px solid #cfcfcf;
+	border-radius: 3px;
+	cursor: pointer !important;
 }
 
 div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane table thead th,
@@ -218,7 +245,8 @@ div.dtsp-panesContainer {
 			flex-grow: 1;
 			flex-shrink: 0;
 			font-size: 0.9em;
-			
+			margin-top: 15px !important;
+
 			div.dataTables_wrapper {
 				flex: 1;
 				box-sizing: border-box;
@@ -235,7 +263,9 @@ div.dtsp-panesContainer {
 		padding: 10px 0;
 	}
 
-	button.dtsp-clearAll{
+	button.dtsp-clearAll,
+	button.dtsp-collapseAll,
+	button.dtsp-showAll{
 		float: right;
 		padding: 10px;
 		font-size: 1em;

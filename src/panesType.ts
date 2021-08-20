@@ -3,12 +3,14 @@ import SearchPane from './searchPane';
 export interface IClasses {
 	clear: string;
 	clearAll: string;
+	collapseAll: string;
 	container: string;
 	disabledButton: string;
 	emptyMessage: string;
 	hide: string;
 	panes: string;
 	search: string;
+	showAll: string;
 	title: string;
 	titleRow: string;
 }
@@ -23,6 +25,7 @@ export interface IConfigPaneItem {
 export interface IDefaults {
 	cascadePanes: boolean;
 	clear: boolean;
+	collapse: boolean;
 	columns: number[];
 	container: (dt: any) => any;
 	filterChanged: (count: number) => any;
@@ -33,11 +36,13 @@ export interface IDefaults {
 			0: string;
 			_: string;
 		};
+		collapseMessage: string;
 		count: string;
 		countFiltered: string;
 		emptyMessage: string;
 		emptyPanes: string;
 		loadMessage: string;
+		showMessage: string;
 		title: string;
 	};
 	layout: string;
@@ -48,10 +53,12 @@ export interface IDefaults {
 
 export interface IDOM {
 	clearAll: JQuery<HTMLElement>;
+	collapseAll: JQuery<HTMLElement>;
 	container: JQuery<HTMLElement>; // Container Method needs to return a JQuery
 	emptyMessage: JQuery<HTMLElement>;
 	options: JQuery<HTMLElement>;
 	panes: JQuery<HTMLElement>;
+	showAll: JQuery<HTMLElement>;
 	title: JQuery<HTMLElement>;
 	titleRow: JQuery<HTMLElement>;
 	wrapper: JQuery<HTMLElement>;

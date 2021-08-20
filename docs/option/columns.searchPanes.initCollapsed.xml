@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>columns.searchPanes.initCollapsed</name>
+	<summary>Collapse Specific SearchPanes on initialisation</summary>
+	<since>SearchPanes 1.4.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init columns.searchPanes.initCollapsed` option to `true` the SearchPane for that column will be initialised in the collapsed state.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init columns.searchPanes.initCollapsed` parameter is `false`, meaning that as standard the searchpanes are not collapsed on initialisation.
+	</default>
+	<description>
+		<![CDATA[
+As standard, SearchPanes will not be collapsed on initialisation. This option allows that to happen on a per column basis. The SearchPane for this column will not be collapsed on initialisation even if this option is set to `true` in a variety of scenarios. Firstly, if `-init searchPanes.collapse` or `-init columns.searchPanes.collapse` are set to false. Secondly, if statesaving is enabled and this SearchPane was not collapsed at the point of the last state save. 
+
+This behaviour can be set on for all columns by using the `-init columns.searchPanes.initCollapsed` initialisation option.
+		]]>
+	</description>
+
+	<example title="Collapse a Specific SearchPane on Initialisation"><![CDATA[
+
+$(document).ready(function() {
+    $('#example').DataTable({
+		dom: 'Plfrtip',
+		columnDefs:[{
+			searchPanes: {
+				collapse: true
+			}
+		}]
+    });
+});
+
+]]></example>
+
+<related type="option">searchPanes.initCollapsed</related>
+<related type="option">columns.searchPanes.collapse</related>
+<related type="option">searchPanes.collapse</related>
+
+</dt-option>

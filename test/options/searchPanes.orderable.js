@@ -7,7 +7,7 @@ describe('searchPanes - options - searchPanes.orderable', function() {
 	});
 
 	function checkElementsPresent(expected) {
-		expect($('div.dtsp-searchPane:eq(1) .dtsp-paneButton').length === 4).toBe(expected);
+		expect($('div.dtsp-searchPane:eq(1) .dtsp-paneButton').length === 5).toBe(expected);
 	}
 
 	describe('Functional tests', function() {

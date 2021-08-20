@@ -44,7 +44,9 @@
 
 	$.extend(true, dataTable.SearchPanes.classes, {
 		clearAll: 'dtsp-clearAll button',
+		collapseAll: 'dtsp-collapseAll button',
 		disabledButton: 'is-disabled',
+		showAll: 'dtsp-showAll button'
 	});
 
 	return dataTable.searchPanes;

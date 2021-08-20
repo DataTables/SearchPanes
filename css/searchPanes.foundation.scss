@@ -1,5 +1,10 @@
 @import 'common.scss';
 
+button.dtsp-clearAll,
+button.dtsp-showAll {
+    margin-left: 3px;
+}
+
 div.dtsp-searchPane {
 	div.dtsp-title {
 		button {
@@ -30,6 +35,23 @@ div.dtsp-searchPane {
 		button.dtsp-searchIcon {
 			height: 40px;
 		}
+
+        button.dtsp-collapseButton {
+            span {
+                right: 1px;
+            }
+        }
+    }
+
+    div.dtsp-topRow.dtsp-bordered:hover {
+        button.disabled {
+            cursor: pointer !important;
+            pointer-events: none;
+        }
+    
+        input.dtsp-paneInputButton {
+            pointer-events: none;
+        }
     }
 
     div.dataTables_wrapper {

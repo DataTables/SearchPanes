@@ -54,7 +54,9 @@ div.dtsp-panesContainer {
 		}
 	}
 
-	button.dtsp-clearAll{
+	button.dtsp-clearAll,
+	button.dtsp-collapseAll,
+	button.dtsp-showAll{
 		border: 1px solid transparent;
 		background-color: transparent;
 
@@ -76,6 +78,17 @@ div.dtsp-panesContainer {
 		&:focus {
 			outline: none;
 		}
+	}
+}
+
+div.dtsp-topRow.dtsp-bordered:hover {
+	button.dtsp-disabledButton {
+		cursor: pointer !important;
+		pointer-events: none;
+	}
+
+	input.dtsp-paneInputButton {
+		pointer-events: none;
 	}
 }
 

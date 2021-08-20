@@ -48,7 +48,9 @@
 
 	$.extend(true, dataTable.SearchPanes.classes, {
 		clearAll: 'dtsp-clearAll ui button',
-		disabledButton: 'disabled'
+		collapseAll: 'dtsp-collapseAll ui button',
+		disabledButton: 'disabled',
+		showAll: 'dtsp-showAll ui button'
 	});
 
 	// This override is required for the integrated search Icon in sematic ui

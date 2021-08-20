@@ -1,5 +1,11 @@
 @import './common.scss';
 div.dtsp-panesContainer {
+
+    button.dtsp-clearAll,
+    button.dtsp-showAll {
+        margin-left: 3px;
+    }
+
     div.dtsp-searchPane {
         div.dtsp-topRow {
             margin: 0.5em 0;
@@ -16,6 +22,30 @@ div.dtsp-panesContainer {
     
             div.dtsp-subRow1 button {
                 border-right: none;
+            }
+
+            span.dtsp-caret {
+                top: 4px;
+            }
+
+            button.dtsp-rotated {
+                transform: none;
+
+                span {
+                    transform: rotate(180deg);
+                    top: -4px;
+                }
+            }
+        }
+
+        div.dtsp-topRow.dtsp-bordered:hover {
+            button.disabled {
+                cursor: pointer !important;
+                pointer-events: none;
+            }
+        
+            input.dtsp-paneInputButton {
+                pointer-events: none;
             }
         }
     
