@@ -25,9 +25,7 @@ describe('searchPanes - options - searchPanes.initCollapsed', function() {
 				}
 			});
 
-			// DD-2124
-			// expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(0);
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(3);
+			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(0);
 		});
 
 		dt.html('basic');
