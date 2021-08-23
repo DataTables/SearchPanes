@@ -21,6 +21,7 @@
             this.i18n(...);
             ```
 
+			Note: When using this function with `-init searchPanes.cascadePanes` this function is likely to run multiple times. This is simply down to how `-init searchPanes.cascadePanes` is implemented.
 		]]>
 	</description>
 
