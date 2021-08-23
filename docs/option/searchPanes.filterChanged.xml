@@ -15,13 +15,9 @@
             
             The SearchPanes button also uses this configuration option to update the button text to reflect the selection numbers (text is set using `-init searchPanes.i18n.collapse` and an `-api i18n()` api call).
 
-            The context of the function is the DataTables instance, meaning that API methods can be called directly from within the function. For example...
+            The context of the function is the DataTables instance, meaning that API methods can be called directly from within the function. For example, `this.i18n(...);`.
 
-            ```
-            this.i18n(...);
-            ```
-
-			Note: When using this function with `-init searchPanes.cascadePanes` this function is likely to run multiple times. This is simply down to how `-init searchPanes.cascadePanes` is implemented.
+            Note: When using this function with `-init searchPanes.cascadePanes` this function is likely to run multiple times. This is simply down to how `-init searchPanes.cascadePanes` is implemented.
 		]]>
 	</description>
 
