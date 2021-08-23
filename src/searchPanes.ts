@@ -426,9 +426,6 @@ export default class SearchPanes {
 					}
 				}
 
-				// Update the label that shows how many filters are in place
-				this._updateFilterCount();
-
 				// If the length of the selections are different then some of them have been
 				// removed and a deselect has occured
 				if (newSelectionList.length > 0 && (newSelectionList.length < this.s.selectionList.length || rebuild)) {
@@ -459,6 +456,9 @@ export default class SearchPanes {
 						}
 					}
 				}
+
+				// Update the label that shows how many filters are in place
+				this._updateFilterCount();
 			}
 			else {
 				let solePane = -1;
@@ -876,9 +876,6 @@ export default class SearchPanes {
 					pane.s.scrollTop = $(pane.s.dtPane.table().node()).parent()[0].scrollTop;
 					pane.s.dtPane.draw();
 					pane.s.dtPane.table().node().parentNode.scrollTop = pane.s.scrollTop;
-
-					// Update the label that shows how many filters are in place
-					this._updateFilterCount();
 					pane.s.lastCascade = false;
 				}
 			}
@@ -1176,7 +1173,6 @@ export default class SearchPanes {
 			}
 		}
 
-		this._updateFilterCount();
 		this._checkMessage();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
@@ -1184,11 +1180,11 @@ export default class SearchPanes {
 			// Check that the panes are not updating to avoid infinite loops
 			// Also check that this draw is not due to paging
 			if (!this.s.updating && !this.s.paging) {
-				this._updateFilterCount();
 				if ((this.c.cascadePanes || this.c.viewTotal) && !this.s.dt.page.info().serverSide) {
 					this.redrawPanes(this.c.viewTotal);
 				}
 				else {
+					this._updateFilterCount();
 					this._updateSelection();
 				}
 
