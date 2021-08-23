@@ -28,8 +28,9 @@ $(document).ready(function() {
 		dom: 'Plfrtip',
 		columnDefs:[{
 			searchPanes: {
-				collapse: true
-			}
+				initCollapsed: true
+			},
+			targets: [1]
 		}]
     });
 });
