@@ -409,7 +409,13 @@ export default class SearchPane {
 	 * Collapses the pane so that only the header is displayed
 	 */
 	public collapse(): void {
-		if (!this.s.displayed) {
+		if (
+			!this.s.displayed ||
+			(
+				!this.c.collapse && this.s.colOpts.collapse !== true ||
+				this.s.colOpts.collapse === false
+			)
+		) {
 			return;
 		}
 

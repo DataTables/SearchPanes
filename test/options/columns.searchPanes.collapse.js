@@ -33,10 +33,8 @@ describe('searchPanes - options - columns.searchPanes.collapse', function () {
 			expect($('div.dtsp-searchPane:eq(3) button.dtsp-collapseButton').length).toBe(0);
 		});
 		it('... unable to collapse all when not collapsible', function () {
-			// DD-2122
 			$('button.dtsp-collapseAll').click();
-			// expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(1);
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(0);
+			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(1);
 		});
 	});
 });
