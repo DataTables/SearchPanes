@@ -1,4 +1,4 @@
-describe('searchPanes - options - searchPanes.initCollapsed', function() {
+describe('searchPanes - options - searchPanes.initCollapsed', function () {
 	let table;
 
 	dt.libs({
@@ -6,9 +6,9 @@ describe('searchPanes - options - searchPanes.initCollapsed', function() {
 		css: ['datatables', 'select', 'searchpanes']
 	});
 
-	describe('Functional tests', function() {
+	describe('Functional tests', function () {
 		dt.html('basic');
-		it('Check defaults (true)', function() {
+		it('Check defaults (true)', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip'
 			});
@@ -17,7 +17,7 @@ describe('searchPanes - options - searchPanes.initCollapsed', function() {
 		});
 
 		dt.html('basic');
-		it('Check true', function() {
+		it('Check true', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -29,7 +29,7 @@ describe('searchPanes - options - searchPanes.initCollapsed', function() {
 		});
 
 		dt.html('basic');
-		it('Check false', function() {
+		it('Check false', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -40,6 +40,27 @@ describe('searchPanes - options - searchPanes.initCollapsed', function() {
 			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(3);
 		});
 
-		// TK COLIN also test if columns.searchpanes.collapse is false (wait for DD-2122)
+		dt.html('basic');
+		it('Check false', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					initCollapsed: true
+				},
+				columnDefs: [
+					{
+						searchPanes: {
+							collapse: false
+						},
+						targets: [2, 3]
+					}
+				]
+			});
+
+			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(2);
+			expect($('div.dtsp-searchPane:eq(1) div.dataTables_wrapper:visible').length).toBe(0);
+			expect($('div.dtsp-searchPane:eq(2) div.dataTables_wrapper:visible').length).toBe(1);
+			expect($('div.dtsp-searchPane:eq(3) div.dataTables_wrapper:visible').length).toBe(1);
+		});
 	});
 });
