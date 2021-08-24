@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="ajax" order="1">
+<dt-example table-type="ajax" order="7">
 
 <css lib="datatables searchpanes select" />
 <js lib="jquery datatables searchpanes select">
@@ -38,7 +38,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Interaction with built-in DataTables rendering function</title>
+<title lib="searchPanes">Integration with DataTables Rendering Function</title>
 
 <info><![CDATA[
 

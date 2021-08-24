@@ -17,7 +17,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="Buttons">Initialisation with Buttons</title>
+<title lib="Buttons">Buttons Integration</title>
 
 <info><![CDATA[
 

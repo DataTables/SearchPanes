@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html" table-class="display nowrap" order="4">
+<dt-example table-type="html" table-class="display nowrap" order="10">
 
 <css lib="datatables searchpanes select"/>
 
@@ -23,7 +23,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Hide count column on individual pane</title>
+<title lib="SearchPanes">Hide Count Column on Specific Pane</title>
 
 <info><![CDATA[
 

@@ -37,7 +37,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Custom filtering pane preSelect</title>
+<title lib="SearchPanes">Custom Filtering Pane with PreSelections</title>
 
 <info><![CDATA[
 

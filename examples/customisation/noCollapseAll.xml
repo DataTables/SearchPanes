@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html" table-class="display nowrap" order="1">
+<dt-example table-type="html" table-class="display nowrap" order="13">
 
 <css lib="datatables searchpanes select"/>
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Deactivate SearchPanes Collapsing Functionality</title>
+<title lib="searchPanes">Hide Collapsing Button</title>
 
 <info><![CDATA[
 

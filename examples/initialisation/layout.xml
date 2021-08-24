@@ -26,13 +26,13 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Change the number of columns the panes are displayed in.</title>
+<title lib="searchPanes">Change SearchPanes Layout.</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates the `-init searchPanes.layout` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is 3.
+This example demonstrates the `-init searchPanes.layout` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is `auto` which will allow SearchPanes to determine the best fit.
 
 ]]></info>
 

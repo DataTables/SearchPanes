@@ -16,7 +16,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">API Initialisation Example</title>
+<title lib="searchPanes">API Initialisation</title>
 
 <info><![CDATA[
 

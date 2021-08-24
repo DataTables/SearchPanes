@@ -40,7 +40,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="SearchPanes">Only custom panes</title>
+<title lib="SearchPanes">Only Custom Panes</title>
 
 <info><![CDATA[
 

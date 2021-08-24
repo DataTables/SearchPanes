@@ -81,7 +81,7 @@ $(document).ready( function () {
 ]]>
 </js>
 
-<title lib="searchPanes">Panes vertically stacked next to DataTable</title>
+<title lib="searchPanes">Panes Vertically Stacked next to DataTable</title>
 
 <info><![CDATA[
 

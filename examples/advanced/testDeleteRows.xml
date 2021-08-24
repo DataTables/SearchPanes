@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html" table-class="display nowrap" order="2">
+<dt-example table-type="html" table-class="display nowrap" order="16">
 
 <css lib="datatables searchpanes select"/>
 
@@ -16,7 +16,7 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="searchPanes">Interaction when deleting rows mid-search</title>
+<title lib="searchPanes">Deleting rows Mid-search</title>
 
 <info><![CDATA[
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
