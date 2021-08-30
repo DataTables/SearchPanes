@@ -5,6 +5,14 @@ button.dtsp-showAll {
     margin-left: 3px;
 }
 
+div.dt-button-collection {
+    z-index: 2002 !important;
+    div.dtsp-panesContainer {
+        padding: 5px;
+        z-index: 2002;
+    }
+}
+
 div.dtsp-searchPane {
     div.dtsp-topRow {
         margin: 0.5em 0;

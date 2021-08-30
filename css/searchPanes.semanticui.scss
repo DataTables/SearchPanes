@@ -41,6 +41,22 @@ div.dtsp-searchPane {
                 top: -1px;
             }
         }
+
+        button.clearButton,
+        button.dtsp-searchIcon,
+        button.dtsp-nameButton,
+        button.dtsp-countButton,
+        button.dtsp-collapseButton{
+            background-color: transparent;
+            width: 44px;
+            height: 38px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button.disabled {
+            cursor: default;
+        }
     }
 
     div.dtsp-topRow.dtsp-bordered:hover {
@@ -77,6 +93,27 @@ div.dtsp-searchPane {
             min-width: 30px;
             line-height: 1.25em;
             margin-top: 3.5px;
+        }
+    }
+}
+
+div.dt-button-collection {
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: 3px;
+    div.dtsp-panesContainer {
+        font-size: 14px;
+        padding: 5px;
+
+        span.dtsp-caret {
+            right: 0px;
+        }
+
+        div.dtsp-titleRow {
+            button {
+                border-left-width: 0px !important;
+                border-right-width: 0px !important;
+                border-radius: 4px !important;
+            }
         }
     }
 }

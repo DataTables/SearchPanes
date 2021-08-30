@@ -2,7 +2,7 @@
 <dt-example table-type="html" order="3" framework="foundation">
 
 <css lib="datatables searchpanes select"/>
-s
+
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 

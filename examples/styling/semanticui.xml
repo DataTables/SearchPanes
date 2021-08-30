@@ -2,7 +2,7 @@
 <dt-example table-type="html" order="5" framework="semanticui">
 
 <css lib="datatables searchpanes select"/>
-s
+
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 

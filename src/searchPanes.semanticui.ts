@@ -41,7 +41,7 @@
 		disabledButton: 'disabled',
 		narrowSearch: 'dtsp-narrowSearch',
 		narrowSub: 'dtsp-narrow',
-		paneButton: 'ui button',
+		paneButton: 'ui',
 		paneInputButton: 'circular search link icon',
 		topRow: 'row dtsp-topRow'
 	});
