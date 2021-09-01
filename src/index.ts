@@ -146,11 +146,12 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 				},
 				config.config
 			));
-			let message = dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0);
-			dt.button(node).text(message);
+			dt.button(node).text(
+				config.text || dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0)
+			);
 			config._panes = panes;
 		},
-		text: 'Search Panes'
+		text: null
 	};
 
 	function _init(settings, options = null, fromPre = false) {
