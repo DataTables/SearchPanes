@@ -123,7 +123,6 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 
 	$.fn.dataTable.ext.buttons.searchPanes = {
 		action(e, dt, node, config) {
-			e.stopPropagation();
 			this.popover(config._panes.getNode(), {
 				align: 'dt-container'
 			});
