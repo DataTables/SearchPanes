@@ -2,7 +2,7 @@
 
 button.dtsp-clearAll,
 button.dtsp-showAll {
-    margin-left: 3px;
+    margin-left: 3px !important;
 }
 
 div.dt-button-collection {
@@ -10,6 +10,7 @@ div.dt-button-collection {
     div.dtsp-panesContainer {
         padding: 5px;
         z-index: 2002;
+        width: 100%;
     }
 }
 
