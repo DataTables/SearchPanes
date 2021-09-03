@@ -569,6 +569,7 @@ export default class SearchPanes {
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
+			console.log("insert clear all");
 			this.dom.clearAll.appendTo(this.dom.titleRow);
 			this.dom.clearAll.on('click.dtsps', () => {
 				this.clearSelections();
@@ -576,6 +577,8 @@ export default class SearchPanes {
 		}
 
 		if (this.c.collapse) {
+			this.dom.showAll.appendTo(this.dom.titleRow);
+			this.dom.collapseAll.appendTo(this.dom.titleRow);
 			this._setCollapseListener();
 		}
 
@@ -607,12 +610,15 @@ export default class SearchPanes {
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
+			console.log("insert clear all");
 			this.dom.clearAll.appendTo(this.dom.titleRow);
 		}
 
 		// If collapsing is permitted attach those buttons
 		if (this.c.collapse) {
+			console.log("insert show all");
 			this.dom.showAll.appendTo(this.dom.titleRow);
+			console.log("insert collapse all");
 			this.dom.collapseAll.appendTo(this.dom.titleRow);
 		}
 
