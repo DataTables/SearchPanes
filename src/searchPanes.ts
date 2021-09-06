@@ -8,7 +8,9 @@ export function setJQuery(jq) {
 	dataTable = jq.fn.dataTable;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace DataTables {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	interface IStaticFunctions {
 		select: any;
 	}
@@ -160,7 +162,7 @@ export default class SearchPanes {
 
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
-		table.on('xhr', (e, settings, json, xhr) => {
+		table.on('xhr', (e, settings, json) => {
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
@@ -177,7 +179,7 @@ export default class SearchPanes {
 			this._paneDeclare(table, paneSettings, opts);
 		}
 		else {
-			table.one('preInit.dt', (settings) => {
+			table.one('preInit.dt', () => {
 				this._paneDeclare(table, paneSettings, opts);
 			});
 		}
@@ -569,7 +571,6 @@ export default class SearchPanes {
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
-			console.log("insert clear all");
 			this.dom.clearAll.appendTo(this.dom.titleRow);
 			this.dom.clearAll.on('click.dtsps', () => {
 				this.clearSelections();
@@ -610,15 +611,12 @@ export default class SearchPanes {
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
-			console.log("insert clear all");
 			this.dom.clearAll.appendTo(this.dom.titleRow);
 		}
 
 		// If collapsing is permitted attach those buttons
 		if (this.c.collapse) {
-			console.log("insert show all");
 			this.dom.showAll.appendTo(this.dom.titleRow);
-			console.log("insert collapse all");
 			this.dom.collapseAll.appendTo(this.dom.titleRow);
 		}
 
@@ -918,7 +916,7 @@ export default class SearchPanes {
 		// If a custom ordering is being used
 		if (this.c.order.length > 0) {
 			// Make a new Array of panes based upon the order
-			let newPanes = this.c.order.map((name, index, values) => this._findPane(name));
+			let newPanes = this.c.order.map((name) => this._findPane(name));
 
 			// Remove the old panes from the dom
 			this.dom.panes.empty();
@@ -964,7 +962,6 @@ export default class SearchPanes {
 	private _serverTotals() {
 		let selectPresent = false;
 		let deselectPresent = false;
-		let table = this.s.dt;
 		for (let pane of this.s.panes) {
 			// Identify the pane where a selection or deselection has been made and add it to the list.
 			if (pane.s.selectPresent) {
@@ -1282,7 +1279,7 @@ export default class SearchPanes {
 			});
 		}
 		else {
-			table.on('preXhr.dt', (e, settings, data) => {
+			table.on('preXhr.dt', () => {
 				for (let pane of this.s.panes) {
 					pane.clearData();
 				}
@@ -1291,7 +1288,7 @@ export default class SearchPanes {
 
 		// If the data is reloaded from the server then it is possible that it has changed completely,
 		// so we need to rebuild the panes
-		this.s.dt.on('xhr', (e, settings, json, xhr) => {
+		this.s.dt.on('xhr', (e, settings) => {
 			if(settings.nTable !== this.s.dt.table().node()) {
 				return;
 			}

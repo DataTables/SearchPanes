@@ -5,7 +5,7 @@
 	if (typeof define === 'function' && define.amd) {
 		// AMD
 		define(['jquery', 'datatables.net-ju', 'datatables.net-searchpanes'], function($) {
-			return factory($, window, document);
+			return factory($);
 		});
 	}
 	else if (typeof exports === 'object') {
@@ -25,14 +25,14 @@
 				require('datatables.net-searchpanes')(root, $);
 			}
 
-			return factory($, root, root.document);
+			return factory($);
 		};
 	}
 	else {
 		// Browser
-		factory(jQuery, window, document);
+		factory(jQuery);
 	}
-}(function($, window, document) {
+}(function($) {
 	'use strict';
 	let dataTable = $.fn.dataTable;
 

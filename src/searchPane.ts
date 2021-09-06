@@ -243,7 +243,7 @@ export default class SearchPane {
 		let tableNode: Node = table.table(0).node();
 
 		// Custom search function for table
-		this.s.searchFunction = (settings, searchData, dataIndex, origData) => {
+		this.s.searchFunction = (settings, searchData, dataIndex) => {
 			// If no data has been selected then show all
 			if (this.selections.length === 0) {
 				return true;
@@ -942,7 +942,6 @@ export default class SearchPane {
 		// Aliases
 		this.selections = [];
 		let table = this.s.dt;
-		let column = table.column(this.colExists ? this.s.index : 0);
 		let colOpts = this.s.colOpts;
 		let rowData = this.s.rowData;
 
@@ -1101,7 +1100,7 @@ export default class SearchPane {
 			//  then a state.clear() must have occurred, so delete all of the panes tables state objects too.
 			this.dom.dtP.on('stateLoadParams.dt', (e, settings, data) => {
 				if ($.isEmptyObject(table.state.loaded())) {
-					$.each(data, (index, value) => {
+					$.each(data, (index) => {
 						delete data[index];
 					});
 				}
@@ -1215,7 +1214,7 @@ export default class SearchPane {
 			this.c.dtOpts, colOpts !== undefined ? colOpts.dtOpts : {},
 			this.s.colOpts.options !== undefined || !this.colExists ?
 				{
-					createdRow(row, data, dataIndex) {
+					createdRow(row, data) {
 						$(row).addClass(data.className);
 					}
 				}:
@@ -1261,11 +1260,6 @@ export default class SearchPane {
 
 		// If it is not a custom pane
 		if (this.colExists) {
-			// On initialisation, do we need to set a filtering value from a
-			// saved state or init option?
-			let search = column.search();
-			search = search ? search.substr(1, search.length - 2).split('|') : [];
-
 			// Count the number of empty cells
 			let count = 0;
 			rowData.arrayFilter.forEach(element => {
