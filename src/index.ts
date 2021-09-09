@@ -133,7 +133,6 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 			let panes = new $.fn.dataTable.SearchPanes(dt, $.extend(
 				{
 					filterChanged(count) {
-						// console.log(dt.context[0])
 						dt.button(node).text(dt.i18n(
 							'searchPanes.collapse',
 							dt.context[0].oLanguage.searchPanes !== undefined ?
