@@ -277,7 +277,7 @@ export default class SearchPane {
 
 		// If the clear button for this pane is clicked clear the selections
 		if (this.c.clear) {
-			clear.on('click', () => {
+			clear.on('click.dtsp', () => {
 				let searches = this.dom.container.find('.' + this.classes.search.replace(/\s+/g, '.'));
 
 				searches.each(function() {
@@ -296,7 +296,7 @@ export default class SearchPane {
 			this.adjustTopRow();
 		});
 
-		table.on('buttons-action', () => {
+		table.on('buttons-action.dtsp', () => {
 			this.adjustTopRow();
 		});
 
@@ -426,7 +426,7 @@ export default class SearchPane {
 		this.dom.nameButton.addClass(this.classes.disabledButton);
 		this.dom.searchButton.addClass(this.classes.disabledButton);
 
-		this.dom.topRow.one('click', () => {
+		this.dom.topRow.one('click.dtsp', () => {
 			this.show();
 		});
 	}
@@ -439,6 +439,8 @@ export default class SearchPane {
 			this.s.dtPane.off('.dtsp');
 		}
 
+		$(this.s.dt.table().node()).off('.dtsp');
+		this.s.dt.off('.dtsp');
 		this.dom.nameButton.off('.dtsp');
 		this.dom.collapseButton.off('.dtsp');
 		this.dom.countButton.off('.dtsp');
@@ -796,10 +798,10 @@ export default class SearchPane {
 			this.dom.searchButton.toggleClass(this.classes.disabledButton);
 
 			if (container.hasClass(this.classes.hidden)) {
-				this.dom.topRow.on('click', () => this.dom.collapseButton.click());
+				this.dom.topRow.on('click.dtsp', () => this.dom.collapseButton.click());
 			}
 			else {
-				this.dom.topRow.off('click');
+				this.dom.topRow.off('click.dtsp');
 			}
 
 			this.s.dt.state.save();
@@ -1098,7 +1100,7 @@ export default class SearchPane {
 		if (!this.s.listSet) {
 			// Here, when the state is loaded if the data object on the original table is empty,
 			//  then a state.clear() must have occurred, so delete all of the panes tables state objects too.
-			this.dom.dtP.on('stateLoadParams.dt', (e, settings, data) => {
+			this.dom.dtP.on('stateLoadParams.dtsp', (e, settings, data) => {
 				if ($.isEmptyObject(table.state.loaded())) {
 					$.each(data, (index) => {
 						delete data[index];

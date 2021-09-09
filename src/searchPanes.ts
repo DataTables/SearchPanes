@@ -131,7 +131,7 @@ export default class SearchPanes {
 		this._getState();
 
 		if (this.s.dt.page.info().serverSide) {
-			table.on('preXhr.dt', (e, settings, data) => {
+			table.on('preXhr.dtsps', (e, settings, data) => {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
@@ -162,7 +162,7 @@ export default class SearchPanes {
 
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
-		table.on('xhr', (e, settings, json) => {
+		table.on('xhr.dtsps', (e, settings, json) => {
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
@@ -179,7 +179,7 @@ export default class SearchPanes {
 			this._paneDeclare(table, paneSettings, opts);
 		}
 		else {
-			table.one('preInit.dt', () => {
+			table.one('preInit.dtsps', () => {
 				this._paneDeclare(table, paneSettings, opts);
 			});
 		}
@@ -1099,7 +1099,7 @@ export default class SearchPanes {
 
 		for(let pane of this.s.panes) {
 			// We want to make the same check whenever there is a collapse/expand
-			pane.dom.collapseButton.on('click', () => this._checkCollapse());
+			pane.dom.collapseButton.on('click.dtsps', () => this._checkCollapse());
 		}
 
 		this._checkCollapse();
@@ -1198,12 +1198,12 @@ export default class SearchPanes {
 			this.s.paging = false;
 		});
 
-		$(window).on('resize.dtsp', dataTable.util.throttle(() => {
+		$(window).on('resize.dtsps', dataTable.util.throttle(() => {
 			this.resizePanes();
 		}));
 
 		// Whenever a state save occurs store the selection list in the state object
-		this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
+		this.s.dt.on('stateSaveParams.dtsps', (e, settings, data) => {
 			if (data.searchPanes === undefined) {
 				data.searchPanes = {};
 			}
@@ -1211,15 +1211,15 @@ export default class SearchPanes {
 		});
 
 		// Listener for paging on main table
-		table.off('page');
-		table.on('page', () => {
+		table.off('page.dtsps');
+		table.on('page.dtsps', () => {
 			this.s.paging = true;
 			this.s.page = this.s.dt.page();
 		});
 
 		if (this.s.dt.page.info().serverSide) {
-			table.off('preXhr.dt');
-			table.on('preXhr.dt', (e, settings, data) => {
+			table.off('preXhr.dtsps');
+			table.on('preXhr.dtsps', (e, settings, data) => {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
@@ -1279,7 +1279,7 @@ export default class SearchPanes {
 			});
 		}
 		else {
-			table.on('preXhr.dt', () => {
+			table.on('preXhr.dtsps', () => {
 				for (let pane of this.s.panes) {
 					pane.clearData();
 				}
@@ -1288,14 +1288,14 @@ export default class SearchPanes {
 
 		// If the data is reloaded from the server then it is possible that it has changed completely,
 		// so we need to rebuild the panes
-		this.s.dt.on('xhr', (e, settings) => {
+		this.s.dt.on('xhr.dtsps', (e, settings) => {
 			if(settings.nTable !== this.s.dt.table().node()) {
 				return;
 			}
 
 			let processing = false;
 			if (!this.s.dt.page.info().serverSide) {
-				this.s.dt.one('preDraw', () => {
+				this.s.dt.one('preDraw.dtsps', () => {
 					if (processing) {
 						return;
 					}
@@ -1335,7 +1335,7 @@ export default class SearchPanes {
 
 					this._checkMessage();
 
-					this.s.dt.one('draw', () => {
+					this.s.dt.one('draw.dtsps', () => {
 						this.s.updating = true;
 						this.s.dt.page(page).draw(false);
 						this.s.updating = false;
@@ -1394,6 +1394,7 @@ export default class SearchPanes {
 			}
 
 			table.off('.dtsps');
+			$(table.table().node()).off('.dtsps');
 			this.dom.collapseAll.off('.dtsps');
 			this.dom.showAll.off('.dtsps');
 			this.dom.clearAll.off('.dtsps');
