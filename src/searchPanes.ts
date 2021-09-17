@@ -1213,6 +1213,9 @@ export default class SearchPanes {
 		});
 
 		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
+			if (data.searchPanes === undefined) {
+				return;
+			}
 			this.clearSelections();
 			// Set the selection list for the panes so that the correct
 			// rows can be reselected and in the right order
