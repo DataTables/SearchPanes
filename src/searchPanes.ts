@@ -841,7 +841,8 @@ export default class SearchPanes {
 					// if there are any selections currently in the pane then
 					// deselect them as we are about to make our new selections
 					if (
-						pane.s.dtPane.rows({ selected: true }).data().toArray().length > 0 && pane.s.dtPane !== undefined
+						pane.s.dtPane !== undefined &&
+						pane.s.dtPane.rows({ selected: true }).data().toArray().length > 0
 					) {
 						pane.setClear(true);
 						pane.clearPane();
@@ -1052,8 +1053,6 @@ export default class SearchPanes {
 				pane.s.deselect = false;
 			}
 		}
-
-		this.dom.panes.empty();
 
 		// Rebuild the desired panes
 		for (let pane of this.s.panes) {
