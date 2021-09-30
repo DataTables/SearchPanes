@@ -27,8 +27,8 @@ declare let define: {
 	(stringValue, Function): any;
 };
 
-import SearchPane, {setJQuery as searchPaneJQuery} from './SearchPane';
-import SearchPanes, {setJQuery as searchPanesJQuery} from './SearchPanes';
+import SearchPane, {setJQuery as searchPaneJQuery} from './searchPane';
+import SearchPanes, {setJQuery as searchPanesJQuery} from './searchPanes';
 
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -115,7 +115,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './SearchPanes';
 	});
 
 	$.fn.dataTable.ext.buttons.searchPanesClear = {
-		action(e, dt) {
+		action(e, dt, node, config) {
 			dt.searchPanes.clearSelections();
 		},
 		text: 'Clear Panes'
@@ -166,7 +166,7 @@ import SearchPanes, {setJQuery as searchPanesJQuery} from './SearchPanes';
 
 	// Attach a listener to the document which listens for DataTables initialisation
 	// events so we can automatically initialise
-	$(document).on('preInit.dt.dtsp', function(e, settings) {
+	$(document).on('preInit.dt.dtsp', function(e, settings, json) {
 		if (e.namespace !== 'dt') {
 			return;
 		}

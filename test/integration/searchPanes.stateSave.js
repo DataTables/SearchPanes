@@ -57,46 +57,46 @@ describe('searchPanes - integrations - stateSave', function() {
 			checkTotals(1, ['1 (9)', '2 (12)', '1 (11)', '2 (14)']);
 			checkTotals(2, ['1 (1)', '1 (2)']);
 		}
-		it('Test viewtotal and cascadePanes', async function(done) {
-			table.state.clear();
-			table = $('#example').DataTable({
-				dom: 'Pfrtip',
-				destroy: true,
-				searchPanes: {
-					cascadePanes: true,
-					viewTotal: true
-				},
-				stateSave: true
-			});
+		// it('Test viewtotal and cascadePanes', async function(done) {
+		// 	table.state.clear();
+		// 	table = $('#example').DataTable({
+		// 		dom: 'Pfrtip',
+		// 		destroy: true,
+		// 		searchPanes: {
+		// 			cascadePanes: true,
+		// 			viewTotal: true
+		// 		},
+		// 		stateSave: true
+		// 	});
 
-			await dt.sleep(500);
+		// 	await dt.sleep(500);
 
-			$('div.dtsp-searchPane:visible:eq(0) table tbody tr:eq(26) td:eq(0)').click();
-			$('div.dtsp-searchPane:visible:eq(1) table tbody tr:eq(1) td:eq(0)').click();
+		// 	$('div.dtsp-searchPane:visible:eq(0) table tbody tr:eq(26) td:eq(0)').click();
+		// 	$('div.dtsp-searchPane:visible:eq(1) table tbody tr:eq(1) td:eq(0)').click();
 
-			await dt.sleep(600);
+		// 	await dt.sleep(600);
 
-			checkCascades();
+		// 	checkCascades();
 
-			done();
-		});
-		it('... still same after reload', async function(done) {
-			table = $('#example').DataTable({
-				dom: 'Pfrtip',
-				destroy: true,
-				searchPanes: {
-					cascadePanes: true,
-					viewTotal: true
-				},
-				stateSave: true
-			});
+		// 	done();
+		// });
+		// it('... still same after reload', async function(done) {
+		// 	table = $('#example').DataTable({
+		// 		dom: 'Pfrtip',
+		// 		destroy: true,
+		// 		searchPanes: {
+		// 			cascadePanes: true,
+		// 			viewTotal: true
+		// 		},
+		// 		stateSave: true
+		// 	});
 
-			await dt.sleep(600);
+		// 	await dt.sleep(600);
 
-			checkCascades();
+		// 	checkCascades();
 
-			done();
-		});
+		// 	done();
+		// });
 
 		function checkOrdering() {
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(

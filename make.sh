@@ -65,8 +65,8 @@ rm \
     $OUT_DIR/js/index.js \
     $OUT_DIR/js/panesType.js \
     $OUT_DIR/js/paneType.js \
-    $OUT_DIR/js/searchPane.js \
-    $OUT_DIR/js/searchPanes.js \
+    $OUT_DIR/js/SearchPane.js \
+    $OUT_DIR/js/SearchPanes.js \
     src/*.js \
     # src/*.d.ts
 

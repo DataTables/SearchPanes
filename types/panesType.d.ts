@@ -1,6 +1,6 @@
 /// <reference types="jquery" />
 /// <reference types="datatables.net" />
-import SearchPane from './searchPane';
+import SearchPane from './SearchPane';
 export interface IClasses {
     clear: string;
     clearAll: string;
@@ -24,7 +24,6 @@ export interface IConfigPaneItem {
     options: IOption[];
 }
 export interface IDefaults {
-    cascadePanes: boolean;
     clear: boolean;
     collapse: boolean;
     columns: number[];
@@ -49,7 +48,6 @@ export interface IDefaults {
     layout: string;
     order: string[];
     panes: IConfigPaneItem[];
-    viewTotal: boolean;
 }
 export interface IDOM {
     clearAll: JQuery<HTMLElement>;

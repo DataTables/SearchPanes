@@ -57,6 +57,7 @@ export interface IDataArray {
 }
 
 export interface IDefaults {
+	cascadePanes: boolean;
 	clear: boolean;
 	collapse: boolean;
 	combiner: string;
@@ -79,6 +80,7 @@ export interface IDefaults {
 	preSelect: any;
 	threshold: number;
 	viewCount: boolean;
+	viewTotal: boolean;
 }
 
 export interface IDOM {
@@ -133,6 +135,7 @@ export interface IRowData {
 }
 
 export interface IS {
+	cascadeRegen: boolean;
 	clearing: boolean;
 	colOpts: any;
 	deselect: boolean;
@@ -141,8 +144,10 @@ export interface IS {
 	dtPane: any; // Pane DataTable Instance
 	filteringActive: boolean;
 	firstSet: boolean;
+	forceViewTotal: boolean;
 	index: number;
 	indexes: IIndexes[];
+	lastCascade: boolean;
 	lastSelect: boolean;
 	listSet: boolean;
 	name: string;

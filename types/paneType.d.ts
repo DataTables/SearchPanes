@@ -58,7 +58,6 @@ export interface IDataArray {
     type: string;
 }
 export interface IDefaults {
-    cascadePanes: boolean;
     clear: boolean;
     collapse: boolean;
     combiner: string;
@@ -83,7 +82,6 @@ export interface IDefaults {
     preSelect: any;
     threshold: number;
     viewCount: boolean;
-    viewTotal: boolean;
 }
 export interface IDOM {
     buttonGroup: JQuery<HTMLElement>;
@@ -138,7 +136,6 @@ export interface IRowData {
     totalOptions: number;
 }
 export interface IS {
-    cascadeRegen: boolean;
     clearing: boolean;
     colOpts: any;
     deselect: boolean;
@@ -147,10 +144,8 @@ export interface IS {
     dtPane: any;
     filteringActive: boolean;
     firstSet: boolean;
-    forceViewTotal: boolean;
     index: number;
     indexes: IIndexes[];
-    lastCascade: boolean;
     lastSelect: boolean;
     listSet: boolean;
     name: string;

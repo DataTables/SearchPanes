@@ -12,8 +12,8 @@
         "./node_modules/**/*"
     ],
     "files": [
-        "src/searchPanes.ts",
-        "src/searchPane.ts",
+        "src/SearchPanes.ts",
+        "src/SearchPane.ts",
         "src/index.ts",
         "src/paneType.ts",
         "src/panesType.ts",

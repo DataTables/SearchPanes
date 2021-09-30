@@ -1,4 +1,4 @@
-import SearchPane from './SearchPane';
+import SearchPane from './searchPane';
 
 export interface IClasses {
 	clear: string;
@@ -23,6 +23,7 @@ export interface IConfigPaneItem {
 }
 
 export interface IDefaults {
+	cascadePanes: boolean;
 	clear: boolean;
 	collapse: boolean;
 	columns: number[];
@@ -47,6 +48,7 @@ export interface IDefaults {
 	layout: string;
 	order: string[];
 	panes: IConfigPaneItem[];
+	viewTotal: boolean;
 }
 
 export interface IDOM {

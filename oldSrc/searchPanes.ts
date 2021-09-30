@@ -196,7 +196,7 @@ export default class SearchPanes {
 
 		// For each searchBox set the input text to be empty and then trigger
 		// an input on them so that they no longer filter the panes
-		searches.each(function () {
+		searches.each(function() {
 			$(this).val('');
 			$(this).trigger('input');
 		});
@@ -564,17 +564,18 @@ export default class SearchPanes {
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach(): JQuery<HTMLElement> {
-		this.dom.container.removeClass(this.classes.hide);
-		this.dom.titleRow.removeClass(this.classes.hide);
-		this.dom.titleRow.remove();
-		this.dom.title.appendTo(this.dom.titleRow);
+		this.dom.titleRow
+			.removeClass(this.classes.hide)
+			.remove()
+			.append(this.dom.title);
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
-			this.dom.clearAll.appendTo(this.dom.titleRow);
-			this.dom.clearAll.on('click.dtsps', () => {
-				this.clearSelections();
-			});
+			this.dom.clearAll
+				.appendTo(this.dom.titleRow)
+				.on('click.dtsps', () => {
+					this.clearSelections();
+				});
 		}
 
 		if (this.c.collapse) {
@@ -583,15 +584,17 @@ export default class SearchPanes {
 			this._setCollapseListener();
 		}
 
-		this.dom.titleRow.appendTo(this.dom.container);
-
 		// Attach the container for each individual pane to the overall container
 		for (let pane of this.s.panes) {
-			pane.dom.container.appendTo(this.dom.panes);
+			this.dom.panes.append(pane.dom.container);
 		}
 
 		// Attach everything to the document
-		this.dom.panes.appendTo(this.dom.container);
+
+		this.dom.container
+			.removeClass(this.classes.hide)
+			.append(this.dom.titleRow)
+			.append(this.dom.panes);
 
 		if ($('div.' + this.classes.container).length === 0) {
 			this.dom.container.prependTo(this.s.dt);
@@ -604,23 +607,27 @@ export default class SearchPanes {
 	 * Attach the top row containing the filter count and clear all button
 	 */
 	private _attachExtras(): JQuery<HTMLElement> {
-		this.dom.container.removeClass(this.classes.hide);
-		this.dom.titleRow.removeClass(this.classes.hide);
-		this.dom.titleRow.remove();
-		this.dom.title.appendTo(this.dom.titleRow);
+		this.dom.titleRow
+			.removeClass(this.classes.hide)
+			.remove()
+			.append(this.dom.title);
 
 		// If the clear button is permitted attach it
 		if (this.c.clear) {
-			this.dom.clearAll.appendTo(this.dom.titleRow);
+			this.dom.titleRow.append(this.dom.clearAll);
 		}
 
 		// If collapsing is permitted attach those buttons
 		if (this.c.collapse) {
-			this.dom.showAll.appendTo(this.dom.titleRow);
-			this.dom.collapseAll.appendTo(this.dom.titleRow);
+			this.dom.titleRow
+				.append(this.dom.showAll)
+				.append(this.dom.collapseAll);
 		}
 
-		this.dom.titleRow.appendTo(this.dom.container);
+		this.dom.container
+			.removeClass(this.classes.hide)
+			.text('')
+			.append(this.dom.titleRow);
 
 		return this.dom.container;
 	}
@@ -772,7 +779,7 @@ export default class SearchPanes {
 
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed) {
-				// It the pane is not collapsed
+				// If the pane is not collapsed
 				if (!pane.dom.collapseButton.hasClass(pane.classes.rotated)) {
 					// Enable the collapse all button
 					this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');

@@ -44,19 +44,20 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2 test 2');
 		});
 
-		dt.html('basic');
-		it('Two replacements', function() {
-			table = $('#example').DataTable({
-				dom: 'Pfrtip',
-				language: {
-					searchPanes: {
-						count: 'unit {total} test {shown}'
-					}
-				}
-			});
+		// dt.html('basic');
+		// it('Two replacements', function() {
+		// 	table = $('#example').DataTable({
+		// 		dom: 'Pfrtip',
+		// 		language: {
+		// 			searchPanes: {
+		// 				viewTotal: true,
+		// 				count: 'unit {total} test {shown}'
+		// 			}
+		// 		}
+		// 	});
 
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2 test 2');
-		});
+		// 	expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('unit 2 test 2');
+		// });
 
 		dt.html('basic');
 		it('Remains if option selected', function() {
