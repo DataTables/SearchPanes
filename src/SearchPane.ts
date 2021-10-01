@@ -205,7 +205,7 @@ export default class SearchPane {
 		table = this.s.dt;
 		this.s.colOpts = this.s.colExists ? this._getOptions() : this._getBonusOptions();
 		let colOpts = this.s.colOpts;
-		let clear: JQuery<HTMLElement> = $('<button type="button">X</button>').addClass(this.classes.paneButton);
+		let clear = $('<button type="button">X</button>').addClass(this.classes.paneButton);
 		clear.text(table.i18n('searchPanes.clearPane', this.c.i18n.clearPane));
 		this.dom.container.addClass(colOpts.className);
 		this.dom.container.addClass(
@@ -229,7 +229,7 @@ export default class SearchPane {
 
 		$(panesContainer).append(this.dom.container);
 
-		let tableNode: Node = table.table(0).node();
+		let tableNode = table.table(0).node();
 
 		// Custom search function for table
 		this.s.searchFunction = (settings, searchData, dataIndex) => {
@@ -431,9 +431,9 @@ export default class SearchPane {
 		this.dom.clear.off('.dtsp');
 		this.dom.searchButton.off('.dtsp');
 
-		this.dom.container.remove();
+		this.dom.container.detach();
 
-		let searchIdx: number = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
+		let searchIdx = $.fn.dataTable.ext.search.indexOf(this.s.searchFunction);
 
 		while (searchIdx !== -1) {
 			$.fn.dataTable.ext.search.splice(searchIdx, 1);
@@ -486,7 +486,6 @@ export default class SearchPane {
 	 */
 	public rebuildPane(dataIn = null, maintainSelection = false): this {
 		this.clearData();
-		console.log(this.s.index);
 
 		let selectedRows = [];
 		this.s.serverSelect = [];
@@ -793,6 +792,11 @@ export default class SearchPane {
 			this.s.dt.state.save();
 		});
 
+		// WORKAROUND
+		// If this line is removed, the select listeners aren't present on
+		// the panes for some reason when a rebuild occurs
+		this.s.dtPane.select.style('os');
+
 		return true;
 	}
 
@@ -1069,10 +1073,6 @@ export default class SearchPane {
 
 							while (message.includes('{total}')) {
 								message = message.replace(/{total}/, row.total);
-							}
-
-							if(this.s.index === 1) {
-								//console.log(data, row.total)
 							}
 
 							// We are displaying the count in the same columne as the name of the search option.

@@ -201,11 +201,15 @@ export default class SearchPanes {
 		// Clear the selectionList
 		this.s.selectionList = [];
 
-		return this.s.panes.filter(pane => {
+		let returnArray = [];
+
+		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
-				return pane.clearPane();
+				returnArray.push(pane.clearPane());
 			}
-		});
+		}
+
+		return returnArray;
 	}
 
 	/**
@@ -227,10 +231,9 @@ export default class SearchPanes {
 		}
 
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
-		let returnArray = this.s.panes.filter(pane => {
-			console.log("target: ", targetIdx)
+		let returnArray = [];
+		for (let pane of this.s.panes) {
 			if (targetIdx === false || pane.s.index === targetIdx) {
-				console.log("rebuilding:", pane.s.index)
 				pane.clearData();
 				pane.rebuildPane(
 					this.s.dt.page.info().serverSide ?
@@ -239,9 +242,9 @@ export default class SearchPanes {
 					maintainSelection
 				);
 				this.dom.panes.append(pane.dom.container);
-				return pane;
+				returnArray.push(pane);
 			}
-		});
+		}
 
 		this._updateSelection();
 
@@ -271,11 +274,13 @@ export default class SearchPanes {
 			let highestmod = 0;
 
 			// Get the indexes of all of the displayed panes
-			let dispIndex = this.s.panes.filter(pane => {
+			let dispIndex = [];
+
+			for (let pane of this.s.panes) {
 				if (pane.s.displayed) {
-					return pane.s.index;
+					dispIndex.push(pane.s.index);
 				}
-			});
+			}
 
 			let displayCount = dispIndex.length;
 
@@ -324,7 +329,7 @@ export default class SearchPanes {
 	/**
 	 * Attach the panes, buttons and title to the document
 	 */
-	private _attach(): JQuery<HTMLElement> {
+	private _attach(): void {
 		this.dom.titleRow
 			.removeClass(this.classes.hide)
 			.detach()
@@ -346,7 +351,6 @@ export default class SearchPanes {
 		// Attach the container for each individual pane to the overall container
 		for (let pane of this.s.panes) {
 			this.dom.panes.append(pane.dom.container);
-			pane._setListeners();
 		}
 
 		// Attach everything to the document
@@ -357,18 +361,19 @@ export default class SearchPanes {
 			.append(this.dom.titleRow)
 			.append(this.dom.panes);
 
+		// WORKAROUND
+		this.s.panes.forEach(pane => pane._setListeners());
+
 		if ($('div.' + this.classes.container).length === 0) {
 			this.dom.container.prependTo(this.s.dt);
 		}
-
-		return this.dom.container;
 	}
 
 	/**
 	 * If there are no panes to display then this method is called to either
 	 * display a message in their place or hide them completely.
 	 */
-	private _attachMessage(): JQuery<HTMLElement> {
+	private _attachMessage(): void {
 		// Create a message to display on the screen
 		let message: string;
 
@@ -392,22 +397,22 @@ export default class SearchPanes {
 		this.dom.titleRow.addClass(this.classes.hide);
 		this.dom.emptyMessage.text(message);
 		this.dom.emptyMessage.appendTo(this.dom.container);
-		return this.dom.container;
 	}
 
 	/**
 	 * Attaches the panes to the document and displays a message or hides if there are none
 	 */
-	private _attachPaneContainer(): JQuery<HTMLElement> {
+	private _attachPaneContainer(): void {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
-				return this._attach();
+				this._attach();
+				return;
 			}
 		}
 
 		// Otherwise attach the custom message or remove the container from the display
-		return this._attachMessage();
+		this._attachMessage();
 	}
 
 	/**
@@ -449,7 +454,7 @@ export default class SearchPanes {
 	/**
 	 * Attaches the message to the document but does not add any panes
 	 */
-	private _checkMessage(): JQuery<HTMLElement> | void {
+	private _checkMessage(): void {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
@@ -461,7 +466,7 @@ export default class SearchPanes {
 		}
 
 		// Otherwise attach the custom message or remove the container from the display
-		return this._attachMessage();
+		this._attachMessage();
 	}
 
 	/**
@@ -593,7 +598,6 @@ export default class SearchPanes {
 		this.dom.panes.empty();
 
 		for (let pane of this.s.panes) {
-			console.log("startup")
 			pane.rebuildPane(Object.keys(this.s.serverData).length > 0 ? this.s.serverData : undefined);
 			this.dom.panes.append(pane.dom.container);
 		}
@@ -759,7 +763,6 @@ export default class SearchPanes {
 						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
 						// Pass a boolean to say whether this is the last choice made for maintaining selections
 						// when rebuilding
-						console.log("xhr")
 						pane.rebuildPane(
 							undefined,
 							true
@@ -834,7 +837,7 @@ export default class SearchPanes {
 			this.dom.collapseAll.off('.dtsps');
 			this.dom.showAll.off('.dtsps');
 			this.dom.clearAll.off('.dtsps');
-			this.dom.container.remove();
+			this.dom.container.detach();
 			this.clearSelections();
 		});
 
@@ -887,14 +890,15 @@ export default class SearchPanes {
 	 * Updates the selectionList when cascade is not in place
 	 */
 	private _updateSelection() {
-		this.s.selectionList = this.s.panes.filter(pane => {
+		this.s.selectionList = [];
+		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
-				return {
+				this.s.selectionList.push({
 					index: pane.s.index,
 					protect: false,
 					rows: pane.s.dtPane.rows({ selected: true }).data().toArray()
-				};
+				});
 			}
-		});
+		}
 	}
 }

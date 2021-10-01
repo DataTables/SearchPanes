@@ -20,7 +20,6 @@ describe('searchPanes - api - searchPanes.rebuildPane()', function() {
 	});
 
 	function checkTopRows(position, office, age, custom = undefined) {
-		console.log($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').text())
 		expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(position);
 		expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(office);
 		expect($('div.dtsp-searchPane:eq(3) tbody tr:eq(0) td:eq(0) span.dtsp-pill').text()).toBe(age);
