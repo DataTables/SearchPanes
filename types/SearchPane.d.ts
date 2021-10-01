@@ -1,22 +1,24 @@
+import { IClasses, IDefaults, IDOM, IS } from './paneType';
 export declare function setJQuery(jq: any): void;
 export default class SearchPane {
     private static version;
     private static classes;
     private static defaults;
-    classes: any;
-    dom: any;
-    c: any;
-    s: any;
-    customPaneSettings: any;
+    classes: IClasses;
+    dom: IDOM;
+    c: IDefaults;
+    s: IS;
     /**
      * Creates the panes, sets up the search function
      *
      * @param paneSettings The settings for the searchPanes
      * @param opts The options for the default features
-     * @param idx the index of the column for this pane
+     * @param index the index of the column for this pane
+     * @param panesContainer The overall container for SearchPanes that this pane will be attached to
+     * @param panes The custom pane settings if this is a custom pane
      * @returns {object} the pane that has been created, including the table and the index of the pane
      */
-    constructor(paneSettings: any, opts: any, idx: any, layout: any, panesContainer: any, panes?: any);
+    constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes?: any);
     /**
      * Adds a row to the panes table
      *
@@ -59,9 +61,7 @@ export default class SearchPane {
     /**
      * Rebuilds the panes from the start having deleted the old ones
      *
-     * @param? last boolean to indicate if this is the last pane a selection was made in
      * @param? dataIn data to be used in buildPane
-     * @param? init Whether this is the initial draw or not
      * @param? maintainSelection Whether the current selections are to be maintained over rebuild
      */
     rebuildPane(dataIn?: any, maintainSelection?: boolean): this;
@@ -72,6 +72,12 @@ export default class SearchPane {
      */
     resize(layout: string): void;
     /**
+     * Sets the listeners for the pane.
+     *
+     * Having it in it's own function makes it easier to only set them once
+     */
+    setListeners(): void;
+    /**
      * Expands the pane from the collapsed state
      */
     show(): void;
@@ -80,12 +86,6 @@ export default class SearchPane {
      * rather than the filtered message when using viewTotal.
      */
     updateTable(): void;
-    /**
-     * Sets the listeners for the pane.
-     *
-     * Having it in it's own function makes it easier to only set them once
-     */
-    _setListeners(): boolean;
     /**
      * Takes in potentially undetected rows and adds them to the array if they are not yet featured
      *
@@ -101,7 +101,9 @@ export default class SearchPane {
      * Method to construct the actual pane.
      *
      * @param selectedRows previously selected Rows to be reselected
-     * @last boolean to indicate whether this pane was the last one to have a selection made
+     * @param dataIn Data that should be used to populate this pane
+     * @param prevEl Reference to the previous element, used to ensure insert is in the correct location
+     * @returns boolean to indicate whether this pane was the last one to have a selection made
      */
     private _buildPane;
     /**
@@ -128,14 +130,10 @@ export default class SearchPane {
     private _getOptions;
     /**
      * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
-     *
-     * @param select Denotes whether a selection has been made or not
      */
     private _makeSelection;
     /**
      * Fill the array with the values that are currently being displayed in the table
-     *
-     * @param last boolean to indicate whether this was the last pane a selection was made in
      */
     private _populatePane;
     /**
@@ -143,6 +141,7 @@ export default class SearchPane {
      *
      * @param rowIdx The current row index to be compared
      * @param arrayFilter The array that is to be populated with row Details
+     * @param settings The DataTable settings object
      * @param bins The bins object that is to be populated with the row counts
      */
     private _populatePaneArray;
@@ -177,4 +176,10 @@ export default class SearchPane {
      * @returns {number} returns the ratio
      */
     private _uniqueRatio;
+    /**
+     * Notes the rows that have been selected within this pane and stores them internally
+     *
+     * @param notUpdating Whether the panes are updating themselves or not
+     */
+    private _updateSelection;
 }

@@ -5,6 +5,7 @@ export interface IClasses {
     bordered: string;
     buttonGroup: string;
     buttonSub: string;
+    caret: string;
     clear: string;
     clearAll: string;
     clearButton: string;
@@ -122,41 +123,33 @@ export interface IOrthogonal {
 export interface IRowData {
     arrayFilter: IDataArray[];
     arrayOriginal: IDataArray[];
-    arrayTotals: IDataArray[];
     bins: {
         [keys: string]: number;
     };
     binsOriginal: {
         [keys: string]: number;
     };
-    binsTotal: {
-        [keys: string]: number;
-    };
     filterMap: Map<number, any>;
     totalOptions: number;
 }
 export interface IS {
-    clearing: boolean;
+    colExists: boolean;
     colOpts: any;
-    deselect: boolean;
+    customPaneSettings: IConfigPaneItem;
     displayed: boolean;
     dt: any;
     dtPane: any;
-    filteringActive: boolean;
     firstSet: boolean;
     index: number;
     indexes: IIndexes[];
-    lastSelect: boolean;
     listSet: boolean;
     name: string;
-    redraw: boolean;
     rowData: IRowData;
     scrollTop: number;
     searchFunction: any;
-    selectPresent: boolean;
+    selections: IIndexes[];
     serverSelect: any;
     serverSelecting: boolean;
-    showFiltered: boolean;
     tableLength: number;
     updating: boolean;
 }

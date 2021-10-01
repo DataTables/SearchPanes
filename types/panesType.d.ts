@@ -54,12 +54,10 @@ export interface IDOM {
     collapseAll: JQuery<HTMLElement>;
     container: JQuery<HTMLElement>;
     emptyMessage: JQuery<HTMLElement>;
-    options: JQuery<HTMLElement>;
     panes: JQuery<HTMLElement>;
     showAll: JQuery<HTMLElement>;
     title: JQuery<HTMLElement>;
     titleRow: JQuery<HTMLElement>;
-    wrapper: JQuery<HTMLElement>;
 }
 export interface IOption {
     label: string;
@@ -69,7 +67,7 @@ export interface IS {
     colOpts: any[];
     dt: any;
     filterCount: number;
-    filterPane: number;
+    minPaneWidth: number;
     page: number;
     paging: boolean;
     panes: SearchPane[];

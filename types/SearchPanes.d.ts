@@ -1,16 +1,16 @@
 /// <reference types="jquery" />
 /// <reference types="datatables.net" />
 export declare function setJQuery(jq: any): void;
+import { IClasses, IDefaults, IDOM, IS } from './panesType';
 import SearchPane from './SearchPane';
 export default class SearchPanes {
     private static version;
     private static classes;
     private static defaults;
-    classes: any;
-    dom: any;
-    c: any;
-    s: any;
-    regenerating: boolean;
+    classes: IClasses;
+    dom: IDOM;
+    c: IDefaults;
+    s: IS;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean);
     /**
      * Clear the selections of all of the panes
@@ -43,8 +43,6 @@ export default class SearchPanes {
     private _attachPaneContainer;
     /**
      * Checks which panes are collapsed and then performs relevant actions to the collapse/show all buttons
-     *
-     * @param pane The pane to be checked
      */
     private _checkCollapse;
     /**

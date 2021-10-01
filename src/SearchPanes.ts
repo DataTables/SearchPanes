@@ -13,6 +13,7 @@ namespace DataTables {
 		select: any;
 	}
 }
+import { IClasses, IDefaults, IDOM, IS } from './panesType';
 import SearchPane from './SearchPane';
 export default class SearchPanes {
 
@@ -62,11 +63,10 @@ export default class SearchPanes {
 		panes: []
 	};
 
-	public classes;
-	public dom;
-	public c;
-	public s;
-	public regenerating = false;
+	public classes: IClasses;
+	public dom: IDOM;
+	public c: IDefaults;
+	public s: IS;
 
 	public constructor(paneSettings, opts, fromPreInit = false) {
 		// Check that the required version of DataTables is included
@@ -98,7 +98,6 @@ export default class SearchPanes {
 				table.i18n('searchPanes.loadMessage', this.c.i18n.loadMessage)
 			),
 			emptyMessage: $('<div/>').addClass(this.classes.emptyMessage),
-			options: $('<div/>').addClass(this.classes.container),
 			panes: $('<div/>').addClass(this.classes.container),
 			showAll: $('<button type="button"/>')
 				.addClass(this.classes.showAll)
@@ -107,7 +106,6 @@ export default class SearchPanes {
 				.text(table.i18n('searchPanes.showMessage', this.c.i18n.showMessage)),
 			title: $('<div/>').addClass(this.classes.title),
 			titleRow: $('<div/>').addClass(this.classes.titleRow),
-			wrapper: $('<div/>')
 		};
 
 		this.s = {
@@ -362,7 +360,7 @@ export default class SearchPanes {
 			.append(this.dom.panes);
 
 		// WORKAROUND
-		this.s.panes.forEach(pane => pane._setListeners());
+		this.s.panes.forEach(pane => pane.setListeners());
 
 		if ($('div.' + this.classes.container).length === 0) {
 			this.dom.container.prependTo(this.s.dt);
@@ -395,8 +393,7 @@ export default class SearchPanes {
 		// Otherwise display the message
 		this.dom.container.removeClass(this.classes.hide);
 		this.dom.titleRow.addClass(this.classes.hide);
-		this.dom.emptyMessage.text(message);
-		this.dom.emptyMessage.appendTo(this.dom.container);
+		this.dom.emptyMessage.text(message).appendTo(this.dom.container);
 	}
 
 	/**
@@ -417,8 +414,6 @@ export default class SearchPanes {
 
 	/**
 	 * Checks which panes are collapsed and then performs relevant actions to the collapse/show all buttons
-	 *
-	 * @param pane The pane to be checked
 	 */
 	private _checkCollapse(): void {
 		let disableClose = true;
@@ -518,15 +513,15 @@ export default class SearchPanes {
 			.columns(this.c.columns.length > 0 ? this.c.columns : undefined)
 			.eq(0)
 			.each(idx => {
-				this.s.panes.push(new SearchPane(paneSettings, opts, idx, this.c.layout, this.dom.panes));
+				this.s.panes.push(new SearchPane(paneSettings, opts, idx, this.dom.panes));
 			});
 
 		// If there is any extra custom panes defined then create panes for them too
-		let colCount: number = table.columns().eq(0).toArray().length;
+		let colCount = table.columns().eq(0).toArray().length;
 
 		for (let i = 0; i < this.c.panes.length; i++) {
-			let id: number = colCount + i;
-			this.s.panes.push(new SearchPane(paneSettings, opts, id, this.c.layout, this.dom.panes, this.c.panes[i]));
+			let id = colCount + i;
+			this.s.panes.push(new SearchPane(paneSettings, opts, id, this.dom.panes, this.c.panes[i]));
 		}
 
 		// If a custom ordering is being used
@@ -544,9 +539,7 @@ export default class SearchPanes {
 			// that are to be run when the table is initialised. This will garauntee that the
 			// panes are initialised before the init event and init Complete callback is fired
 			this.s.dt.settings()[0].aoInitComplete.push({
-				fn: () => {
-					this._startup(table);
-				}
+				fn: () => this._startup(table)
 			});
 		}
 	}
@@ -555,7 +548,7 @@ export default class SearchPanes {
 	 * Sets the listeners for the collapse and show all buttons
 	 * Also sets and performs checks on current panes to see if they are collapsed
 	 */
-	private _setCollapseListener() {
+	private _setCollapseListener(): void {
 		this.dom.collapseAll.on('click.dtsps', () => {
 			this._collapseAll();
 			this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
@@ -580,7 +573,7 @@ export default class SearchPanes {
 	/**
 	 * Shows all of the panes
 	 */
-	private _showAll() {
+	private _showAll(): void {
 		for (let pane of this.s.panes) {
 			pane.show();
 		}
@@ -673,19 +666,17 @@ export default class SearchPanes {
 		});
 
 		// Listener for paging on main table
-		table.off('page.dtsps');
-		table.on('page.dtsps', () => {
+		table.off('page.dtsps').on('page.dtsps', () => {
 			this.s.paging = true;
 			this.s.page = this.s.dt.page();
 		});
 
 		if (this.s.dt.page.info().serverSide) {
-			table.off('preXhr.dtsps');
-			table.on('preXhr.dtsps', (e, settings, data) => {
-				if (data.searchPanes === undefined) {
+			table.off('preXhr.dtsps').on('preXhr.dtsps', (e, settings, data) => {
+				if (!data.searchPanes) {
 					data.searchPanes = {};
 				}
-				if (data.searchPanes_null === undefined) {
+				if (!data.searchPanes_null) {
 					data.searchPanes_null = {};
 				}
 
@@ -695,10 +686,10 @@ export default class SearchPanes {
 				for (let pane of this.s.panes) {
 					let src = this.s.dt.column(pane.s.index).dataSrc();
 
-					if (data.searchPanes[src] === undefined) {
+					if (!data.searchPanes[src]) {
 						data.searchPanes[src] = {};
 					}
-					if (data.searchPanes_null[src] === undefined) {
+					if (!data.searchPanes_null[src]) {
 						data.searchPanes_null[src] = {};
 					}
 
@@ -708,7 +699,7 @@ export default class SearchPanes {
 						for (let i = 0; i < rowData.length; i++) {
 							data.searchPanes[src][i] = rowData[i].filter;
 
-							if (data.searchPanes[src][i] === null) {
+							if (!data.searchPanes[src][i]) {
 								data.searchPanes_null[src][i] = true;
 							}
 
@@ -795,9 +786,9 @@ export default class SearchPanes {
 				pane.s.dtPane &&
 				(
 					pane.s.colOpts.preSelect && pane.s.colOpts.preSelect.length > 0 ||
-					pane.customPaneSettings &&
-					pane.customPaneSettings.preSelect &&
-					pane.customPaneSettings.preSelect.length > 0
+					pane.s.customPaneSettings &&
+					pane.s.customPaneSettings.preSelect &&
+					pane.s.customPaneSettings.preSelect.length > 0
 				)
 			) {
 				let tableLength = pane.s.dtPane.rows().data().toArray().length;
@@ -805,21 +796,14 @@ export default class SearchPanes {
 				for (let i = 0; i < tableLength; i++) {
 					if (
 						pane.s.colOpts.preSelect.includes(pane.s.dtPane.cell(i, 0).data()) ||
-						pane.customPaneSettings &&
-						pane.customPaneSettings.preSelect &&
-						pane.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())
+						pane.s.customPaneSettings &&
+						pane.s.customPaneSettings.preSelect &&
+						pane.s.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())
 					) {
 						pane.s.dtPane.row(i).select();
 					}
 				}
 				pane.updateTable();
-			}
-		}
-
-		if (this.s.selectionList && this.s.selectionList.length > 0) {
-			let last = this.s.selectionList[this.s.selectionList.length - 1].index;
-			for (let pane of this.s.panes) {
-				pane.s.lastSelect = pane.s.index === last;
 			}
 		}
 
@@ -833,10 +817,10 @@ export default class SearchPanes {
 			}
 
 			table.off('.dtsps');
-			$(table.table().node()).off('.dtsps');
-			this.dom.collapseAll.off('.dtsps');
 			this.dom.showAll.off('.dtsps');
 			this.dom.clearAll.off('.dtsps');
+			this.dom.collapseAll.off('.dtsps');
+			$(table.table().node()).off('.dtsps');
 			this.dom.container.detach();
 			this.clearSelections();
 		});
@@ -847,9 +831,7 @@ export default class SearchPanes {
 
 		// When the clear All button has been pressed clear all of the selections in the panes
 		if (this.c.clear) {
-			this.dom.clearAll.on('click.dtsps', () => {
-				this.clearSelections();
-			});
+			this.dom.clearAll.on('click.dtsps', () => this.clearSelections());
 		}
 
 		table.settings()[0]._searchPanes = this;
@@ -889,7 +871,7 @@ export default class SearchPanes {
 	/**
 	 * Updates the selectionList when cascade is not in place
 	 */
-	private _updateSelection() {
+	private _updateSelection(): void {
 		this.s.selectionList = [];
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
