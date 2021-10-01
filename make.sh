@@ -66,7 +66,11 @@ rm \
     $OUT_DIR/js/panesType.js \
     $OUT_DIR/js/paneType.js \
     $OUT_DIR/js/SearchPane.js \
-    $OUT_DIR/js/SearchPanes.js \
+    $OUT_DIR/js/SearchPaneST.js \
+    $OUT_DIR/js/SearchPanesST.js \
+    $OUT_DIR/js/SearchPaneCascade.js \
+    $OUT_DIR/js/SearchPaneViewTotal.js \
+    $OUT_DIR/js/SearchPaneCascadeViewTotal.js \
     src/*.js \
     # src/*.d.ts
 

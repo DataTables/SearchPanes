@@ -87,6 +87,40 @@ export default class SearchPane {
      */
     updateTable(): void;
     /**
+     * Get's the pane config appropriate to this class
+     *
+     * @returns The config needed to create a pane of this type
+     */
+    _getPaneConfig(): {
+        columnDefs: ({
+            className: string;
+            data: string;
+            render: (data: any, type: any, row: any) => any;
+            targets: number;
+            type: any;
+            searchable?: undefined;
+            visible?: undefined;
+        } | {
+            className: string;
+            data: string;
+            searchable: boolean;
+            targets: number;
+            visible: boolean;
+            render?: undefined;
+            type?: undefined;
+        })[];
+        deferRender: boolean;
+        dom: string;
+        info: boolean;
+        language: any;
+        paging: boolean;
+        scrollX: boolean;
+        scrollY: string;
+        scroller: boolean;
+        select: boolean;
+        stateSave: boolean;
+    };
+    /**
      * Takes in potentially undetected rows and adds them to the array if they are not yet featured
      *
      * @param filter the filter value of the potential row

@@ -152,3 +152,7 @@ export interface IS {
 	tableLength: number;
 	updating: boolean;
 }
+
+export interface ISVT extends IS {
+	filteringActive: boolean;
+}

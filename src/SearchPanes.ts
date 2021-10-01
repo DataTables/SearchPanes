@@ -15,6 +15,7 @@ namespace DataTables {
 }
 import { IClasses, IDefaults, IDOM, IS } from './panesType';
 import SearchPane from './SearchPane';
+
 export default class SearchPanes {
 
 	private static version = '1.4.0';
@@ -68,7 +69,7 @@ export default class SearchPanes {
 	public c: IDefaults;
 	public s: IS;
 
-	public constructor(paneSettings, opts, fromPreInit = false) {
+	public constructor(paneSettings, opts, fromPreInit = false, paneClass = SearchPane) {
 		// Check that the required version of DataTables is included
 		if (!dataTable || !dataTable.versionCheck || !dataTable.versionCheck('1.10.0')) {
 			throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -115,6 +116,7 @@ export default class SearchPanes {
 			minPaneWidth: 260.0,
 			page: 0,
 			paging: false,
+			paneClass,
 			panes: [],
 			selectionList: [],
 			serverData: {},

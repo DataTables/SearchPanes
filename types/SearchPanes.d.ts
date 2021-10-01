@@ -11,7 +11,7 @@ export default class SearchPanes {
     dom: IDOM;
     c: IDefaults;
     s: IS;
-    constructor(paneSettings: any, opts: any, fromPreInit?: boolean);
+    constructor(paneSettings: any, opts: any, fromPreInit?: boolean, paneClass?: typeof SearchPane);
     /**
      * Clear the selections of all of the panes
      */

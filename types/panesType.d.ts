@@ -1,6 +1,7 @@
 /// <reference types="jquery" />
 /// <reference types="datatables.net" />
 import SearchPane from './SearchPane';
+import SearchPaneViewTotal from './SearchPaneViewTotal';
 export interface IClasses {
     clear: string;
     clearAll: string;
@@ -48,6 +49,7 @@ export interface IDefaults {
     layout: string;
     order: string[];
     panes: IConfigPaneItem[];
+    viewTotal: boolean;
 }
 export interface IDOM {
     clearAll: JQuery<HTMLElement>;
@@ -70,6 +72,7 @@ export interface IS {
     minPaneWidth: number;
     page: number;
     paging: boolean;
+    paneClass: typeof SearchPane;
     panes: SearchPane[];
     selectionList: ISelectItem[];
     serverData: {
@@ -77,6 +80,9 @@ export interface IS {
     };
     stateRead: boolean;
     updating: boolean;
+}
+export interface ISCV extends IS {
+    panes: SearchPaneViewTotal[];
 }
 export interface ISelectItem {
     index: number;
