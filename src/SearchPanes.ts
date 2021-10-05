@@ -327,6 +327,22 @@ export default class SearchPanes {
 	}
 
 	/**
+	 * Updates the selectionList when cascade is not in place
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_updateSelection(): void {
+		this.s.selectionList = [];
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane) {
+				this.s.selectionList.push({
+					index: pane.s.index,
+					rows: pane.s.dtPane.rows({ selected: true }).data().toArray()
+				});
+			}
+		}
+	}
+
+	/**
 	 * Attach the panes, buttons and title to the document
 	 */
 	private _attach(): void {
@@ -515,7 +531,7 @@ export default class SearchPanes {
 			.columns(this.c.columns.length > 0 ? this.c.columns : undefined)
 			.eq(0)
 			.each(idx => {
-				this.s.panes.push(new SearchPane(paneSettings, opts, idx, this.dom.panes));
+				this.s.panes.push(new this.s.paneClass(paneSettings, opts, idx, this.dom.panes));
 			});
 
 		// If there is any extra custom panes defined then create panes for them too
@@ -523,7 +539,7 @@ export default class SearchPanes {
 
 		for (let i = 0; i < this.c.panes.length; i++) {
 			let id = colCount + i;
-			this.s.panes.push(new SearchPane(paneSettings, opts, id, this.dom.panes, this.c.panes[i]));
+			this.s.panes.push(new this.s.paneClass(paneSettings, opts, id, this.dom.panes, this.c.panes[i]));
 		}
 
 		// If a custom ordering is being used
@@ -867,22 +883,6 @@ export default class SearchPanes {
 		}
 		else {
 			this.dom.clearAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
-		}
-	}
-
-	/**
-	 * Updates the selectionList when cascade is not in place
-	 */
-	private _updateSelection(): void {
-		this.s.selectionList = [];
-		for (let pane of this.s.panes) {
-			if (pane.s.dtPane) {
-				this.s.selectionList.push({
-					index: pane.s.index,
-					protect: false,
-					rows: pane.s.dtPane.rows({ selected: true }).data().toArray()
-				});
-			}
 		}
 	}
 }

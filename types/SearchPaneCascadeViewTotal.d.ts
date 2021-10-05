@@ -1,9 +1,8 @@
 import { ISST } from './paneType';
 import SearchPaneST from './SearchPaneST';
 export declare function setJQuery(jq: any): void;
-export default class SearchPaneViewTotal extends SearchPaneST {
+export default class SearchPaneCascadeViewTotal extends SearchPaneST {
     s: ISST;
-    constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
     /**
      * Get's the pane config appropriate to this class
      *

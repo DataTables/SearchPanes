@@ -29,6 +29,10 @@ export default class SearchPanes {
      */
     resizePanes(): SearchPanes;
     /**
+     * Updates the selectionList when cascade is not in place
+     */
+    _updateSelection(): void;
+    /**
      * Attach the panes, buttons and title to the document
      */
     private _attach;
@@ -93,8 +97,4 @@ export default class SearchPanes {
      * Updates the number of filters that have been applied in the title
      */
     private _updateFilterCount;
-    /**
-     * Updates the selectionList when cascade is not in place
-     */
-    private _updateSelection;
 }

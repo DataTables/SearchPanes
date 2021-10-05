@@ -1,4 +1,4 @@
-import { ISVT } from './paneType';
+import { ISST } from './paneType';
 import SearchPaneST from './SearchPaneST';
 
 let $;
@@ -11,7 +11,13 @@ export function setJQuery(jq) {
 
 export default class SearchPaneViewTotal extends SearchPaneST {
 
-	public s: ISVT;
+	public s: ISST;
+
+	public constructor(paneSettings, opts, index, panesContainer, panes) {
+		super(paneSettings, opts, index, panesContainer, panes);
+
+		this.c.i18n.countFiltered = '{shown} ({total})';
+	}
 
 	/**
 	 * Get's the pane config appropriate to this class
@@ -37,12 +43,20 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 							return row.type;
 						}
 
-						let message = this.s.filteringActive ?
-							filteredMessage.replace(/{total}/, row.total):
-							countMessage.replace(/{total}/, row.total) ;
+						let message = (
+							this.s.filteringActive ?
+								filteredMessage.replace(/{total}/, row.total):
+								countMessage.replace(/{total}/, row.total)
+						)
+							.replace(/{shown}/, row.shown);
+
 
 						while (message.includes('{total}')) {
 							message = message.replace(/{total}/, row.total);
+						}
+
+						while (message.includes('{shown}')) {
+							message = message.replace(/{shown}/, row.shown);
 						}
 
 						// We are displaying the count in the same columne as the name of the search option.

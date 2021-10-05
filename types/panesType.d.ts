@@ -86,6 +86,5 @@ export interface ISCV extends IS {
 }
 export interface ISelectItem {
     index: number;
-    protect: boolean;
     rows: any;
 }

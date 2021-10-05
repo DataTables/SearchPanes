@@ -56,10 +56,10 @@ HEADER="$(head -n 3 src/index.ts)"
 rsync -r src/*.js $OUT_DIR/js
 js_frameworks searchPanes $OUT_DIR/js
 
-./node_modules/.bin/rollup $OUT_DIR/js/index.js \
-    --format iife \
+OUT=$OUT_DIR ./node_modules/.bin/rollup $OUT_DIR/js/index.js \
     --banner "$HEADER" \
-    --file $OUT_DIR/js/dataTables.searchPanes.js
+    --config rollup.config.js
+    
 
 rm \
     $OUT_DIR/js/index.js \

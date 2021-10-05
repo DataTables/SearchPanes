@@ -10,4 +10,7 @@ export function setJQuery(jq) {
 
 export default class SearchPaneCascade extends SearchPaneST {
 
+	public constructor(paneSettings, opts, index, panesContainer, panes) {
+		super(paneSettings, opts, index, panesContainer, panes);
+	}
 }

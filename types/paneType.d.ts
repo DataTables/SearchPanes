@@ -132,6 +132,22 @@ export interface IRowData {
     filterMap: Map<number, any>;
     totalOptions: number;
 }
+export interface IRowDataST extends IRowData {
+    arrayFilter: IDataArray[];
+    arrayOriginal: IDataArray[];
+    arrayShown: IDataArray[];
+    bins: {
+        [keys: string]: number;
+    };
+    binsOriginal: {
+        [keys: string]: number;
+    };
+    binsShown: {
+        [keys: string]: number;
+    };
+    filterMap: Map<number, any>;
+    totalOptions: number;
+}
 export interface IS {
     colExists: boolean;
     colOpts: any;
@@ -153,6 +169,7 @@ export interface IS {
     tableLength: number;
     updating: boolean;
 }
-export interface ISVT extends IS {
+export interface ISST extends IS {
     filteringActive: boolean;
+    rowData: IRowDataST;
 }

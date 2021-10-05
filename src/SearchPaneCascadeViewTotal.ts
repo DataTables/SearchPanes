@@ -1,4 +1,4 @@
-import { ISVT } from './paneType';
+import { ISST } from './paneType';
 import SearchPaneST from './SearchPaneST';
 
 let $;
@@ -11,7 +11,7 @@ export function setJQuery(jq) {
 
 export default class SearchPaneCascadeViewTotal extends SearchPaneST {
 
-	public s: ISVT;
+	public s: ISST;
 
 	/**
 	 * Get's the pane config appropriate to this class
