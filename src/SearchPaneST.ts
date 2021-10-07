@@ -22,6 +22,16 @@ export default class SearchPaneST extends SearchPane {
 		});
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_makeSelection() {
+		return;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_updateSelection() {
+		return;
+	}
+
 	public updateRows() {
 		if (!this.s.dt.page.info().serverSide) {
 			this.s.rowData.binsShown = {};

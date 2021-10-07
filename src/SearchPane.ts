@@ -830,6 +830,36 @@ export default class SearchPane {
 	}
 
 	/**
+	 * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_makeSelection(): void {
+		this.updateTable();
+		this.s.updating = true;
+		this.s.dt.draw();
+		this.s.updating = false;
+	}
+
+	/**
+	 * Notes the rows that have been selected within this pane and stores them internally
+	 *
+	 * @param notUpdating Whether the panes are updating themselves or not
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_updateSelection(notUpdating) {
+		this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
+		if (this.s.dt.page.info().serverSide && !this.s.updating) {
+			if (!this.s.serverSelecting) {
+				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+				this.s.dt.draw(false);
+			}
+		}
+		else if (notUpdating) {
+			this._makeSelection();
+		}
+	}
+
+	/**
 	 * Takes in potentially undetected rows and adds them to the array if they are not yet featured
 	 *
 	 * @param filter the filter value of the potential row
@@ -1460,16 +1490,6 @@ export default class SearchPane {
 	}
 
 	/**
-	 * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
-	 */
-	private _makeSelection(): void {
-		this.updateTable();
-		this.s.updating = true;
-		this.s.dt.draw();
-		this.s.updating = false;
-	}
-
-	/**
 	 * Fill the array with the values that are currently being displayed in the table
 	 */
 	private _populatePane(): void {
@@ -1722,24 +1742,6 @@ export default class SearchPane {
 		}
 		else {
 			return 1;
-		}
-	}
-
-	/**
-	 * Notes the rows that have been selected within this pane and stores them internally
-	 *
-	 * @param notUpdating Whether the panes are updating themselves or not
-	 */
-	private _updateSelection(notUpdating) {
-		this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
-		if (this.s.dt.page.info().serverSide && !this.s.updating) {
-			if (!this.s.serverSelecting) {
-				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-				this.s.dt.draw(false);
-			}
-		}
-		else if (notUpdating) {
-			this._makeSelection();
 		}
 	}
 }

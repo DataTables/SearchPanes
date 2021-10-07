@@ -121,6 +121,16 @@ export default class SearchPane {
         stateSave: boolean;
     };
     /**
+     * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
+     */
+    _makeSelection(): void;
+    /**
+     * Notes the rows that have been selected within this pane and stores them internally
+     *
+     * @param notUpdating Whether the panes are updating themselves or not
+     */
+    _updateSelection(notUpdating: any): void;
+    /**
      * Takes in potentially undetected rows and adds them to the array if they are not yet featured
      *
      * @param filter the filter value of the potential row
@@ -162,10 +172,6 @@ export default class SearchPane {
      * @returns {object} The options for the row extended to include the options from the user.
      */
     private _getOptions;
-    /**
-     * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
-     */
-    private _makeSelection;
     /**
      * Fill the array with the values that are currently being displayed in the table
      */
@@ -210,10 +216,4 @@ export default class SearchPane {
      * @returns {number} returns the ratio
      */
     private _uniqueRatio;
-    /**
-     * Notes the rows that have been selected within this pane and stores them internally
-     *
-     * @param notUpdating Whether the panes are updating themselves or not
-     */
-    private _updateSelection;
 }

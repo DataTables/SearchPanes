@@ -70,5 +70,31 @@ describe('searchPanes - options - searchPanes.viewTotal', function() {
 			table.draw();
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('0 (2)');
 		});
+
+		dt.html('basic');
+		it('Check consistency of count when selecting then deselecting in another pane', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					viewTotal: true
+				}
+			});
+
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(7) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('1 (4)');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('9');
+		});
+		it('... and first click updated when another selected', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(7) td:eq(0)').click();
+			await dt.sleep(100);
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(7) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('1 (4)');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('1 (9)');
+		});
+		it('... and first click reset as if nothing else selected when second deselected', async function() {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(7) td:eq(0)').click();
+			await dt.sleep(100);
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(7) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('1 (4)');
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('9');
+		});
 	});
 });

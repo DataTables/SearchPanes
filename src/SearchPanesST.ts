@@ -65,6 +65,11 @@ export default class SearchPanesST extends SearchPanes {
 					rows
 				});
 			}
+			else {
+				index = this.s.selectionList.length > 0 ?
+					this.s.selectionList[this.s.selectionList.length-1].index :
+					undefined;
+			}
 		}
 
 		if(this.s.updating) {
@@ -80,6 +85,7 @@ export default class SearchPanesST extends SearchPanes {
 			anotherFilter = true;
 		}
 		this._remakeSelections(tempSelectionList);
+		this.s.dt.draw();
 		let filteringActive = false;
 
 		let filterCount = 0;
@@ -91,21 +97,20 @@ export default class SearchPanesST extends SearchPanes {
 				filterCount += pane.getPaneCount();
 				if (filterCount > prevSelectedPanes) {
 					selectedPanes++;
+					prevSelectedPanes = filterCount;
 				}
 			}
 		}
 		filteringActive = filterCount > 0;
 		for(let pane of this.s.panes) {
 			if(pane.s.displayed) {
-				console.log(anotherFilter);
 				if (anotherFilter || (index !== undefined && pane.s.index !== index) || !filteringActive) {
 					pane.s.filteringActive = filteringActive || anotherFilter;
-					pane.updateRows();
 				}
 				else if (selectedPanes === 1) {
 					pane.s.filteringActive = false;
-					pane.s.dtPane.draw();
 				}
+				pane.updateRows();
 			}
 		}
 		this.s.updating = false;
@@ -115,6 +120,7 @@ export default class SearchPanesST extends SearchPanes {
 		for (let selection of tempSelectionList) {
 			for (let pane of this.s.panes) {
 				if (pane.s.index === selection.index) {
+					pane.s.selections = selection.rows;
 					for (let row of selection.rows) {
 						pane.s.dtPane.row(row.index).select();
 					}
