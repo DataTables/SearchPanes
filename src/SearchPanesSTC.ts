@@ -36,7 +36,7 @@ export default class SearchPanesSTC extends SearchPanes {
 		super(paneSettings, opts, fromPreInit, paneClass);
 
 		this.s.dt.on('init', () => {
-			this._initSelectionListeners();
+			this._initSelectionListeners(this.c.preSelect);
 		});
 	}
 
@@ -45,17 +45,19 @@ export default class SearchPanesSTC extends SearchPanes {
 		return;
 	}
 
-	private _initSelectionListeners() {
-		this.s.selectionList = [];
+	private _initSelectionListeners(preSelect) {
+		this.s.selectionList = preSelect;
 
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed) {
 				pane.s.dtPane
-					.on('select.dtsp', e => this._updateSelectionList(e, pane))
-					.on('deselect.dtsp', e => this._updateSelectionList(e, pane));
+					.on('select.dtsp', () => this._updateSelectionList(pane))
+					.on('deselect.dtsp', () => this._updateSelectionList(pane));
 			}
 		}
-		this.s.dt.on('draw', e => this._updateSelectionList(e));
+		this.s.dt.on('draw', () => this._updateSelectionList());
+
+		this._updateSelectionList();
 	}
 
 	/**
@@ -64,25 +66,25 @@ export default class SearchPanesSTC extends SearchPanes {
 	 * @param index The index of the pane that is to be updated
 	 * @param selected Which rows are selected within the pane
 	 */
-	private _updateSelectionList(e, paneIn = undefined) {
+	private _updateSelectionList(paneIn = undefined) {
 		if(this.s.updating) {
 			return;
 		}
 
 		let index;
 		if(paneIn !== undefined) {
-			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray();
+			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
 			index = paneIn.s.index;
-			this.s.selectionList = this.s.selectionList.filter(selection => selection.index !== index);
+			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
 			if (rows.length > 0) {
 				this.s.selectionList.push({
-					index,
+					column: index,
 					rows
 				});
 			}
 			else {
 				index = this.s.selectionList.length > 0 ?
-					this.s.selectionList[this.s.selectionList.length-1].index :
+					this.s.selectionList[this.s.selectionList.length-1].column :
 					undefined;
 			}
 		}
@@ -102,13 +104,13 @@ export default class SearchPanesSTC extends SearchPanes {
 			}
 		}
 		for(let selection of this.s.selectionList) {
-			let pane = this.s.panes[selection.index];
+			let pane = this.s.panes[selection.column];
 			let ids = pane.s.dtPane.rows().indexes().toArray();
 			for(let row of selection.rows) {
 				for(let id of ids) {
 					let currRow = pane.s.dtPane.row(id);
 					let data = currRow.data();
-					if (row.filter === data.filter) {
+					if (row === data.filter) {
 						currRow.select();
 					}
 				}

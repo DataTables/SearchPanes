@@ -61,7 +61,8 @@ export default class SearchPanes {
 		},
 		layout: 'auto',
 		order: [],
-		panes: []
+		panes: [],
+		preSelect: []
 	};
 
 	public classes: IClasses;
@@ -140,7 +141,7 @@ export default class SearchPanes {
 				}
 
 				for (let selection of this.s.selectionList) {
-					let src = this.s.dt.column(selection.index).dataSrc();
+					let src = this.s.dt.column(selection.column).dataSrc();
 
 					if (data.searchPanes[src] === undefined) {
 						data.searchPanes[src] = {};
@@ -150,7 +151,7 @@ export default class SearchPanes {
 					}
 
 					for (let i = 0; i < selection.rows.length; i++) {
-						data.searchPanes[src][i] = selection.rows[i].filter;
+						data.searchPanes[src][i] = selection.rows[i];
 
 						if (data.searchPanes[src][i] === null) {
 							data.searchPanes_null[src][i] = true;
@@ -335,8 +336,8 @@ export default class SearchPanes {
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
 				this.s.selectionList.push({
-					index: pane.s.index,
-					rows: pane.s.dtPane.rows({ selected: true }).data().toArray()
+					column: pane.s.index,
+					rows: pane.s.dtPane.rows({ selected: true }).data().toArray().map(el => el.filter)
 				});
 			}
 		}
@@ -803,7 +804,7 @@ export default class SearchPanes {
 				pane &&
 				pane.s.dtPane &&
 				(
-					pane.s.colOpts.preSelect && pane.s.colOpts.preSelect.length > 0 ||
+					this.c.preSelect.find(el => el.column === pane.s.index) ||
 					pane.s.customPaneSettings &&
 					pane.s.customPaneSettings.preSelect &&
 					pane.s.customPaneSettings.preSelect.length > 0
@@ -813,7 +814,7 @@ export default class SearchPanes {
 
 				for (let i = 0; i < tableLength; i++) {
 					if (
-						pane.s.colOpts.preSelect.includes(pane.s.dtPane.cell(i, 0).data()) ||
+						this.c.preSelect.find(el => el.rows.includes(pane.s.dtPane.cell(i, 0).data())) ||
 						pane.s.customPaneSettings &&
 						pane.s.customPaneSettings.preSelect &&
 						pane.s.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())

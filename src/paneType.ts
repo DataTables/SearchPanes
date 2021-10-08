@@ -162,7 +162,7 @@ export interface IS {
 	rowData: IRowData;
 	scrollTop: number;
 	searchFunction: any; // Function?
-	selections: IIndexes[];
+	selections: any[];
 	serverSelect: any;
 	serverSelecting: boolean;
 	tableLength: number;

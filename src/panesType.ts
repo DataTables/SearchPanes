@@ -49,6 +49,7 @@ export interface IDefaults {
 	layout: string;
 	order: string[];
 	panes: IConfigPaneItem[];
+	preSelect: ISelectItem[];
 	viewTotal: boolean;
 }
 
@@ -96,6 +97,6 @@ export interface ISC extends IS {
 }
 
 export interface ISelectItem {
-	index: number;
+	column: number;
 	rows: any;
 }

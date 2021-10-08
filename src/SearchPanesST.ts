@@ -56,18 +56,18 @@ export default class SearchPanesST extends SearchPanes {
 	private _updateSelectionList(e, paneIn = undefined) {
 		let index;
 		if(paneIn !== undefined) {
-			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray();
+			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
 			index = paneIn.s.index;
-			this.s.selectionList = this.s.selectionList.filter(selection => selection.index !== index);
+			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
 			if (rows.length > 0) {
 				this.s.selectionList.push({
-					index,
+					column: index,
 					rows
 				});
 			}
 			else {
 				index = this.s.selectionList.length > 0 ?
-					this.s.selectionList[this.s.selectionList.length-1].index :
+					this.s.selectionList[this.s.selectionList.length-1].column :
 					undefined;
 			}
 		}
@@ -119,10 +119,14 @@ export default class SearchPanesST extends SearchPanes {
 	private _remakeSelections(tempSelectionList) {
 		for (let selection of tempSelectionList) {
 			for (let pane of this.s.panes) {
-				if (pane.s.index === selection.index) {
+				if (pane.s.index === selection.column) {
 					pane.s.selections = selection.rows;
 					for (let row of selection.rows) {
-						pane.s.dtPane.row(row.index).select();
+						pane.s.dtPane.rows().every(function() {
+							if(this.data().filter === row) {
+								this.select();
+							}
+						});
 					}
 				}
 			}

@@ -11,9 +11,12 @@ export function setJQuery(jq) {
 export default class SearchPaneCascade extends SearchPaneST {
 
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
-		super(paneSettings, opts, index, panesContainer, panes);
-
-		this.c.i18n.count = '{shown}';
+		let override = {
+			i18n: {
+				count: '{shown}'
+			}
+		};
+		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
 	}
 
 	/**
@@ -173,10 +176,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 				if(selection.filter === data.filter) {
 					row.select();
 					selected.splice(i, 1);
-					this.s.selections.push({
-						filter: data.filter,
-						index: row.index()
-					});
+					this.s.selections.push(data.filter);
 					break;
 				}
 			}
@@ -194,10 +194,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 						0
 					);
 					row.select();
-					this.s.selections.push({
-						filter: data.filter,
-						index: row.index()
-					});
+					this.s.selections.push(data.filter);
 				}
 			}
 		}

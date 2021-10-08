@@ -14,9 +14,12 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	public s: ISST;
 
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
-		super(paneSettings, opts, index, panesContainer, panes);
-
-		this.c.i18n.countFiltered = '{shown} ({total})';
+		let override = {
+			i18n: {
+				countFiltered:'{shown} ({total})'
+			}
+		};
+		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
 	}
 
 	/**

@@ -739,7 +739,7 @@ export default class SearchPane {
 	 * rather than the filtered message when using viewTotal.
 	 */
 	public updateTable(): void {
-		let selectedRows = this.s.dtPane.rows({selected: true}).data().toArray();
+		let selectedRows = this.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
 		this.s.selections = selectedRows;
 		this._searchExtras();
 	}
@@ -1623,10 +1623,10 @@ export default class SearchPane {
 
 		// For each item selected in the pane, check if it is available in the cell
 		for (let colSelect of this.s.selections) {
-			if (typeof colSelect.filter === 'string' && typeof filter === 'string') {
+			if (typeof colSelect === 'string' && typeof filter === 'string') {
 				// The filter value will not have the &amp; in place but a &,
 				// so we need to do a replace to make sure that they will match
-				colSelect.filter = colSelect.filter
+				colSelect = colSelect
 					.replace(/&amp;/g, '&')
 					.replace(/&lt;/g, '<')
 					.replace(/&gt;/g, '>')
@@ -1635,13 +1635,13 @@ export default class SearchPane {
 
 			// if the filter is an array then is the column present in it
 			if (Array.isArray(filter)) {
-				if (filter.includes(colSelect.filter)) {
+				if (filter.includes(colSelect)) {
 					return true;
 				}
 			}
 			// if the filter is a function then does it meet the criteria of that function or not
-			else if (typeof colSelect.filter === 'function') {
-				if (colSelect.filter.call(table, table.row(dataIndex).data(), dataIndex)) {
+			else if (typeof colSelect === 'function') {
+				if (colSelect.call(table, table.row(dataIndex).data(), dataIndex)) {
 					if (colOpts.combiner === 'or') {
 						return true;
 					}
@@ -1654,11 +1654,11 @@ export default class SearchPane {
 			}
 			// otherwise if the two filter values are equal then return true
 			else if (
-				filter === colSelect.filter ||
+				filter === colSelect ||
 				// Loose type checking incase number type in column comparing to a string
 				// eslint-disable-next-line eqeqeq
-				!(typeof filter === 'string' && filter.length === 0) && filter == colSelect.filter ||
-				colSelect.filter === null && typeof filter === 'string' && filter === ''
+				!(typeof filter === 'string' && filter.length === 0) && filter == colSelect ||
+				colSelect === null && typeof filter === 'string' && filter === ''
 			) {
 				return true;
 			}
