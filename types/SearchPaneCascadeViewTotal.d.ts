@@ -1,8 +1,7 @@
-import { ISST } from './paneType';
-import SearchPaneST from './SearchPaneST';
+import SearchPaneCascade from './SearchPaneCascade';
 export declare function setJQuery(jq: any): void;
-export default class SearchPaneCascadeViewTotal extends SearchPaneST {
-    s: ISST;
+export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
+    constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
     /**
      * Get's the pane config appropriate to this class
      *
@@ -37,4 +36,8 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneST {
         select: boolean;
         stateSave: boolean;
     };
+    /**
+     * Fill the array with the values that are currently being displayed in the table
+     */
+    _activePopulatePane(): void;
 }

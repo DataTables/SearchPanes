@@ -29,8 +29,11 @@ declare let define: {
 
 import SearchPane, {setJQuery as searchPaneJQuery} from './SearchPane';
 import SearchPaneViewTotal, {setJQuery as searchPaneViewTotalJQuery} from './SearchPaneViewTotal';
+import SearchPaneCascade, {setJQuery as searchPaneCascadeJQuery} from './SearchPaneCascade';
+import SearchPaneCascadeViewTotal, {setJQuery as searchPaneCascadeViewTotalJQuery} from './SearchPaneCascadeViewTotal';
 import SearchPanes, {setJQuery as searchPanesJQuery} from './SearchPanes';
 import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
+import SearchPanesSTC, {setJQuery as searchPanesSTCJQuery} from './SearchPanesSTC';
 
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -67,7 +70,10 @@ import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
 	searchPaneJQuery($);
 	searchPanesJQuery($);
 	searchPanesSTJQuery($);
+	searchPanesSTCJQuery($);
 	searchPaneViewTotalJQuery($);
+	searchPaneCascadeJQuery($);
+	searchPaneCascadeViewTotalJQuery($);
 
 	let dataTable = $.fn.dataTable;
 	// eslint-disable-next-line no-extra-parens
@@ -79,6 +85,10 @@ import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
 	// eslint-disable-next-line no-extra-parens
 	($.fn as any).DataTable.SearchPanesST = SearchPanesST;
 	// eslint-disable-next-line no-extra-parens
+	($.fn as any).dataTable.SearchPanesSTC = SearchPanesSTC;
+	// eslint-disable-next-line no-extra-parens
+	($.fn as any).DataTable.SearchPanesSTC = SearchPanesSTC;
+	// eslint-disable-next-line no-extra-parens
 	($.fn as any).dataTable.SearchPane = SearchPane;
 	// eslint-disable-next-line no-extra-parens
 	($.fn as any).DataTable.SearchPane = SearchPane;
@@ -86,6 +96,14 @@ import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
 	($.fn as any).dataTable.SearchPaneViewTotal = SearchPaneViewTotal;
 	// eslint-disable-next-line no-extra-parens
 	($.fn as any).DataTable.SearchPaneViewTotal = SearchPaneViewTotal;
+	// eslint-disable-next-line no-extra-parens
+	($.fn as any).dataTable.SearchPaneCascade = SearchPaneCascade;
+	// eslint-disable-next-line no-extra-parens
+	($.fn as any).DataTable.SearchPaneCascade = SearchPaneCascade;
+	// eslint-disable-next-line no-extra-parens
+	($.fn as any).dataTable.SearchPaneCascadeViewTotal = SearchPaneCascadeViewTotal;
+	// eslint-disable-next-line no-extra-parens
+	($.fn as any).DataTable.SearchPaneCascadeViewTotal = SearchPaneCascadeViewTotal;
 
 	// eslint-disable-next-line no-extra-parens
 	let apiRegister = ($.fn.dataTable.Api as any).register;
@@ -170,9 +188,11 @@ import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
 			? options
 			: api.init().searchPanes || dataTable.defaults.searchPanes;
 
-		let searchPanes = opts && opts.viewTotal ?
-			new SearchPanesST(api, opts, fromPre) :
-			new SearchPanes(api, opts, fromPre);
+		let searchPanes = opts && opts.cascadePanes ?
+			new SearchPanesSTC(api, opts, fromPre) :
+			opts && opts.viewTotal ?
+				new SearchPanesST(api, opts, fromPre) :
+				new SearchPanes(api, opts, fromPre);
 		let node = searchPanes.getNode();
 
 		return node;

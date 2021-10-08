@@ -7,5 +7,7 @@ export default class SearchPaneST extends SearchPane {
     _makeSelection(): void;
     _updateSelection(): void;
     updateRows(): void;
-    private _updateShown;
+    _updateShown(rowIdx: number, settings: any, bins?: {
+        [keys: string]: number;
+    }): void;
 }

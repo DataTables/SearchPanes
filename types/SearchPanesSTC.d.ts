@@ -1,8 +1,8 @@
 export declare function setJQuery(jq: any): void;
-import { ISVT } from './panesType';
+import { ISC } from './panesType';
 import SearchPanes from './SearchPanes';
-export default class SearchPanesST extends SearchPanes {
-    s: ISVT;
+export default class SearchPanesSTC extends SearchPanes {
+    s: ISC;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean);
     _updateSelection(): void;
     private _initSelectionListeners;

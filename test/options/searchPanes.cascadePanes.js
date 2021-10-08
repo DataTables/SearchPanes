@@ -35,145 +35,145 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 	}
 
 	describe('Functional tests - single items', function () {
-	// 	dt.html('basic');
-	// 	it('Check defaults (false)', function () {
-	// 		table = $('#example').DataTable({
-	// 			dom: 'Pfrtip',
-	// 			searchPanes: {
-	// 				cascadePanes: false
-	// 			}
-	// 		});
+		dt.html('basic');
+		it('Check defaults (false)', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: false
+				}
+			});
 
-	// 		checkRowCounts(33, 7, 33);
-	// 	});
-	// 	it('... clicking on row keeps all options', function () {
-	// 		$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(33, 7, 33);
-	// 	});
+			checkRowCounts(33, 7, 33);
+		});
+		it('... clicking on row keeps all options', function () {
+			$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(33, 7, 33);
+		});
 
-	// 	dt.html('basic');
-	// 	it('Check true - basic single item selections', function () {
-	// 		table = $('#example').DataTable({
-	// 			dom: 'Pfrtip',
-	// 			searchPanes: {
-	// 				cascadePanes: true
-	// 			}
-	// 		});
+		dt.html('basic');
+		it('Check true - basic single item selections', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true
+				}
+			});
 
-	// 		checkRowCounts(33, 7, 33);
-	// 	});
-	// 	it('... clicking on row removes options', function () {
-	// 		$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(33, 1, 2);
-	// 	});
-	// 	it('... clicking on second pane', function () {
-	// 		$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(1, 1, 2);
-	// 	});
-	// 	it('... clicking on third pane', function () {
-	// 		$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(1, 1, 1);
-	// 	});
-	// 	it('... unclick third pane', async function () {
-	// 		$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(1, 1, 2);
-	// 	});
-	// 	it('... unclick second pane', async function () {
-	// 		$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(33, 1, 2);
-	// 	});
-	// 	it('... unclick second pane', async function () {
-	// 		$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(33, 7, 33);
-	// 	});
-	// 	it('reset', function () {
-	// 		table.destroy();
-	// 	});
-	// });
+			checkRowCounts(33, 7, 33);
+		});
+		it('... clicking on row removes options', function () {
+			$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(33, 1, 2);
+		});
+		it('... clicking on second pane', function () {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(1, 1, 2);
+		});
+		it('... clicking on third pane', function () {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(1, 1, 1);
+		});
+		it('... unclick third pane', async function () {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.sleep(500);
+			checkRowCounts(1, 1, 2);
+		});
+		it('... unclick second pane', async function () {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.sleep(500);
+			checkRowCounts(33, 1, 2);
+		});
+		it('... unclick first pane', async function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.sleep(500);
+			checkRowCounts(33, 7, 33);
+		});
+		it('reset', function () {
+			table.destroy();
+		});
+	});
 
-	// describe('Functional tests - multiple items', function () {
-	// 	dt.html('basic');
-	// 	it('Check defaults (false)', function () {
-	// 		table = $('#example').DataTable({
-	// 			dom: 'Pfrtip',
-	// 			searchPanes: {
-	// 				cascadePanes: true
-	// 			},
-	// 			initComplete: function () {}
-	// 		});
+	describe('Functional tests - multiple items', function () {
+		dt.html('basic');
+		it('Check defaults (false)', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true
+				},
+				initComplete: function () {}
+			});
 
-	// 		checkRowCounts(33, 7, 33);
-	// 	});
-	// 	it('Clicking on option in first column', function () {
-	// 		$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(33, 1, 2);
-	// 		checkCounts([2], [2], [1, 1]);
-	// 	});
-	// 	it('... and second option in first column', function () {
-	// 		$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-	// 		checkRowCounts(33, 2, 3);
-	// 		checkCounts([2, 1], [1, 2], [1, 1, 1]);
-	// 	});
-	// 	it('... Clicking on option in second column', function () {
-	// 		$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(2, 1, 3);
-	// 		checkCounts([1, 0], [1], [1, 1, 1]);
-	// 	});
-	// 	it('... and second option in second column', function () {
-	// 		$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-	// 		checkRowCounts(2, 2, 3);
-	// 		checkCounts([1, 1], [1, 1], [1, 1, 1]);
-	// 	});
-	// 	it('... Clicking on option in third column', function () {
-	// 		$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-	// 		checkRowCounts(2, 2, 2);
-	// 		checkCounts([0, 1], [1, 1], [0, 1]);
-	// 	});
-	// 	it('... and second option in third column', function () {
-	// 		$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-	// 		checkRowCounts(2, 2, 2);
-	// 		checkCounts([1, 1], [1, 1], [1, 1]);
-	// 	});
-	// 	it('... deselect second option in third column', async function () {
-	// 		$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(2, 2, 2);
-	// 		checkCounts([0, 1], [1, 1], [0, 1]);
-	// 	});
-	// 	it('... deselect first option in third column', async function () {
-	// 		$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').trigger(getClickEvent());
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(2, 2, 3);
-	// 		checkCounts([1, 1], [1, 1], [1, 1, 1]);
-	// 	});
-	// 	it('... deselect second option in second column', async function () {
-	// 		$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(2, 1, 3);
-	// 		checkCounts([1, 0], [1], [1, 1, 1]);
-	// 	});
-	// 	it('... deselect first option in second column', async function () {
-	// 		$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(33, 2, 3);
-	// 		checkCounts([2, 1], [1, 2], [1, 1, 1]);
-	// 	});
-	// 	it('... deselect second option in first column', async function () {
-	// 		$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(33, 1, 2);
-	// 		checkCounts([2], [2], [1, 1]);
-	// 	});
-	// 	it('... deselect first option in first column', async function () {
-	// 		$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-	// 		await dt.sleep(500);
-	// 		checkRowCounts(33, 7, 33);
-	// 		checkCounts([2], [9], [1]);
-	// 	});
-	// });
+			checkRowCounts(33, 7, 33);
+		});
+		it('Clicking on option in first column', function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(33, 1, 2);
+			checkCounts([2], [2], [1, 1]);
+		});
+		it('... and second option in first column', function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
+			checkRowCounts(33, 2, 3);
+			checkCounts([2, 1], [1, 2], [1, 1, 1]);
+		});
+		it('... Clicking on option in second column', function () {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(2, 1, 3);
+			checkCounts([1, 0], [1], [1, 1, 1]);
+		});
+		it('... and second option in second column', function () {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
+			checkRowCounts(2, 2, 3);
+			checkCounts([1, 1], [1, 1], [1, 1, 1]);
+		});
+		it('... Clicking on option in third column', function () {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+			checkRowCounts(2, 2, 2);
+			checkCounts([0, 1], [1, 1], [0, 1]);
+		});
+		it('... and second option in third column', function () {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
+			checkRowCounts(2, 2, 2);
+			checkCounts([1, 1], [1, 1], [1, 1]);
+		});
+		it('... deselect second option in third column', async function () {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
+			await dt.sleep(500);
+			checkRowCounts(2, 2, 2);
+			checkCounts([0, 1], [1, 1], [0, 1]);
+		});
+		it('... deselect first option in third column', async function () {
+			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').trigger(getClickEvent());
+			await dt.sleep(500);
+			checkRowCounts(2, 2, 3);
+			checkCounts([1, 1], [1, 1], [1, 1, 1]);
+		});
+		it('... deselect second option in second column', async function () {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
+			await dt.sleep(500);
+			checkRowCounts(2, 1, 3);
+			checkCounts([1, 0], [1], [1, 1, 1]);
+		});
+		it('... deselect first option in second column', async function () {
+			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.sleep(500);
+			checkRowCounts(33, 2, 3);
+			checkCounts([2, 1], [1, 2], [1, 1, 1]);
+		});
+		it('... deselect second option in first column', async function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
+			await dt.sleep(500);
+			checkRowCounts(33, 1, 2);
+			checkCounts([2], [2], [1, 1]);
+		});
+		it('... deselect first option in first column', async function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.sleep(500);
+			checkRowCounts(33, 7, 33);
+			checkCounts([2], [9], [1]);
+		});
+	});
 
 	// describe('Functional tests - viewtotal - single items', function () {
 	// 	dt.html('basic');
@@ -305,27 +305,27 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 	// 	});
 	// });
 
-	// describe('Functional tests - Odds and ends', function () {
-	// 	dt.html('basic');
-	// 	it('Select a row in each SearchPane', function () {
-	// 		table = $('#example').DataTable({
-	// 			dom: 'Pfrtip',
-	// 			searchPanes: {
-	// 				cascadePanes: true,
-	// 				viewTotal: true
-	// 			}
-	// 		});
+	describe('Functional tests - Odds and ends', function () {
+		dt.html('basic');
+		it('Select a row in each SearchPane', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true
+				}
+			});
 
-	// 		$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
-	// 		$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(0) td:eq(0)').click();
-	// 		$('div.dtsp-searchPane:visible:eq(2) tbody tr:eq(0) td:eq(0)').click();
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(0) td:eq(0)').click();
+			$('div.dtsp-searchPane:visible:eq(2) tbody tr:eq(0) td:eq(0)').click();
 
-	// 		expect($('tr.selected').length).toBe(3);
-	// 	});
-	// 	it('Clear all clears everything', function () {
-	// 		$('button.dtsp-clearAll').click();
+			expect($('tr.selected').length).toBe(3);
+		});
+		it('Clear all clears everything', function () {
+			$('button.dtsp-clearAll').click();
 
-	// 		expect($('tr.selected').length).toBe(0);
-	// 	});
+			expect($('tr.selected').length).toBe(0);
+		});
 	});
 });

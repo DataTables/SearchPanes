@@ -1,5 +1,6 @@
 import SearchPane from './SearchPane';
 import SearchPaneViewTotal from './SearchPaneViewTotal';
+import SearchPaneCascade from './SearchPaneCascade';
 
 export interface IClasses {
 	clear: string;
@@ -82,8 +83,16 @@ export interface IS {
 	updating: boolean;
 }
 
-export interface ISCV extends IS {
+export interface ISVT extends IS {
+	anotherFilter: boolean;
 	panes: SearchPaneViewTotal[];
+	reselecting: boolean;
+}
+
+export interface ISC extends IS {
+	anotherFilter: boolean;
+	panes: SearchPaneCascade[];
+	reselecting: boolean;
 }
 
 export interface ISelectItem {

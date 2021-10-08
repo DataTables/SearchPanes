@@ -841,6 +841,65 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Populates an array with all of the data for the table
+	 *
+	 * @param rowIdx The current row index to be compared
+	 * @param arrayFilter The array that is to be populated with row Details
+	 * @param settings The DataTable settings object
+	 * @param bins The bins object that is to be populated with the row counts
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_populatePaneArray(
+		rowIdx: number,
+		arrayFilter,
+		settings,
+		bins: {[keys: string]: number} = this.s.rowData.bins
+	): void {
+		// Retrieve the rendered data from the cell using the fnGetCellData function
+		// rather than the cell().render API method for optimisation
+		if (typeof this.s.colOpts.orthogonal === 'string') {
+			let rendered = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal);
+			this.s.rowData.filterMap.set(rowIdx, rendered);
+			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
+			this.s.rowData.totalOptions++;
+		}
+		else {
+
+			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
+
+			// Null and empty string are to be considered the same value
+			if (filter === null) {
+				filter = '';
+			}
+
+			if (typeof filter === 'string') {
+				filter = filter.replace(/<[^>]*>/g, '');
+			}
+
+			this.s.rowData.filterMap.set(rowIdx, filter);
+
+			if (!bins[filter]) {
+				bins[filter] = 1;
+				this._addOption(
+					filter,
+					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.display),
+					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.sort),
+					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.type),
+					arrayFilter,
+					bins
+				);
+				this.s.rowData.totalOptions++;
+			}
+			else {
+				bins[filter] ++;
+				this.s.rowData.totalOptions++;
+				return;
+			}
+		}
+
+	}
+
+	/**
 	 * Notes the rows that have been selected within this pane and stores them internally
 	 *
 	 * @param notUpdating Whether the panes are updating themselves or not
@@ -1492,6 +1551,7 @@ export default class SearchPane {
 	/**
 	 * Fill the array with the values that are currently being displayed in the table
 	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	private _populatePane(): void {
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.bins = {};
@@ -1502,64 +1562,6 @@ export default class SearchPane {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
 		}
-	}
-
-	/**
-	 * Populates an array with all of the data for the table
-	 *
-	 * @param rowIdx The current row index to be compared
-	 * @param arrayFilter The array that is to be populated with row Details
-	 * @param settings The DataTable settings object
-	 * @param bins The bins object that is to be populated with the row counts
-	 */
-	private _populatePaneArray(
-		rowIdx: number,
-		arrayFilter,
-		settings,
-		bins: {[keys: string]: number} = this.s.rowData.bins
-	): void {
-		// Retrieve the rendered data from the cell using the fnGetCellData function
-		// rather than the cell().render API method for optimisation
-		if (typeof this.s.colOpts.orthogonal === 'string') {
-			let rendered = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal);
-			this.s.rowData.filterMap.set(rowIdx, rendered);
-			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
-			this.s.rowData.totalOptions++;
-		}
-		else {
-
-			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
-
-			// Null and empty string are to be considered the same value
-			if (filter === null) {
-				filter = '';
-			}
-
-			if (typeof filter === 'string') {
-				filter = filter.replace(/<[^>]*>/g, '');
-			}
-
-			this.s.rowData.filterMap.set(rowIdx, filter);
-
-			if (!bins[filter]) {
-				bins[filter] = 1;
-				this._addOption(
-					filter,
-					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.display),
-					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.sort),
-					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.type),
-					arrayFilter,
-					bins
-				);
-				this.s.rowData.totalOptions++;
-			}
-			else {
-				bins[filter] ++;
-				this.s.rowData.totalOptions++;
-				return;
-			}
-		}
-
 	}
 
 	/**

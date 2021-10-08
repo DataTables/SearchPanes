@@ -125,6 +125,17 @@ export default class SearchPane {
      */
     _makeSelection(): void;
     /**
+     * Populates an array with all of the data for the table
+     *
+     * @param rowIdx The current row index to be compared
+     * @param arrayFilter The array that is to be populated with row Details
+     * @param settings The DataTable settings object
+     * @param bins The bins object that is to be populated with the row counts
+     */
+    _populatePaneArray(rowIdx: number, arrayFilter: any, settings: any, bins?: {
+        [keys: string]: number;
+    }): void;
+    /**
      * Notes the rows that have been selected within this pane and stores them internally
      *
      * @param notUpdating Whether the panes are updating themselves or not
@@ -176,15 +187,6 @@ export default class SearchPane {
      * Fill the array with the values that are currently being displayed in the table
      */
     private _populatePane;
-    /**
-     * Populates an array with all of the data for the table
-     *
-     * @param rowIdx The current row index to be compared
-     * @param arrayFilter The array that is to be populated with row Details
-     * @param settings The DataTable settings object
-     * @param bins The bins object that is to be populated with the row counts
-     */
-    private _populatePaneArray;
     /**
      * Reloads all of the previous selects into the panes
      *

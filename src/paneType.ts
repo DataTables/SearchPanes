@@ -57,6 +57,11 @@ export interface IDataArray {
 	type: string;
 }
 
+export interface IDataArrayST extends IDataArray {
+	shown: number;
+	total: number;
+}
+
 export interface IDefaults {
 	clear: boolean;
 	collapse: boolean;
@@ -132,9 +137,9 @@ export interface IRowData {
 }
 
 export interface IRowDataST extends IRowData {
-	arrayFilter: IDataArray[];
-	arrayOriginal: IDataArray[];
-	arrayShown: IDataArray[];
+	arrayFilter: IDataArrayST[];
+	arrayOriginal: IDataArrayST[];
+	arrayShown: IDataArrayST[];
 	bins: {[keys: string]: number};
 	binsOriginal: {[keys: string]: number};
 	binsShown: {[keys: string]: number};

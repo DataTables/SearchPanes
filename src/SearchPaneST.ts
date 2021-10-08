@@ -32,7 +32,8 @@ export default class SearchPaneST extends SearchPane {
 		return;
 	}
 
-	public updateRows() {
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	updateRows() {
 		if (!this.s.dt.page.info().serverSide) {
 			this.s.rowData.binsShown = {};
 			let settings = this.s.dt.settings()[0];
@@ -49,7 +50,8 @@ export default class SearchPaneST extends SearchPane {
 		}
 	}
 
-	private _updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown) {
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown) {
 		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
 
 		if (!bins[filter]) {
