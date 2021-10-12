@@ -14,16 +14,15 @@ export default class SearchPaneST extends SearchPane {
 	public s: ISST;
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
 		super(paneSettings, opts, index, panesContainer, panes);
-
-		this.s.dt.on('init', () => {
-			if (this.s.displayed) {
-				this.updateRows();
-			}
-		});
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_makeSelection() {
+		return;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_reloadSelect(): void {
 		return;
 	}
 

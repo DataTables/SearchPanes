@@ -1,5 +1,4 @@
-import { ISST } from './paneType';
-import SearchPaneST from './SearchPaneST';
+import SearchPaneCascade from './SearchPaneCascade';
 
 let $;
 let dataTable;
@@ -9,9 +8,18 @@ export function setJQuery(jq) {
 	dataTable = jq.fn.dataTable;
 }
 
-export default class SearchPaneCascadeViewTotal extends SearchPaneST {
+export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 
-	public s: ISST;
+	public constructor(paneSettings, opts, index, panesContainer, panes) {
+		let override = {
+			i18n: {
+				count: '{total}',
+				countFiltered: '{shown} ({total})'
+			}
+		};
+
+		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
+	}
 
 	/**
 	 * Get's the pane config appropriate to this class
@@ -37,12 +45,20 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneST {
 							return row.type;
 						}
 
-						let message = this.s.filteringActive ?
-							filteredMessage.replace(/{total}/, row.total):
-							countMessage.replace(/{total}/, row.total) ;
+						let message = (
+							this.s.filteringActive ?
+								filteredMessage.replace(/{total}/, row.total):
+								countMessage.replace(/{total}/, row.total)
+						)
+							.replace(/{shown}/, row.shown);
+
 
 						while (message.includes('{total}')) {
 							message = message.replace(/{total}/, row.total);
+						}
+
+						while (message.includes('{shown}')) {
+							message = message.replace(/{shown}/, row.shown);
 						}
 
 						// We are displaying the count in the same columne as the name of the search option.
@@ -97,5 +113,21 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneST {
 			select: true,
 			stateSave: this.s.dt.settings()[0].oFeatures.bStateSave ? true : false
 		};
+	}
+
+	/**
+	 * Fill the array with the values that are currently being displayed in the table
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_activePopulatePane(): void {
+		this.s.rowData.arrayFilter = [];
+		this.s.rowData.binsShown = {};
+		let settings = this.s.dt.settings()[0];
+
+		if (!this.s.dt.page.info().serverSide) {
+			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
+				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings, this.s.rowData.binsShown);
+			}
+		}
 	}
 }

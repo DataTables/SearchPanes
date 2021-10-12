@@ -36,7 +36,15 @@ export default class SearchPanesST extends SearchPanes {
 		}
 		super(paneSettings, opts, fromPreInit, paneClass);
 
-		this.s.dt.on('init', () => this._initSelectionListeners(this.c.preSelect));
+		let loadedFilter = this.s.dt.state.loaded();
+
+		let loadFn = () => this._initSelectionListeners(
+			loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList ?
+				loadedFilter.searchPanes.selectionList :
+				this.c.preSelect
+		);
+
+		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -46,13 +54,53 @@ export default class SearchPanesST extends SearchPanes {
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed) {
 				pane.s.dtPane
-					.on('select.dtsp', () => this._updateSelectionList(pane))
-					.on('deselect.dtsp', () => this._updateSelectionList(pane));
+					.off('select.dtsp')
+					.on('select.dtsp', this._update(pane))
+					.off('deselect.dtsp')
+					.on('deselect.dtsp', this._update(pane));
 			}
 		}
-		this.s.dt.on('draw', () => this._updateSelectionList());
+
+		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
 
 		this._updateSelectionList();
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_update(pane=undefined) {
+		return () => this._updateSelectionList(pane);
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_stateLoadListener() {
+		let stateLoadFunction = (e, settings, data) => {
+			if (data.searchPanes === undefined) {
+				return;
+			}
+			// Set the selection list for the panes so that the correct
+			// rows can be reselected and in the right order
+			this.s.selectionList =
+				data.searchPanes.selectionList ?
+					data.searchPanes.selectionList :
+					[];
+
+			// Find the panes that match from the state and the actual instance
+			if (data.searchPanes.panes) {
+				for (let loadedPane of data.searchPanes.panes) {
+					for (let pane of this.s.panes) {
+						if (loadedPane.id === pane.s.index) {
+							// Set the value of the searchbox
+							pane.dom.searchBox.val(loadedPane.searchTerm);
+							// Set the value of the order
+							pane.s.dtPane.order(loadedPane.order);
+						}
+					}
+				}
+			}
+
+			this._updateSelectionList();
+		};
+		this.s.dt.off('stateLoadParams.dtsps', stateLoadFunction).on('stateLoadParams.dtsps', stateLoadFunction);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility

@@ -900,6 +900,54 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Reloads all of the previous selects into the panes
+	 *
+	 * @param loadedFilter The loaded filters from a previous state
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_reloadSelect(loadedFilter): void {
+		// If the state was not saved don't selected any
+		if (loadedFilter === undefined) {
+			return;
+		}
+
+		let idx: number;
+
+		// For each pane, check that the loadedFilter list exists and is not null,
+		// find the id of each search item and set it to be selected.
+		for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
+			if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
+				idx = i;
+				break;
+			}
+		}
+
+		if (idx) {
+			let table = this.s.dtPane;
+			let rows = table.rows({order: 'index'}).data().map(
+				item => item.filter !== null ?
+					item.filter.toString() :
+					null
+			).toArray();
+
+			for (let filter of loadedFilter.searchPanes.panes[idx].selected) {
+				let id = -1;
+
+				if (filter !== null) {
+					id = rows.indexOf(filter.toString());
+				}
+
+				if (id > -1) {
+					this.s.serverSelecting = true;
+					table.row(id).select();
+					this.s.serverSelecting = false;
+				}
+			}
+
+		}
+	}
+
+	/**
 	 * Notes the rows that have been selected within this pane and stores them internally
 	 *
 	 * @param notUpdating Whether the panes are updating themselves or not
@@ -1561,53 +1609,6 @@ export default class SearchPane {
 			for (let index of this.s.dt.rows().indexes().toArray()) {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
-		}
-	}
-
-	/**
-	 * Reloads all of the previous selects into the panes
-	 *
-	 * @param loadedFilter The loaded filters from a previous state
-	 */
-	private _reloadSelect(loadedFilter): void {
-		// If the state was not saved don't selected any
-		if (loadedFilter === undefined) {
-			return;
-		}
-
-		let idx: number;
-
-		// For each pane, check that the loadedFilter list exists and is not null,
-		// find the id of each search item and set it to be selected.
-		for (let i = 0; i < loadedFilter.searchPanes.panes.length; i++) {
-			if (loadedFilter.searchPanes.panes[i].id === this.s.index) {
-				idx = i;
-				break;
-			}
-		}
-
-		if (idx) {
-			let table = this.s.dtPane;
-			let rows = table.rows({order: 'index'}).data().map(
-				item => item.filter !== null ?
-					item.filter.toString() :
-					null
-			).toArray();
-
-			for (let filter of loadedFilter.searchPanes.panes[idx].selected) {
-				let id = -1;
-
-				if (filter !== null) {
-					id = rows.indexOf(filter.toString());
-				}
-
-				if (id > -1) {
-					this.s.serverSelecting = true;
-					table.row(id).select();
-					this.s.serverSelecting = false;
-				}
-			}
-
 		}
 	}
 

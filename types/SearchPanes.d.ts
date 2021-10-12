@@ -32,6 +32,7 @@ export default class SearchPanes {
      * Updates the selectionList when cascade is not in place
      */
     _updateSelection(): void;
+    _stateLoadListener(): void;
     /**
      * Attach the panes, buttons and title to the document
      */

@@ -5,6 +5,8 @@ export default class SearchPanesST extends SearchPanes {
     s: ISVT;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean);
     _initSelectionListeners(preSelect: any): void;
+    _update(pane?: any): () => void;
+    _stateLoadListener(): void;
     _updateSelection(): void;
     /**
      * Updates the selection list to include the latest selections for a given pane

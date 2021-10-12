@@ -136,6 +136,12 @@ export default class SearchPane {
         [keys: string]: number;
     }): void;
     /**
+     * Reloads all of the previous selects into the panes
+     *
+     * @param loadedFilter The loaded filters from a previous state
+     */
+    _reloadSelect(loadedFilter: any): void;
+    /**
      * Notes the rows that have been selected within this pane and stores them internally
      *
      * @param notUpdating Whether the panes are updating themselves or not
@@ -187,12 +193,6 @@ export default class SearchPane {
      * Fill the array with the values that are currently being displayed in the table
      */
     private _populatePane;
-    /**
-     * Reloads all of the previous selects into the panes
-     *
-     * @param loadedFilter The loaded filters from a previous state
-     */
-    private _reloadSelect;
     /**
      * This method decides whether a row should contribute to the pane or not
      *

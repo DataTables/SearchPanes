@@ -343,6 +343,38 @@ export default class SearchPanes {
 		}
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_stateLoadListener() {
+		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
+			if (data.searchPanes === undefined) {
+				return;
+			}
+			this.clearSelections();
+			// Set the selection list for the panes so that the correct
+			// rows can be reselected and in the right order
+			this.s.selectionList =
+				data.searchPanes.selectionList ?
+					data.searchPanes.selectionList :
+					[];
+
+			// Find the panes that match from the state and the actual instance
+			if (data.searchPanes.panes) {
+				for (let loadedPane of data.searchPanes.panes) {
+					for (let pane of this.s.panes) {
+						if (loadedPane.id === pane.s.index) {
+							// Set the value of the searchbox
+							pane.dom.searchBox.val(loadedPane.searchTerm);
+							// Set the value of the order
+							pane.s.dtPane.order(loadedPane.order);
+						}
+					}
+				}
+			}
+
+			this.rebuild(undefined, false);
+		});
+	}
+
 	/**
 	 * Attach the panes, buttons and title to the document
 	 */
@@ -655,34 +687,7 @@ export default class SearchPanes {
 			data.searchPanes.selectionList = this.s.selectionList;
 		});
 
-		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
-			if (data.searchPanes === undefined) {
-				return;
-			}
-			this.clearSelections();
-			// Set the selection list for the panes so that the correct
-			// rows can be reselected and in the right order
-			this.s.selectionList =
-				data.searchPanes.selectionList ?
-					data.searchPanes.selectionList :
-					[];
-
-			// Find the panes that match from the state and the actual instance
-			if (data.searchPanes.panes) {
-				for (let loadedPane of data.searchPanes.panes) {
-					for (let pane of this.s.panes) {
-						if (loadedPane.id === pane.s.index) {
-							// Set the value of the searchbox
-							pane.dom.searchBox.val(loadedPane.searchTerm);
-							// Set the value of the order
-							pane.s.dtPane.order(loadedPane.order);
-						}
-					}
-				}
-			}
-
-			this.rebuild(undefined, false);
-		});
+		this._stateLoadListener();
 
 		// Listener for paging on main table
 		table.off('page.dtsps').on('page.dtsps', () => {
