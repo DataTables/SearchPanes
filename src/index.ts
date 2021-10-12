@@ -33,7 +33,6 @@ import SearchPaneCascade, {setJQuery as searchPaneCascadeJQuery} from './SearchP
 import SearchPaneCascadeViewTotal, {setJQuery as searchPaneCascadeViewTotalJQuery} from './SearchPaneCascadeViewTotal';
 import SearchPanes, {setJQuery as searchPanesJQuery} from './SearchPanes';
 import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
-import SearchPanesSTC, {setJQuery as searchPanesSTCJQuery} from './SearchPanesSTC';
 
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -70,7 +69,6 @@ import SearchPanesSTC, {setJQuery as searchPanesSTCJQuery} from './SearchPanesST
 	searchPaneJQuery($);
 	searchPanesJQuery($);
 	searchPanesSTJQuery($);
-	searchPanesSTCJQuery($);
 	searchPaneViewTotalJQuery($);
 	searchPaneCascadeJQuery($);
 	searchPaneCascadeViewTotalJQuery($);
@@ -84,10 +82,6 @@ import SearchPanesSTC, {setJQuery as searchPanesSTCJQuery} from './SearchPanesST
 	($.fn as any).dataTable.SearchPanesST = SearchPanesST;
 	// eslint-disable-next-line no-extra-parens
 	($.fn as any).DataTable.SearchPanesST = SearchPanesST;
-	// eslint-disable-next-line no-extra-parens
-	($.fn as any).dataTable.SearchPanesSTC = SearchPanesSTC;
-	// eslint-disable-next-line no-extra-parens
-	($.fn as any).DataTable.SearchPanesSTC = SearchPanesSTC;
 	// eslint-disable-next-line no-extra-parens
 	($.fn as any).dataTable.SearchPane = SearchPane;
 	// eslint-disable-next-line no-extra-parens
@@ -188,11 +182,9 @@ import SearchPanesSTC, {setJQuery as searchPanesSTCJQuery} from './SearchPanesST
 			? options
 			: api.init().searchPanes || dataTable.defaults.searchPanes;
 
-		let searchPanes = opts && opts.cascadePanes ?
-			new SearchPanesSTC(api, opts, fromPre) :
-			opts && opts.viewTotal ?
-				new SearchPanesST(api, opts, fromPre) :
-				new SearchPanes(api, opts, fromPre);
+		let searchPanes = opts && (opts.cascadePanes || opts.viewTotal) ?
+			new SearchPanesST(api, opts, fromPre) :
+			new SearchPanes(api, opts, fromPre);
 		let node = searchPanes.getNode();
 
 		return node;

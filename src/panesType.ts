@@ -86,13 +86,7 @@ export interface IS {
 
 export interface ISVT extends IS {
 	anotherFilter: boolean;
-	panes: SearchPaneViewTotal[];
-	reselecting: boolean;
-}
-
-export interface ISC extends IS {
-	anotherFilter: boolean;
-	panes: SearchPaneCascade[];
+	panes: SearchPaneViewTotal[] | SearchPaneCascade[];
 	reselecting: boolean;
 }
 
