@@ -196,7 +196,7 @@ export default class SearchPanes {
 
 		// For each searchBox set the input text to be empty and then trigger
 		// an input on them so that they no longer filter the panes
-		searches.each(function () {
+		searches.each(function() {
 			$(this).val('');
 			$(this).trigger('input');
 		});

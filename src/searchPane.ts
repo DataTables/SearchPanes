@@ -412,7 +412,12 @@ export default class SearchPane {
 		if (
 			!this.s.displayed ||
 			(
+				// If collapsing is disabled globally, and not enabled specifically for this column
 				!this.c.collapse && this.s.colOpts.collapse !== true ||
+				// OR, collapsing could be enabled globally and this column specifically
+				// is not to be collapsed.
+				// We can't just take !this.s.colOpts.collapse here as if it is undefined
+				// then the global should be used
 				this.s.colOpts.collapse === false
 			)
 		) {
