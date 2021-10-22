@@ -807,6 +807,20 @@ export default class SearchPanes {
 	}
 
 	/**
+	 * Escape html characters within a string
+	 *
+	 * @param txt the string to be escaped
+	 * @returns the escaped string
+	 */
+	private _escapeHTML(txt: string): string {
+		return txt
+			.replace(/&amp;/g, '&')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&quot;/g, '"');
+	}
+
+	/**
 	 * Gets the selection list from the previous state and stores it in the selectionList Property
 	 */
 	private _getState(): void {
@@ -856,7 +870,8 @@ export default class SearchPanes {
 							if (
 								pane.s.dtPane.row(rowIdx).data() !== undefined &&
 								row !== undefined &&
-								pane.s.dtPane.row(rowIdx).data().filter === row.filter
+									this._escapeHTML(pane.s.dtPane.row(rowIdx).data().filter) ===
+									this._escapeHTML(row.filter)
 							) {
 								found = true;
 								pane.s.dtPane.row(rowIdx).select();

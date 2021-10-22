@@ -1253,11 +1253,7 @@ export default class SearchPane {
 				: table.settings()[0].aoColumns[this.s.index].sTitle;
 		}
 
-		headerText = headerText
-			.replace(/&amp;/g, '&')
-			.replace(/&lt;/g, '<')
-			.replace(/&gt;/g, '>')
-			.replace(/&quot;/g, '"');
+		headerText = this._escapeHTML(headerText);
 
 		this.dom.searchBox.attr('placeholder', headerText);
 
@@ -1540,6 +1536,20 @@ export default class SearchPane {
 		this.dom.topRow.prependTo(this.dom.container);
 		container.append(this.dom.dtP);
 		container.show();
+	}
+
+	/**
+	 * Escape html characters within a string
+	 *
+	 * @param txt the string to be escaped
+	 * @returns the escaped string
+	 */
+	private _escapeHTML(txt: string): string {
+		return txt
+			.replace(/&amp;/g, '&')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&quot;/g, '"');
 	}
 
 	/**
@@ -1840,11 +1850,7 @@ export default class SearchPane {
 			if (typeof colSelect.filter === 'string' && typeof filter === 'string') {
 				// The filter value will not have the &amp; in place but a &,
 				// so we need to do a replace to make sure that they will match
-				colSelect.filter = colSelect.filter
-					.replace(/&amp;/g, '&')
-					.replace(/&lt;/g, '<')
-					.replace(/&gt;/g, '>')
-					.replace(/&quot;/g, '"');
+				colSelect.filter = this._escapeHTML(colSelect.filter);
 			}
 
 			// if the filter is an array then is the column present in it
@@ -2047,9 +2053,9 @@ export default class SearchPane {
 
 						// Find out if the filter was selected in the previous search,
 						// if so select it and remove from array.
-						let selectIndex: number = selected.findIndex(function(element) {
-							return element.filter === dataP.filter;
-						});
+						let selectIndex: number = selected.findIndex(
+							(element) => this._escapeHTML(element.filter) === this._escapeHTML(dataP.filter)
+						);
 
 						if (selectIndex !== -1) {
 							row.select();
