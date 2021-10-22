@@ -294,12 +294,26 @@ export default class SearchPane {
 	public addRow(
 		display,
 		filter,
-		total: number | string,
 		sort,
 		type,
-		className?: string
+		className?: string,
+		total?
 	): any {
 		let index: number;
+		if(!total) {
+			total = this.s.rowData.bins[filter] ?
+				this.s.rowData.bins[filter] :
+				0;
+		}
+		if(total === undefined) {
+			// Count the number of empty cells
+			total = 0;
+			this.s.rowData.arrayFilter.forEach(element => {
+				if (element.filter === '') {
+					total++;
+				}
+			});
+		}
 
 		for (let entry of this.s.indexes) {
 			if (entry.filter === filter) {
@@ -544,7 +558,9 @@ export default class SearchPane {
 
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
+		console.log("set")
 		this.s.dtPane.off('select.dtsp').on('select.dtsp', () => {
+			console.log("select")
 			clearTimeout(t0);
 			this._updateSelection(!this.s.updating);
 
@@ -732,6 +748,29 @@ export default class SearchPane {
 		this.dom.searchButton.removeClass(this.classes.disabledButton);
 		this.dom.collapseButton.removeClass(this.classes.rotated);
 		$(this.s.dtPane.table().container()).removeClass(this.classes.hidden);
+	}
+
+
+	/**
+	 * Finds the ratio of the number of different options in the table to the number of rows
+	 *
+	 * @param bins the number of different options in the table
+	 * @param rowCount the total number of rows in the table
+	 * @returns {number} returns the ratio
+	 */
+	public _uniqueRatio(bins: number, rowCount: number): number {
+		if (
+			rowCount > 0 &&
+			(
+				this.s.rowData.totalOptions > 0 && !this.s.dt.page.info().serverSide ||
+				this.s.dt.page.info().serverSide && this.s.tableLength > 0
+			)
+		) {
+			return bins / this.s.rowData.totalOptions;
+		}
+		else {
+			return 1;
+		}
 	}
 
 	/**
@@ -947,6 +986,56 @@ export default class SearchPane {
 		}
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_serverPopulate(dataIn) {
+		if (dataIn.tableLength) {
+			this.s.tableLength = dataIn.tableLength;
+			this.s.rowData.totalOptions = this.s.tableLength;
+		}
+		else if (this.s.tableLength === null || this.s.dt.rows()[0].length > this.s.tableLength) {
+			this.s.tableLength = this.s.dt.rows()[0].length;
+			this.s.rowData.totalOptions = this.s.tableLength;
+		}
+
+		let colTitle = this.s.dt.column(this.s.index).dataSrc();
+
+		if (dataIn.searchPanes.options[colTitle]) {
+			for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
+				this.s.rowData.arrayFilter.push({
+					display: dataPoint.label,
+					filter: dataPoint.value,
+					sort: dataPoint.label,
+					type: dataPoint.label
+				});
+				this.s.rowData.bins[dataPoint.value] = dataPoint.total;
+			}
+		}
+
+		let binLength = Object.keys(this.s.rowData.bins).length;
+		let uniqueRatio = this._uniqueRatio(binLength, this.s.tableLength);
+
+		// Don't show the pane if there isnt enough variance in the data, or there is only 1 entry for that pane
+		if (
+			this.s.displayed === false &&
+			(
+				(
+					this.s.colOpts.show === undefined && this.s.colOpts.threshold === null ?
+						uniqueRatio > this.c.threshold :
+						uniqueRatio > this.s.colOpts.threshold
+				) ||
+				this.s.colOpts.show !== true && binLength <= 1
+			)
+		) {
+			this.dom.container.addClass(this.classes.hidden);
+			this.s.displayed = false;
+			return;
+		}
+
+		this.s.rowData.arrayOriginal = this.s.rowData.arrayFilter;
+		this.s.rowData.binsOriginal = this.s.rowData.bins;
+		this.s.displayed = true;
+	}
+
 	/**
 	 * Notes the rows that have been selected within this pane and stores them internally
 	 *
@@ -1135,52 +1224,7 @@ export default class SearchPane {
 				this.s.displayed = true;
 			}
 			else if (dataIn && dataIn.searchPanes && dataIn.searchPanes.options) {
-				if (dataIn.tableLength) {
-					this.s.tableLength = dataIn.tableLength;
-					this.s.rowData.totalOptions = this.s.tableLength;
-				}
-				else if (this.s.tableLength === null || this.s.dt.rows()[0].length > this.s.tableLength) {
-					this.s.tableLength = this.s.dt.rows()[0].length;
-					this.s.rowData.totalOptions = this.s.tableLength;
-				}
-
-				let colTitle = this.s.dt.column(this.s.index).dataSrc();
-
-				if (dataIn.searchPanes.options[colTitle]) {
-					for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
-						this.s.rowData.arrayFilter.push({
-							display: dataPoint.label,
-							filter: dataPoint.value,
-							sort: dataPoint.label,
-							type: dataPoint.label
-						});
-						this.s.rowData.bins[dataPoint.value] = dataPoint.total;
-					}
-				}
-
-				let binLength = Object.keys(this.s.rowData.bins).length;
-				let uniqueRatio = this._uniqueRatio(binLength, this.s.tableLength);
-
-				// Don't show the pane if there isnt enough variance in the data, or there is only 1 entry for that pane
-				if (
-					this.s.displayed === false &&
-					(
-						(
-							this.s.colOpts.show === undefined && this.s.colOpts.threshold === null ?
-								uniqueRatio > this.c.threshold :
-								uniqueRatio > this.s.colOpts.threshold
-						) ||
-						this.s.colOpts.show !== true && binLength <= 1
-					)
-				) {
-					this.dom.container.addClass(this.classes.hidden);
-					this.s.displayed = false;
-					return;
-				}
-
-				this.s.rowData.arrayOriginal = this.s.rowData.arrayFilter;
-				this.s.rowData.binsOriginal = this.s.rowData.bins;
-				this.s.displayed = true;
+				this._serverPopulate(dataIn);
 			}
 		}
 		else {
@@ -1268,21 +1312,12 @@ export default class SearchPane {
 
 		// If it is not a custom pane
 		if (this.s.colExists) {
-			// Count the number of empty cells
-			let count = 0;
-			this.s.rowData.arrayFilter.forEach(element => {
-				if (element.filter === '') {
-					count++;
-				}
-			});
-
 			// Add all of the search options to the pane
 			for (let i = 0, ien = this.s.rowData.arrayFilter.length; i < ien; i++) {
 				if (this.s.dt.page.info().serverSide) {
 					let row = this.addRow(
 						this.s.rowData.arrayFilter[i].display,
 						this.s.rowData.arrayFilter[i].filter,
-						this.s.rowData.bins[this.s.rowData.arrayFilter[i].filter],
 						this.s.rowData.arrayFilter[i].sort,
 						this.s.rowData.arrayFilter[i].type
 					);
@@ -1300,14 +1335,13 @@ export default class SearchPane {
 					this.addRow(
 						this.s.rowData.arrayFilter[i].display,
 						this.s.rowData.arrayFilter[i].filter,
-						this.s.rowData.bins[this.s.rowData.arrayFilter[i].filter],
 						this.s.rowData.arrayFilter[i].sort,
 						this.s.rowData.arrayFilter[i].type
 					);
 				}
 				else if (!this.s.dt.page.info().serverSide) {
 					// Just pass an empty string as the message will be calculated based on that in addRow()
-					this.addRow('', count, count, '', '', '');
+					this.addRow('', '', '', '');
 				}
 			}
 		}
@@ -1555,10 +1589,10 @@ export default class SearchPane {
 			rows.push(this.addRow(
 				comparisonObj.display,
 				comparisonObj.filter,
-				comparisonObj.total,
 				comparisonObj.sort,
 				comparisonObj.type,
-				comparisonObj.className
+				comparisonObj.className,
+				comparisonObj.total
 			));
 		}
 
@@ -1724,27 +1758,5 @@ export default class SearchPane {
 		}
 
 		this.s.updating = updating;
-	}
-
-	/**
-	 * Finds the ratio of the number of different options in the table to the number of rows
-	 *
-	 * @param bins the number of different options in the table
-	 * @param rowCount the total number of rows in the table
-	 * @returns {number} returns the ratio
-	 */
-	private _uniqueRatio(bins: number, rowCount: number): number {
-		if (
-			rowCount > 0 &&
-			(
-				this.s.rowData.totalOptions > 0 && !this.s.dt.page.info().serverSide ||
-				this.s.dt.page.info().serverSide && this.s.tableLength > 0
-			)
-		) {
-			return bins / this.s.rowData.totalOptions;
-		}
-		else {
-			return 1;
-		}
 	}
 }

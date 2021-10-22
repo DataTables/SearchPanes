@@ -28,7 +28,7 @@ export default class SearchPane {
      * @param sort the value to be sorted in the pane table
      * @param type the value of which the type is to be derived from
      */
-    addRow(display: any, filter: any, total: number | string, sort: any, type: any, className?: string): any;
+    addRow(display: any, filter: any, sort: any, type: any, className?: string, total?: any): any;
     /**
      * Adjusts the layout of the top row when the screen is resized
      */
@@ -81,6 +81,14 @@ export default class SearchPane {
      * Expands the pane from the collapsed state
      */
     show(): void;
+    /**
+     * Finds the ratio of the number of different options in the table to the number of rows
+     *
+     * @param bins the number of different options in the table
+     * @param rowCount the total number of rows in the table
+     * @returns {number} returns the ratio
+     */
+    _uniqueRatio(bins: number, rowCount: number): number;
     /**
      * Updates the panes if one of the options to do so has been set to true
      * rather than the filtered message when using viewTotal.
@@ -141,6 +149,7 @@ export default class SearchPane {
      * @param loadedFilter The loaded filters from a previous state
      */
     _reloadSelect(loadedFilter: any): void;
+    _serverPopulate(dataIn: any): void;
     /**
      * Notes the rows that have been selected within this pane and stores them internally
      *
@@ -210,12 +219,4 @@ export default class SearchPane {
      * Adds outline to the pane when a selection has been made
      */
     private _searchExtras;
-    /**
-     * Finds the ratio of the number of different options in the table to the number of rows
-     *
-     * @param bins the number of different options in the table
-     * @param rowCount the total number of rows in the table
-     * @returns {number} returns the ratio
-     */
-    private _uniqueRatio;
 }

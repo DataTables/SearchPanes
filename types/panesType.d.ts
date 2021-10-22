@@ -87,6 +87,8 @@ export interface ISVT extends IS {
     anotherFilter: boolean;
     panes: SearchPaneViewTotal[] | SearchPaneCascade[];
     reselecting: boolean;
+    serverSelect: any;
+    serverSelecting: any;
 }
 export interface ISelectItem {
     column: number;

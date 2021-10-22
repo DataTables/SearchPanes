@@ -48,6 +48,21 @@ export default class SearchPanesST extends SearchPanes {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_setXHR() {
+		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
+		// If viewTotal is not enabled then we simply update the data from the server
+		console.log("set myxhr")
+		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
+			console.log("call myxhr", json)
+			if (json && json.searchPanes && json.searchPanes.options) {
+				this.s.serverData = json;
+				this.s.serverData.tableLength = json.recordsTotal;
+				this._serverTotals();
+			}
+		});
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_initSelectionListeners(preSelect) {
 		this.s.selectionList = preSelect;
 
@@ -120,21 +135,40 @@ export default class SearchPanesST extends SearchPanes {
 			return;
 		}
 
+		// if (this.s.dt.page.info().serverSide) {
+		// 	this.s.updating = true;
+		// 	if (!paneIn) {
+		// 		this.s.dt.draw(false);
+		// 	}
+		// 	else if(!paneIn.s.serverSelecting) {
+		// 		paneIn.s.serverSelect = paneIn.s.dtPane.rows({selected: true}).data().toArray();
+		// 		this.s.dt.draw(false);
+		// 	}
+		// 	this.s.updating = false;
+		// 	return;
+		// }
+
 		let index;
+		console.log(paneIn)
 		if(paneIn !== undefined) {
-			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
-			index = paneIn.s.index;
-			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
-			if (rows.length > 0) {
-				this.s.selectionList.push({
-					column: index,
-					rows
-				});
+			if(this.s.dt.page.info().serverSide) {
+				paneIn._updateSelection();
 			}
 			else {
-				index = this.s.selectionList.length > 0 ?
-					this.s.selectionList[this.s.selectionList.length-1].column :
-					undefined;
+				let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
+				index = paneIn.s.index;
+				this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
+				if (rows.length > 0) {
+					this.s.selectionList.push({
+						column: index,
+						rows
+					});
+				}
+				else {
+					index = this.s.selectionList.length > 0 ?
+						this.s.selectionList[this.s.selectionList.length-1].column :
+						undefined;
+				}
 			}
 		}
 
@@ -144,65 +178,88 @@ export default class SearchPanesST extends SearchPanes {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_remakeSelections() {
 		this.s.updating = true;
-		let tmpSL = this.s.selectionList;
-		let anotherFilter = false;
-		this.clearSelections();
-		this.s.dt.draw();
-		if(this.s.dt.rows().toArray()[0].length > this.s.dt.rows({search: 'applied'}).toArray()[0].length) {
-			anotherFilter = true;
-		}
-		this.s.selectionList = tmpSL;
-		for(let pane of this.s.panes) {
-			if (pane.s.displayed) {
-				pane.s.filteringActive = anotherFilter;
-				pane.updateRows();
-			}
-		}
-		for(let selection of this.s.selectionList) {
-			let pane = this.s.panes[selection.column];
-			let ids = pane.s.dtPane.rows().indexes().toArray();
-			for(let row of selection.rows) {
-				for(let id of ids) {
-					let currRow = pane.s.dtPane.row(id);
-					let data = currRow.data();
-					if (row === data.filter) {
-						currRow.select();
-					}
-				}
-			}
-			pane.s.selections = selection.rows;
+		if(!this.s.dt.page.info().serverSide) {
+			let tmpSL = this.s.selectionList;
+			let anotherFilter = false;
+			this.clearSelections();
 			this.s.dt.draw();
-			let filteringActive = false;
-
-			let filterCount = 0;
-			let prevSelectedPanes = 0;
-			let selectedPanes = 0;
-			// Add the number of all of the filters throughout the panes
-			for (let currPane of this.s.panes) {
-				if (currPane.s.dtPane) {
-					filterCount += currPane.getPaneCount();
-					if (filterCount > prevSelectedPanes) {
-						selectedPanes++;
-						prevSelectedPanes = filterCount;
+			if(this.s.dt.rows().toArray()[0].length > this.s.dt.rows({search: 'applied'}).toArray()[0].length) {
+				anotherFilter = true;
+			}
+			this.s.selectionList = tmpSL;
+			for(let pane of this.s.panes) {
+				if (pane.s.displayed) {
+					pane.s.filteringActive = anotherFilter;
+					pane.updateRows();
+				}
+			}
+			for(let selection of this.s.selectionList) {
+				let pane = this.s.panes[selection.column];
+				let ids = pane.s.dtPane.rows().indexes().toArray();
+				for(let row of selection.rows) {
+					for(let id of ids) {
+						let currRow = pane.s.dtPane.row(id);
+						let data = currRow.data();
+						if (row === data.filter) {
+							currRow.select();
+						}
+					}
+				}
+				pane.s.selections = selection.rows;
+				this.s.dt.draw();
+				let filteringActive = false;
+	
+				let filterCount = 0;
+				let prevSelectedPanes = 0;
+				let selectedPanes = 0;
+				// Add the number of all of the filters throughout the panes
+				for (let currPane of this.s.panes) {
+					if (currPane.s.dtPane) {
+						filterCount += currPane.getPaneCount();
+						if (filterCount > prevSelectedPanes) {
+							selectedPanes++;
+							prevSelectedPanes = filterCount;
+						}
+					}
+				}
+				filteringActive = filterCount > 0;
+				for(let currPane of this.s.panes) {
+					if(currPane.s.displayed) {
+						if (anotherFilter || pane.s.index !== currPane.s.index || !filteringActive) {
+							currPane.s.filteringActive = filteringActive || anotherFilter;
+						}
+						else if (selectedPanes === 1) {
+							currPane.s.filteringActive = false;
+						}
+						if(currPane.s.index !== pane.s.index) {
+							currPane.updateRows();
+						}
 					}
 				}
 			}
-			filteringActive = filterCount > 0;
+			this.s.dt.draw();
+		}
+		else {
+			let pane;
+			if(this.s.selectionList.length > 0) {
+				pane = this.s.panes[this.s.selectionList[this.s.selectionList.length-1].column];
+			}
 			for(let currPane of this.s.panes) {
 				if(currPane.s.displayed) {
-					if (anotherFilter || pane.s.index !== currPane.s.index || !filteringActive) {
-						currPane.s.filteringActive = filteringActive || anotherFilter;
-					}
-					else if (selectedPanes === 1) {
-						currPane.s.filteringActive = false;
-					}
-					if(currPane.s.index !== pane.s.index) {
+					if(!pane || currPane.s.index !== pane.s.index) {
 						currPane.updateRows();
 					}
 				}
 			}
 		}
-		this.s.dt.draw();
 		this.s.updating = false;
+	}
+
+	private _serverTotals() {
+		console.log(this.s.serverData);
+		for (let pane of this.s.panes) {
+			pane._serverPopulate(this.s.serverData);
+			console.log("popd")
+		}
 	}
 }

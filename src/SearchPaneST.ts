@@ -28,7 +28,14 @@ export default class SearchPaneST extends SearchPane {
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_updateSelection() {
-		return;
+		if (this.s.dt.page.info().serverSide && !this.s.updating) {
+			console.log('pass1')
+			if (!this.s.serverSelecting) {
+				console.log('pass2')
+				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+				this.s.dt.draw(false);
+			}
+		}
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -39,14 +46,14 @@ export default class SearchPaneST extends SearchPane {
 			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
 				this._updateShown(index, settings, this.s.rowData.binsShown);
 			}
-			for(let row of this.s.dtPane.rows().data().toArray()) {
-				row.shown = typeof this.s.rowData.binsShown[row.filter] === 'number' ?
-					this.s.rowData.binsShown[row.filter] :
-					0;
-				this.s.dtPane.row(row.index).data(row);
-			}
-			this.s.dtPane.draw();
 		}
+		for(let row of this.s.dtPane.rows().data().toArray()) {
+			row.shown = typeof this.s.rowData.binsShown[row.filter] === 'number' ?
+				this.s.rowData.binsShown[row.filter] :
+				0;
+			this.s.dtPane.row(row.index).data(row);
+		}
+		this.s.dtPane.draw();
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility

@@ -32,18 +32,32 @@ export default class SearchPaneCascade extends SearchPaneST {
 	public addRow(
 		display,
 		filter,
-		total: number | string,
 		sort,
 		type,
 		className?: string,
-		shown?: number
+		total?,
+		shown?
 	): any {
 		let index: number;
+		if(!total) {
+			total = this.s.rowData.bins[filter] ?
+				this.s.rowData.bins[filter] :
+				0;
+		}
+		if(!shown) {
+			shown = this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
+				this.s.rowData.binsShown[filter] :
+				0;
+		}
 
 		for (let entry of this.s.indexes) {
 			if (entry.filter === filter) {
 				index = entry.index;
 			}
+		}
+
+		if(filter === 'Edinburgh') {
+			console.log(total, shown)
 		}
 
 		if (index === undefined) {
@@ -96,6 +110,9 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 						while (message.includes('{shown}')) {
 							message = message.replace(/{shown}/, row.shown);
+						}
+						if(message === 'undefined') {
+							console.log("STOP")
 						}
 
 						// We are displaying the count in the same columne as the name of the search option.
@@ -154,22 +171,26 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	updateRows() {
-		this._activePopulatePane();
-		this.s.rowData.binsShown = {};
-		for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-			this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
+		if (!this.s.dt.page.info().serverSide) {
+			this._activePopulatePane();
+			this.s.rowData.binsShown = {};
+			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
+				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
+			}
 		}
 		let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 		this.s.dtPane.rows().remove();
 		for(let data of this.s.rowData.arrayFilter) {
+			// console.log(data);
+			if(data.shown === 0) {
+				continue;
+			}
 			let row = this.addRow(
 				data.display,
 				data.filter,
-				this.s.rowData.bins[data.filter],
 				data.sort,
 				data.type,
-				undefined,
-				this.s.rowData.binsShown[data.filter]
+				undefined
 			);
 			for(let i = 0; i < selected.length; i++) {
 				let selection = selected[i];
@@ -187,11 +208,9 @@ export default class SearchPaneCascade extends SearchPaneST {
 					let row = this.addRow(
 						data.display,
 						data.filter,
-						this.s.rowData.bins[data.filter] ? this.s.rowData.bins[data.filter] : 0,
 						data.sort,
 						data.type,
-						undefined,
-						0
+						undefined
 					);
 					row.select();
 					this.s.selections.push(data.filter);
@@ -199,7 +218,9 @@ export default class SearchPaneCascade extends SearchPaneST {
 			}
 		}
 		this.s.dtPane.draw();
-		this.s.dt.draw();
+		if (!this.s.dt.page.info().serverSide) {
+			this.s.dt.draw();
+		}
 	}
 
 	/**
@@ -215,6 +236,105 @@ export default class SearchPaneCascade extends SearchPaneST {
 			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
+		}
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_serverPopulate(dataIn) {
+		console.log("server")
+		this.s.rowData.binsShown = {};
+		if (dataIn.tableLength !== undefined) {
+			this.s.tableLength = dataIn.tableLength;
+			this.s.rowData.totalOptions = this.s.tableLength;
+		}
+		else if (this.s.tableLength === null || this.s.dt.rows()[0].length > this.s.tableLength) {
+			this.s.tableLength = this.s.dt.rows()[0].length;
+			this.s.rowData.totalOptions = this.s.tableLength;
+		}
+
+		let colTitle = this.s.dt.column(this.s.index).dataSrc();
+
+		if (dataIn.searchPanes.options[colTitle] !== undefined) {
+			for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
+				this.s.rowData.arrayFilter.push({
+					display: dataPoint.label,
+					filter: dataPoint.value,
+					shown: dataPoint.count,
+					sort: dataPoint.label,
+					total: dataPoint.total,
+					type: dataPoint.label
+				});
+				this.s.rowData.binsShown[dataPoint.value] = dataPoint.count;
+				this.s.rowData.bins[dataPoint.value] = dataPoint.total;
+			}
+		}
+
+		let binLength: number = Object.keys(this.s.rowData.bins).length;
+		let uniqueRatio: number = this._uniqueRatio(binLength, this.s.tableLength);
+
+		// Don't show the pane if there isnt enough variance in the data, or there is only 1 entry for that pane
+		if (
+			!this.s.colOpts.show &&
+			this.s.displayed === false &&
+			(
+				(
+					this.s.colOpts.show === undefined && this.s.colOpts.threshold === null ?
+						uniqueRatio > this.c.threshold :
+						uniqueRatio > this.s.colOpts.threshold
+				) ||
+				this.s.colOpts.show !== true && binLength <= 1
+			)
+		) {
+			this.dom.container.addClass(this.classes.hidden);
+			this.s.displayed = false;
+			return;
+		}
+
+		this.s.rowData.arrayOriginal = this.s.rowData.arrayFilter;
+		this.s.rowData.binsOriginal = this.s.rowData.bins;
+
+		this.s.displayed = true;
+
+		if (this.s.dtPane) {
+			this.s.serverSelecting = true;
+			let selected = this.s.serverSelect;
+			this.s.dtPane.rows().remove();
+			for(let data of this.s.rowData.arrayFilter) {
+				console.log(data.shown, data.filter)
+				if(data.shown > 0) {
+					let row = this.addRow(
+						data.display,
+						data.filter,
+						data.sort,
+						data.type
+					);
+					for(let i = 0; i < selected.length; i++) {
+						let selection = selected[i];
+						if(selection.filter === data.filter) {
+							row.select();
+							selected.splice(i, 1);
+							this.s.selections.push(data.filter);
+							break;
+						}
+					}
+				}
+			}
+			for (let selection of selected) {
+				for(let data of this.s.rowData.arrayOriginal) {
+					if(data.filter === selection.filter) {
+						let row = this.addRow(
+							data.display,
+							data.filter,
+							data.sort,
+							data.type
+						);
+						row.select();
+						this.s.selections.push(data.filter);
+					}
+				}
+			}
+			this.s.dtPane.draw();
+			this.s.serverSelecting = false;
 		}
 	}
 }

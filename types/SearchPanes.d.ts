@@ -12,6 +12,7 @@ export default class SearchPanes {
     c: IDefaults;
     s: IS;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean, paneClass?: typeof SearchPane);
+    _setXHR(): void;
     /**
      * Clear the selections of all of the panes
      */
