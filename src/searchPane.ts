@@ -1391,7 +1391,14 @@ export default class SearchPane {
 				this.s.colOpts.collapse
 			)
 		) {
-			this.collapse();
+			// If the pane has not initialised yet then we need to wait for it to do so before collapsing
+			// Otherwise the container that the class is added to does not exist
+			if(this.s.dtPane.settings()[0]._bInitComplete) {
+				this.collapse();
+			}
+			else {
+				this.s.dtPane.one('init', () => this.collapse());
+			}
 		}
 
 		// Reload the selection, searchbox entry and ordering from the previous state
