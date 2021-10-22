@@ -1983,8 +1983,8 @@ export default class SearchPane {
 		if (
 			!this.s.dt.page.info().serverSide &&
 			this.s.dtPane !== undefined &&
+			this.s.selectPresent !== true &&
 			(!this.s.filteringActive || this.c.cascadePanes || draw === true) &&
-			(this.c.cascadePanes !== true ||this.s.selectPresent !== true) &&
 			(!this.s.lastSelect || !this.s.lastCascade)
 		) {
 			let colOpts = this.s.colOpts;
