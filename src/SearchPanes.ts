@@ -132,7 +132,7 @@ export default class SearchPanes {
 		this._getState();
 
 		if (this.s.dt.page.info().serverSide) {
-			table.on('preXhr.dtsps', (e, settings, data) => {
+			this.s.dt.on('preXhr.dtsps', (e, settings, data) => {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
@@ -140,8 +140,9 @@ export default class SearchPanes {
 					data.searchPanes_null = {};
 				}
 
+				let src;
 				for (let selection of this.s.selectionList) {
-					let src = this.s.dt.column(selection.column).dataSrc();
+					src = this.s.dt.column(selection.column).dataSrc();
 
 					if (data.searchPanes[src] === undefined) {
 						data.searchPanes[src] = {};
@@ -157,6 +158,10 @@ export default class SearchPanes {
 							data.searchPanes_null[src][i] = true;
 						}
 					}
+				}
+
+				if (this.s.selectionList.length > 0) {
+					data.searchPanesLast = src;
 				}
 			});
 		}
@@ -751,6 +756,12 @@ export default class SearchPanes {
 
 					this.s.dt.page(this.s.page);
 					this.s.filterCount = filterCount;
+				}
+
+				if (this.s.selectionList.length > 0) {
+					data.searchPanesLast = this.s.dt
+						.column(this.s.selectionList[this.s.selectionList.length - 1].column)
+						.dataSrc();
 				}
 			});
 		}

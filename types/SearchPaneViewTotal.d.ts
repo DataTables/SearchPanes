@@ -38,4 +38,5 @@ export default class SearchPaneViewTotal extends SearchPaneST {
         select: boolean;
         stateSave: boolean;
     };
+    _serverPopulate(dataIn: any): void;
 }

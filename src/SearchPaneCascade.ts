@@ -56,10 +56,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 			}
 		}
 
-		if(filter === 'Edinburgh') {
-			console.log(total, shown)
-		}
-
 		if (index === undefined) {
 			index = this.s.indexes.length;
 			this.s.indexes.push({filter, index});
@@ -110,9 +106,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 						while (message.includes('{shown}')) {
 							message = message.replace(/{shown}/, row.shown);
-						}
-						if(message === 'undefined') {
-							console.log("STOP")
 						}
 
 						// We are displaying the count in the same columne as the name of the search option.
@@ -181,7 +174,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 		let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 		this.s.dtPane.rows().remove();
 		for(let data of this.s.rowData.arrayFilter) {
-			// console.log(data);
 			if(data.shown === 0) {
 				continue;
 			}
@@ -241,7 +233,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_serverPopulate(dataIn) {
-		console.log("server")
 		this.s.rowData.binsShown = {};
 		if (dataIn.tableLength !== undefined) {
 			this.s.tableLength = dataIn.tableLength;
@@ -253,6 +244,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 		}
 
 		let colTitle = this.s.dt.column(this.s.index).dataSrc();
+		this.s.rowData.arrayFilter = [];
 
 		if (dataIn.searchPanes.options[colTitle] !== undefined) {
 			for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
@@ -296,11 +288,9 @@ export default class SearchPaneCascade extends SearchPaneST {
 		this.s.displayed = true;
 
 		if (this.s.dtPane) {
-			this.s.serverSelecting = true;
 			let selected = this.s.serverSelect;
 			this.s.dtPane.rows().remove();
 			for(let data of this.s.rowData.arrayFilter) {
-				console.log(data.shown, data.filter)
 				if(data.shown > 0) {
 					let row = this.addRow(
 						data.display,
@@ -311,7 +301,9 @@ export default class SearchPaneCascade extends SearchPaneST {
 					for(let i = 0; i < selected.length; i++) {
 						let selection = selected[i];
 						if(selection.filter === data.filter) {
+							this.s.serverSelecting = true;
 							row.select();
+							this.s.serverSelecting = false;
 							selected.splice(i, 1);
 							this.s.selections.push(data.filter);
 							break;
@@ -328,13 +320,15 @@ export default class SearchPaneCascade extends SearchPaneST {
 							data.sort,
 							data.type
 						);
+						this.s.serverSelecting = true;
 						row.select();
+						this.s.serverSelecting = false;
 						this.s.selections.push(data.filter);
 					}
 				}
 			}
+			this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
 			this.s.dtPane.draw();
-			this.s.serverSelecting = false;
 		}
 	}
 }

@@ -29,11 +29,8 @@ export default class SearchPaneST extends SearchPane {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_updateSelection() {
 		if (this.s.dt.page.info().serverSide && !this.s.updating) {
-			console.log('pass1')
 			if (!this.s.serverSelecting) {
-				console.log('pass2')
 				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-				this.s.dt.draw(false);
 			}
 		}
 	}

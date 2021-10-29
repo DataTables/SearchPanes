@@ -51,9 +51,7 @@ export default class SearchPanesST extends SearchPanes {
 	_setXHR() {
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
-		console.log("set myxhr")
 		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
-			console.log("call myxhr", json)
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
@@ -131,7 +129,7 @@ export default class SearchPanesST extends SearchPanes {
 	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_updateSelectionList(paneIn = undefined) {
-		if(this.s.updating) {
+		if(this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
 		}
 
@@ -149,26 +147,26 @@ export default class SearchPanesST extends SearchPanes {
 		// }
 
 		let index;
-		console.log(paneIn)
 		if(paneIn !== undefined) {
 			if(this.s.dt.page.info().serverSide) {
 				paneIn._updateSelection();
 			}
+			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
+			index = paneIn.s.index;
+			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
+			if (rows.length > 0) {
+				this.s.selectionList.push({
+					column: index,
+					rows
+				});
+			}
 			else {
-				let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
-				index = paneIn.s.index;
-				this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
-				if (rows.length > 0) {
-					this.s.selectionList.push({
-						column: index,
-						rows
-					});
-				}
-				else {
-					index = this.s.selectionList.length > 0 ?
-						this.s.selectionList[this.s.selectionList.length-1].column :
-						undefined;
-				}
+				index = this.s.selectionList.length > 0 ?
+					this.s.selectionList[this.s.selectionList.length-1].column :
+					undefined;
+			}
+			if(this.s.dt.page.info().serverSide) {
+				this.s.dt.draw(false);
 			}
 		}
 
@@ -208,7 +206,7 @@ export default class SearchPanesST extends SearchPanes {
 				pane.s.selections = selection.rows;
 				this.s.dt.draw();
 				let filteringActive = false;
-	
+
 				let filterCount = 0;
 				let prevSelectedPanes = 0;
 				let selectedPanes = 0;
@@ -256,10 +254,10 @@ export default class SearchPanesST extends SearchPanes {
 	}
 
 	private _serverTotals() {
-		console.log(this.s.serverData);
 		for (let pane of this.s.panes) {
+			console.log(+this.s.serverData.recordsFiltered, +pane.s.tableLength, +this.s.serverData.recordsFiltered < +pane.s.tableLength);
+			pane.s.filteringActive = +this.s.serverData.recordsFiltered < +pane.s.tableLength;
 			pane._serverPopulate(this.s.serverData);
-			console.log("popd")
 		}
 	}
 }

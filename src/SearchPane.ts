@@ -558,9 +558,7 @@ export default class SearchPane {
 
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
-		console.log("set")
 		this.s.dtPane.off('select.dtsp').on('select.dtsp', () => {
-			console.log("select")
 			clearTimeout(t0);
 			this._updateSelection(!this.s.updating);
 
