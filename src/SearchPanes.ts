@@ -818,26 +818,19 @@ export default class SearchPanes {
 		});
 
 		// PreSelect any selections which have been defined using the preSelect option
-		for (let pane of this.s.panes) {
-			if (
-				pane &&
-				pane.s.dtPane &&
-				(
-					this.c.preSelect.find(el => el.column === pane.s.index) ||
-					pane.s.customPaneSettings &&
-					pane.s.customPaneSettings.preSelect &&
-					pane.s.customPaneSettings.preSelect.length > 0
-				)
-			) {
+		for (let selection of this.c.preSelect) {
+			let pane;
+			for(let p of this.s.panes) {
+				if(p.s.index === selection.column) {
+					pane = p;
+					break;
+				}
+			}
+			if (pane && pane.s.dtPane) {
 				let tableLength = pane.s.dtPane.rows().data().toArray().length;
 
 				for (let i = 0; i < tableLength; i++) {
-					if (
-						this.c.preSelect.find(el => el.rows.includes(pane.s.dtPane.cell(i, 0).data())) ||
-						pane.s.customPaneSettings &&
-						pane.s.customPaneSettings.preSelect &&
-						pane.s.customPaneSettings.preSelect.includes(pane.s.dtPane.cell(i, 0).data())
-					) {
+					if (selection.rows.includes(pane.s.dtPane.cell(i, 0).data())) {
 						pane.s.dtPane.row(i).select();
 					}
 				}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>columns.searchPanes.preSelect</name>
-	<summary>Pre-selected options in a pane</summary>
+	<summary>Deprecated. Pre-selected options in a pane</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="Array">
@@ -15,11 +15,13 @@
 	</default>
 	<description>
 		<![CDATA[
+			This option is deprecated from version 2.0.0+. It was replaced by `-init searchPanes.preSelect` which allowed the order that the selections were made in to be defined. This allowed preselecting to become compatible with `-init searchPanes.cascadePanes`
+
 			As standard, SearchPanes will not pre-select any values in any of the panes.
 
 			If any of the elements in the array held in `-init columns.searchPanes.preSelect` are present in the pane then they will be pre-selected.
 
-			Note: `-init searchPanes.preSelect` is not supported with `-init searchPanes.cascadePanes`. This is because in order to have the cascade operate as expected the selections need to be made in the correct order. Currently it is not possible to indicate this with preSelect.
+			Note: Before version 2.0.0, where this option was deprecated, `-init columns.searchPanes.preSelect` was not supported with `-init searchPanes.cascadePanes`. This was because in order to have the cascade operate as expected the selections had to be made in the correct order. It is however now possible in versions after 2.0.0 using `-init searchPanes.preSelect`
 		]]>
 	</description>
 
@@ -40,5 +42,7 @@ $(document).ready(function() {
 });
 
 ]]></example>
+
+<related type="option">searchPanes.preSelect</related>
 
 </dt-option>
