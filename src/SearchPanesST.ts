@@ -255,8 +255,14 @@ export default class SearchPanesST extends SearchPanes {
 
 	private _serverTotals() {
 		for (let pane of this.s.panes) {
-			console.log(+this.s.serverData.recordsFiltered, +pane.s.tableLength, +this.s.serverData.recordsFiltered < +pane.s.tableLength);
-			pane.s.filteringActive = +this.s.serverData.recordsFiltered < +pane.s.tableLength;
+			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
+			let blockVT = true;
+			for(let data of this.s.serverData.searchPanes.options[colTitle]) {
+				if(data.total !== data.count) {
+					blockVT = false;
+				}
+			}
+			pane.s.filteringActive = !blockVT;
 			pane._serverPopulate(this.s.serverData);
 		}
 	}

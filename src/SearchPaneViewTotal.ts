@@ -23,6 +23,62 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	}
 
 	/**
+	 * Adds a row to the panes table
+	 *
+	 * @param display the value to be displayed to the user
+	 * @param filter the value to be filtered on when searchpanes is implemented
+	 * @param shown the number of rows in the table that are currently visible matching this criteria
+	 * @param total the total number of rows in the table that match this criteria
+	 * @param sort the value to be sorted in the pane table
+	 * @param type the value of which the type is to be derived from
+	 */
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	addRow(
+		display,
+		filter,
+		sort,
+		type,
+		className?: string,
+		total?,
+		shown?
+	): any {
+		let index: number;
+		if(!total) {
+			total = this.s.rowData.bins[filter] ?
+				this.s.rowData.bins[filter] :
+				0;
+		}
+		if(!shown) {
+			shown = this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
+				this.s.rowData.binsShown[filter] :
+				0;
+		}
+
+		for (let entry of this.s.indexes) {
+			if (entry.filter === filter) {
+				index = entry.index;
+			}
+		}
+
+		if (index === undefined) {
+			index = this.s.indexes.length;
+			this.s.indexes.push({filter, index});
+		}
+		return this.s.dtPane.row.add({
+			className,
+			display: display !== '' ?
+				display :
+				this.emptyMessage(),
+			filter,
+			index,
+			shown,
+			sort,
+			total,
+			type
+		});
+	}
+
+	/**
 	 * Get's the pane config appropriate to this class
 	 *
 	 * @returns The config needed to create a pane of this type
@@ -46,11 +102,6 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 							return row.type;
 						}
 
-						if(row.filter === 'Ishmael') {
-							console.log(row)
-						}
-
-						// console.log(row.filter, this.s.filteringActive)
 						let message = (
 							this.s.filteringActive ?
 								filteredMessage.replace(/{total}/, row.total):
@@ -138,10 +189,6 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 
 		if (dataIn.searchPanes.options[colTitle] !== undefined) {
 			for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
-				console.log(251)
-				if(dataPoint.value === 'Ishmael') {
-					console.log(dataPoint)
-				}
 				this.s.rowData.arrayFilter.push({
 					display: dataPoint.label,
 					filter: dataPoint.value,
@@ -150,8 +197,8 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 					total: +dataPoint.total,
 					type: dataPoint.label
 				});
-				this.s.rowData.binsShown[dataPoint.value] = dataPoint.count;
-				this.s.rowData.bins[dataPoint.value] = dataPoint.total;
+				this.s.rowData.binsShown[dataPoint.value] = +dataPoint.count;
+				this.s.rowData.bins[dataPoint.value] = +dataPoint.total;
 			}
 		}
 

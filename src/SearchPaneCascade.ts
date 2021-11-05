@@ -256,8 +256,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 					total: dataPoint.total,
 					type: dataPoint.label
 				});
-				this.s.rowData.binsShown[dataPoint.value] = dataPoint.count;
-				this.s.rowData.bins[dataPoint.value] = dataPoint.total;
+				this.s.rowData.binsShown[dataPoint.value] = +dataPoint.count;
+				this.s.rowData.bins[dataPoint.value] = +dataPoint.total;
 			}
 		}
 
