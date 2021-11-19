@@ -1430,7 +1430,10 @@ export default class SearchPane {
 						this.dom.searchBox.val(pane.searchTerm);
 						this.dom.searchBox.trigger('input');
 					}
-					this.s.dtPane.order(pane.order).draw();
+
+					if (pane.order) {
+						this.s.dtPane.order(pane.order).draw();
+					}
 
 					// Is the pane to be hidden or shown?
 					if (pane.collapsed) {
