@@ -818,7 +818,13 @@ export default class SearchPanes {
 		});
 
 		// PreSelect any selections which have been defined using the preSelect option
-		for (let selection of this.c.preSelect) {
+		let selectList = this.c.preSelect;
+
+		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList) {
+			selectList = loadedFilter.searchPanes.selectionList;
+		}
+
+		for (let selection of selectList) {
 			let pane;
 			for(let p of this.s.panes) {
 				if(p.s.index === selection.column) {
