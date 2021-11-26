@@ -7,6 +7,7 @@
 	<type type="Array">
 		<description>
 			`-init searchPanes.preSelect` is an array of objects that contain the details required to preselect rows in the corresponding panes. 
+		</description>
 	<default value="[]">
 		The default value for the `-init searchPanes.preSelect` parameter is `[]`. When this default value is in place, no values will be preSelected in the panes.
 	</default>
