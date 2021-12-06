@@ -41,16 +41,16 @@
 		disabledButton: 'disabled',
 		narrowSearch: 'dtsp-narrowSearch',
 		narrowSub: 'dtsp-narrow',
-		paneButton: 'ui',
+		paneButton: 'basic ui',
 		paneInputButton: 'circular search link icon',
 		topRow: 'row dtsp-topRow'
 	});
 
 	$.extend(true, dataTable.SearchPanes.classes, {
-		clearAll: 'dtsp-clearAll ui button',
-		collapseAll: 'dtsp-collapseAll ui button',
+		clearAll: 'dtsp-clearAll basic ui button',
+		collapseAll: 'dtsp-collapseAll basic ui button',
 		disabledButton: 'disabled',
-		showAll: 'dtsp-showAll ui button'
+		showAll: 'dtsp-showAll basic ui button'
 	});
 
 	// This override is required for the integrated search Icon in sematic ui
