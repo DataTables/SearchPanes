@@ -1537,6 +1537,7 @@ export default class SearchPane {
 	 */
 	private _escapeHTML(txt: string): string {
 		return txt
+			.toString()
 			.replace(/&amp;/g, '&')
 			.replace(/&lt;/g, '<')
 			.replace(/&gt;/g, '>')
