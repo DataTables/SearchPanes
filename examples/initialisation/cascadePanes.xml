@@ -25,9 +25,6 @@ $(document).ready(function() {
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates the `-init searchPanes.cascadePanes` functionality. This allows the panes to be filtered based on the values selected in the other panes. `-init searchPanes.cascadePanes` is `false` as default.
-
-Note: None of the `-init searchPanes.preSelect` options for SearchPanes are supported with `-init searchPanes.cascadePanes`. This is because in order to have the cascade operate as expected the selections need to be made in the correct order. Currently it is not possible to indicate this with preSelect.
-
 ]]></info>
 
 </dt-example>
