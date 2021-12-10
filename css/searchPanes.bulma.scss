@@ -9,7 +9,6 @@ div.dtsp-panesContainer {
 		div.dtsp-searchPane {
             div.dataTables_wrapper {
                 border: 1px solid #dbdbdb;
-                border-radius: 4px;
                 &:hover{
 					border: 1px solid #bdbdbd;
 				}
@@ -30,6 +29,9 @@ div.dtsp-panesContainer {
                 }
             }
 
+            div.dtsp-topRow {
+                border-left: none;
+            }
             div.dtsp-topRow.dtsp-bordered:hover {
                 button.is-disabled {
                     cursor: pointer !important;
