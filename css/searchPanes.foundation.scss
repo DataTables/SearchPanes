@@ -76,6 +76,10 @@ div.dtsp-searchPane {
             min-width: 30px;
             line-height: 1.25em;
             margin-top: 2.5px;
+            border-radius: 9px;
+            &:empty {
+                display: none;
+            }
         }
     }
 }
