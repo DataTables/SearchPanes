@@ -210,6 +210,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 			}
 		}
 		this.s.dtPane.draw();
+		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 		if (!this.s.dt.page.info().serverSide) {
 			this.s.dt.draw();
 		}

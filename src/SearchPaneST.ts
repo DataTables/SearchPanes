@@ -51,6 +51,7 @@ export default class SearchPaneST extends SearchPane {
 			this.s.dtPane.row(row.index).data(row);
 		}
 		this.s.dtPane.draw();
+		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility

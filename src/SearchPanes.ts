@@ -198,6 +198,11 @@ export default class SearchPanes {
 	 * Clear the selections of all of the panes
 	 */
 	public clearSelections(): SearchPane[] {
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane) {
+				pane.s.scrollTop = pane.s.dtPane.table().node().parentNode.scrollTop;
+			}
+		}
 		// Load in all of the searchBoxes in the documents
 		let searches = this.dom.container.find('.' + this.classes.search.replace(/\s+/g, '.'));
 

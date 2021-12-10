@@ -181,6 +181,13 @@ export default class SearchPane {
      */
     private _displayPane;
     /**
+     * Escape html characters within a string
+     *
+     * @param txt the string to be escaped
+     * @returns the escaped string
+     */
+    private _escapeHTML;
+    /**
      * Gets the options for the row for the customPanes
      *
      * @returns {object} The options for the row extended to include the options from the user.
