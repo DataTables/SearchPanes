@@ -810,12 +810,7 @@ export default class SearchPane {
 							return row.type;
 						}
 
-						let message = countMessage.replace(/{total}/, row.total) ;
-
-						while (message.includes('{total}')) {
-							message = message.replace(/{total}/, row.total);
-						}
-
+						let message = countMessage.replace(/{total}/g, row.total) ;
 
 						// We are displaying the count in the same columne as the name of the search option.
 						// This is so that there is not need to call columns.adjust()

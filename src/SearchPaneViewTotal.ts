@@ -104,19 +104,10 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 
 						let message = (
 							this.s.filteringActive ?
-								filteredMessage.replace(/{total}/, row.total):
-								countMessage.replace(/{total}/, row.total)
+								filteredMessage.replace(/{total}/g, row.total):
+								countMessage.replace(/{total}/g, row.total)
 						)
-							.replace(/{shown}/, row.shown);
-
-
-						while (message.includes('{total}')) {
-							message = message.replace(/{total}/, row.total);
-						}
-
-						while (message.includes('{shown}')) {
-							message = message.replace(/{shown}/, row.shown);
-						}
+							.replace(/{shown}/g, row.shown);
 
 						// We are displaying the count in the same columne as the name of the search option.
 						// This is so that there is not need to call columns.adjust()
