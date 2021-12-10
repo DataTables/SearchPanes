@@ -12,7 +12,7 @@
         </description>
 	</type>
 
-	<default value="undefined">
+	<default value="Show All">
         The default value for the `-init searchPanes.i18n.showMessage` parameter is `"Show All"`.
     </default>
 	<description>
