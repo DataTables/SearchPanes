@@ -7,6 +7,13 @@ div.dtsp-panesContainer {
 
 	div.dtsp-searchPanes {
 		div.dtsp-searchPane {
+            div.dataTables_wrapper {
+                border: 1px solid #dbdbdb;
+                border-radius: 4px;
+                &:hover{
+					border: 1px solid #bdbdbd;
+				}
+            }
             input.dtsp-paneInputButton,
 			button.dtsp-paneButton {
 				height: 35px;
