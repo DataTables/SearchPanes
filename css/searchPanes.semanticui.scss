@@ -10,10 +10,17 @@ div.dtsp-searchPane {
 
         input {
             min-height: 37px;
+            border: 1px solid rgba(34,36,38,.15);
+            padding-left: 12px;
         }
 
         button {
-            border: 1px solid #ced4da;
+            border: 1px solid rgba(34,36,38,.15);
+            border-left: none;
+
+            &:first-child {
+                border-left: 1px solid rgba(34,36,38,.15);
+            }
             // width: 35px;
         }
 
@@ -22,11 +29,12 @@ div.dtsp-searchPane {
 			top: 7px;
 			right: 3px;
             bottom: 0;
+            box-shadow: none;
         }
 
         span.dtsp-caret {
             top: 4px;
-            right: 4px;
+            right: 0;
         }
 
         button.dtsp-collapseButton {
@@ -99,6 +107,10 @@ div.dtsp-searchPane {
     div.ui.grid {
         margin-top: 0;
         margin-bottom: 0;
+        
+        div.row {
+            padding: 0 !important;
+        }
     }
 }
 
