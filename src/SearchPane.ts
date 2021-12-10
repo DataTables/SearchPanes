@@ -1301,11 +1301,7 @@ export default class SearchPane {
 				: this.s.dt.settings()[0].aoColumns[this.s.index].sTitle;
 		}
 
-		headerText = headerText
-			.replace(/&amp;/g, '&')
-			.replace(/&lt;/g, '<')
-			.replace(/&gt;/g, '>')
-			.replace(/&quot;/g, '"');
+		headerText = this._escapeHTML(headerText);
 
 		this.dom.searchBox.attr('placeholder', headerText);
 
@@ -1527,6 +1523,20 @@ export default class SearchPane {
 	}
 
 	/**
+	 * Escape html characters within a string
+	 *
+	 * @param txt the string to be escaped
+	 * @returns the escaped string
+	 */
+	private _escapeHTML(txt: string): string {
+		return txt
+			.replace(/&amp;/g, '&')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&quot;/g, '"');
+	}
+
+	/**
 	 * Gets the options for the row for the customPanes
 	 *
 	 * @returns {object} The options for the row extended to include the options from the user.
@@ -1672,11 +1682,7 @@ export default class SearchPane {
 			if (typeof colSelect === 'string' && typeof filter === 'string') {
 				// The filter value will not have the &amp; in place but a &,
 				// so we need to do a replace to make sure that they will match
-				colSelect = colSelect
-					.replace(/&amp;/g, '&')
-					.replace(/&lt;/g, '<')
-					.replace(/&gt;/g, '>')
-					.replace(/&quot;/g, '"');
+				colSelect = this._escapeHTML(colSelect);
 			}
 
 			// if the filter is an array then is the column present in it
