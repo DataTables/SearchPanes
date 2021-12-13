@@ -38,5 +38,8 @@ export default class SearchPanesST extends SearchPanes {
      * @param selected Which rows are selected within the pane
      */
     private _updateSelectionList;
+    /**
+     * Remake the selections that were present before new data or calculations have occured
+     */
     private _remakeSelections;
 }

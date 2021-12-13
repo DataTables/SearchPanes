@@ -141,29 +141,27 @@ export default class SearchPanesST extends SearchPanes {
 	 * @param selected Which rows are selected within the pane
 	 */
 	private _updateSelectionList(paneIn = undefined) {
-		if(this.s.updating || paneIn && paneIn.s.serverSelecting) {
+		// Bail if any of these flags are set
+		if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
 		}
 
-		let index;
-		if(paneIn !== undefined) {
-			if(this.s.dt.page.info().serverSide) {
+		if (paneIn !== undefined) {
+			if (this.s.dt.page.info().serverSide) {
 				paneIn._updateSelection();
 			}
+
+			// Get filter values for all of the rows and the selections
 			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
-			index = paneIn.s.index;
-			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== index);
+			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== paneIn.s.index);
+
 			if (rows.length > 0) {
 				this.s.selectionList.push({
-					column: index,
+					column: paneIn.s.index,
 					rows
 				});
 			}
-			else {
-				index = this.s.selectionList.length > 0 ?
-					this.s.selectionList[this.s.selectionList.length-1].column :
-					undefined;
-			}
+
 			if(this.s.dt.page.info().serverSide) {
 				this.s.dt.draw(false);
 			}
@@ -172,42 +170,60 @@ export default class SearchPanesST extends SearchPanes {
 		this._remakeSelections();
 	}
 
+	/**
+	 * Remake the selections that were present before new data or calculations have occured
+	 */
 	private _remakeSelections() {
 		this.s.updating = true;
-		if(!this.s.dt.page.info().serverSide) {
+
+		if (!this.s.dt.page.info().serverSide) {
 			let tmpSL = this.s.selectionList;
 			let anotherFilter = false;
 			this.clearSelections();
 			this.s.dt.draw();
-			if(this.s.dt.rows().toArray()[0].length > this.s.dt.rows({search: 'applied'}).toArray()[0].length) {
+
+			// When there are no selections present if the length of the data does not match the searched data
+			// then another filter is present
+			if (this.s.dt.rows().toArray()[0].length > this.s.dt.rows({search: 'applied'}).toArray()[0].length) {
 				anotherFilter = true;
 			}
+
 			this.s.selectionList = tmpSL;
+
+			// Update the rows in each pane
 			for(let pane of this.s.panes) {
 				if (pane.s.displayed) {
 					pane.s.filteringActive = anotherFilter;
 					pane.updateRows();
 				}
 			}
-			for(let selection of this.s.selectionList) {
+
+			for (let selection of this.s.selectionList) {
 				let pane = this.s.panes[selection.column];
 				let ids = pane.s.dtPane.rows().indexes().toArray();
-				for(let row of selection.rows) {
-					for(let id of ids) {
+
+				// Select the rows that are present in the selection list
+				for (let row of selection.rows) {
+					for (let id of ids) {
 						let currRow = pane.s.dtPane.row(id);
 						let data = currRow.data();
+
 						if (row === data.filter) {
 							currRow.select();
 						}
 					}
 				}
-				pane.s.selections = selection.rows;
-				this.s.dt.draw();
-				let filteringActive = false;
 
+				pane.s.selections = selection.rows;
+
+				// Update the table to display the current results
+				this.s.dt.draw();
+
+				let filteringActive = false;
 				let filterCount = 0;
 				let prevSelectedPanes = 0;
 				let selectedPanes = 0;
+
 				// Add the number of all of the filters throughout the panes
 				for (let currPane of this.s.panes) {
 					if (currPane.s.dtPane) {
@@ -218,36 +234,47 @@ export default class SearchPanesST extends SearchPanes {
 						}
 					}
 				}
+
 				filteringActive = filterCount > 0;
-				for(let currPane of this.s.panes) {
-					if(currPane.s.displayed) {
+
+				for (let currPane of this.s.panes) {
+					if (currPane.s.displayed) {
+						// Set the filtering active flag
 						if (anotherFilter || pane.s.index !== currPane.s.index || !filteringActive) {
 							currPane.s.filteringActive = filteringActive || anotherFilter;
 						}
 						else if (selectedPanes === 1) {
 							currPane.s.filteringActive = false;
 						}
-						if(currPane.s.index !== pane.s.index) {
+
+						// Update the rows to show correct counts
+						if (currPane.s.index !== pane.s.index) {
 							currPane.updateRows();
 						}
 					}
 				}
 			}
+
+			// Update table to show final search results
 			this.s.dt.draw();
 		}
 		else {
+			// Identify the last pane to have a change in selection
 			let pane;
-			if(this.s.selectionList.length > 0) {
+			if (this.s.selectionList.length > 0) {
 				pane = this.s.panes[this.s.selectionList[this.s.selectionList.length-1].column];
 			}
-			for(let currPane of this.s.panes) {
-				if(currPane.s.displayed) {
-					if(!pane || currPane.s.index !== pane.s.index) {
+
+			// Update the rows of all of the other panes
+			for (let currPane of this.s.panes) {
+				if (currPane.s.displayed) {
+					if (!pane || currPane.s.index !== pane.s.index) {
 						currPane.updateRows();
 					}
 				}
 			}
 		}
+
 		this.s.updating = false;
 	}
 }
