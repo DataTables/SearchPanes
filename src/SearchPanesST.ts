@@ -32,24 +32,6 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
 	}
 
-	protected _initSelectionListeners(preSelect) {
-		this.s.selectionList = preSelect;
-
-		for (let pane of this.s.panes) {
-			if (pane.s.displayed) {
-				pane.s.dtPane
-					.off('select.dtsp')
-					.on('select.dtsp', this._update(pane))
-					.off('deselect.dtsp')
-					.on('deselect.dtsp', this._update(pane));
-			}
-		}
-
-		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
-
-		this._updateSelectionList();
-	}
-
 	protected _update(pane=undefined) {
 		return () => this._updateSelectionList(pane);
 	}
@@ -239,5 +221,31 @@ export default class SearchPanesST extends SearchPanes {
 			pane.s.filteringActive = !blockVT;
 			pane._serverPopulate(this.s.serverData);
 		}
+	}
+
+	/**
+	 * Ensures that the correct selection listeners are set for selection tracking
+	 *
+	 * @param preSelect Any values that are to be preselected
+	 */
+	private _initSelectionListeners(preSelect) {
+		this.s.selectionList = preSelect;
+
+		// Set selection listeners for each pane
+		for (let pane of this.s.panes) {
+			if (pane.s.displayed) {
+				pane.s.dtPane
+					.off('select.dtsp')
+					.on('select.dtsp', this._update(pane))
+					.off('deselect.dtsp')
+					.on('deselect.dtsp', this._update(pane));
+			}
+		}
+
+		// Update on every draw
+		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
+
+		// Also update right now as table has just initialised
+		this._updateSelectionList();
 	}
 }

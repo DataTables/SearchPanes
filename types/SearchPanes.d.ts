@@ -28,7 +28,13 @@ export default class SearchPanes {
      * Resizes all of the panes
      */
     resizePanes(): SearchPanes;
+    /**
+     * Set's the xhr listener so that SP can extact appropriate data from the response
+     */
     protected _setXHR(): void;
+    /**
+     * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
+     */
     protected _serverTotals(): void;
     /**
      * Updates the selectionList when cascade is not in place
