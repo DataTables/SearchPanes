@@ -1020,6 +1020,13 @@ export default class SearchPane {
 		}
 	}
 
+	/**
+	 * Populates the SearchPane based off of the data that has been recieved from the server
+	 *
+	 * This method is overriden by SearchPaneST
+	 *
+	 * @param dataIn The data that has been sent from the server
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_serverPopulate(dataIn) {
 		if (dataIn.tableLength) {
@@ -1033,6 +1040,7 @@ export default class SearchPane {
 
 		let colTitle = this.s.dt.column(this.s.index).dataSrc();
 
+		// If there is SP data for this column add it to the data array and bin
 		if (dataIn.searchPanes.options[colTitle]) {
 			for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
 				this.s.rowData.arrayFilter.push({
@@ -1065,8 +1073,11 @@ export default class SearchPane {
 			return;
 		}
 
+		// Store the original data
 		this.s.rowData.arrayOriginal = this.s.rowData.arrayFilter;
 		this.s.rowData.binsOriginal = this.s.rowData.bins;
+
+		// Flag this pane as being displayed
 		this.s.displayed = true;
 	}
 

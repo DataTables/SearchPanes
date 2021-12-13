@@ -59,6 +59,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 	/**
 	 * This method updates the rows and their data within the SearchPanes
+	 *
+	 * This overrides the method in SearchPane
 	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	updateRows() {
@@ -148,104 +150,16 @@ export default class SearchPaneCascade extends SearchPaneST {
 		}
 	}
 
+	/**
+	 * Decides if a row should be added when being added from the server
+	 *
+	 * Overrides method in by SearchPaneST
+	 *
+	 * @param data the row data
+	 * @returns boolean indicating if the row should be added or not
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_serverPopulate(dataIn) {
-		this.s.rowData.binsShown = {};
-		if (dataIn.tableLength !== undefined) {
-			this.s.tableLength = dataIn.tableLength;
-			this.s.rowData.totalOptions = this.s.tableLength;
-		}
-		else if (this.s.tableLength === null || this.s.dt.rows()[0].length > this.s.tableLength) {
-			this.s.tableLength = this.s.dt.rows()[0].length;
-			this.s.rowData.totalOptions = this.s.tableLength;
-		}
-
-		let colTitle = this.s.dt.column(this.s.index).dataSrc();
-		this.s.rowData.arrayFilter = [];
-
-		if (dataIn.searchPanes.options[colTitle] !== undefined) {
-			for (let dataPoint of dataIn.searchPanes.options[colTitle]) {
-				this.s.rowData.arrayFilter.push({
-					display: dataPoint.label,
-					filter: dataPoint.value,
-					shown: dataPoint.count,
-					sort: dataPoint.label,
-					total: dataPoint.total,
-					type: dataPoint.label
-				});
-				this.s.rowData.binsShown[dataPoint.value] = +dataPoint.count;
-				this.s.rowData.bins[dataPoint.value] = +dataPoint.total;
-			}
-		}
-
-		let binLength: number = Object.keys(this.s.rowData.bins).length;
-		let uniqueRatio: number = this._uniqueRatio(binLength, this.s.tableLength);
-
-		// Don't show the pane if there isnt enough variance in the data, or there is only 1 entry for that pane
-		if (
-			!this.s.colOpts.show &&
-			this.s.displayed === false &&
-			(
-				(
-					this.s.colOpts.show === undefined && this.s.colOpts.threshold === null ?
-						uniqueRatio > this.c.threshold :
-						uniqueRatio > this.s.colOpts.threshold
-				) ||
-				this.s.colOpts.show !== true && binLength <= 1
-			)
-		) {
-			this.dom.container.addClass(this.classes.hidden);
-			this.s.displayed = false;
-			return;
-		}
-
-		this.s.rowData.arrayOriginal = this.s.rowData.arrayFilter;
-		this.s.rowData.binsOriginal = this.s.rowData.bins;
-
-		this.s.displayed = true;
-
-		if (this.s.dtPane) {
-			let selected = this.s.serverSelect;
-			this.s.dtPane.rows().remove();
-			for(let data of this.s.rowData.arrayFilter) {
-				if(data.shown > 0) {
-					let row = this.addRow(
-						data.display,
-						data.filter,
-						data.sort,
-						data.type
-					);
-					for(let i = 0; i < selected.length; i++) {
-						let selection = selected[i];
-						if(selection.filter === data.filter) {
-							this.s.serverSelecting = true;
-							row.select();
-							this.s.serverSelecting = false;
-							selected.splice(i, 1);
-							this.s.selections.push(data.filter);
-							break;
-						}
-					}
-				}
-			}
-			for (let selection of selected) {
-				for(let data of this.s.rowData.arrayOriginal) {
-					if(data.filter === selection.filter) {
-						let row = this.addRow(
-							data.display,
-							data.filter,
-							data.sort,
-							data.type
-						);
-						this.s.serverSelecting = true;
-						row.select();
-						this.s.serverSelecting = false;
-						this.s.selections.push(data.filter);
-					}
-				}
-			}
-			this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-			this.s.dtPane.draw();
-		}
+	_shouldAddRow(data) {
+		return data.shown > 0;
 	}
 }
