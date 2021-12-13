@@ -5,16 +5,26 @@ export default class SearchPaneViewTotal extends SearchPaneST {
     s: ISST;
     constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
     /**
-     * Adds a row to the panes table
+     * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
      *
-     * @param display the value to be displayed to the user
-     * @param filter the value to be filtered on when searchpanes is implemented
-     * @param shown the number of rows in the table that are currently visible matching this criteria
-     * @param total the total number of rows in the table that match this criteria
-     * @param sort the value to be sorted in the pane table
-     * @param type the value of which the type is to be derived from
+     * @param filter The filter value
+     * @returns number - The number of times the value is shown
      */
-    addRow(display: any, filter: any, sort: any, type: any, className?: string, total?: any, shown?: any): any;
+    _getShown(filter: any): number;
+    /**
+     * Overrides the method from SearchPane to make it take no action
+     *
+     * @returns undefined
+     */
+    _getEmpties(): number;
+    /**
+     * Gets the message that is to be used to indicate the count for each SearchPane row
+     *
+     * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal
+     *
+     * @param row The row object that is being processed
+     * @returns string - the message that is to be shown for the count of each entry
+     */
     _getMessage(row: any): any;
     _serverPopulate(dataIn: any): void;
 }
