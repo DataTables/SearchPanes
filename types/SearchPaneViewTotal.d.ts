@@ -5,13 +5,6 @@ export default class SearchPaneViewTotal extends SearchPaneST {
     s: ISST;
     constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
     /**
-     * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
-     *
-     * @param filter The filter value
-     * @returns number - The number of times the value is shown
-     */
-    protected _getShown(filter: any): number;
-    /**
      * Overrides the method from SearchPane to make it take no action
      *
      * @returns undefined
@@ -26,4 +19,11 @@ export default class SearchPaneViewTotal extends SearchPaneST {
      * @returns string - the message that is to be shown for the count of each entry
      */
     protected _getMessage(row: any): any;
+    /**
+     * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+     *
+     * @param filter The filter value
+     * @returns number - The number of times the value is shown
+     */
+    protected _getShown(filter: any): number;
 }

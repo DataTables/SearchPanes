@@ -33,6 +33,28 @@ export default class SearchPanesST extends SearchPanes {
 	}
 
 	/**
+	 * Retrieve the total values from the server data
+	 */
+	protected _serverTotals() {
+		for (let pane of this.s.panes) {
+			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
+			let blockVT = true;
+
+			// If any of the counts are not equal to the totals filtering must be active
+			for (let data of this.s.serverData.searchPanes.options[colTitle]) {
+				if (data.total !== data.count) {
+					blockVT = false;
+					break;
+				}
+			}
+
+			// Set if filtering is present on the pane and populate the data arrays
+			pane.s.filteringActive = !blockVT;
+			pane._serverPopulate(this.s.serverData);
+		}
+	}
+
+	/**
 	 * Set's the function that is to be performed when a state is loaded
 	 *
 	 * Overrides the method in SearchPanes
@@ -75,28 +97,6 @@ export default class SearchPanesST extends SearchPanes {
 	 */
 	protected _updateSelection() {
 		return;
-	}
-
-	/**
-	 * Retrieve the total values from the server data
-	 */
-	protected _serverTotals() {
-		for (let pane of this.s.panes) {
-			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
-			let blockVT = true;
-
-			// If any of the counts are not equal to the totals filtering must be active
-			for (let data of this.s.serverData.searchPanes.options[colTitle]) {
-				if (data.total !== data.count) {
-					blockVT = false;
-					break;
-				}
-			}
-
-			// Set if filtering is present on the pane and populate the data arrays
-			pane.s.filteringActive = !blockVT;
-			pane._serverPopulate(this.s.serverData);
-		}
 	}
 
 	/**

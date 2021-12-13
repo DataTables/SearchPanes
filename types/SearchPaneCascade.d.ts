@@ -19,13 +19,6 @@ export default class SearchPaneCascade extends SearchPaneST {
      */
     protected _getEmpties(): number;
     /**
-     * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
-     *
-     * @param filter The filter value
-     * @returns number - The number of times the value is shown
-     */
-    protected _getShown(filter: any): number;
-    /**
      * Gets the message that is to be used to indicate the count for each SearchPane row
      *
      * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal
@@ -34,6 +27,13 @@ export default class SearchPaneCascade extends SearchPaneST {
      * @returns string - the message that is to be shown for the count of each entry
      */
     protected _getMessage(row: any): any;
+    /**
+     * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+     *
+     * @param filter The filter value
+     * @returns number - The number of times the value is shown
+     */
+    protected _getShown(filter: any): number;
     /**
      * Decides if a row should be added when being added from the server
      *

@@ -175,6 +175,19 @@ export default class SearchPaneST extends SearchPane {
 	}
 
 	/**
+	 * Decides if a row should be added when being added from the server
+	 *
+	 * Overridden by SearchPaneCascade
+	 *
+	 * @param data the row data
+	 * @returns boolean indicating if the row should be added or not
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected _shouldAddRow(data) {
+		return true;
+	}
+
+	/**
 	 * Updates the server selection list where appropriate
 	 */
 	protected _updateSelection() {
@@ -201,18 +214,5 @@ export default class SearchPaneST extends SearchPane {
 		else {
 			bins[filter] ++;
 		}
-	}
-
-	/**
-	 * Decides if a row should be added when being added from the server
-	 *
-	 * Overridden by SearchPaneCascade
-	 *
-	 * @param data the row data
-	 * @returns boolean indicating if the row should be added or not
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected _shouldAddRow(data) {
-		return true;
 	}
 }

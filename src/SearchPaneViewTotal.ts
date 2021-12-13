@@ -21,18 +21,6 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	}
 
 	/**
-	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
-	 *
-	 * @param filter The filter value
-	 * @returns number - The number of times the value is shown
-	 */
-	protected _getShown(filter) {
-		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
-			this.s.rowData.binsShown[filter] :
-			0;
-	}
-
-	/**
 	 * Overrides the method from SearchPane to make it take no action
 	 *
 	 * @returns undefined
@@ -55,5 +43,17 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 		return (this.s.filteringActive ? filteredMessage : countMessage)
 			.replace(/{total}/g, row.total)
 			.replace(/{shown}/g, row.shown);
+	}
+
+	/**
+	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+	 *
+	 * @param filter The filter value
+	 * @returns number - The number of times the value is shown
+	 */
+	protected _getShown(filter) {
+		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
+			this.s.rowData.binsShown[filter] :
+			0;
 	}
 }

@@ -118,18 +118,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 	}
 
 	/**
-	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
-	 *
-	 * @param filter The filter value
-	 * @returns number - The number of times the value is shown
-	 */
-	protected _getShown(filter) {
-		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
-			this.s.rowData.binsShown[filter] :
-			0;
-	}
-
-	/**
 	 * Gets the message that is to be used to indicate the count for each SearchPane row
 	 *
 	 * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal
@@ -141,6 +129,18 @@ export default class SearchPaneCascade extends SearchPaneST {
 		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count)
 			.replace(/{total}/g, row.total)
 			.replace(/{shown}/g, row.shown);
+	}
+
+	/**
+	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+	 *
+	 * @param filter The filter value
+	 * @returns number - The number of times the value is shown
+	 */
+	protected _getShown(filter) {
+		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
+			this.s.rowData.binsShown[filter] :
+			0;
 	}
 
 	/**

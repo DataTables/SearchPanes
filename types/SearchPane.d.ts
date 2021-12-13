@@ -111,6 +111,7 @@ export default class SearchPane {
      * @returns number The number of empty cells in the column
      */
     protected _getEmpties(): number;
+    protected _getMessage(row: any): any;
     /**
      * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
      *
@@ -120,7 +121,6 @@ export default class SearchPane {
      * @returns undefined
      */
     protected _getShown(filter: any): any;
-    protected _getMessage(row: any): any;
     /**
      * Get's the pane config appropriate to this class
      *

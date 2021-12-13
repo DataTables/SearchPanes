@@ -125,6 +125,7 @@ export default class SearchPanes {
 			updating: false
 		};
 
+		// Do not reinitialise if already initialised on table
 		if (table.settings()[0]._searchPanes) {
 			return;
 		}
@@ -132,6 +133,7 @@ export default class SearchPanes {
 		this._getState();
 
 		if (this.s.dt.page.info().serverSide) {
+			// Listener to get the data into the server request before it is made
 			this.s.dt.on('preXhr.dtsps', (e, settings, data) => {
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
@@ -329,6 +331,13 @@ export default class SearchPanes {
 	}
 
 	/**
+	 * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
+	 */
+	protected _serverTotals() {
+		return;
+	}
+
+	/**
 	 * Set's the xhr listener so that SP can extact appropriate data from the response
 	 */
 	protected _setXHR() {
@@ -341,30 +350,6 @@ export default class SearchPanes {
 				this._serverTotals();
 			}
 		});
-	}
-
-	/**
-	 * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
-	 */
-	protected _serverTotals() {
-		return;
-	}
-
-	/**
-	 * Updates the selectionList when cascade is not in place
-	 *
-	 * Overridden in SearchPanesST
-	 */
-	protected _updateSelection(): void {
-		this.s.selectionList = [];
-		for (let pane of this.s.panes) {
-			if (pane.s.dtPane) {
-				this.s.selectionList.push({
-					column: pane.s.index,
-					rows: pane.s.dtPane.rows({ selected: true }).data().toArray().map(el => el.filter)
-				});
-			}
-		}
 	}
 
 	/**
@@ -401,6 +386,23 @@ export default class SearchPanes {
 
 			this.rebuild(undefined, false);
 		});
+	}
+
+	/**
+	 * Updates the selectionList when cascade is not in place
+	 *
+	 * Overridden in SearchPanesST
+	 */
+	protected _updateSelection(): void {
+		this.s.selectionList = [];
+		for (let pane of this.s.panes) {
+			if (pane.s.dtPane) {
+				this.s.selectionList.push({
+					column: pane.s.index,
+					rows: pane.s.dtPane.rows({ selected: true }).data().toArray().map(el => el.filter)
+				});
+			}
+		}
 	}
 
 	/**

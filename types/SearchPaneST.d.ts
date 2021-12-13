@@ -26,6 +26,15 @@ export default class SearchPaneST extends SearchPane {
      */
     protected _reloadSelect(): void;
     /**
+     * Decides if a row should be added when being added from the server
+     *
+     * Overridden by SearchPaneCascade
+     *
+     * @param data the row data
+     * @returns boolean indicating if the row should be added or not
+     */
+    protected _shouldAddRow(data: any): boolean;
+    /**
      * Updates the server selection list where appropriate
      */
     protected _updateSelection(): void;
@@ -39,13 +48,4 @@ export default class SearchPaneST extends SearchPane {
     protected _updateShown(rowIdx: number, settings: any, bins?: {
         [keys: string]: number;
     }): void;
-    /**
-     * Decides if a row should be added when being added from the server
-     *
-     * Overridden by SearchPaneCascade
-     *
-     * @param data the row data
-     * @returns boolean indicating if the row should be added or not
-     */
-    protected _shouldAddRow(data: any): boolean;
 }

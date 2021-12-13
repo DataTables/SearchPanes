@@ -4,6 +4,10 @@ export default class SearchPanesST extends SearchPanes {
     s: ISVT;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean);
     /**
+     * Retrieve the total values from the server data
+     */
+    protected _serverTotals(): void;
+    /**
      * Set's the function that is to be performed when a state is loaded
      *
      * Overrides the method in SearchPanes
@@ -15,10 +19,6 @@ export default class SearchPanesST extends SearchPanes {
      * Overrides the method in SearchPanes
      */
     protected _updateSelection(): void;
-    /**
-     * Retrieve the total values from the server data
-     */
-    protected _serverTotals(): void;
     /**
      * Ensures that the correct selection listeners are set for selection tracking
      *

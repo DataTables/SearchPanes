@@ -813,7 +813,6 @@ export default class SearchPane {
 		$(this.s.dtPane.table().container()).removeClass(this.classes.hidden);
 	}
 
-
 	/**
 	 * Finds the ratio of the number of different options in the table to the number of rows
 	 *
@@ -864,6 +863,11 @@ export default class SearchPane {
 		return total;
 	}
 
+
+	protected _getMessage(row) {
+		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
+	}
+
 	/**
 	 * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
 	 *
@@ -875,10 +879,6 @@ export default class SearchPane {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected _getShown(filter) {
 		return undefined;
-	}
-
-	protected _getMessage(row) {
-		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
 	}
 
 	/**
