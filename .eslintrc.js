@@ -182,6 +182,7 @@ module.exports = {
 		'no-dupe-keys': 'error',
 		'no-duplicate-case': 'error',
 		'no-duplicate-imports': 'error',
+		'no-else-return': 'error',
 		'no-empty': 'error',
 		'no-eval': 'error',
 		'no-extra-bind': 'error',

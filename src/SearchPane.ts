@@ -830,9 +830,8 @@ export default class SearchPane {
 		) {
 			return bins / this.s.rowData.totalOptions;
 		}
-		else {
-			return 1;
-		}
+
+		return 1;
 	}
 
 	/**
@@ -1138,9 +1137,8 @@ export default class SearchPane {
 				}
 				return;
 			}
-			else {
-				throw new Error('display and filter not the same length');
-			}
+
+			throw new Error('display and filter not the same length');
 		}
 		// If the values were affected by othogonal data and are not an array then check if it is already present
 		else if (typeof this.s.colOpts.orthogonal === 'string') {
@@ -1762,10 +1760,9 @@ export default class SearchPane {
 		if (colOpts.combiner === 'and') {
 			return true;
 		}
+
 		// Otherwise it hasn't matched with anything by this point so it must be false
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	/**
