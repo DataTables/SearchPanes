@@ -10,7 +10,9 @@ export default class SearchPaneST extends SearchPane {
      *
      * @param dataIn The data that has been sent from the server
      */
-    _serverPopulate(dataIn: any): void;
+    _serverPopulate(dataIn: {
+        [keys: string]: any;
+    }): void;
     /**
      * This method updates the rows and their data within the SearchPanes
      *

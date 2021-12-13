@@ -1,4 +1,4 @@
-import { ISVT } from './panesType';
+import { ISelectItem, ISVT } from './panesType';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';
 import SearchPanes from './SearchPanes';
@@ -35,7 +35,7 @@ export default class SearchPanesST extends SearchPanes {
 	/**
 	 * Retrieve the total values from the server data
 	 */
-	protected _serverTotals() {
+	protected _serverTotals(): void {
 		for (let pane of this.s.panes) {
 			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
 			let blockVT = true;
@@ -59,7 +59,7 @@ export default class SearchPanesST extends SearchPanes {
 	 *
 	 * Overrides the method in SearchPanes
 	 */
-	protected _stateLoadListener() {
+	protected _stateLoadListener(): void {
 		let stateLoadFunction = (e, settings, data) => {
 			if (data.searchPanes === undefined) {
 				return;
@@ -95,7 +95,7 @@ export default class SearchPanesST extends SearchPanes {
 	 *
 	 * Overrides the method in SearchPanes
 	 */
-	protected _updateSelection() {
+	protected _updateSelection(): void {
 		return;
 	}
 
@@ -104,7 +104,7 @@ export default class SearchPanesST extends SearchPanes {
 	 *
 	 * @param preSelect Any values that are to be preselected
 	 */
-	private _initSelectionListeners(preSelect) {
+	private _initSelectionListeners(preSelect: ISelectItem[]): void {
 		this.s.selectionList = preSelect;
 
 		// Set selection listeners for each pane
@@ -130,7 +130,7 @@ export default class SearchPanesST extends SearchPanes {
 	 *
 	 * @param pane the pane that is to have it's selections loaded
 	 */
-	private _update(pane=undefined) {
+	private _update(pane=undefined): () => void {
 		return () => this._updateSelectionList(pane);
 	}
 
@@ -140,7 +140,7 @@ export default class SearchPanesST extends SearchPanes {
 	 * @param index The index of the pane that is to be updated
 	 * @param selected Which rows are selected within the pane
 	 */
-	private _updateSelectionList(paneIn = undefined) {
+	private _updateSelectionList(paneIn = undefined): void {
 		// Bail if any of these flags are set
 		if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
@@ -173,7 +173,7 @@ export default class SearchPanesST extends SearchPanes {
 	/**
 	 * Remake the selections that were present before new data or calculations have occured
 	 */
-	private _remakeSelections() {
+	private _remakeSelections(): void {
 		this.s.updating = true;
 
 		if (!this.s.dt.page.info().serverSide) {

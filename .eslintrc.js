@@ -192,6 +192,7 @@ module.exports = {
 		'no-invalid-this': 'off',
 		'no-invalid-regexp': 'error',
 		'no-irregular-whitespace': 'warn',
+		'no-lonely-if': 'error',
 		'no-lone-blocks': 'error',
 		'no-lonely-if': 'warn',
 		'no-magic-numbers': 'off',

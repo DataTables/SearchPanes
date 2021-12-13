@@ -16,5 +16,5 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
      * @param row The row object that is being processed
      * @returns string - the message that is to be shown for the count of each entry
      */
-    protected _getMessage(row: any): any;
+    protected _getMessage(row: any): string;
 }

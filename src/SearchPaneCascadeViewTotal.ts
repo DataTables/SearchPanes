@@ -44,7 +44,7 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 	 * @param row The row object that is being processed
 	 * @returns string - the message that is to be shown for the count of each entry
 	 */
-	protected _getMessage(row: any) {
+	protected _getMessage(row: any): string {
 		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
 		let filteredMessage = this.s.dt.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
 

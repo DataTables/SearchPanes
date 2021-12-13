@@ -29,7 +29,7 @@ export default class SearchPane {
      * @param sort the value to be sorted in the pane table
      * @param type the value of which the type is to be derived from
      */
-    addRow(display: any, filter: any, sort: any, type: any, className?: string, total?: any, shown?: any): any;
+    addRow(display: string, filter: any, sort: any, type: string, className?: string, total?: number, shown?: number): any;
     /**
      * Adjusts the layout of the top row when the screen is resized
      */
@@ -85,7 +85,9 @@ export default class SearchPane {
      *
      * @param dataIn The data that has been sent from the server
      */
-    _serverPopulate(dataIn: any): void;
+    _serverPopulate(dataIn: {
+        [keys: string]: any;
+    }): void;
     /**
      * Expands the pane from the collapsed state
      */
@@ -111,7 +113,9 @@ export default class SearchPane {
      * @returns number The number of empty cells in the column
      */
     protected _getEmpties(): number;
-    protected _getMessage(row: any): any;
+    protected _getMessage(row: {
+        [keys: string]: any;
+    }): string;
     /**
      * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
      *
@@ -120,40 +124,14 @@ export default class SearchPane {
      * @param filter The filter value
      * @returns undefined
      */
-    protected _getShown(filter: any): any;
+    protected _getShown(filter: any): number;
     /**
      * Get's the pane config appropriate to this class
      *
      * @returns The config needed to create a pane of this type
      */
     protected _getPaneConfig(): {
-        columnDefs: ({
-            className: string;
-            data: string;
-            render: (data: any, type: any, row: any) => any;
-            targets: number;
-            type: any;
-            searchable?: undefined;
-            visible?: undefined;
-        } | {
-            className: string;
-            data: string;
-            searchable: boolean;
-            targets: number;
-            visible: boolean;
-            render?: undefined;
-            type?: undefined;
-        })[];
-        deferRender: boolean;
-        dom: string;
-        info: boolean;
-        language: any;
-        paging: boolean;
-        scrollX: boolean;
-        scrollY: string;
-        scroller: boolean;
-        select: boolean;
-        stateSave: boolean;
+        [keys: string]: any;
     };
     /**
      * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
@@ -175,13 +153,15 @@ export default class SearchPane {
      *
      * @param loadedFilter The loaded filters from a previous state
      */
-    protected _reloadSelect(loadedFilter: any): void;
+    protected _reloadSelect(loadedFilter: {
+        [keys: string]: any;
+    }): void;
     /**
      * Notes the rows that have been selected within this pane and stores them internally
      *
      * @param notUpdating Whether the panes are updating themselves or not
      */
-    protected _updateSelection(notUpdating: any): void;
+    protected _updateSelection(notUpdating: boolean): void;
     /**
      * Takes in potentially undetected rows and adds them to the array if they are not yet featured
      *

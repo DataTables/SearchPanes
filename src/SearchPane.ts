@@ -293,13 +293,13 @@ export default class SearchPane {
 	 * @param type the value of which the type is to be derived from
 	 */
 	public addRow(
-		display,
-		filter,
-		sort,
-		type,
+		display: string,
+		filter: any,
+		sort: any,
+		type: string,
 		className?: string,
-		total?,
-		shown?
+		total?: number,
+		shown?: number
 	): any {
 		let index: number;
 		if(!total) {
@@ -690,8 +690,6 @@ export default class SearchPane {
 			}
 
 			this.s.dt.state.save();
-
-			return;
 		});
 
 		// When the clear button is clicked reset the pane
@@ -744,7 +742,7 @@ export default class SearchPane {
 	 *
 	 * @param dataIn The data that has been sent from the server
 	 */
-	public _serverPopulate(dataIn) {
+	public _serverPopulate(dataIn: {[keys: string]: any}): void {
 		if (dataIn.tableLength) {
 			this.s.tableLength = dataIn.tableLength;
 			this.s.rowData.totalOptions = this.s.tableLength;
@@ -851,7 +849,7 @@ export default class SearchPane {
 	 *
 	 * @returns number The number of empty cells in the column
 	 */
-	protected _getEmpties() {
+	protected _getEmpties(): number {
 		let total = 0;
 		this.s.rowData.arrayFilter.forEach(element => {
 			if (element.filter === '') {
@@ -863,7 +861,7 @@ export default class SearchPane {
 	}
 
 
-	protected _getMessage(row) {
+	protected _getMessage(row: {[keys: string]: any}): string {
 		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
 	}
 
@@ -876,7 +874,7 @@ export default class SearchPane {
 	 * @returns undefined
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected _getShown(filter) {
+	protected _getShown(filter: any): number {
 		return undefined;
 	}
 
@@ -885,7 +883,7 @@ export default class SearchPane {
 	 *
 	 * @returns The config needed to create a pane of this type
 	 */
-	protected _getPaneConfig() {
+	protected _getPaneConfig(): {[keys: string]: any} {
 		// eslint-disable-next-line no-extra-parens
 		let haveScroller = (dataTable as any).Scroller;
 
@@ -1020,7 +1018,6 @@ export default class SearchPane {
 			else {
 				bins[filter] ++;
 				this.s.rowData.totalOptions++;
-				return;
 			}
 		}
 
@@ -1031,7 +1028,7 @@ export default class SearchPane {
 	 *
 	 * @param loadedFilter The loaded filters from a previous state
 	 */
-	protected _reloadSelect(loadedFilter): void {
+	protected _reloadSelect(loadedFilter: {[keys: string]: any}): void {
 		// If the state was not saved don't selected any
 		if (loadedFilter === undefined) {
 			return;
@@ -1078,7 +1075,7 @@ export default class SearchPane {
 	 *
 	 * @param notUpdating Whether the panes are updating themselves or not
 	 */
-	protected _updateSelection(notUpdating) {
+	protected _updateSelection(notUpdating: boolean): void {
 		this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
 		if (this.s.dt.page.info().serverSide && !this.s.updating) {
 			if (!this.s.serverSelecting) {
@@ -1102,13 +1099,13 @@ export default class SearchPane {
 	 * @param bins the bins to be populated
 	 */
 	private _addOption(
-		filter,
-		display,
-		sort,
-		type,
-		arrayFilter,
+		filter: any,
+		display: any,
+		sort: any,
+		type: string,
+		arrayFilter: any[],
 		bins: {[keys: string]: number}
-	) {
+	): void {
 		// If the filter is an array then take a note of this, and add the elements to the arrayFilter array
 		if (Array.isArray(filter) || filter instanceof dataTable.Api) {
 			// Convert to an array so that we can work with it
@@ -1155,7 +1152,6 @@ export default class SearchPane {
 			else {
 				bins[filter]++;
 				this.s.rowData.totalOptions++;
-				return;
 			}
 		}
 		// Otherwise we must just be adding an option
@@ -1600,7 +1596,7 @@ export default class SearchPane {
 	 *
 	 * @returns {Array} Returns the array of rows which have been added to the pane
 	 */
-	private _getComparisonRows() {
+	private _getComparisonRows(): any[] {
 		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
 		let options = this.s.colOpts.options
 			? this.s.colOpts.options
@@ -1712,7 +1708,7 @@ export default class SearchPane {
 	 * @param filter the value that the row is to be filtered on
 	 * @param dataIndex the row index
 	 */
-	private _search(filter, dataIndex: number): boolean {
+	private _search(filter: any, dataIndex: number): boolean {
 		let colOpts = this.s.colOpts;
 		let table = this.s.dt;
 

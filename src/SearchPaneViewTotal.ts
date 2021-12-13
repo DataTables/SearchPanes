@@ -51,7 +51,7 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	 * @param filter The filter value
 	 * @returns number - The number of times the value is shown
 	 */
-	protected _getShown(filter) {
+	protected _getShown(filter: any): number {
 		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
 			this.s.rowData.binsShown[filter] :
 			0;

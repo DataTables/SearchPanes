@@ -15,7 +15,7 @@ export default class SearchPaneST extends SearchPane {
 	 *
 	 * @param dataIn The data that has been sent from the server
 	 */
-	public _serverPopulate(dataIn): void {
+	public _serverPopulate(dataIn: {[keys: string]: any}): void {
 		this.s.rowData.binsShown = {};
 		this.s.rowData.arrayFilter = [];
 
@@ -138,7 +138,7 @@ export default class SearchPaneST extends SearchPane {
 	 *
 	 * SearchPaneCascade overrides this method
 	 */
-	public updateRows() {
+	public updateRows(): void {
 		if (!this.s.dt.page.info().serverSide) {
 			// Get the latest count values from the table
 			this.s.rowData.binsShown = {};
@@ -163,7 +163,7 @@ export default class SearchPaneST extends SearchPane {
 	/**
 	 * Remove functionality from makeSelection - needs to be more advanced when tracking selections
 	 */
-	protected _makeSelection() {
+	protected _makeSelection(): void {
 		return;
 	}
 
@@ -183,14 +183,14 @@ export default class SearchPaneST extends SearchPane {
 	 * @returns boolean indicating if the row should be added or not
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected _shouldAddRow(data) {
+	protected _shouldAddRow(data): boolean {
 		return true;
 	}
 
 	/**
 	 * Updates the server selection list where appropriate
 	 */
-	protected _updateSelection() {
+	protected _updateSelection(): void {
 		if (this.s.dt.page.info().serverSide && !this.s.updating) {
 			if (!this.s.serverSelecting) {
 				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
@@ -205,7 +205,7 @@ export default class SearchPaneST extends SearchPane {
 	 * @param settings The datatables settings object
 	 * @param bins The bins object that is to be incremented
 	 */
-	protected _updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown) {
+	protected _updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown): void {
 		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
 
 		if (!bins[filter]) {

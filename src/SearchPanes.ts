@@ -333,14 +333,14 @@ export default class SearchPanes {
 	/**
 	 * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
 	 */
-	protected _serverTotals() {
+	protected _serverTotals(): void {
 		return;
 	}
 
 	/**
 	 * Set's the xhr listener so that SP can extact appropriate data from the response
 	 */
-	protected _setXHR() {
+	protected _setXHR(): void {
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
 		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
@@ -357,7 +357,7 @@ export default class SearchPanes {
 	 *
 	 * Overridden by the method in SearchPanesST
 	 */
-	protected _stateLoadListener() {
+	protected _stateLoadListener(): void {
 		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
 			if (data.searchPanes === undefined) {
 				return;
@@ -588,7 +588,7 @@ export default class SearchPanes {
 	 * @param paneSettings the settings passed into the constructor
 	 * @param opts the options passed into the constructor
 	 */
-	private _paneDeclare(table, paneSettings, opts): void {
+	private _paneDeclare(table, paneSettings, opts: IDefaults): void {
 		// Create Panes
 		table
 			.columns(this.c.columns.length > 0 ? this.c.columns : undefined)

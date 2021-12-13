@@ -22,7 +22,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 *
 	 * This overrides the method in SearchPane
 	 */
-	public updateRows() {
+	public updateRows(): void {
 		if (!this.s.dt.page.info().serverSide) {
 			// Get the latest count values from the table
 			this._activePopulatePane();
@@ -125,7 +125,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * @param row The row object that is being processed
 	 * @returns string - the message that is to be shown for the count of each entry
 	 */
-	protected _getMessage(row) {
+	protected _getMessage(row: {[keys: string]: any}): string {
 		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count)
 			.replace(/{total}/g, row.total)
 			.replace(/{shown}/g, row.shown);
@@ -137,7 +137,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * @param filter The filter value
 	 * @returns number - The number of times the value is shown
 	 */
-	protected _getShown(filter) {
+	protected _getShown(filter: string): number {
 		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
 			this.s.rowData.binsShown[filter] :
 			0;
@@ -151,7 +151,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * @param data the row data
 	 * @returns boolean indicating if the row should be added or not
 	 */
-	protected _shouldAddRow(data) {
+	protected _shouldAddRow(data: {[keys: string]: any}): boolean {
 		return data.shown > 0;
 	}
 }
