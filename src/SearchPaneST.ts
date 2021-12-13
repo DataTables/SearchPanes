@@ -35,21 +35,28 @@ export default class SearchPaneST extends SearchPane {
 		}
 	}
 
+	/**
+	 * This method updates the rows and their data within the SearchPanes
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	updateRows() {
 		if (!this.s.dt.page.info().serverSide) {
+			// Get the latest count values from the table
 			this.s.rowData.binsShown = {};
-			let settings = this.s.dt.settings()[0];
 			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-				this._updateShown(index, settings, this.s.rowData.binsShown);
+				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
 			}
 		}
-		for(let row of this.s.dtPane.rows().data().toArray()) {
+
+		// Update the rows data to show the current counts
+		for (let row of this.s.dtPane.rows().data().toArray()) {
 			row.shown = typeof this.s.rowData.binsShown[row.filter] === 'number' ?
 				this.s.rowData.binsShown[row.filter] :
 				0;
 			this.s.dtPane.row(row.index).data(row);
 		}
+
+		// Show updates in the pane
 		this.s.dtPane.draw();
 		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 	}

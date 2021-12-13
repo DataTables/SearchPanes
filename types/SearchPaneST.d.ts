@@ -7,6 +7,9 @@ export default class SearchPaneST extends SearchPane {
     _makeSelection(): void;
     _reloadSelect(): void;
     _updateSelection(): void;
+    /**
+     * This method updates the rows and their data within the SearchPanes
+     */
     updateRows(): void;
     _updateShown(rowIdx: number, settings: any, bins?: {
         [keys: string]: number;

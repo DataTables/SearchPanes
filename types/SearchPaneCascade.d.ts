@@ -24,6 +24,9 @@ export default class SearchPaneCascade extends SearchPaneST {
      * @returns string - the message that is to be shown for the count of each entry
      */
     _getMessage(row: any): any;
+    /**
+     * This method updates the rows and their data within the SearchPanes
+     */
     updateRows(): void;
     /**
      * Fill the array with the values that are currently being displayed in the table

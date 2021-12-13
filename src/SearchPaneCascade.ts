@@ -57,21 +57,32 @@ export default class SearchPaneCascade extends SearchPaneST {
 			.replace(/{shown}/g, row.shown);
 	}
 
+	/**
+	 * This method updates the rows and their data within the SearchPanes
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	updateRows() {
 		if (!this.s.dt.page.info().serverSide) {
+			// Get the latest count values from the table
 			this._activePopulatePane();
 			this.s.rowData.binsShown = {};
 			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
 				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
 			}
 		}
+
+		// Note the currently selected values in the pane and remove all of the rows
 		let selected = this.s.dtPane.rows({selected: true}).data().toArray();
 		this.s.dtPane.rows().remove();
-		for(let data of this.s.rowData.arrayFilter) {
-			if(data.shown === 0) {
+
+		// Go over all of the rows that could be displayed
+		for (let data of this.s.rowData.arrayFilter) {
+			// Cascade - If there are no rows present in the table don't show the option
+			if (data.shown === 0) {
 				continue;
 			}
+
+			// Add the row to the pane
 			let row = this.addRow(
 				data.display,
 				data.filter,
@@ -79,19 +90,25 @@ export default class SearchPaneCascade extends SearchPaneST {
 				data.type,
 				undefined
 			);
-			for(let i = 0; i < selected.length; i++) {
+
+			// Check if this row was selected
+			for (let i = 0; i < selected.length; i++) {
 				let selection = selected[i];
-				if(selection.filter === data.filter) {
+
+				if (selection.filter === data.filter) {
 					row.select();
+					// Remove the row from the to find list and then add it to the selections list
 					selected.splice(i, 1);
 					this.s.selections.push(data.filter);
 					break;
 				}
 			}
 		}
+
+		// Add all of the rows that were previously selected but aren't any more
 		for (let selection of selected) {
-			for(let data of this.s.rowData.arrayOriginal) {
-				if(data.filter === selection.filter) {
+			for (let data of this.s.rowData.arrayOriginal) {
+				if (data.filter === selection.filter) {
 					let row = this.addRow(
 						data.display,
 						data.filter,
@@ -104,8 +121,12 @@ export default class SearchPaneCascade extends SearchPaneST {
 				}
 			}
 		}
+
+		// Show updates in the pane
 		this.s.dtPane.draw();
 		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
+
+		// If client side updated the tables results
 		if (!this.s.dt.page.info().serverSide) {
 			this.s.dt.draw();
 		}
