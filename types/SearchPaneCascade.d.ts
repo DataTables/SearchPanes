@@ -26,11 +26,21 @@ export default class SearchPaneCascade extends SearchPaneST {
     _getMessage(row: any): any;
     /**
      * This method updates the rows and their data within the SearchPanes
+     *
+     * This overrides the method in SearchPane
      */
     updateRows(): void;
     /**
      * Fill the array with the values that are currently being displayed in the table
      */
     _activePopulatePane(): void;
-    _serverPopulate(dataIn: any): void;
+    /**
+     * Decides if a row should be added when being added from the server
+     *
+     * Overrides method in by SearchPaneST
+     *
+     * @param data the row data
+     * @returns boolean indicating if the row should be added or not
+     */
+    _shouldAddRow(data: any): boolean;
 }

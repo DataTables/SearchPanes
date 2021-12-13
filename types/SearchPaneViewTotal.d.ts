@@ -26,5 +26,4 @@ export default class SearchPaneViewTotal extends SearchPaneST {
      * @returns string - the message that is to be shown for the count of each entry
      */
     _getMessage(row: any): any;
-    _serverPopulate(dataIn: any): void;
 }

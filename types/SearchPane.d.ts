@@ -168,6 +168,13 @@ export default class SearchPane {
      * @param loadedFilter The loaded filters from a previous state
      */
     _reloadSelect(loadedFilter: any): void;
+    /**
+     * Populates the SearchPane based off of the data that has been recieved from the server
+     *
+     * This method is overriden by SearchPaneST
+     *
+     * @param dataIn The data that has been sent from the server
+     */
     _serverPopulate(dataIn: any): void;
     /**
      * Notes the rows that have been selected within this pane and stores them internally

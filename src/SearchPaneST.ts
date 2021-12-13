@@ -63,6 +63,13 @@ export default class SearchPaneST extends SearchPane {
 		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 	}
 
+	/**
+	 * Used when binning the data for a column
+	 *
+	 * @param rowIdx The current row that is to be added to the bins
+	 * @param settings The datatables settings object
+	 * @param bins The bins object that is to be incremented
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown) {
 		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
