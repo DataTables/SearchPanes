@@ -28,8 +28,7 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	 * @param filter The filter value
 	 * @returns number - The number of times the value is shown
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getShown(filter) {
+	protected _getShown(filter) {
 		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
 			this.s.rowData.binsShown[filter] :
 			0;
@@ -40,8 +39,7 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	 *
 	 * @returns undefined
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getEmpties(): number {
+	protected _getEmpties(): number {
 		return undefined;
 	}
 
@@ -53,8 +51,7 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 	 * @param row The row object that is being processed
 	 * @returns string - the message that is to be shown for the count of each entry
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getMessage(row: any) {
+	protected _getMessage(row: any) {
 		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
 		let filteredMessage = this.s.dt.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
 		return (this.s.filteringActive ? filteredMessage : countMessage)

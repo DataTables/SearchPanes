@@ -29,8 +29,7 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 	 * @param row The row object that is being processed
 	 * @returns string - the message that is to be shown for the count of each entry
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getMessage(row: any) {
+	protected _getMessage(row: any) {
 		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
 		let filteredMessage = this.s.dt.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
 
@@ -44,8 +43,7 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 	 *
 	 * This method overrides _activePopulatePane() in SearchPaneCascade
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_activePopulatePane(): void {
+	protected _activePopulatePane(): void {
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.binsShown = {};
 		let settings = this.s.dt.settings()[0];

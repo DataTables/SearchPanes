@@ -182,8 +182,7 @@ export default class SearchPanes {
 		return this;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_setXHR() {
+	protected _setXHR() {
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
 		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
@@ -343,8 +342,7 @@ export default class SearchPanes {
 	/**
 	 * Updates the selectionList when cascade is not in place
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_updateSelection(): void {
+	protected _updateSelection(): void {
 		this.s.selectionList = [];
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
@@ -356,8 +354,7 @@ export default class SearchPanes {
 		}
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_stateLoadListener() {
+	protected _stateLoadListener() {
 		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
 			if (data.searchPanes === undefined) {
 				return;

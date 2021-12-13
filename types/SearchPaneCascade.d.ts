@@ -7,14 +7,14 @@ export default class SearchPaneCascade extends SearchPaneST {
      *
      * @returns undefined
      */
-    _getEmpties(): number;
+    protected _getEmpties(): number;
     /**
      * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
      *
      * @param filter The filter value
      * @returns number - The number of times the value is shown
      */
-    _getShown(filter: any): number;
+    protected _getShown(filter: any): number;
     /**
      * Gets the message that is to be used to indicate the count for each SearchPane row
      *
@@ -23,7 +23,7 @@ export default class SearchPaneCascade extends SearchPaneST {
      * @param row The row object that is being processed
      * @returns string - the message that is to be shown for the count of each entry
      */
-    _getMessage(row: any): any;
+    protected _getMessage(row: any): any;
     /**
      * This method updates the rows and their data within the SearchPanes
      *
@@ -33,7 +33,7 @@ export default class SearchPaneCascade extends SearchPaneST {
     /**
      * Fill the array with the values that are currently being displayed in the table
      */
-    _activePopulatePane(): void;
+    protected _activePopulatePane(): void;
     /**
      * Decides if a row should be added when being added from the server
      *
@@ -42,5 +42,5 @@ export default class SearchPaneCascade extends SearchPaneST {
      * @param data the row data
      * @returns boolean indicating if the row should be added or not
      */
-    _shouldAddRow(data: any): boolean;
+    protected _shouldAddRow(data: any): boolean;
 }

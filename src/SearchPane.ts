@@ -340,38 +340,6 @@ export default class SearchPane {
 	}
 
 	/**
-	 * Gets the number of empty cells in the column
-	 *
-	 * This method is overridden by SearchPaneViewTotal and SearchPaneCascade
-	 *
-	 * @returns number The number of empty cells in the column
-	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getEmpties() {
-		let total = 0;
-		this.s.rowData.arrayFilter.forEach(element => {
-			if (element.filter === '') {
-				total++;
-			}
-		});
-
-		return total;
-	}
-
-	/**
-	 * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
-	 *
-	 * Here it is blanked so that it takes no action
-	 *
-	 * @param filter The filter value
-	 * @returns undefined
-	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getShown(filter) {
-		return undefined;
-	}
-
-	/**
 	 * Adjusts the layout of the top row when the screen is resized
 	 */
 	public adjustTopRow(): void {
@@ -818,8 +786,38 @@ export default class SearchPane {
 		this._searchExtras();
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getMessage(row) {
+	/**
+	 * Gets the number of empty cells in the column
+	 *
+	 * This method is overridden by SearchPaneViewTotal and SearchPaneCascade
+	 *
+	 * @returns number The number of empty cells in the column
+	 */
+	protected _getEmpties() {
+		let total = 0;
+		this.s.rowData.arrayFilter.forEach(element => {
+			if (element.filter === '') {
+				total++;
+			}
+		});
+
+		return total;
+	}
+
+	/**
+	 * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
+	 *
+	 * Here it is blanked so that it takes no action
+	 *
+	 * @param filter The filter value
+	 * @returns undefined
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected _getShown(filter) {
+		return undefined;
+	}
+
+	protected _getMessage(row) {
 		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
 	}
 
@@ -828,8 +826,7 @@ export default class SearchPane {
 	 *
 	 * @returns The config needed to create a pane of this type
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getPaneConfig() {
+	protected _getPaneConfig() {
 		// eslint-disable-next-line no-extra-parens
 		let haveScroller = (dataTable as any).Scroller;
 
@@ -905,8 +902,7 @@ export default class SearchPane {
 	/**
 	 * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_makeSelection(): void {
+	protected _makeSelection(): void {
 		this.updateTable();
 		this.s.updating = true;
 		this.s.dt.draw();
@@ -921,8 +917,7 @@ export default class SearchPane {
 	 * @param settings The DataTable settings object
 	 * @param bins The bins object that is to be populated with the row counts
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_populatePaneArray(
+	protected _populatePaneArray(
 		rowIdx: number,
 		arrayFilter,
 		settings,
@@ -977,8 +972,7 @@ export default class SearchPane {
 	 *
 	 * @param loadedFilter The loaded filters from a previous state
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_reloadSelect(loadedFilter): void {
+	protected _reloadSelect(loadedFilter): void {
 		// If the state was not saved don't selected any
 		if (loadedFilter === undefined) {
 			return;
@@ -1027,8 +1021,7 @@ export default class SearchPane {
 	 *
 	 * @param dataIn The data that has been sent from the server
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_serverPopulate(dataIn) {
+	public _serverPopulate(dataIn) {
 		if (dataIn.tableLength) {
 			this.s.tableLength = dataIn.tableLength;
 			this.s.rowData.totalOptions = this.s.tableLength;
@@ -1086,8 +1079,7 @@ export default class SearchPane {
 	 *
 	 * @param notUpdating Whether the panes are updating themselves or not
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_updateSelection(notUpdating) {
+	protected _updateSelection(notUpdating) {
 		this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
 		if (this.s.dt.page.info().serverSide && !this.s.updating) {
 			if (!this.s.serverSelecting) {
@@ -1704,7 +1696,6 @@ export default class SearchPane {
 	/**
 	 * Fill the array with the values that are currently being displayed in the table
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	private _populatePane(): void {
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.bins = {};

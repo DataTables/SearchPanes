@@ -31,23 +31,6 @@ export default class SearchPane {
      */
     addRow(display: any, filter: any, sort: any, type: any, className?: string, total?: any, shown?: any): any;
     /**
-     * Gets the number of empty cells in the column
-     *
-     * This method is overridden by SearchPaneViewTotal and SearchPaneCascade
-     *
-     * @returns number The number of empty cells in the column
-     */
-    _getEmpties(): number;
-    /**
-     * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
-     *
-     * Here it is blanked so that it takes no action
-     *
-     * @param filter The filter value
-     * @returns undefined
-     */
-    _getShown(filter: any): any;
-    /**
      * Adjusts the layout of the top row when the screen is resized
      */
     adjustTopRow(): void;
@@ -112,13 +95,30 @@ export default class SearchPane {
      * rather than the filtered message when using viewTotal.
      */
     updateTable(): void;
-    _getMessage(row: any): any;
+    /**
+     * Gets the number of empty cells in the column
+     *
+     * This method is overridden by SearchPaneViewTotal and SearchPaneCascade
+     *
+     * @returns number The number of empty cells in the column
+     */
+    protected _getEmpties(): number;
+    /**
+     * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
+     *
+     * Here it is blanked so that it takes no action
+     *
+     * @param filter The filter value
+     * @returns undefined
+     */
+    protected _getShown(filter: any): any;
+    protected _getMessage(row: any): any;
     /**
      * Get's the pane config appropriate to this class
      *
      * @returns The config needed to create a pane of this type
      */
-    _getPaneConfig(): {
+    protected _getPaneConfig(): {
         columnDefs: ({
             className: string;
             data: string;
@@ -150,7 +150,7 @@ export default class SearchPane {
     /**
      * This method allows for changes to the panes and table to be made when a selection or a deselection occurs
      */
-    _makeSelection(): void;
+    protected _makeSelection(): void;
     /**
      * Populates an array with all of the data for the table
      *
@@ -159,7 +159,7 @@ export default class SearchPane {
      * @param settings The DataTable settings object
      * @param bins The bins object that is to be populated with the row counts
      */
-    _populatePaneArray(rowIdx: number, arrayFilter: any, settings: any, bins?: {
+    protected _populatePaneArray(rowIdx: number, arrayFilter: any, settings: any, bins?: {
         [keys: string]: number;
     }): void;
     /**
@@ -167,7 +167,7 @@ export default class SearchPane {
      *
      * @param loadedFilter The loaded filters from a previous state
      */
-    _reloadSelect(loadedFilter: any): void;
+    protected _reloadSelect(loadedFilter: any): void;
     /**
      * Populates the SearchPane based off of the data that has been recieved from the server
      *
@@ -181,7 +181,7 @@ export default class SearchPane {
      *
      * @param notUpdating Whether the panes are updating themselves or not
      */
-    _updateSelection(notUpdating: any): void;
+    protected _updateSelection(notUpdating: any): void;
     /**
      * Takes in potentially undetected rows and adds them to the array if they are not yet featured
      *

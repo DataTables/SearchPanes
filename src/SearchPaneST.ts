@@ -16,72 +16,6 @@ export default class SearchPaneST extends SearchPane {
 		super(paneSettings, opts, index, panesContainer, panes);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_makeSelection() {
-		return;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_reloadSelect(): void {
-		return;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_updateSelection() {
-		if (this.s.dt.page.info().serverSide && !this.s.updating) {
-			if (!this.s.serverSelecting) {
-				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-			}
-		}
-	}
-
-	/**
-	 * This method updates the rows and their data within the SearchPanes
-	 *
-	 * SearchPaneCascade overrides this method
-	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	updateRows() {
-		if (!this.s.dt.page.info().serverSide) {
-			// Get the latest count values from the table
-			this.s.rowData.binsShown = {};
-			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
-			}
-		}
-
-		// Update the rows data to show the current counts
-		for (let row of this.s.dtPane.rows().data().toArray()) {
-			row.shown = typeof this.s.rowData.binsShown[row.filter] === 'number' ?
-				this.s.rowData.binsShown[row.filter] :
-				0;
-			this.s.dtPane.row(row.index).data(row);
-		}
-
-		// Show updates in the pane
-		this.s.dtPane.draw();
-		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
-	}
-
-	/**
-	 * Used when binning the data for a column
-	 *
-	 * @param rowIdx The current row that is to be added to the bins
-	 * @param settings The datatables settings object
-	 * @param bins The bins object that is to be incremented
-	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown) {
-		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
-
-		if (!bins[filter]) {
-			bins[filter] = 1;
-		}
-		else {
-			bins[filter] ++;
-		}
-	}
-
 	/**
 	 * Populates the SearchPane based off of the data that has been recieved from the server
 	 *
@@ -89,8 +23,7 @@ export default class SearchPaneST extends SearchPane {
 	 *
 	 * @param dataIn The data that has been sent from the server
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_serverPopulate(dataIn): void {
+	public _serverPopulate(dataIn): void {
 		this.s.rowData.binsShown = {};
 		this.s.rowData.arrayFilter = [];
 
@@ -209,6 +142,67 @@ export default class SearchPaneST extends SearchPane {
 	}
 
 	/**
+	 * This method updates the rows and their data within the SearchPanes
+	 *
+	 * SearchPaneCascade overrides this method
+	 */
+	public updateRows() {
+		if (!this.s.dt.page.info().serverSide) {
+			// Get the latest count values from the table
+			this.s.rowData.binsShown = {};
+			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
+				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
+			}
+		}
+
+		// Update the rows data to show the current counts
+		for (let row of this.s.dtPane.rows().data().toArray()) {
+			row.shown = typeof this.s.rowData.binsShown[row.filter] === 'number' ?
+				this.s.rowData.binsShown[row.filter] :
+				0;
+			this.s.dtPane.row(row.index).data(row);
+		}
+
+		// Show updates in the pane
+		this.s.dtPane.draw();
+		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
+	}
+
+	protected _makeSelection() {
+		return;
+	}
+
+	protected _reloadSelect(): void {
+		return;
+	}
+
+	protected _updateSelection() {
+		if (this.s.dt.page.info().serverSide && !this.s.updating) {
+			if (!this.s.serverSelecting) {
+				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+			}
+		}
+	}
+
+	/**
+	 * Used when binning the data for a column
+	 *
+	 * @param rowIdx The current row that is to be added to the bins
+	 * @param settings The datatables settings object
+	 * @param bins The bins object that is to be incremented
+	 */
+	protected _updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown) {
+		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
+
+		if (!bins[filter]) {
+			bins[filter] = 1;
+		}
+		else {
+			bins[filter] ++;
+		}
+	}
+
+	/**
 	 * Decides if a row should be added when being added from the server
 	 *
 	 * Overridden by SearchPaneCascade
@@ -216,8 +210,7 @@ export default class SearchPaneST extends SearchPane {
 	 * @param data the row data
 	 * @returns boolean indicating if the row should be added or not
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_shouldAddRow(data) {
+	protected _shouldAddRow(data) {
 		return true;
 	}
 }

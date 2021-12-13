@@ -47,8 +47,7 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_setXHR() {
+	protected _setXHR() {
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
 		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
@@ -60,8 +59,7 @@ export default class SearchPanesST extends SearchPanes {
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_initSelectionListeners(preSelect) {
+	protected _initSelectionListeners(preSelect) {
 		this.s.selectionList = preSelect;
 
 		for (let pane of this.s.panes) {
@@ -79,13 +77,11 @@ export default class SearchPanesST extends SearchPanes {
 		this._updateSelectionList();
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_update(pane=undefined) {
+	protected _update(pane=undefined) {
 		return () => this._updateSelectionList(pane);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_stateLoadListener() {
+	protected _stateLoadListener() {
 		let stateLoadFunction = (e, settings, data) => {
 			if (data.searchPanes === undefined) {
 				return;
@@ -116,8 +112,7 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.dt.off('stateLoadParams.dtsps', stateLoadFunction).on('stateLoadParams.dtsps', stateLoadFunction);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_updateSelection() {
+	protected _updateSelection() {
 		return;
 	}
 
@@ -127,8 +122,7 @@ export default class SearchPanesST extends SearchPanes {
 	 * @param index The index of the pane that is to be updated
 	 * @param selected Which rows are selected within the pane
 	 */
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_updateSelectionList(paneIn = undefined) {
+	protected _updateSelectionList(paneIn = undefined) {
 		if(this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
 		}
@@ -173,8 +167,7 @@ export default class SearchPanesST extends SearchPanes {
 		this._remakeSelections();
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_remakeSelections() {
+	protected _remakeSelections() {
 		this.s.updating = true;
 		if(!this.s.dt.page.info().serverSide) {
 			let tmpSL = this.s.selectionList;

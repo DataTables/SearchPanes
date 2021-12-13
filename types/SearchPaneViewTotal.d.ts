@@ -10,13 +10,13 @@ export default class SearchPaneViewTotal extends SearchPaneST {
      * @param filter The filter value
      * @returns number - The number of times the value is shown
      */
-    _getShown(filter: any): number;
+    protected _getShown(filter: any): number;
     /**
      * Overrides the method from SearchPane to make it take no action
      *
      * @returns undefined
      */
-    _getEmpties(): number;
+    protected _getEmpties(): number;
     /**
      * Gets the message that is to be used to indicate the count for each SearchPane row
      *
@@ -25,5 +25,5 @@ export default class SearchPaneViewTotal extends SearchPaneST {
      * @param row The row object that is being processed
      * @returns string - the message that is to be shown for the count of each entry
      */
-    _getMessage(row: any): any;
+    protected _getMessage(row: any): any;
 }

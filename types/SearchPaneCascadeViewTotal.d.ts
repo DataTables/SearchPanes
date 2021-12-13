@@ -10,11 +10,11 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
      * @param row The row object that is being processed
      * @returns string - the message that is to be shown for the count of each entry
      */
-    _getMessage(row: any): any;
+    protected _getMessage(row: any): any;
     /**
      * Fill the array with the values that are currently being displayed in the table
      *
      * This method overrides _activePopulatePane() in SearchPaneCascade
      */
-    _activePopulatePane(): void;
+    protected _activePopulatePane(): void;
 }

@@ -12,7 +12,7 @@ export default class SearchPanes {
     c: IDefaults;
     s: IS;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean, paneClass?: typeof SearchPane);
-    _setXHR(): void;
+    protected _setXHR(): void;
     /**
      * Clear the selections of all of the panes
      */
@@ -32,8 +32,8 @@ export default class SearchPanes {
     /**
      * Updates the selectionList when cascade is not in place
      */
-    _updateSelection(): void;
-    _stateLoadListener(): void;
+    protected _updateSelection(): void;
+    protected _stateLoadListener(): void;
     /**
      * Attach the panes, buttons and title to the document
      */
