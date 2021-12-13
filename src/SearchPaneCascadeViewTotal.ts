@@ -21,10 +21,19 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
 	}
 
+	/**
+	 * Gets the message that is to be used to indicate the count for each SearchPane row
+	 *
+	 * This method overrides _getMessage() in SearchPaneCascade
+	 *
+	 * @param row The row object that is being processed
+	 * @returns string - the message that is to be shown for the count of each entry
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_getMessage(row: any) {
 		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
 		let filteredMessage = this.s.dt.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
+
 		return (this.s.filteringActive ? filteredMessage : countMessage)
 			.replace(/{total}/g, row.total)
 			.replace(/{shown}/g, row.shown);
@@ -32,6 +41,8 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 
 	/**
 	 * Fill the array with the values that are currently being displayed in the table
+	 *
+	 * This method overrides _activePopulatePane() in SearchPaneCascade
 	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_activePopulatePane(): void {
