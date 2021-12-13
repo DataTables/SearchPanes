@@ -10,13 +10,13 @@ export default class SearchPanesST extends SearchPanes {
 
 	public constructor(paneSettings, opts, fromPreInit = false) {
 		let paneClass;
-		if(opts.cascadePanes && opts.viewTotal) {
+		if (opts.cascadePanes && opts.viewTotal) {
 			paneClass = SearchPaneCascadeViewTotal;
 		}
-		else if(opts.cascadePanes) {
+		else if (opts.cascadePanes) {
 			paneClass = SearchPaneCascade;
 		}
-		else if(opts.viewTotal) {
+		else if (opts.viewTotal) {
 			paneClass = SearchPaneViewTotal;
 		}
 		super(paneSettings, opts, fromPreInit, paneClass);
@@ -162,7 +162,7 @@ export default class SearchPanesST extends SearchPanes {
 				});
 			}
 
-			if(this.s.dt.page.info().serverSide) {
+			if (this.s.dt.page.info().serverSide) {
 				this.s.dt.draw(false);
 			}
 		}
@@ -191,7 +191,7 @@ export default class SearchPanesST extends SearchPanes {
 			this.s.selectionList = tmpSL;
 
 			// Update the rows in each pane
-			for(let pane of this.s.panes) {
+			for (let pane of this.s.panes) {
 				if (pane.s.displayed) {
 					pane.s.filteringActive = anotherFilter;
 					pane.updateRows();
@@ -267,10 +267,8 @@ export default class SearchPanesST extends SearchPanes {
 
 			// Update the rows of all of the other panes
 			for (let currPane of this.s.panes) {
-				if (currPane.s.displayed) {
-					if (!pane || currPane.s.index !== pane.s.index) {
-						currPane.updateRows();
-					}
+				if (currPane.s.displayed && (!pane || currPane.s.index !== pane.s.index)) {
+					currPane.updateRows();
 				}
 			}
 		}

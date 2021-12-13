@@ -302,15 +302,15 @@ export default class SearchPane {
 		shown?: number
 	): any {
 		let index: number;
-		if(!total) {
+		if (!total) {
 			total = this.s.rowData.bins[filter] ?
 				this.s.rowData.bins[filter] :
 				0;
 		}
-		if(total === undefined) {
+		if (total === undefined) {
 			total = this._getEmpties();
 		}
-		if(!shown) {
+		if (!shown) {
 			shown = this._getShown(filter);
 		}
 
@@ -1438,7 +1438,7 @@ export default class SearchPane {
 		) {
 			// If the pane has not initialised yet then we need to wait for it to do so before collapsing
 			// Otherwise the container that the class is added to does not exist
-			if(this.s.dtPane.settings()[0]._bInitComplete) {
+			if (this.s.dtPane.settings()[0]._bInitComplete) {
 				this.collapse();
 			}
 			else {

@@ -848,8 +848,8 @@ export default class SearchPanes {
 
 		for (let selection of selectList) {
 			let pane: SearchPane;
-			for(let p of this.s.panes) {
-				if(p.s.index === selection.column) {
+			for (let p of this.s.panes) {
+				if (p.s.index === selection.column) {
 					pane = p;
 					break;
 				}

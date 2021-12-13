@@ -191,10 +191,8 @@ export default class SearchPaneST extends SearchPane {
 	 * Updates the server selection list where appropriate
 	 */
 	protected _updateSelection(): void {
-		if (this.s.dt.page.info().serverSide && !this.s.updating) {
-			if (!this.s.serverSelecting) {
-				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-			}
+		if (this.s.dt.page.info().serverSide && !this.s.updating && !this.s.serverSelecting) {
+			this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
 		}
 	}
 
