@@ -94,6 +94,7 @@ export default class SearchPane {
      * rather than the filtered message when using viewTotal.
      */
     updateTable(): void;
+    _getMessage(row: any): any;
     /**
      * Get's the pane config appropriate to this class
      *

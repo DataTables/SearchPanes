@@ -786,6 +786,11 @@ export default class SearchPane {
 		this._searchExtras();
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	_getMessage(row) {
+		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
+	}
+
 	/**
 	 * Get's the pane config appropriate to this class
 	 *
@@ -793,7 +798,6 @@ export default class SearchPane {
 	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	_getPaneConfig() {
-		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
 		// eslint-disable-next-line no-extra-parens
 		let haveScroller = (dataTable as any).Scroller;
 
@@ -810,7 +814,7 @@ export default class SearchPane {
 							return row.type;
 						}
 
-						let message = countMessage.replace(/{total}/g, row.total) ;
+						let message = this._getMessage(row);
 
 						// We are displaying the count in the same columne as the name of the search option.
 						// This is so that there is not need to call columns.adjust()

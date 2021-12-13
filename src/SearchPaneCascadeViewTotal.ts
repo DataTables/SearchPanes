@@ -21,60 +21,13 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
 	}
 
-	/**
-	 * Get's the pane config appropriate to this class
-	 *
-	 * @returns The config needed to create a pane of this type
-	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	_getPaneConfig() {
-		let config = super._getPaneConfig();
+	_getMessage(row: any) {
 		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
 		let filteredMessage = this.s.dt.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
-
-		config.columnDefs[0].render = (data, type, row) => {
-			if (type === 'sort') {
-				return row.sort;
-			}
-			else if (type === 'type') {
-				return row.type;
-			}
-
-			let message = (
-				this.s.filteringActive ?
-					filteredMessage.replace(/{total}/g, row.total):
-					countMessage.replace(/{total}/g, row.total)
-			)
-				.replace(/{shown}/, row.shown);
-
-
-			// We are displaying the count in the same columne as the name of the search option.
-			// This is so that there is not need to call columns.adjust()
-			//  which in turn speeds up the code
-			let pill = '<span class="' + this.classes.pill + '">' + message + '</span>';
-
-			if (!this.c.viewCount || !this.s.colOpts.viewCount) {
-				pill = '';
-			}
-
-			if (type === 'filter') {
-				return typeof data === 'string' && data.match(/<[^>]*>/) !== null ?
-					data.replace(/<[^>]*>/g, '') :
-					data;
-			}
-
-			return '<div class="' + this.classes.nameCont + '"><span title="' +
-				(
-					typeof data === 'string' && data.match(/<[^>]*>/) !== null ?
-						data.replace(/<[^>]*>/g, '') :
-						data
-				) +
-				'" class="' + this.classes.name + '">' +
-				data + '</span>' +
-				pill + '</div>';
-		};
-
-		return config;
+		return (this.s.filteringActive ? filteredMessage : countMessage)
+			.replace(/{total}/g, row.total)
+			.replace(/{shown}/g, row.shown);
 	}
 
 	/**

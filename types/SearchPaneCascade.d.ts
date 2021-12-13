@@ -13,40 +13,7 @@ export default class SearchPaneCascade extends SearchPaneST {
      * @param type the value of which the type is to be derived from
      */
     addRow(display: any, filter: any, sort: any, type: any, className?: string, total?: any, shown?: any): any;
-    /**
-     * Get's the pane config appropriate to this class
-     *
-     * @returns The config needed to create a pane of this type
-     */
-    _getPaneConfig(): {
-        columnDefs: ({
-            className: string;
-            data: string;
-            render: (data: any, type: any, row: any) => any;
-            targets: number;
-            type: any;
-            searchable?: undefined;
-            visible?: undefined;
-        } | {
-            className: string;
-            data: string;
-            searchable: boolean;
-            targets: number;
-            visible: boolean;
-            render?: undefined;
-            type?: undefined;
-        })[];
-        deferRender: boolean;
-        dom: string;
-        info: boolean;
-        language: any;
-        paging: boolean;
-        scrollX: boolean;
-        scrollY: string;
-        scroller: boolean;
-        select: boolean;
-        stateSave: boolean;
-    };
+    _getMessage(row: any): any;
     updateRows(): void;
     /**
      * Fill the array with the values that are currently being displayed in the table
