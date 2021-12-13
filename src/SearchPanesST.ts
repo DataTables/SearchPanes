@@ -260,7 +260,7 @@ export default class SearchPanesST extends SearchPanes {
 		}
 		else {
 			// Identify the last pane to have a change in selection
-			let pane;
+			let pane: SearchPaneCascade | SearchPaneCascadeViewTotal | SearchPaneViewTotal;
 			if (this.s.selectionList.length > 0) {
 				pane = this.s.panes[this.s.selectionList[this.s.selectionList.length-1].column];
 			}

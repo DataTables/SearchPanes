@@ -142,7 +142,7 @@ export default class SearchPanes {
 					data.searchPanes_null = {};
 				}
 
-				let src;
+				let src: string;
 				for (let selection of this.s.selectionList) {
 					src = this.s.dt.column(selection.column).dataSrc();
 
@@ -847,7 +847,7 @@ export default class SearchPanes {
 		}
 
 		for (let selection of selectList) {
-			let pane;
+			let pane: SearchPane;
 			for(let p of this.s.panes) {
 				if(p.s.index === selection.column) {
 					pane = p;

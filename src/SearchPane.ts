@@ -598,7 +598,7 @@ export default class SearchPane {
 				let bins;
 				let order;
 				let selected = [];
-				let collapsed;
+				let collapsed: boolean;
 				let searchTerm: string | number | string[];
 				let arrayFilter;
 
