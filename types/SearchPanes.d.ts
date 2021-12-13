@@ -29,6 +29,7 @@ export default class SearchPanes {
      */
     resizePanes(): SearchPanes;
     protected _setXHR(): void;
+    protected _serverTotals(): void;
     /**
      * Updates the selectionList when cascade is not in place
      */

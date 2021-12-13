@@ -328,6 +328,9 @@ export default class SearchPanes {
 		return this;
 	}
 
+	/**
+	 * Set's the xhr listener so that SP can extact appropriate data from the response
+	 */
 	protected _setXHR() {
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
@@ -335,8 +338,16 @@ export default class SearchPanes {
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
+				this._serverTotals();
 			}
 		});
+	}
+
+	/**
+	 * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
+	 */
+	protected _serverTotals() {
+		return;
 	}
 
 	/**

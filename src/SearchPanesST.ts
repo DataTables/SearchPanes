@@ -32,18 +32,6 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
 	}
 
-	protected _setXHR() {
-		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
-		// If viewTotal is not enabled then we simply update the data from the server
-		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
-			if (json && json.searchPanes && json.searchPanes.options) {
-				this.s.serverData = json;
-				this.s.serverData.tableLength = json.recordsTotal;
-				this._serverTotals();
-			}
-		});
-	}
-
 	protected _initSelectionListeners(preSelect) {
 		this.s.selectionList = preSelect;
 
@@ -231,15 +219,23 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.updating = false;
 	}
 
-	private _serverTotals() {
+	/**
+	 * Retrieve the total values from the server data
+	 */
+	protected _serverTotals() {
 		for (let pane of this.s.panes) {
 			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
 			let blockVT = true;
-			for(let data of this.s.serverData.searchPanes.options[colTitle]) {
-				if(data.total !== data.count) {
+
+			// If any of the counts are not equal to the totals filtering must be active
+			for (let data of this.s.serverData.searchPanes.options[colTitle]) {
+				if (data.total !== data.count) {
 					blockVT = false;
+					break;
 				}
 			}
+
+			// Set if filtering is present on the pane and populate the data arrays
 			pane.s.filteringActive = !blockVT;
 			pane._serverPopulate(this.s.serverData);
 		}
