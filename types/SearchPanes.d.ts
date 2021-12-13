@@ -38,8 +38,15 @@ export default class SearchPanes {
     protected _serverTotals(): void;
     /**
      * Updates the selectionList when cascade is not in place
+     *
+     * Overridden in SearchPanesST
      */
     protected _updateSelection(): void;
+    /**
+     * Set's the function that is to be performed when a state is loaded
+     *
+     * Overridden by the method in SearchPanesST
+     */
     protected _stateLoadListener(): void;
     /**
      * Attach the panes, buttons and title to the document

@@ -32,10 +32,11 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
 	}
 
-	protected _update(pane=undefined) {
-		return () => this._updateSelectionList(pane);
-	}
-
+	/**
+	 * Set's the function that is to be performed when a state is loaded
+	 *
+	 * Overrides the method in SearchPanes
+	 */
 	protected _stateLoadListener() {
 		let stateLoadFunction = (e, settings, data) => {
 			if (data.searchPanes === undefined) {
@@ -67,8 +68,70 @@ export default class SearchPanesST extends SearchPanes {
 		this.s.dt.off('stateLoadParams.dtsps', stateLoadFunction).on('stateLoadParams.dtsps', stateLoadFunction);
 	}
 
+	/**
+	 * Remove the function's actions when using cascade
+	 *
+	 * Overrides the method in SearchPanes
+	 */
 	protected _updateSelection() {
 		return;
+	}
+
+	/**
+	 * Retrieve the total values from the server data
+	 */
+	protected _serverTotals() {
+		for (let pane of this.s.panes) {
+			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
+			let blockVT = true;
+
+			// If any of the counts are not equal to the totals filtering must be active
+			for (let data of this.s.serverData.searchPanes.options[colTitle]) {
+				if (data.total !== data.count) {
+					blockVT = false;
+					break;
+				}
+			}
+
+			// Set if filtering is present on the pane and populate the data arrays
+			pane.s.filteringActive = !blockVT;
+			pane._serverPopulate(this.s.serverData);
+		}
+	}
+
+	/**
+	 * Ensures that the correct selection listeners are set for selection tracking
+	 *
+	 * @param preSelect Any values that are to be preselected
+	 */
+	private _initSelectionListeners(preSelect) {
+		this.s.selectionList = preSelect;
+
+		// Set selection listeners for each pane
+		for (let pane of this.s.panes) {
+			if (pane.s.displayed) {
+				pane.s.dtPane
+					.off('select.dtsp')
+					.on('select.dtsp', this._update(pane))
+					.off('deselect.dtsp')
+					.on('deselect.dtsp', this._update(pane));
+			}
+		}
+
+		// Update on every draw
+		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
+
+		// Also update right now as table has just initialised
+		this._updateSelectionList();
+	}
+
+	/**
+	 * Returns a function that updates the selection list based on a specific pane
+	 *
+	 * @param pane the pane that is to have it's selections loaded
+	 */
+	private _update(pane=undefined) {
+		return () => this._updateSelectionList(pane);
 	}
 
 	/**
@@ -77,23 +140,10 @@ export default class SearchPanesST extends SearchPanes {
 	 * @param index The index of the pane that is to be updated
 	 * @param selected Which rows are selected within the pane
 	 */
-	protected _updateSelectionList(paneIn = undefined) {
+	private _updateSelectionList(paneIn = undefined) {
 		if(this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
 		}
-
-		// if (this.s.dt.page.info().serverSide) {
-		// 	this.s.updating = true;
-		// 	if (!paneIn) {
-		// 		this.s.dt.draw(false);
-		// 	}
-		// 	else if(!paneIn.s.serverSelecting) {
-		// 		paneIn.s.serverSelect = paneIn.s.dtPane.rows({selected: true}).data().toArray();
-		// 		this.s.dt.draw(false);
-		// 	}
-		// 	this.s.updating = false;
-		// 	return;
-		// }
 
 		let index;
 		if(paneIn !== undefined) {
@@ -122,7 +172,7 @@ export default class SearchPanesST extends SearchPanes {
 		this._remakeSelections();
 	}
 
-	protected _remakeSelections() {
+	private _remakeSelections() {
 		this.s.updating = true;
 		if(!this.s.dt.page.info().serverSide) {
 			let tmpSL = this.s.selectionList;
@@ -199,53 +249,5 @@ export default class SearchPanesST extends SearchPanes {
 			}
 		}
 		this.s.updating = false;
-	}
-
-	/**
-	 * Retrieve the total values from the server data
-	 */
-	protected _serverTotals() {
-		for (let pane of this.s.panes) {
-			let colTitle = this.s.dt.column(pane.s.index).dataSrc();
-			let blockVT = true;
-
-			// If any of the counts are not equal to the totals filtering must be active
-			for (let data of this.s.serverData.searchPanes.options[colTitle]) {
-				if (data.total !== data.count) {
-					blockVT = false;
-					break;
-				}
-			}
-
-			// Set if filtering is present on the pane and populate the data arrays
-			pane.s.filteringActive = !blockVT;
-			pane._serverPopulate(this.s.serverData);
-		}
-	}
-
-	/**
-	 * Ensures that the correct selection listeners are set for selection tracking
-	 *
-	 * @param preSelect Any values that are to be preselected
-	 */
-	private _initSelectionListeners(preSelect) {
-		this.s.selectionList = preSelect;
-
-		// Set selection listeners for each pane
-		for (let pane of this.s.panes) {
-			if (pane.s.displayed) {
-				pane.s.dtPane
-					.off('select.dtsp')
-					.on('select.dtsp', this._update(pane))
-					.off('deselect.dtsp')
-					.on('deselect.dtsp', this._update(pane));
-			}
-		}
-
-		// Update on every draw
-		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
-
-		// Also update right now as table has just initialised
-		this._updateSelectionList();
 	}
 }

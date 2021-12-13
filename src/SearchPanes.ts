@@ -352,6 +352,8 @@ export default class SearchPanes {
 
 	/**
 	 * Updates the selectionList when cascade is not in place
+	 *
+	 * Overridden in SearchPanesST
 	 */
 	protected _updateSelection(): void {
 		this.s.selectionList = [];
@@ -365,6 +367,11 @@ export default class SearchPanes {
 		}
 	}
 
+	/**
+	 * Set's the function that is to be performed when a state is loaded
+	 *
+	 * Overridden by the method in SearchPanesST
+	 */
 	protected _stateLoadListener() {
 		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
 			if (data.searchPanes === undefined) {
