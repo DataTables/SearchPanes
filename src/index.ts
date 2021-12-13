@@ -32,7 +32,7 @@ import SearchPaneViewTotal, {setJQuery as searchPaneViewTotalJQuery} from './Sea
 import SearchPaneCascade, {setJQuery as searchPaneCascadeJQuery} from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal, {setJQuery as searchPaneCascadeViewTotalJQuery} from './SearchPaneCascadeViewTotal';
 import SearchPanes, {setJQuery as searchPanesJQuery} from './SearchPanes';
-import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
+import SearchPanesST from './SearchPanesST';
 
 // DataTables extensions common UMD. Note that this allows for AMD, CommonJS
 // (with window and jQuery being allowed as parameters to the returned
@@ -68,7 +68,6 @@ import SearchPanesST, {setJQuery as searchPanesSTJQuery} from './SearchPanesST';
 
 	searchPaneJQuery($);
 	searchPanesJQuery($);
-	searchPanesSTJQuery($);
 	searchPaneViewTotalJQuery($);
 	searchPaneCascadeJQuery($);
 	searchPaneCascadeViewTotalJQuery($);

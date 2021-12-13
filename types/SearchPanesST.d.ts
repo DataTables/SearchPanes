@@ -1,4 +1,3 @@
-export declare function setJQuery(jq: any): void;
 import { ISVT } from './panesType';
 import SearchPanes from './SearchPanes';
 export default class SearchPanesST extends SearchPanes {

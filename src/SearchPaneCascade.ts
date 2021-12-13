@@ -1,11 +1,9 @@
 import SearchPaneST from './SearchPaneST';
 
 let $;
-let dataTable;
 
 export function setJQuery(jq) {
 	$ = jq;
-	dataTable = jq.fn.dataTable;
 }
 
 export default class SearchPaneCascade extends SearchPaneST {
@@ -17,41 +15,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 			}
 		};
 		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
-	}
-
-	/**
-	 * Overrides the method from SearchPane to make it take no action
-	 *
-	 * @returns undefined
-	 */
-	protected _getEmpties(): number {
-		return undefined;
-	}
-
-	/**
-	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
-	 *
-	 * @param filter The filter value
-	 * @returns number - The number of times the value is shown
-	 */
-	protected _getShown(filter) {
-		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
-			this.s.rowData.binsShown[filter] :
-			0;
-	}
-
-	/**
-	 * Gets the message that is to be used to indicate the count for each SearchPane row
-	 *
-	 * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal
-	 *
-	 * @param row The row object that is being processed
-	 * @returns string - the message that is to be shown for the count of each entry
-	 */
-	protected _getMessage(row) {
-		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count)
-			.replace(/{total}/g, row.total)
-			.replace(/{shown}/g, row.shown);
 	}
 
 	/**
@@ -143,6 +106,41 @@ export default class SearchPaneCascade extends SearchPaneST {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
 		}
+	}
+
+	/**
+	 * Overrides the method from SearchPane to make it take no action
+	 *
+	 * @returns undefined
+	 */
+	protected _getEmpties(): number {
+		return undefined;
+	}
+
+	/**
+	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+	 *
+	 * @param filter The filter value
+	 * @returns number - The number of times the value is shown
+	 */
+	protected _getShown(filter) {
+		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
+			this.s.rowData.binsShown[filter] :
+			0;
+	}
+
+	/**
+	 * Gets the message that is to be used to indicate the count for each SearchPane row
+	 *
+	 * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal
+	 *
+	 * @param row The row object that is being processed
+	 * @returns string - the message that is to be shown for the count of each entry
+	 */
+	protected _getMessage(row) {
+		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count)
+			.replace(/{total}/g, row.total)
+			.replace(/{shown}/g, row.shown);
 	}
 
 	/**

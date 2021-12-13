@@ -1,11 +1,9 @@
 import SearchPaneCascade from './SearchPaneCascade';
 
 let $;
-let dataTable;
 
 export function setJQuery(jq) {
 	$ = jq;
-	dataTable = jq.fn.dataTable;
 }
 
 export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {

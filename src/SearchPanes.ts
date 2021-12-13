@@ -182,17 +182,6 @@ export default class SearchPanes {
 		return this;
 	}
 
-	protected _setXHR() {
-		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
-		// If viewTotal is not enabled then we simply update the data from the server
-		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
-			if (json && json.searchPanes && json.searchPanes.options) {
-				this.s.serverData = json;
-				this.s.serverData.tableLength = json.recordsTotal;
-			}
-		});
-	}
-
 	/**
 	 * Clear the selections of all of the panes
 	 */
@@ -337,6 +326,17 @@ export default class SearchPanes {
 		}
 
 		return this;
+	}
+
+	protected _setXHR() {
+		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
+		// If viewTotal is not enabled then we simply update the data from the server
+		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
+			if (json && json.searchPanes && json.searchPanes.options) {
+				this.s.serverData = json;
+				this.s.serverData.tableLength = json.recordsTotal;
+			}
+		});
 	}
 
 	/**

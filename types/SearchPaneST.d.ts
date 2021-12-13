@@ -1,6 +1,5 @@
 import { ISST } from './paneType';
 import SearchPane from './SearchPane';
-export declare function setJQuery(jq: any): void;
 export default class SearchPaneST extends SearchPane {
     s: ISST;
     constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
@@ -18,8 +17,17 @@ export default class SearchPaneST extends SearchPane {
      * SearchPaneCascade overrides this method
      */
     updateRows(): void;
+    /**
+     * Remove functionality from makeSelection - needs to be more advanced when tracking selections
+     */
     protected _makeSelection(): void;
+    /**
+     * Blank method to remove reloading of selected rows - needs to be more advanced when tracking selections
+     */
     protected _reloadSelect(): void;
+    /**
+     * Updates the server selection list where appropriate
+     */
     protected _updateSelection(): void;
     /**
      * Used when binning the data for a column

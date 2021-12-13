@@ -1,14 +1,6 @@
 import { ISST } from './paneType';
 import SearchPane from './SearchPane';
 
-let $;
-let dataTable;
-
-export function setJQuery(jq) {
-	$ = jq;
-	dataTable = jq.fn.dataTable;
-}
-
 export default class SearchPaneST extends SearchPane {
 
 	public s: ISST;
@@ -168,14 +160,23 @@ export default class SearchPaneST extends SearchPane {
 		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 	}
 
+	/**
+	 * Remove functionality from makeSelection - needs to be more advanced when tracking selections
+	 */
 	protected _makeSelection() {
 		return;
 	}
 
+	/**
+	 * Blank method to remove reloading of selected rows - needs to be more advanced when tracking selections
+	 */
 	protected _reloadSelect(): void {
 		return;
 	}
 
+	/**
+	 * Updates the server selection list where appropriate
+	 */
 	protected _updateSelection() {
 		if (this.s.dt.page.info().serverSide && !this.s.updating) {
 			if (!this.s.serverSelecting) {
@@ -210,6 +211,7 @@ export default class SearchPaneST extends SearchPane {
 	 * @param data the row data
 	 * @returns boolean indicating if the row should be added or not
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected _shouldAddRow(data) {
 		return true;
 	}

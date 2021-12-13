@@ -1,18 +1,3 @@
-let $;
-let dataTable;
-
-export function setJQuery(jq) {
-	$ = jq;
-	dataTable = jq.fn.dataTable;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace DataTables {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	interface IStaticFunctions {
-		select: any;
-	}
-}
 import { ISVT } from './panesType';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';

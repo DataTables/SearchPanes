@@ -3,6 +3,16 @@ export declare function setJQuery(jq: any): void;
 export default class SearchPaneCascade extends SearchPaneST {
     constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
     /**
+     * This method updates the rows and their data within the SearchPanes
+     *
+     * This overrides the method in SearchPane
+     */
+    updateRows(): void;
+    /**
+     * Fill the array with the values that are currently being displayed in the table
+     */
+    protected _activePopulatePane(): void;
+    /**
      * Overrides the method from SearchPane to make it take no action
      *
      * @returns undefined
@@ -24,16 +34,6 @@ export default class SearchPaneCascade extends SearchPaneST {
      * @returns string - the message that is to be shown for the count of each entry
      */
     protected _getMessage(row: any): any;
-    /**
-     * This method updates the rows and their data within the SearchPanes
-     *
-     * This overrides the method in SearchPane
-     */
-    updateRows(): void;
-    /**
-     * Fill the array with the values that are currently being displayed in the table
-     */
-    protected _activePopulatePane(): void;
     /**
      * Decides if a row should be added when being added from the server
      *

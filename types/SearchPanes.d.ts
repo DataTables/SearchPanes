@@ -12,7 +12,6 @@ export default class SearchPanes {
     c: IDefaults;
     s: IS;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean, paneClass?: typeof SearchPane);
-    protected _setXHR(): void;
     /**
      * Clear the selections of all of the panes
      */
@@ -29,6 +28,7 @@ export default class SearchPanes {
      * Resizes all of the panes
      */
     resizePanes(): SearchPanes;
+    protected _setXHR(): void;
     /**
      * Updates the selectionList when cascade is not in place
      */
