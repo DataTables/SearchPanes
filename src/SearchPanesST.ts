@@ -219,6 +219,12 @@ export default class SearchPanesST extends SearchPanes {
 
 				pane.s.selections = selection.rows;
 
+				// If there are no rows selected then don't bother continuing past here
+				// Will just increase processing time and skew the rows that are shown in the table
+				if (selection.rows.length === 0) {
+					continue;
+				}
+
 				// Update the table to display the current results
 				this.s.dt.draw();
 
