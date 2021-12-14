@@ -84,6 +84,7 @@ export default class SearchPanes {
      * Gets the selection list from the previous state and stores it in the selectionList Property
      */
     private _getState;
+    private _makeSelections;
     /**
      * Declares the instances of individual searchpanes dependant on the number of columns.
      * It is necessary to run this once preInit has completed otherwise no panes will be

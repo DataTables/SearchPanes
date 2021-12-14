@@ -236,6 +236,7 @@ export default class SearchPanes {
 
 		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
 		let returnArray = [];
+
 		for (let pane of this.s.panes) {
 			if (targetIdx === false || pane.s.index === targetIdx) {
 				pane.clearData();
@@ -384,7 +385,7 @@ export default class SearchPanes {
 				}
 			}
 
-			this.rebuild(undefined, false);
+			this._makeSelections(this.s.selectionList);
 		});
 	}
 
@@ -576,6 +577,29 @@ export default class SearchPanes {
 
 		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList) {
 			this.s.selectionList = loadedFilter.searchPanes.selectionList;
+		}
+	}
+
+	private _makeSelections(selectList) {
+		for (let selection of selectList) {
+			let pane: SearchPane;
+
+			for (let p of this.s.panes) {
+				if (p.s.index === selection.column) {
+					pane = p;
+					break;
+				}
+			}
+			if (pane && pane.s.dtPane) {
+				let tableLength = pane.s.dtPane.rows().data().toArray().length;
+
+				for (let i = 0; i < tableLength; i++) {
+					if (selection.rows.includes(pane.s.dtPane.cell(i, 0).data())) {
+						pane.s.dtPane.row(i).select();
+					}
+				}
+				pane.updateTable();
+			}
 		}
 	}
 
@@ -843,26 +867,7 @@ export default class SearchPanes {
 			selectList = loadedFilter.searchPanes.selectionList;
 		}
 
-		for (let selection of selectList) {
-			let pane: SearchPane;
-
-			for (let p of this.s.panes) {
-				if (p.s.index === selection.column) {
-					pane = p;
-					break;
-				}
-			}
-			if (pane && pane.s.dtPane) {
-				let tableLength = pane.s.dtPane.rows().data().toArray().length;
-
-				for (let i = 0; i < tableLength; i++) {
-					if (selection.rows.includes(pane.s.dtPane.cell(i, 0).data())) {
-						pane.s.dtPane.row(i).select();
-					}
-				}
-				pane.updateTable();
-			}
-		}
+		this._makeSelections(selectList);
 
 		// Update the title bar to show how many filters have been selected
 		this._updateFilterCount();
