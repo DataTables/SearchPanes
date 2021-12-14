@@ -395,6 +395,7 @@ export default class SearchPanes {
 	 */
 	protected _updateSelection(): void {
 		this.s.selectionList = [];
+
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
 				this.s.selectionList.push({
@@ -433,7 +434,6 @@ export default class SearchPanes {
 		}
 
 		// Attach everything to the document
-
 		this.dom.container
 			.text('')
 			.removeClass(this.classes.hide)
@@ -668,7 +668,6 @@ export default class SearchPanes {
 	private _startup(table): void {
 		// Attach clear button and title bar to the document
 		this._attach();
-
 		this.dom.panes.empty();
 
 		for (let pane of this.s.panes) {
@@ -691,7 +690,6 @@ export default class SearchPanes {
 		}
 
 		this.s.stateRead = true;
-
 		this._checkMessage();
 
 		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
@@ -826,7 +824,6 @@ export default class SearchPanes {
 					}
 
 					this.s.updating = false;
-
 					this._updateSelection();
 					this._checkMessage();
 
@@ -848,6 +845,7 @@ export default class SearchPanes {
 
 		for (let selection of selectList) {
 			let pane: SearchPane;
+
 			for (let p of this.s.panes) {
 				if (p.s.index === selection.column) {
 					pane = p;

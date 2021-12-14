@@ -10,6 +10,7 @@ export default class SearchPanesST extends SearchPanes {
 
 	public constructor(paneSettings, opts, fromPreInit = false) {
 		let paneClass;
+
 		if (opts.cascadePanes && opts.viewTotal) {
 			paneClass = SearchPaneCascadeViewTotal;
 		}
@@ -19,6 +20,7 @@ export default class SearchPanesST extends SearchPanes {
 		else if (opts.viewTotal) {
 			paneClass = SearchPaneViewTotal;
 		}
+
 		super(paneSettings, opts, fromPreInit, paneClass);
 
 		let loadedFilter = this.s.dt.state.loaded();
@@ -64,6 +66,7 @@ export default class SearchPanesST extends SearchPanes {
 			if (data.searchPanes === undefined) {
 				return;
 			}
+
 			// Set the selection list for the panes so that the correct
 			// rows can be reselected and in the right order
 			this.s.selectionList =

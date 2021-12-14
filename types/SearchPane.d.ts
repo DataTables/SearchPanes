@@ -105,14 +105,6 @@ export default class SearchPane {
      * rather than the filtered message when using viewTotal.
      */
     updateTable(): void;
-    /**
-     * Gets the number of empty cells in the column
-     *
-     * This method is overridden by SearchPaneViewTotal and SearchPaneCascade
-     *
-     * @returns number The number of empty cells in the column
-     */
-    protected _getEmpties(): number;
     protected _getMessage(row: {
         [keys: string]: any;
     }): string;

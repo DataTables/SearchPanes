@@ -1,15 +1,7 @@
-import { ISST } from './paneType';
 import SearchPaneST from './SearchPaneST';
 export declare function setJQuery(jq: any): void;
 export default class SearchPaneViewTotal extends SearchPaneST {
-    s: ISST;
     constructor(paneSettings: any, opts: any, index: any, panesContainer: any, panes: any);
-    /**
-     * Overrides the method from SearchPane to make it take no action
-     *
-     * @returns undefined
-     */
-    protected _getEmpties(): number;
     /**
      * Gets the message that is to be used to indicate the count for each SearchPane row
      *

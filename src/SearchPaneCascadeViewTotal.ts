@@ -7,7 +7,6 @@ export function setJQuery(jq) {
 }
 
 export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
-
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
 		let override = {
 			i18n: {

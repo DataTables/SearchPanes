@@ -13,12 +13,6 @@ export default class SearchPaneCascade extends SearchPaneST {
      */
     protected _activePopulatePane(): void;
     /**
-     * Overrides the method from SearchPane to make it take no action
-     *
-     * @returns undefined
-     */
-    protected _getEmpties(): number;
-    /**
      * Gets the message that is to be used to indicate the count for each SearchPane row
      *
      * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal

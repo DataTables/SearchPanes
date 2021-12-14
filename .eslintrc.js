@@ -215,6 +215,7 @@ module.exports = {
 		'no-trailing-spaces': 'warn',
 		'no-undef-init': 'error',
 		'no-underscore-dangle': 'off',
+		'no-unexpected-multiline': 'error',
 		'no-unreachable': 'warn',
 		'no-unsafe-finally': 'error',
 		'no-unused-labels': 'error',

@@ -7,7 +7,6 @@ export function setJQuery(jq) {
 }
 
 export default class SearchPaneCascade extends SearchPaneST {
-
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
 		let override = {
 			i18n: {
@@ -27,6 +26,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 			// Get the latest count values from the table
 			this._activePopulatePane();
 			this.s.rowData.binsShown = {};
+
 			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
 				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
 			}
@@ -106,15 +106,6 @@ export default class SearchPaneCascade extends SearchPaneST {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
 		}
-	}
-
-	/**
-	 * Overrides the method from SearchPane to make it take no action
-	 *
-	 * @returns undefined
-	 */
-	protected _getEmpties(): number {
-		return undefined;
 	}
 
 	/**

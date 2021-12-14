@@ -1,4 +1,3 @@
-import { ISST } from './paneType';
 import SearchPaneST from './SearchPaneST';
 
 let $;
@@ -8,9 +7,6 @@ export function setJQuery(jq) {
 }
 
 export default class SearchPaneViewTotal extends SearchPaneST {
-
-	public s: ISST;
-
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
 		let override = {
 			i18n: {
@@ -18,15 +14,6 @@ export default class SearchPaneViewTotal extends SearchPaneST {
 			}
 		};
 		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
-	}
-
-	/**
-	 * Overrides the method from SearchPane to make it take no action
-	 *
-	 * @returns undefined
-	 */
-	protected _getEmpties(): number {
-		return undefined;
 	}
 
 	/**

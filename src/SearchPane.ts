@@ -1,4 +1,4 @@
-import { IClasses, IDefaults, IDOM, IS } from './paneType';
+import { IClasses, IDataArray, IDefaults, IDOM, IS } from './paneType';
 
 let $;
 let dataTable;
@@ -301,18 +301,16 @@ export default class SearchPane {
 		total?: number,
 		shown?: number
 	): any {
-		let index: number;
 		if (!total) {
 			total = this.s.rowData.bins[filter] ?
 				this.s.rowData.bins[filter] :
 				0;
 		}
-		if (total === undefined) {
-			total = this._getEmpties();
-		}
 		if (!shown) {
 			shown = this._getShown(filter);
 		}
+
+		let index: number;
 
 		for (let entry of this.s.indexes) {
 			if (entry.filter === filter) {
@@ -595,12 +593,12 @@ export default class SearchPane {
 					return;
 				}
 
-				let bins;
+				let bins: {[keys: string]: number};
 				let order;
 				let selected = [];
 				let collapsed: boolean;
 				let searchTerm: string | number | string[];
-				let arrayFilter;
+				let arrayFilter: IDataArray[];
 
 				// Get all of the data needed for the state save from the pane
 				if (this.s.dtPane) {
@@ -841,25 +839,6 @@ export default class SearchPane {
 		this.s.selections = selectedRows;
 		this._searchExtras();
 	}
-
-	/**
-	 * Gets the number of empty cells in the column
-	 *
-	 * This method is overridden by SearchPaneViewTotal and SearchPaneCascade
-	 *
-	 * @returns number The number of empty cells in the column
-	 */
-	protected _getEmpties(): number {
-		let total = 0;
-		this.s.rowData.arrayFilter.forEach(element => {
-			if (element.filter === '') {
-				total++;
-			}
-		});
-
-		return total;
-	}
-
 
 	protected _getMessage(row: {[keys: string]: any}): string {
 		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
@@ -1394,8 +1373,6 @@ export default class SearchPane {
 		this.s.dtPane.draw();
 		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
 		this.adjustTopRow();
-
-
 		this.setListeners();
 		this.s.listSet = true;
 
