@@ -84,7 +84,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			await dt.sleep(500);
 			checkRowCounts(33, 1, 2);
 		});
-		it('... unclick second pane', async function () {
+		it('... unclick first pane', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
 			await dt.sleep(500);
 			checkRowCounts(33, 7, 33);

@@ -16,6 +16,9 @@ $(document).ready( function() {
         { data: "users.phone" },
         { data: "sites.name" }
     ],
+    searchPanes: {
+          "viewTotal": true
+    },
     columnDefs: [{
         searchPanes: {
             show: true

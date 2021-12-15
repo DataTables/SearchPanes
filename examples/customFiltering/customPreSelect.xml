@@ -25,10 +25,13 @@ $(document).ready(function() {
                                 return rowData[3] < 50;
                             }
                         }
-                    ],
-                    preSelect: ['Over 50']
+                    ]
                 }
-            ]
+            ],
+            preSelect:[{
+                column: 6,
+                rows: ['Over 50']
+            }]
         },
         dom: 'Plfrtip'
     });
@@ -49,7 +52,7 @@ Technically this is also possible to do with a custom function in any of the aut
 
 The `-init searchPanes.panes` config option holds an object for each custom Pane.
 
-Note: `-init searchPanes.panes.preSelect` is not supported with `-init searchPanes.cascadePanes`. This is because in order to have the cascade operate as expected the selections need to be made in the correct order. Currently it is not possible to indicate this with preSelect.
+To select a custom pane for preselection, the `column` value that should be selected is calculated by adding the last column's index, and the number of custom pane that this is. If this is the second custom, and the last column index is 5 then the value of `column` would be `7`.
 
 ]]></info>
 

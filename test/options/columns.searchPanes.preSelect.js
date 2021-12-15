@@ -20,26 +20,22 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 		it('Setup some preSelects', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-				columnDefs: [
-					{
-						searchPanes: {
-							preSelect: ['Not there']
+				searchPanes: {
+					preSelect:[
+						{
+							column: 1,
+							rows: ['Not there']
 						},
-						targets: [1]
-					},
-					{
-						searchPanes: {
-							preSelect: ['New York', 'San Francisco']
+						{
+							column: 2,
+							rows: ['New York', 'San Francisco']
 						},
-						targets: [2]
-					},
-					{
-						searchPanes: {
-							preSelect: ['66', 'Not there']
-						},
-						targets: [3]
-					}
-				]
+						{
+							column: 3,
+							rows: ['66', 'Not there']
+						}
+					]
+				}
 			});
 
 			expect($('tr.selected').length).toBe(3);
@@ -78,16 +74,14 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
-					cascadePanes: true
-				},
-				columnDefs: [
-					{
-						searchPanes: {
-							preSelect: ['New York', 'San Francisco']
-						},
-						targets: [2]
-					}
-				]
+					cascadePanes: true,
+					preSelect: [
+						{
+							column: 2,
+							rows: ['New York', 'San Francisco']
+						}
+					]
+				}
 			});
 
 			expect($('div.dtsp-searchPane:eq(2) tr').length).toBe(9);
@@ -103,22 +97,18 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
-					cascadePanes: true
-				},
-				columnDefs: [
-					{
-						searchPanes: {
-							preSelect: ['New York', 'San Francisco']
+					cascadePanes: true,
+					preSelect: [
+						{
+							column: 2,
+							rows: ['New York', 'San Francisco']
 						},
-						targets: [2]
-					},
-					{
-						searchPanes: {
-							preSelect: ['66']
-						},
-						targets: [3]
-					}
-				]
+						{
+							column: 3,
+							rows:['66']
+						}
+					]
+				}
 			});
 		});
 		it('First - now not showing all values', function() {

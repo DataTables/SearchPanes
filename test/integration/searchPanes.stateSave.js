@@ -74,7 +74,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			$('div.dtsp-searchPane:visible:eq(0) table tbody tr:eq(26) td:eq(0)').click();
 			$('div.dtsp-searchPane:visible:eq(1) table tbody tr:eq(1) td:eq(0)').click();
 
-			await dt.sleep(600);
+			await dt.sleep(500);
 
 			checkCascades();
 
@@ -91,7 +91,8 @@ describe('searchPanes - integrations - stateSave', function() {
 				stateSave: true
 			});
 
-			await dt.sleep(600);
+
+			await dt.sleep(500);
 
 			checkCascades();
 

@@ -34,8 +34,13 @@ describe('searchPanes - options - searchPanes.panes.preSelect', function() {
 										return rowData[1].includes('Senior');
 									}
 								}
-							],
-							preSelect: ['Junior']
+							]
+						}
+					],
+					preSelect: [
+						{
+							column: 6,
+							rows: ['Junior']
 						}
 					]
 				}
@@ -71,8 +76,13 @@ describe('searchPanes - options - searchPanes.panes.preSelect', function() {
 										return rowData[1].includes('Senior');
 									}
 								}
-							],
-							preSelect: ['Senior']
+							]
+						}
+					],
+					preSelect: [
+						{
+							column: 6,
+							rows: ['Senior']
 						}
 					]
 				}
@@ -108,8 +118,7 @@ describe('searchPanes - options - searchPanes.panes.preSelect', function() {
 										return rowData[1].includes('Senior');
 									}
 								}
-							],
-							preSelect: ['Senior']
+							]
 						},
 						{
 							header: 'Contains L',
@@ -120,8 +129,17 @@ describe('searchPanes - options - searchPanes.panes.preSelect', function() {
 										return rowData[2].includes('L');
 									}
 								}
-							],
-							preSelect: ['L']
+							]
+						}
+					],
+					preSelect: [
+						{
+							column: 6,
+							rows: ['Senior']
+						},
+						{
+							column: 7,
+							rows: ['L']
 						}
 					]
 				}

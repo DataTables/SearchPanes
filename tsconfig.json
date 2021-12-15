@@ -12,8 +12,13 @@
         "./node_modules/**/*"
     ],
     "files": [
-        "src/searchPanes.ts",
-        "src/searchPane.ts",
+        "src/SearchPanes.ts",
+        "src/SearchPanesST.ts",
+        "src/SearchPane.ts",
+        "src/SearchPaneST.ts",
+        "src/SearchPaneCascade.ts",
+        "src/SearchPaneCascadeViewTotal.ts",
+        "src/SearchPaneViewTotal.ts",
         "src/index.ts",
         "src/paneType.ts",
         "src/panesType.ts",

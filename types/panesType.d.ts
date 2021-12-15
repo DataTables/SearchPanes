@@ -1,6 +1,8 @@
 /// <reference types="jquery" />
 /// <reference types="datatables.net" />
-import SearchPane from './searchPane';
+import SearchPane from './SearchPane';
+import SearchPaneViewTotal from './SearchPaneViewTotal';
+import SearchPaneCascade from './SearchPaneCascade';
 export interface IClasses {
     clear: string;
     clearAll: string;
@@ -24,7 +26,6 @@ export interface IConfigPaneItem {
     options: IOption[];
 }
 export interface IDefaults {
-    cascadePanes: boolean;
     clear: boolean;
     collapse: boolean;
     columns: number[];
@@ -49,6 +50,7 @@ export interface IDefaults {
     layout: string;
     order: string[];
     panes: IConfigPaneItem[];
+    preSelect: ISelectItem[];
     viewTotal: boolean;
 }
 export interface IDOM {
@@ -56,12 +58,10 @@ export interface IDOM {
     collapseAll: JQuery<HTMLElement>;
     container: JQuery<HTMLElement>;
     emptyMessage: JQuery<HTMLElement>;
-    options: JQuery<HTMLElement>;
     panes: JQuery<HTMLElement>;
     showAll: JQuery<HTMLElement>;
     title: JQuery<HTMLElement>;
     titleRow: JQuery<HTMLElement>;
-    wrapper: JQuery<HTMLElement>;
 }
 export interface IOption {
     label: string;
@@ -71,9 +71,10 @@ export interface IS {
     colOpts: any[];
     dt: any;
     filterCount: number;
-    filterPane: number;
+    minPaneWidth: number;
     page: number;
     paging: boolean;
+    paneClass: typeof SearchPane;
     panes: SearchPane[];
     selectionList: ISelectItem[];
     serverData: {
@@ -82,8 +83,14 @@ export interface IS {
     stateRead: boolean;
     updating: boolean;
 }
+export interface ISVT extends IS {
+    anotherFilter: boolean;
+    panes: SearchPaneViewTotal[] | SearchPaneCascade[];
+    reselecting: boolean;
+    serverSelect: any;
+    serverSelecting: any;
+}
 export interface ISelectItem {
-    index: number;
-    protect: boolean;
+    column: number;
     rows: any;
 }

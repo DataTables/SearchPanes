@@ -52,6 +52,9 @@ describe('searchPanes - options - language.searchPanes.count', function() {
 					searchPanes: {
 						count: 'unit {total} test {shown}'
 					}
+				},
+				searchPanes: {
+					viewTotal: true
 				}
 			});
 

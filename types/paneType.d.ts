@@ -5,6 +5,7 @@ export interface IClasses {
     bordered: string;
     buttonGroup: string;
     buttonSub: string;
+    caret: string;
     clear: string;
     clearAll: string;
     clearButton: string;
@@ -57,8 +58,11 @@ export interface IDataArray {
     sort: any;
     type: string;
 }
+export interface IDataArrayST extends IDataArray {
+    shown: number;
+    total: number;
+}
 export interface IDefaults {
-    cascadePanes: boolean;
     clear: boolean;
     collapse: boolean;
     combiner: string;
@@ -83,7 +87,6 @@ export interface IDefaults {
     preSelect: any;
     threshold: number;
     viewCount: boolean;
-    viewTotal: boolean;
 }
 export interface IDOM {
     buttonGroup: JQuery<HTMLElement>;
@@ -124,44 +127,53 @@ export interface IOrthogonal {
 export interface IRowData {
     arrayFilter: IDataArray[];
     arrayOriginal: IDataArray[];
-    arrayTotals: IDataArray[];
     bins: {
         [keys: string]: number;
     };
     binsOriginal: {
         [keys: string]: number;
     };
-    binsTotal: {
+    filterMap: Map<number, any>;
+    totalOptions: number;
+}
+export interface IRowDataST extends IRowData {
+    arrayFilter: IDataArrayST[];
+    arrayOriginal: IDataArrayST[];
+    arrayShown: IDataArrayST[];
+    bins: {
+        [keys: string]: number;
+    };
+    binsOriginal: {
+        [keys: string]: number;
+    };
+    binsShown: {
         [keys: string]: number;
     };
     filterMap: Map<number, any>;
     totalOptions: number;
 }
 export interface IS {
-    cascadeRegen: boolean;
-    clearing: boolean;
+    colExists: boolean;
     colOpts: any;
-    deselect: boolean;
+    customPaneSettings: IConfigPaneItem;
     displayed: boolean;
     dt: any;
     dtPane: any;
-    filteringActive: boolean;
     firstSet: boolean;
-    forceViewTotal: boolean;
     index: number;
     indexes: IIndexes[];
-    lastCascade: boolean;
-    lastSelect: boolean;
     listSet: boolean;
     name: string;
-    redraw: boolean;
     rowData: IRowData;
     scrollTop: number;
     searchFunction: any;
-    selectPresent: boolean;
+    selections: any[];
     serverSelect: any;
     serverSelecting: boolean;
-    showFiltered: boolean;
     tableLength: number;
     updating: boolean;
+}
+export interface ISST extends IS {
+    filteringActive: boolean;
+    rowData: IRowDataST;
 }
