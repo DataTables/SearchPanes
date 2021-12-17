@@ -8,7 +8,6 @@
 $(document).ready(function() {
     $('#example').DataTable({
         dom: 'Plfrtip',
-        stateSave: true,
         searchPanes: {
             preSelect: [{
                 rows:['Edinburgh','London'],
