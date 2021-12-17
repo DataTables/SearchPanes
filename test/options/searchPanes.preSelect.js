@@ -1,4 +1,4 @@
-describe('searchPanes - options - columns.searchPanes.preSelect', function() {
+describe('searchPanes - options - searchPanes.preSelect', function() {
 	let table;
 
 	dt.libs({
@@ -129,6 +129,147 @@ describe('searchPanes - options - columns.searchPanes.preSelect', function() {
 			expect($('div.dtsp-searchPane:eq(3) .dataTables_scrollBody tbody tr').length).toBe(21);
 			expect($('div.dtsp-searchPane:eq(3) .dataTables_scrollBody tbody tr.selected').length).toBe(1);
 			expect($('div.dtsp-searchPane:eq(3) .dataTables_scrollBody tbody tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('66');
+		});
+	
+		dt.html('basic');
+		it('Custom Panes - Pre-select first entry', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				columnDefs: [
+					{
+						targets: ['_all'],
+						searchPanes: { show: false }
+					}
+				],
+				searchPanes: {
+					panes: [
+						{
+							header: 'Seniority',
+							options: [
+								{
+									label: 'Junior',
+									value: function(rowData, rowIdx) {
+										return rowData[1].includes('Junior');
+									}
+								},
+								{
+									label: 'Senior',
+									value: function(rowData, rowIdx) {
+										return rowData[1].includes('Senior');
+									}
+								}
+							]
+						}
+					],
+					preSelect: [
+						{
+							column: 6,
+							rows: ['Junior']
+						}
+					]
+				}
+			});
+
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
+		});
+
+		dt.html('basic');
+		it('Custom Panes - Pre-select second entry', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				columnDefs: [
+					{
+						targets: ['_all'],
+						searchPanes: { show: false }
+					}
+				],
+				searchPanes: {
+					panes: [
+						{
+							header: 'Seniority',
+							options: [
+								{
+									label: 'Junior',
+									value: function(rowData, rowIdx) {
+										return rowData[1].includes('Junior');
+									}
+								},
+								{
+									label: 'Senior',
+									value: function(rowData, rowIdx) {
+										return rowData[1].includes('Senior');
+									}
+								}
+							]
+						}
+					],
+					preSelect: [
+						{
+							column: 6,
+							rows: ['Senior']
+						}
+					]
+				}
+			});
+
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
+		});
+
+		dt.html('basic');
+		it('Custom Panes - Pre-select from two panes', function() {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				columnDefs: [
+					{
+						targets: ['_all'],
+						searchPanes: { show: false }
+					}
+				],
+				searchPanes: {
+					panes: [
+						{
+							header: 'Seniority',
+							options: [
+								{
+									label: 'Junior',
+									value: function(rowData, rowIdx) {
+										return rowData[1].includes('Junior');
+									}
+								},
+								{
+									label: 'Senior',
+									value: function(rowData, rowIdx) {
+										return rowData[1].includes('Senior');
+									}
+								}
+							]
+						},
+						{
+							header: 'Contains L',
+							options: [
+								{
+									label: 'L',
+									value: function(rowData, rowIdx) {
+										return rowData[2].includes('L');
+									}
+								}
+							]
+						}
+					],
+					preSelect: [
+						{
+							column: 6,
+							rows: ['Senior']
+						},
+						{
+							column: 7,
+							rows: ['L']
+						}
+					]
+				}
+			});
+
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Haley Kennedy');
 		});
 	});
 });
