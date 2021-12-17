@@ -31,6 +31,10 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
+if [ ! -d "node_modules/@rollup" ]; then
+    npm install
+fi
+
 # Copy images
 #rsync -r images $OUT_DIR
 
