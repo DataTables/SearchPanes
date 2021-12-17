@@ -399,10 +399,13 @@ export default class SearchPanes {
 
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
-				this.s.selectionList.push({
-					column: pane.s.index,
-					rows: pane.s.dtPane.rows({ selected: true }).data().toArray().map(el => el.filter)
-				});
+				let rows = pane.s.dtPane.rows({ selected: true }).data().toArray().map(el => el.filter);
+				if(rows.length) {
+					this.s.selectionList.push({
+						column: pane.s.index,
+						rows
+					});
+				}
 			}
 		}
 	}
