@@ -1,5 +1,12 @@
 @import './searchPanes.dataTables.scss';
 
+input.dtsp-disabledButton {
+	cursor: default !important;
+	&:hover {
+		cursor: default !important;
+	}
+}
+
 div.dtsp-searchPane {
 	div.dataTables_scrollBody {
 		text-align: left;

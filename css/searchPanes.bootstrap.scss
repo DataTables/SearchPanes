@@ -18,6 +18,18 @@ div.dtsp-searchPane {
     div.dtsp-topRow {
         margin: 0.5em 0;
 
+        div.dtsp-searchCont {
+            input.dtsp-search {
+                min-height: 34px;
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+            input.dtsp-paneInputButton {
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+        }
+
         div.dtsp-subRow2 {
             margin-left: 0.5em;
         }

@@ -9,6 +9,10 @@ div.dtsp-panesContainer {
     div.dtsp-searchPane {
         div.dtsp-topRow {
             margin: 0.5em 0;
+
+            input.form-control {
+                border-radius: 4px;
+            }
     
             div.dtsp-subRow2 {
                 margin-left: 0.5em;
