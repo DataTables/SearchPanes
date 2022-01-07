@@ -1590,6 +1590,7 @@ export default class SearchPane {
 		let rows = [];
 		// Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
 		this.s.dtPane.clear();
+		this.s.indexes = [];
 
 		for (let comp of options) {
 			// Initialise the object which is to be placed in the row
