@@ -92,11 +92,11 @@ export default class SearchPanes {
 		this.dom = {
 			clearAll: $('<button type="button"/>')
 				.addClass(this.classes.clearAll)
-				.text(table.i18n('searchPanes.clearMessage', this.c.i18n.clearMessage)),
+				.html(table.i18n('searchPanes.clearMessage', this.c.i18n.clearMessage)),
 			collapseAll: $('<button type="button"/>')
 				.addClass(this.classes.collapseAll)
-				.text(table.i18n('searchPanes.collapseMessage', this.c.i18n.collapseMessage)),
-			container: $('<div/>').addClass(this.classes.panes).text(
+				.html(table.i18n('searchPanes.collapseMessage', this.c.i18n.collapseMessage)),
+			container: $('<div/>').addClass(this.classes.panes).html(
 				table.i18n('searchPanes.loadMessage', this.c.i18n.loadMessage)
 			),
 			emptyMessage: $('<div/>').addClass(this.classes.emptyMessage),
@@ -105,7 +105,7 @@ export default class SearchPanes {
 				.addClass(this.classes.showAll)
 				.addClass(this.classes.disabledButton)
 				.attr('disabled', 'true')
-				.text(table.i18n('searchPanes.showMessage', this.c.i18n.showMessage)),
+				.html(table.i18n('searchPanes.showMessage', this.c.i18n.showMessage)),
 			title: $('<div/>').addClass(this.classes.title),
 			titleRow: $('<div/>').addClass(this.classes.titleRow),
 		};
@@ -478,7 +478,7 @@ export default class SearchPanes {
 		// Otherwise display the message
 		this.dom.container.removeClass(this.classes.hide);
 		this.dom.titleRow.addClass(this.classes.hide);
-		this.dom.emptyMessage.text(message).appendTo(this.dom.container);
+		this.dom.emptyMessage.html(message).appendTo(this.dom.container);
 	}
 
 	/**
@@ -919,7 +919,7 @@ export default class SearchPanes {
 		}
 
 		// Run the message through the internationalisation method to improve readability
-		this.dom.title.text(this.s.dt.i18n('searchPanes.title', this.c.i18n.title, filterCount));
+		this.dom.title.html(this.s.dt.i18n('searchPanes.title', this.c.i18n.title, filterCount));
 
 		if (this.c.filterChanged && typeof this.c.filterChanged === 'function') {
 			this.c.filterChanged.call(this.s.dt, filterCount);
