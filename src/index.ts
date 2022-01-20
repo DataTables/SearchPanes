@@ -147,7 +147,8 @@ import SearchPanesST from './SearchPanesST';
 	$.fn.dataTable.ext.buttons.searchPanes = {
 		action(e, dt, node, config) {
 			this.popover(config._panes.getNode(), {
-				align: 'dt-container'
+				align: 'container',
+				span: 'container'
 			});
 			config._panes.rebuild(undefined, true);
 		},
