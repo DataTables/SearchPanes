@@ -13,7 +13,7 @@ namespace DataTables {
 		select: any;
 	}
 }
-import { IClasses, IDefaults, IDOM, IS } from './panesType';
+import { IClasses, IDefaults, IDOM, IS, ISelectItem } from './panesType';
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
@@ -256,6 +256,7 @@ export default class SearchPanes {
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
 		this._attachPaneContainer();
+		this._initSelectionListeners();
 
 		// If the selections are to be maintained, then it is safe to assume that paging is also to be maintained
 		// Otherwise, the paging should be reset
@@ -329,6 +330,13 @@ export default class SearchPanes {
 		}
 
 		return this;
+	}
+
+	/**
+	 * Holder method that is userd in SearchPanesST to set listeners that have an effect on other panes
+	 */
+	protected _initSelectionListeners(): void {
+		return;
 	}
 
 	/**
@@ -484,7 +492,7 @@ export default class SearchPanes {
 	/**
 	 * Attaches the panes to the document and displays a message or hides if there are none
 	 */
-	private _attachPaneContainer(): void {
+	protected _attachPaneContainer(): void {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
@@ -908,7 +916,7 @@ export default class SearchPanes {
 	/**
 	 * Updates the number of filters that have been applied in the title
 	 */
-	private _updateFilterCount(): void {
+	protected _updateFilterCount(): void {
 		let filterCount = 0;
 
 		// Add the number of all of the filters throughout the panes

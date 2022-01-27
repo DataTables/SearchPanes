@@ -1,8 +1,14 @@
-import { ISVT } from './panesType';
+import { ISelectItem, ISVT } from './panesType';
 import SearchPanes from './SearchPanes';
 export default class SearchPanesST extends SearchPanes {
     s: ISVT;
     constructor(paneSettings: any, opts: any, fromPreInit?: boolean);
+    /**
+     * Ensures that the correct selection listeners are set for selection tracking
+     *
+     * @param preSelect Any values that are to be preselected
+     */
+    protected _initSelectionListeners(preSelect?: ISelectItem[]): void;
     /**
      * Retrieve the total values from the server data
      */
@@ -19,12 +25,6 @@ export default class SearchPanesST extends SearchPanes {
      * Overrides the method in SearchPanes
      */
     protected _updateSelection(): void;
-    /**
-     * Ensures that the correct selection listeners are set for selection tracking
-     *
-     * @param preSelect Any values that are to be preselected
-     */
-    private _initSelectionListeners;
     /**
      * Returns a function that updates the selection list based on a specific pane
      *

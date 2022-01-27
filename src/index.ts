@@ -154,7 +154,7 @@ import SearchPanesST from './SearchPanesST';
 		},
 		config: {},
 		init(dt, node, config) {
-			let panes = new $.fn.dataTable.SearchPanes(dt, $.extend(
+			let buttonOpts = $.extend(
 				{
 					filterChanged(count) {
 						dt.button(node).text(dt.i18n(
@@ -167,7 +167,10 @@ import SearchPanesST from './SearchPanesST';
 					}
 				},
 				config.config
-			));
+			)
+			let panes = buttonOpts && (buttonOpts.cascadePanes || buttonOpts.viewTotal) ?
+				new $.fn.dataTable.SearchPanesST(dt, buttonOpts) :
+				new $.fn.dataTable.SearchPanes(dt, buttonOpts);
 			dt.button(node).text(
 				config.text || dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0)
 			);

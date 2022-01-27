@@ -1,4 +1,5 @@
 import { ISelectItem, ISVT } from './panesType';
+import SearchPane from './SearchPane';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';
 import SearchPanes from './SearchPanes';
@@ -32,6 +33,32 @@ export default class SearchPanesST extends SearchPanes {
 		);
 
 		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
+	}
+
+	/**
+	 * Ensures that the correct selection listeners are set for selection tracking
+	 *
+	 * @param preSelect Any values that are to be preselected
+	 */
+	protected _initSelectionListeners(preSelect: ISelectItem[] = []): void {
+		this.s.selectionList = preSelect;
+
+		// Set selection listeners for each pane
+		for (let pane of this.s.panes) {
+			if (pane.s.displayed) {
+				pane.s.dtPane
+					.off('select.dtsp')
+					.on('select.dtsp', this._update(pane))
+					.off('deselect.dtsp')
+					.on('deselect.dtsp', this._update(pane));
+			}
+		}
+
+		// Update on every draw
+		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
+
+		// Also update right now as table has just initialised
+		this._updateSelectionList();
 	}
 
 	/**
@@ -100,32 +127,6 @@ export default class SearchPanesST extends SearchPanes {
 	 */
 	protected _updateSelection(): void {
 		return;
-	}
-
-	/**
-	 * Ensures that the correct selection listeners are set for selection tracking
-	 *
-	 * @param preSelect Any values that are to be preselected
-	 */
-	private _initSelectionListeners(preSelect: ISelectItem[]): void {
-		this.s.selectionList = preSelect;
-
-		// Set selection listeners for each pane
-		for (let pane of this.s.panes) {
-			if (pane.s.displayed) {
-				pane.s.dtPane
-					.off('select.dtsp')
-					.on('select.dtsp', this._update(pane))
-					.off('deselect.dtsp')
-					.on('deselect.dtsp', this._update(pane));
-			}
-		}
-
-		// Update on every draw
-		this.s.dt.off('draw.dtsps').on('draw.dtsps', this._update());
-
-		// Also update right now as table has just initialised
-		this._updateSelectionList();
 	}
 
 	/**

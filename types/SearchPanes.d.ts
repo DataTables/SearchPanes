@@ -29,6 +29,10 @@ export default class SearchPanes {
      */
     resizePanes(): SearchPanes;
     /**
+     * Holder method that is userd in SearchPanesST to set listeners that have an effect on other panes
+     */
+    protected _initSelectionListeners(): void;
+    /**
      * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
      */
     protected _serverTotals(): void;
@@ -60,7 +64,7 @@ export default class SearchPanes {
     /**
      * Attaches the panes to the document and displays a message or hides if there are none
      */
-    private _attachPaneContainer;
+    protected _attachPaneContainer(): void;
     /**
      * Checks which panes are collapsed and then performs relevant actions to the collapse/show all buttons
      */
@@ -113,5 +117,5 @@ export default class SearchPanes {
     /**
      * Updates the number of filters that have been applied in the title
      */
-    private _updateFilterCount;
+    protected _updateFilterCount(): void;
 }
