@@ -557,6 +557,8 @@ export default class SearchPane {
 			return;
 		}
 
+		this.s.dtPane.select.style('os');
+
 		let t0: NodeJS.Timeout;
 
 		// When an item is selected on the pane, add these to the array which holds selected items.
@@ -866,6 +868,10 @@ export default class SearchPane {
 		// eslint-disable-next-line no-extra-parens
 		let haveScroller = (dataTable as any).Scroller;
 
+		let langOpts = this.s.dt.settings()[0].oLanguage;
+		langOpts.url = undefined;
+		langOpts.sUrl = undefined;
+
 		return {
 			columnDefs: [
 				{
@@ -925,7 +931,7 @@ export default class SearchPane {
 			deferRender: true,
 			dom: 't',
 			info: false,
-			language: this.s.dt.settings()[0].oLanguage,
+			language: langOpts,
 			paging: haveScroller ? true : false,
 			scrollX: false,
 			scrollY: '200px',
