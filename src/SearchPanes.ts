@@ -602,11 +602,15 @@ export default class SearchPanes {
 				}
 			}
 			if (pane && pane.s.dtPane) {
-				let tableLength = pane.s.dtPane.rows().data().toArray().length;
-
-				for (let i = 0; i < tableLength; i++) {
-					if (selection.rows.includes(pane.s.dtPane.cell(i, 0).data())) {
-						pane.s.dtPane.row(i).select();
+				for (let j = 0; j < pane.s.dtPane.rows().data().toArray().length; j++) {
+					if (
+						selection.rows.includes(
+							typeof pane.s.dtPane.row(j).data().filter === 'function' ?
+								pane.s.dtPane.cell(j, 0).data():
+								pane.s.dtPane.row(j).data().filter
+						)
+					) {
+						pane.s.dtPane.row(j).select();
 					}
 				}
 				pane.updateTable();
