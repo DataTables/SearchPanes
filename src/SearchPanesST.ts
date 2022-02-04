@@ -66,7 +66,7 @@ export default class SearchPanesST extends SearchPanes {
 	 */
 	protected _serverTotals(): void {
 		for (let pane of this.s.panes) {
-			if (!pane.s.colOpts.show) {
+			if (pane.s.colOpts.show) {
 				let colTitle = this.s.dt.column(pane.s.index).dataSrc();
 				let blockVT = true;
 
