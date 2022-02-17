@@ -12,6 +12,7 @@ export default class SearchPaneCascade extends SearchPaneST {
      * Fill the array with the values that are currently being displayed in the table
      */
     protected _activePopulatePane(): void;
+    protected _getComparisonRows(): any[];
     /**
      * Gets the message that is to be used to indicate the count for each SearchPane row
      *

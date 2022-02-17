@@ -22,63 +22,100 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * This overrides the method in SearchPane
 	 */
 	public updateRows(): void {
-		if (!this.s.dt.page.info().serverSide) {
-			// Get the latest count values from the table
-			this._activePopulatePane();
-			this.s.rowData.binsShown = {};
-
-			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-				this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
-			}
-		}
-
 		// Note the currently selected values in the pane and remove all of the rows
 		let selected = this.s.dtPane.rows({selected: true}).data().toArray();
-		this.s.dtPane.rows().remove();
 
-		// Go over all of the rows that could be displayed
-		for (let data of this.s.rowData.arrayFilter) {
-			// Cascade - If there are no rows present in the table don't show the option
-			if (data.shown === 0) {
-				continue;
-			}
+		if (
+			this.s.colOpts.options ||
+			this.s.customPaneSettings && this.s.customPaneSettings.options
+		) {
+			// If there are custom options set or it is a custom pane then get them
+			this._getComparisonRows();
 
-			// Add the row to the pane
-			let row = this.addRow(
-				data.display,
-				data.filter,
-				data.sort,
-				data.type,
-				undefined
-			);
+			let rows = this.s.dtPane.rows().toArray()[0];
 
-			// Check if this row was selected
-			for (let i = 0; i < selected.length; i++) {
-				let selection = selected[i];
+			for (let i = 0; i < rows.length; i++) {
+				let row = this.s.dtPane.row(rows[i]);
+				let rowData = row.data();
 
-				if (selection.filter === data.filter) {
-					row.select();
-					// Remove the row from the to find list and then add it to the selections list
-					selected.splice(i, 1);
-					this.s.selections.push(data.filter);
-					break;
+				if(rowData === undefined) {
+					continue;
+				}
+
+				if (rowData.shown === 0) {
+					row.remove();
+					rows = this.s.dtPane.rows();
+					i--;
+					continue;
+				}
+
+				for(let selection of selected) {
+					if(rowData.filter === selection.filter) {
+						row.select();
+						selected.splice(i, 1);
+						this.s.selections.push(rowData.filter);
+						break;
+					}
 				}
 			}
 		}
+		else {
+			if (!this.s.dt.page.info().serverSide) {
+				// Get the latest count values from the table
+				this._activePopulatePane();
+				this.s.rowData.binsShown = {};
 
-		// Add all of the rows that were previously selected but aren't any more
-		for (let selection of selected) {
-			for (let data of this.s.rowData.arrayOriginal) {
-				if (data.filter === selection.filter) {
-					let row = this.addRow(
-						data.display,
-						data.filter,
-						data.sort,
-						data.type,
-						undefined
-					);
-					row.select();
-					this.s.selections.push(data.filter);
+				for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
+					this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
+				}
+			}
+
+			this.s.dtPane.rows().remove();
+
+			// Go over all of the rows that could be displayed
+			for (let data of this.s.rowData.arrayFilter) {
+				// Cascade - If there are no rows present in the table don't show the option
+				if (data.shown === 0) {
+					continue;
+				}
+
+				// Add the row to the pane
+				let row = this.addRow(
+					data.display,
+					data.filter,
+					data.sort,
+					data.type,
+					undefined
+				);
+
+				// Check if this row was selected
+				for (let i = 0; i < selected.length; i++) {
+					let selection = selected[i];
+
+					if (selection.filter === data.filter) {
+						row.select();
+						// Remove the row from the to find list and then add it to the selections list
+						selected.splice(i, 1);
+						this.s.selections.push(data.filter);
+						break;
+					}
+				}
+			}
+
+			// Add all of the rows that were previously selected but aren't any more
+			for (let selection of selected) {
+				for (let data of this.s.rowData.arrayOriginal) {
+					if (data.filter === selection.filter) {
+						let row = this.addRow(
+							data.display,
+							data.filter,
+							data.sort,
+							data.type,
+							undefined
+						);
+						row.select();
+						this.s.selections.push(data.filter);
+					}
 				}
 			}
 		}
@@ -106,6 +143,77 @@ export default class SearchPaneCascade extends SearchPaneST {
 				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
 			}
 		}
+	}
+
+	protected _getComparisonRows(): any[] {
+		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
+		let options = this.s.colOpts.options
+			? this.s.colOpts.options
+			: this.s.customPaneSettings && this.s.customPaneSettings.options
+				? this.s.customPaneSettings.options
+				: undefined;
+
+		if (options === undefined) {
+			return;
+		}
+
+		let allRows = this.s.dt.rows();
+		let shownRows = this.s.dt.rows({search: 'applied'});
+		let tableValsTotal = allRows.data().toArray();
+		let tableValsShown = shownRows.data().toArray();
+		let rows = [];
+		// Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
+		this.s.dtPane.clear();
+		this.s.indexes = [];
+
+		for (let comp of options) {
+			// Initialise the object which is to be placed in the row
+			let insert = comp.label !== '' ?
+				comp.label :
+				this.emptyMessage();
+			let comparisonObj = {
+				className: comp.className,
+				display: insert,
+				filter: typeof comp.value === 'function' ? comp.value : [],
+				shown: 0,
+				sort: insert,
+				total: 0,
+				type: insert
+			};
+
+			// If a custom function is in place
+			if (typeof comp.value === 'function') {
+				// Count the number of times the function evaluates to true for the original data in the Table
+				for (let i = 0; i < tableValsTotal.length; i++) {
+					if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
+						comparisonObj.total++;
+					}
+				}
+
+				for(let i = 0; i < tableValsShown.length; i++) {
+					if(comp.value.call(this.s.dt, tableValsShown[i], shownRows[0][i])) {
+						comparisonObj.shown++;
+					}
+				}
+
+				// Update the comparisonObj
+				if (typeof comparisonObj.filter !== 'function') {
+					comparisonObj.filter.push(comp.filter);
+				}
+			}
+
+			rows.push(this.addRow(
+				comparisonObj.display,
+				comparisonObj.filter,
+				comparisonObj.sort,
+				comparisonObj.type,
+				comparisonObj.className,
+				comparisonObj.total,
+				comparisonObj.shown
+			));
+		}
+
+		return rows;
 	}
 
 	/**

@@ -105,6 +105,12 @@ export default class SearchPane {
      * rather than the filtered message when using viewTotal.
      */
     updateTable(): void;
+    /**
+     * Adds the custom options to the pane
+     *
+     * @returns {Array} Returns the array of rows which have been added to the pane
+     */
+    protected _getComparisonRows(): any[];
     protected _getMessage(row: {
         [keys: string]: any;
     }): string;
@@ -191,12 +197,6 @@ export default class SearchPane {
      * @returns {object} The options for the row extended to include the options from the user.
      */
     private _getBonusOptions;
-    /**
-     * Adds the custom options to the pane
-     *
-     * @returns {Array} Returns the array of rows which have been added to the pane
-     */
-    private _getComparisonRows;
     /**
      * Gets the options for the row for the customPanes
      *

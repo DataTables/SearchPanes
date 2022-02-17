@@ -842,6 +842,72 @@ export default class SearchPane {
 		this._searchExtras();
 	}
 
+	/**
+	 * Adds the custom options to the pane
+	 *
+	 * @returns {Array} Returns the array of rows which have been added to the pane
+	 */
+	protected _getComparisonRows(): any[] {
+		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
+		let options = this.s.colOpts.options
+			? this.s.colOpts.options
+			: this.s.customPaneSettings && this.s.customPaneSettings.options
+				? this.s.customPaneSettings.options
+				: undefined;
+
+		if (options === undefined) {
+			return;
+		}
+
+		let allRows = this.s.dt.rows();
+		let tableValsTotal = allRows.data().toArray();
+		let rows = [];
+		// Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
+		this.s.dtPane.clear();
+		this.s.indexes = [];
+
+		for (let comp of options) {
+			// Initialise the object which is to be placed in the row
+			let insert = comp.label !== '' ?
+				comp.label :
+				this.emptyMessage();
+			let comparisonObj = {
+				className: comp.className,
+				display: insert,
+				filter: typeof comp.value === 'function' ? comp.value : [],
+				sort: insert,
+				total: 0,
+				type: insert
+			};
+
+			// If a custom function is in place
+			if (typeof comp.value === 'function') {
+				// Count the number of times the function evaluates to true for the original data in the Table
+				for (let i = 0; i < tableValsTotal.length; i++) {
+					if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
+						comparisonObj.total++;
+					}
+				}
+
+				// Update the comparisonObj
+				if (typeof comparisonObj.filter !== 'function') {
+					comparisonObj.filter.push(comp.filter);
+				}
+			}
+
+			rows.push(this.addRow(
+				comparisonObj.display,
+				comparisonObj.filter,
+				comparisonObj.sort,
+				comparisonObj.type,
+				comparisonObj.className,
+				comparisonObj.total
+			));
+		}
+
+		return rows;
+	}
+
 	protected _getMessage(row: {[keys: string]: any}): string {
 		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
 	}
@@ -1572,72 +1638,6 @@ export default class SearchPane {
 			defaultMutator,
 			this.c ? this.c : {}
 		);
-	}
-
-	/**
-	 * Adds the custom options to the pane
-	 *
-	 * @returns {Array} Returns the array of rows which have been added to the pane
-	 */
-	private _getComparisonRows(): any[] {
-		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
-		let options = this.s.colOpts.options
-			? this.s.colOpts.options
-			: this.s.customPaneSettings && this.s.customPaneSettings.options
-				? this.s.customPaneSettings.options
-				: undefined;
-
-		if (options === undefined) {
-			return;
-		}
-
-		let allRows = this.s.dt.rows();
-		let tableValsTotal = allRows.data().toArray();
-		let rows = [];
-		// Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
-		this.s.dtPane.clear();
-		this.s.indexes = [];
-
-		for (let comp of options) {
-			// Initialise the object which is to be placed in the row
-			let insert = comp.label !== '' ?
-				comp.label :
-				this.emptyMessage();
-			let comparisonObj = {
-				className: comp.className,
-				display: insert,
-				filter: typeof comp.value === 'function' ? comp.value : [],
-				sort: insert,
-				total: 0,
-				type: insert
-			};
-
-			// If a custom function is in place
-			if (typeof comp.value === 'function') {
-				// Count the number of times the function evaluates to true for the original data in the Table
-				for (let i = 0; i < tableValsTotal.length; i++) {
-					if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
-						comparisonObj.total++;
-					}
-				}
-
-				// Update the comparisonObj
-				if (typeof comparisonObj.filter !== 'function') {
-					comparisonObj.filter.push(comp.filter);
-				}
-			}
-
-			rows.push(this.addRow(
-				comparisonObj.display,
-				comparisonObj.filter,
-				comparisonObj.sort,
-				comparisonObj.type,
-				comparisonObj.className,
-				comparisonObj.total
-			));
-		}
-
-		return rows;
 	}
 
 	/**
