@@ -3,8 +3,8 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 	let clickEvent;
 
 	dt.libs({
-		js: ['jquery', 'datatables', 'select', 'searchpanes'],
-		css: ['datatables', 'select', 'searchpanes']
+		js: ['jquery', 'datatables', 'buttons', 'select', 'searchpanes'],
+		css: ['datatables', 'buttons', 'select', 'searchpanes']
 	});
 
 	function checkArray(pane, array) {
@@ -74,23 +74,17 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
 			checkRowCounts(1, 1, 1);
 		});
-		it('... unclick third pane', async function () {
+		it('... unclick third pane', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(1, 1, 2);
 		});
-		it('... unclick second pane', async function () {
+		it('... unclick second pane', function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 1, 2);
 		});
-		it('... unclick first pane', async function () {
+		it('... unclick first pane', function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 7, 33);
-		});
-		it('reset', function () {
-			table.destroy();
 		});
 	});
 
@@ -102,7 +96,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 				searchPanes: {
 					cascadePanes: true
 				},
-				initComplete: function () {}
+				initComplete: function () { }
 			});
 
 			checkRowCounts(33, 7, 33);
@@ -137,39 +131,33 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			checkRowCounts(2, 2, 2);
 			checkCounts([1, 1], [1, 1], [1, 1]);
 		});
-		it('... deselect second option in third column', async function () {
+		it('... deselect second option in third column', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(2, 2, 2);
 			checkCounts([0, 1], [1, 1], [0, 1]);
 		});
-		it('... deselect first option in third column', async function () {
+		it('... deselect first option in third column', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(2, 2, 3);
 			checkCounts([1, 1], [1, 1], [1, 1, 1]);
 		});
-		it('... deselect second option in second column', async function () {
+		it('... deselect second option in second column', function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(2, 1, 3);
 			checkCounts([1, 0], [1], [1, 1, 1]);
 		});
-		it('... deselect first option in second column', async function () {
+		it('... deselect first option in second column', function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 2, 3);
 			checkCounts([2, 1], [1, 2], [1, 1, 1]);
 		});
-		it('... deselect second option in first column', async function () {
+		it('... deselect second option in first column', function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(33, 1, 2);
 			checkCounts([2], [2], [1, 1]);
 		});
-		it('... deselect first option in first column', async function () {
+		it('... deselect first option in first column', function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
@@ -204,21 +192,18 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			checkRowCounts(1, 1, 1);
 			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... unclick third pane', async function () {
+		it('... unclick third pane', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(1, 1, 2);
 			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... unclick second pane', async function () {
+		it('... unclick second pane', function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
-		it('... unclick first pane', async function () {
+		it('... unclick first pane', function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
@@ -267,39 +252,33 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			checkRowCounts(2, 2, 2);
 			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
 		});
-		it('... deselect second option in third column', async function () {
+		it('... deselect second option in third column', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(2, 2, 2);
 			checkCounts(['0 (2)', '1 (1)'], ['1 (12)'], ['0 (1)']);
 		});
-		it('... deselect first option in third column', async function () {
+		it('... deselect first option in third column', function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(2, 2, 3);
 			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
 		});
-		it('... deselect second option in second column', async function () {
+		it('... deselect second option in second column', function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(2, 1, 3);
 			checkCounts(['1 (2)', '0 (1)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... deselect first option in second column', async function () {
+		it('... deselect first option in second column', function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 2, 3);
 			checkCounts([2], ['1 (12)'], ['1 (1)']);
 		});
-		it('... deselect second option in first column', async function () {
+		it('... deselect second option in first column', function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			await dt.sleep(500);
 			checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
-		it('... deselect first option in first column', async function () {
+		it('... deselect first option in first column', function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			await dt.sleep(500);
 			checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
@@ -326,6 +305,188 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			$('button.dtsp-clearAll').click();
 
 			expect($('tr.selected').length).toBe(0);
+		});
+
+		dt.html('basic');
+		it('Custom panes', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true,
+					panes: [
+						{
+							header: 'Custom',
+							options: [
+								{
+									label: 'Is London?',
+									value: function (rowData, rowIdx) {
+										return rowData[2] === 'London';
+									}
+								},
+								{
+									label: 'Is New York?',
+									value: function (rowData, rowIdx) {
+										return rowData[2] === 'New York';
+									}
+								}
+							]
+						}
+					]
+				},
+			});
+
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+
+			checkRowCounts(33, 1, 1, 1);
+			checkCounts(['2'], ['1 (11)'], ['1 (3)'], ['1 (11)']);
+		});
+		it('... click on custom', async function () {
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+			$('div.dtsp-searchPane:visible:eq(3) tbody tr:eq(0) td:eq(0)').click();
+
+			checkRowCounts(9, 1, 11, 2);
+			checkCounts(['1 (1)'], ['12 (12)'], ['1 (1)'], ['12']);
+		});
+
+		dt.html('basic');
+		it('Custom panes - as a button', function () {
+			table = $('#example').DataTable({
+				dom: 'Bfrtip',
+				buttons: [{
+					extend: 'searchPanes',
+					config: {
+						cascadePanes: true,
+						viewTotal: true,
+						panes: [
+							{
+								header: 'Custom',
+								options: [
+									{
+										label: 'Is London?',
+										value: function (rowData, rowIdx) {
+											return rowData[2] === 'London';
+										}
+									},
+									{
+										label: 'Is New York?',
+										value: function (rowData, rowIdx) {
+											return rowData[2] === 'New York';
+										}
+									}
+								]
+							}
+						]
+					}
+				}]
+			});
+
+			$('button.dt-button').click();
+
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+
+			checkRowCounts(33, 1, 1, 1);
+			checkCounts(['2'], ['1 (11)'], ['1 (3)'], ['1 (11)']);
+		});
+		it('... click on custom', function () {
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+			$('div.dtsp-searchPane:visible:eq(3) tbody tr:eq(0) td:eq(0)').click();
+
+			checkRowCounts(9, 1, 11, 2);
+			checkCounts(['1 (1)'], ['12 (12)'], ['1 (1)'], ['12']);
+		});
+
+		dt.html('basic');
+		it('SaveState and cascadePanes', function () {
+			table = $('#example').DataTable({
+				dom: 'Pt',
+
+				stateSave: true,
+				stateDuration: 0,
+				searchPanes: {
+					cascadePanes: true
+				}
+			});
+
+			$('button.dt-button').click();
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+
+			checkRowCounts(33, 1, 1, 1);
+			checkCounts(['2'], ['1'], ['1']);
+		});
+		dt.html('basic');
+		it('SaveState and cascadePanes as a Button', function () {
+			table = $('#example').DataTable({
+				dom: 'Bt',
+
+				stateSave: true,
+				stateDuration: 0,
+				buttons: [
+					{
+						extend: 'searchPanes',
+						config: {
+							cascadePanes: true
+						},
+					}
+				],
+			});
+
+			$('button.dt-button').click();
+
+			checkRowCounts(33, 1, 1, 1);
+			checkCounts(['2'], ['1'], ['1']);
+		});
+		it('Tidy up', function () {
+			table.state.clear();
+		});
+
+		dt.html('basic');
+		it('SaveState and cascadePanes as a Button', function () {
+			table = $('#example').DataTable({
+				dom: 'Bt',
+
+				stateSave: true,
+				stateDuration: 0,
+				buttons: [
+					{
+						extend: 'searchPanes',
+						config: {
+							cascadePanes: true
+						},
+					}
+				],
+			});
+
+			$('button.dt-button').click();
+			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+
+			checkRowCounts(33, 1, 1, 1);
+			checkCounts(['2'], ['1'], ['1']);
+		});
+		dt.html('basic');
+		it('SaveState and cascadePanes as a Button', function () {
+			table = $('#example').DataTable({
+				dom: 'Bt',
+
+				stateSave: true,
+				stateDuration: 0,
+				buttons: [
+					{
+						extend: 'searchPanes',
+						config: {
+							cascadePanes: true
+						},
+					}
+				],
+			});
+
+			$('button.dt-button').click();
+
+			checkRowCounts(33, 1, 1, 1);
+			checkCounts(['2'], ['1'], ['1']);
+		});
+		it('Tidy up', function () {
+			table.state.clear();
 		});
 	});
 });
