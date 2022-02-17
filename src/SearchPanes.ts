@@ -256,7 +256,7 @@ export default class SearchPanes {
 		// Attach panes, clear buttons, and title bar to the document
 		this._updateFilterCount();
 		this._attachPaneContainer();
-		this._initSelectionListeners();
+		this._initSelectionListeners(false);
 
 		// If the selections are to be maintained, then it is safe to assume that paging is also to be maintained
 		// Otherwise, the paging should be reset
@@ -334,8 +334,10 @@ export default class SearchPanes {
 
 	/**
 	 * Holder method that is userd in SearchPanesST to set listeners that have an effect on other panes
+	 * 
+	 * @param isPreselect boolean to indicate if the preselect array is to override the current selection list.
 	 */
-	protected _initSelectionListeners(): void {
+	protected _initSelectionListeners(isPreselect: boolean): void {
 		return;
 	}
 

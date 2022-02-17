@@ -8,7 +8,7 @@ export default class SearchPanesST extends SearchPanes {
      *
      * @param preSelect Any values that are to be preselected
      */
-    protected _initSelectionListeners(preSelect?: ISelectItem[]): void;
+    protected _initSelectionListeners(isPreselect?: boolean, preSelect?: ISelectItem[]): void;
     /**
      * Retrieve the total values from the server data
      */

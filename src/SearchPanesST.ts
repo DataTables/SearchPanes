@@ -1,5 +1,4 @@
 import { ISelectItem, ISVT } from './panesType';
-import SearchPane from './SearchPane';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';
 import SearchPanes from './SearchPanes';
@@ -27,6 +26,7 @@ export default class SearchPanesST extends SearchPanes {
 		let loadedFilter = this.s.dt.state.loaded();
 
 		let loadFn = () => this._initSelectionListeners(
+			true,
 			loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList ?
 				loadedFilter.searchPanes.selectionList :
 				this.c.preSelect
@@ -40,8 +40,10 @@ export default class SearchPanesST extends SearchPanes {
 	 *
 	 * @param preSelect Any values that are to be preselected
 	 */
-	protected _initSelectionListeners(preSelect: ISelectItem[] = []): void {
-		this.s.selectionList = preSelect;
+	protected _initSelectionListeners(isPreselect = true, preSelect: ISelectItem[] = []): void {
+		if (isPreselect) {
+			this.s.selectionList = preSelect;
+		}
 
 		// Set selection listeners for each pane
 		for (let pane of this.s.panes) {
@@ -174,6 +176,7 @@ export default class SearchPanesST extends SearchPanes {
 		}
 
 		this._remakeSelections();
+		this._updateFilterCount();
 	}
 
 	/**

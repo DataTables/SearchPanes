@@ -30,8 +30,10 @@ export default class SearchPanes {
     resizePanes(): SearchPanes;
     /**
      * Holder method that is userd in SearchPanesST to set listeners that have an effect on other panes
+     *
+     * @param isPreselect boolean to indicate if the preselect array is to override the current selection list.
      */
-    protected _initSelectionListeners(): void;
+    protected _initSelectionListeners(isPreselect: boolean): void;
     /**
      * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
      */
