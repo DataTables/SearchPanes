@@ -208,7 +208,18 @@ export default class SearchPanesST extends SearchPanes {
 			}
 
 			for (let selection of this.s.selectionList) {
-				let pane = this.s.panes[selection.column];
+				let pane;
+				for(let paneCheck of this.s.panes) {
+					if(paneCheck.s.index === selection.column) {
+						pane = paneCheck;
+						break;
+					}
+				}
+
+				if(!pane.s.dtPane) {
+					continue;
+				}
+
 				let ids = pane.s.dtPane.rows().indexes().toArray();
 
 				// Select the rows that are present in the selection list

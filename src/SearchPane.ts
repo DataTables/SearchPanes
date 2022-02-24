@@ -1706,7 +1706,12 @@ export default class SearchPane {
 
 			// if the filter is an array then is the column present in it
 			if (Array.isArray(filter)) {
-				if (filter.includes(colSelect)) {
+				if(colOpts.combiner === 'and') {
+					if(!filter.includes(colSelect)) {
+						return false;
+					}
+				}
+				else if (filter.includes(colSelect)) {
 					return true;
 				}
 			}
