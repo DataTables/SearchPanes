@@ -26,6 +26,8 @@ This is the `-init searchPanes`extension for DataTables. It allows results to be
 
 This example demonstrates searchPanes being operated using a [Buttons extension](https://datatables.net/extensions/buttons) button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focused on.
 
+The button and SearchPanes can be configured using the `-init button.searchPanes` config option. You can see this in action at [this example](buttonsConfig.html). Please note that when initialising SearchPanes with a button any config has to be set as shown in that example.
+
 ]]></info>
 
 </dt-example>
