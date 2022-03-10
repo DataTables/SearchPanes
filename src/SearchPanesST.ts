@@ -168,6 +168,10 @@ export default class SearchPanesST extends SearchPanes {
 					column: paneIn.s.index,
 					rows
 				});
+				paneIn.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
+			}
+			else {
+				paneIn.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
 			}
 
 			if (this.s.dt.page.info().serverSide) {
