@@ -228,7 +228,10 @@ describe('searchPanes - options - searchPanes', function () {
 		it('Can change page when a pane item is selected', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-				searchPanes: true
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true
+				}
 			});
 
 			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(2) td:eq(0)').click();
@@ -236,7 +239,9 @@ describe('searchPanes - options - searchPanes', function () {
 		});
 		it('Change page', function () {
 			$('.dataTables_paginate span a.paginate_button:eq(1)').click();
-			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Zenaida Frank');
+			// DD-2022
+			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Zenaida Frank');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Brielle Williamson');
 		});
 	});
 });
