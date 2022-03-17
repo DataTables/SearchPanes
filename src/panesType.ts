@@ -76,6 +76,7 @@ export interface IS {
 	minPaneWidth: number;
 	page: number;
 	paging: boolean;
+	pagingST: boolean;
 	paneClass: typeof SearchPane;
 	panes: SearchPane[];
 	selectionList: ISelectItem[];

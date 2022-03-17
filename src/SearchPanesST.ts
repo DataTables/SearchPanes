@@ -150,7 +150,12 @@ export default class SearchPanesST extends SearchPanes {
 	 */
 	private _updateSelectionList(paneIn = undefined): void {
 		// Bail if any of these flags are set
-		if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
+		if (this.s.pagingST) {
+			// Reset pagingST flag
+			this.s.pagingST = false;
+			return;
+		}
+		else if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
 		}
 

@@ -239,9 +239,7 @@ describe('searchPanes - options - searchPanes', function () {
 		});
 		it('Change page', function () {
 			$('.dataTables_paginate span a.paginate_button:eq(1)').click();
-			// DD-2022
-			// expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Zenaida Frank');
-			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Brielle Williamson');
+			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Zenaida Frank');
 		});
 	});
 });
