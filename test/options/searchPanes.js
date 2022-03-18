@@ -228,7 +228,10 @@ describe('searchPanes - options - searchPanes', function () {
 		it('Can change page when a pane item is selected', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
-				searchPanes: true
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true
+				}
 			});
 
 			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(2) td:eq(0)').click();

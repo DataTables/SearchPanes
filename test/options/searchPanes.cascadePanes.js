@@ -400,7 +400,6 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		it('SaveState and cascadePanes', function () {
 			table = $('#example').DataTable({
 				dom: 'Pt',
-
 				stateSave: true,
 				stateDuration: 0,
 				searchPanes: {
@@ -415,20 +414,14 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			checkCounts(['2'], ['1'], ['1']);
 		});
 		dt.html('basic');
-		it('SaveState and cascadePanes as a Button', function () {
+		it('... confirm still there on next initialisation', function () {
 			table = $('#example').DataTable({
-				dom: 'Bt',
-
+				dom: 'Pt',
 				stateSave: true,
 				stateDuration: 0,
-				buttons: [
-					{
-						extend: 'searchPanes',
-						config: {
-							cascadePanes: true
-						},
-					}
-				],
+				searchPanes: {
+					cascadePanes: true
+				}
 			});
 
 			$('button.dt-button').click();
@@ -444,7 +437,6 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		it('SaveState and cascadePanes as a Button', function () {
 			table = $('#example').DataTable({
 				dom: 'Bt',
-
 				stateSave: true,
 				stateDuration: 0,
 				buttons: [
@@ -464,10 +456,9 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			checkCounts(['2'], ['1'], ['1']);
 		});
 		dt.html('basic');
-		it('SaveState and cascadePanes as a Button', function () {
+		it('... confirm still there on next initialisation', function () {
 			table = $('#example').DataTable({
 				dom: 'Bt',
-
 				stateSave: true,
 				stateDuration: 0,
 				buttons: [

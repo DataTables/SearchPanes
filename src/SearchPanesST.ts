@@ -150,7 +150,12 @@ export default class SearchPanesST extends SearchPanes {
 	 */
 	private _updateSelectionList(paneIn = undefined): void {
 		// Bail if any of these flags are set
-		if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
+		if (this.s.pagingST) {
+			// Reset pagingST flag
+			this.s.pagingST = false;
+			return;
+		}
+		else if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
 			return;
 		}
 
@@ -168,6 +173,10 @@ export default class SearchPanesST extends SearchPanes {
 					column: paneIn.s.index,
 					rows
 				});
+				paneIn.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
+			}
+			else {
+				paneIn.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
 			}
 
 			if (this.s.dt.page.info().serverSide) {

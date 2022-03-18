@@ -13,7 +13,7 @@ namespace DataTables {
 		select: any;
 	}
 }
-import { IClasses, IDefaults, IDOM, IS, ISelectItem } from './panesType';
+import { IClasses, IDefaults, IDOM, IS } from './panesType';
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
@@ -117,6 +117,7 @@ export default class SearchPanes {
 			minPaneWidth: 260.0,
 			page: 0,
 			paging: false,
+			pagingST: false,
 			paneClass,
 			panes: [],
 			selectionList: [],
@@ -761,6 +762,11 @@ export default class SearchPanes {
 		// Listener for paging on main table
 		table.off('page.dtsps').on('page.dtsps', () => {
 			this.s.paging = true;
+			// This is an indicator to any selection tracking classes that paging has occured
+			// It has to happen here so that we don't stack event listeners unnecessarily
+			// The value is only ever set back to false in the SearchPanesST class
+			// Equally it is never read in this class
+			this.s.pagingST = true;
 			this.s.page = this.s.dt.page();
 		});
 
