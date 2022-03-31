@@ -73,10 +73,12 @@ export default class SearchPanesST extends SearchPanes {
 				let blockVT = true;
 
 				// If any of the counts are not equal to the totals filtering must be active
-				for (let data of this.s.serverData.searchPanes.options[colTitle]) {
-					if (data.total !== data.count) {
-						blockVT = false;
-						break;
+				if (this.s.serverData.searchPanes.options[colTitle]) {
+					for (let data of this.s.serverData.searchPanes.options[colTitle]) {
+						if (data.total !== data.count) {
+							blockVT = false;
+							break;
+						}
 					}
 				}
 
