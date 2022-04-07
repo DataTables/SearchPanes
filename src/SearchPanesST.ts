@@ -111,7 +111,7 @@ export default class SearchPanesST extends SearchPanes {
 			if (data.searchPanes.panes) {
 				for (let loadedPane of data.searchPanes.panes) {
 					for (let pane of this.s.panes) {
-						if (loadedPane.id === pane.s.index) {
+						if (loadedPane.id === pane.s.index && pane.s.dtPane) {
 							// Set the value of the searchbox
 							pane.dom.searchBox.val(loadedPane.searchTerm);
 							// Set the value of the order
