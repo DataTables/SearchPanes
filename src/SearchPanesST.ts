@@ -234,14 +234,22 @@ export default class SearchPanesST extends SearchPanes {
 				let ids = pane.s.dtPane.rows().indexes().toArray();
 
 				// Select the rows that are present in the selection list
-				for (let row of selection.rows) {
+				for (let i = 0; i < selection.rows.length; i++) {
+					let rowFound = false;
+
 					for (let id of ids) {
 						let currRow = pane.s.dtPane.row(id);
 						let data = currRow.data();
 
-						if (row === data.filter) {
+						if (selection.rows[i] === data.filter) {
 							currRow.select();
+							rowFound = true;
 						}
+					}
+
+					if (!rowFound) {
+						selection.rows.splice(i,1);
+						i--;
 					}
 				}
 
