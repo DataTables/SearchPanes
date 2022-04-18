@@ -557,7 +557,13 @@ export default class SearchPane {
 			return;
 		}
 
-		this.s.dtPane.select.style('os');
+		this.s.dtPane.select.style(
+			this.s.colOpts.dtOpts && this.s.colOpts.dtOpts.select && this.s.colOpts.dtOpts.select.style
+				? this.s.colOpts.dtOpts.select.style
+				: this.c.dtOpts && this.c.dtOpts.select && this.c.dtOpts.select.style
+					? this.c.dtOpts.select.style
+					: 'os'
+		);
 
 		let t0: NodeJS.Timeout;
 
@@ -732,7 +738,13 @@ export default class SearchPane {
 		// WORKAROUND
 		// If this line is removed, the select listeners aren't present on
 		// the panes for some reason when a rebuild occurs
-		this.s.dtPane.select.style('os');
+		this.s.dtPane.select.style(
+			this.s.colOpts.dtOpts && this.s.colOpts.dtOpts.select && this.s.colOpts.dtOpts.select.style
+				? this.s.colOpts.dtOpts.select.style
+				: this.c.dtOpts && this.c.dtOpts.select && this.c.dtOpts.select.style
+					? this.c.dtOpts.select.style
+					: 'os'
+		);
 	}
 
 	/**

@@ -73,10 +73,12 @@ export default class SearchPanesST extends SearchPanes {
 				let blockVT = true;
 
 				// If any of the counts are not equal to the totals filtering must be active
-				for (let data of this.s.serverData.searchPanes.options[colTitle]) {
-					if (data.total !== data.count) {
-						blockVT = false;
-						break;
+				if (this.s.serverData.searchPanes.options[colTitle]) {
+					for (let data of this.s.serverData.searchPanes.options[colTitle]) {
+						if (data.total !== data.count) {
+							blockVT = false;
+							break;
+						}
 					}
 				}
 
@@ -109,7 +111,7 @@ export default class SearchPanesST extends SearchPanes {
 			if (data.searchPanes.panes) {
 				for (let loadedPane of data.searchPanes.panes) {
 					for (let pane of this.s.panes) {
-						if (loadedPane.id === pane.s.index) {
+						if (loadedPane.id === pane.s.index && pane.s.dtPane) {
 							// Set the value of the searchbox
 							pane.dom.searchBox.val(loadedPane.searchTerm);
 							// Set the value of the order
@@ -232,14 +234,22 @@ export default class SearchPanesST extends SearchPanes {
 				let ids = pane.s.dtPane.rows().indexes().toArray();
 
 				// Select the rows that are present in the selection list
-				for (let row of selection.rows) {
+				for (let i = 0; i < selection.rows.length; i++) {
+					let rowFound = false;
+
 					for (let id of ids) {
 						let currRow = pane.s.dtPane.row(id);
 						let data = currRow.data();
 
-						if (row === data.filter) {
+						if (selection.rows[i] === data.filter) {
 							currRow.select();
+							rowFound = true;
 						}
+					}
+
+					if (!rowFound) {
+						selection.rows.splice(i,1);
+						i--;
 					}
 				}
 
