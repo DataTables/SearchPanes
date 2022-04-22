@@ -44,7 +44,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 				if (rowData.shown === 0) {
 					row.remove();
-					rows = this.s.dtPane.rows();
+					rows = this.s.dtPane.rows().toArray()[0];
 					i--;
 					continue;
 				}
