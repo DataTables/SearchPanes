@@ -27,10 +27,18 @@ export default class SearchPanesST extends SearchPanes {
     protected _updateSelection(): void;
     /**
      * Returns a function that updates the selection list based on a specific pane
+     * Also clears the timeout to stop the deselect from running
      *
      * @param pane the pane that is to have it's selections loaded
      */
     private _update;
+    /**
+     * Returns a function that updates the selection list based on a specific pane
+     * Also sets a timeout incase a select is about to be made
+     *
+     * @param pane the pane that is to have it's selections loaded
+     */
+    private _updateTimeout;
     /**
      * Updates the selection list to include the latest selections for a given pane
      *

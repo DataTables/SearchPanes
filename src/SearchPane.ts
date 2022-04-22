@@ -565,12 +565,10 @@ export default class SearchPane {
 					: 'os'
 		);
 
-		let t0: NodeJS.Timeout;
-
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
 		this.s.dtPane.off('select.dtsp').on('select.dtsp', () => {
-			clearTimeout(t0);
+			clearTimeout(this.s.deselectTimeout);
 			this._updateSelection(!this.s.updating);
 
 			this.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
@@ -579,7 +577,7 @@ export default class SearchPane {
 		// When an item is deselected on the pane, re add the currently selected items to the array
 		// which holds selected items. Custom search will be performed.
 		this.s.dtPane.off('deselect.dtsp').on('deselect.dtsp', () => {
-			t0 = setTimeout(() => {
+			this.s.deselectTimeout = setTimeout(() => {
 				this._updateSelection(true);
 
 				if (this.s.dtPane.rows({selected: true}).data().toArray().length === 0) {

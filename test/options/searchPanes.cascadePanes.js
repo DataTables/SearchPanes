@@ -21,7 +21,8 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		checkArray(3, ageArray);
 	}
 
-	function checkRowCounts(position, office, age) {
+	async function checkRowCounts(position, office, age) {
+		await dt.sleep(100);
 		expect($('div.dtsp-searchPane:eq(1) td.dtsp-nameColumn span.dtsp-pill').length).toBe(position);
 		expect($('div.dtsp-searchPane:eq(2) td.dtsp-nameColumn span.dtsp-pill').length).toBe(office);
 		expect($('div.dtsp-searchPane:eq(3) td.dtsp-nameColumn span.dtsp-pill').length).toBe(age);
@@ -36,7 +37,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 	describe('Functional tests - single items', function () {
 		dt.html('basic');
-		it('Check defaults (false)', function () {
+		it('Check defaults (false)', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -44,15 +45,15 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 				}
 			});
 
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 		});
-		it('... clicking on row keeps all options', function () {
+		it('... clicking on row keeps all options', async function () {
 			$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 		});
 
 		dt.html('basic');
-		it('Check true - basic single item selections', function () {
+		it('Check true - basic single item selections', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -60,112 +61,112 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 				}
 			});
 
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 		});
-		it('... clicking on row removes options', function () {
+		it('... clicking on row removes options', async function () {
 			$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 		});
-		it('... clicking on second pane', function () {
+		it('... clicking on second pane', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(1, 1, 2);
+			await checkRowCounts(1, 1, 2);
 		});
-		it('... clicking on third pane', function () {
+		it('... clicking on third pane', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(1, 1, 1);
+			await checkRowCounts(1, 1, 1);
 		});
-		it('... unclick third pane', function () {
+		it('... unclick third pane', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(1, 1, 2);
+			await checkRowCounts(1, 1, 2);
 		});
-		it('... unclick second pane', function () {
+		it('... unclick second pane', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 		});
-		it('... unclick first pane', function () {
+		it('... unclick first pane', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 		});
 	});
 
 	describe('Functional tests - multiple items', function () {
 		dt.html('basic');
-		it('Check defaults (false)', function () {
+		it('Check defaults (false)', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
 					cascadePanes: true
 				},
-				initComplete: function () { }
+				initComplete: async function () { }
 			});
 
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 		});
-		it('Clicking on option in first column', function () {
+		it('Clicking on option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 			checkCounts([2], [2], [1, 1]);
 		});
-		it('... and second option in first column', function () {
+		it('... and second option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(33, 2, 3);
+			await checkRowCounts(33, 2, 3);
 			checkCounts([2, 1], [1, 2], [1, 1, 1]);
 		});
-		it('... Clicking on option in second column', function () {
+		it('... Clicking on option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(2, 1, 3);
+			await checkRowCounts(2, 1, 3);
 			checkCounts([1, 0], [1], [1, 1, 1]);
 		});
-		it('... and second option in second column', function () {
+		it('... and second option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 3);
+			await checkRowCounts(2, 2, 3);
 			checkCounts([1, 1], [1, 1], [1, 1, 1]);
 		});
-		it('... Clicking on option in third column', function () {
+		it('... Clicking on option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(2, 2, 2);
+			await checkRowCounts(2, 2, 2);
 			checkCounts([0, 1], [1, 1], [0, 1]);
 		});
-		it('... and second option in third column', function () {
+		it('... and second option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 2);
+			await checkRowCounts(2, 2, 2);
 			checkCounts([1, 1], [1, 1], [1, 1]);
 		});
-		it('... deselect second option in third column', function () {
+		it('... deselect second option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 2);
+			await checkRowCounts(2, 2, 2);
 			checkCounts([0, 1], [1, 1], [0, 1]);
 		});
-		it('... deselect first option in third column', function () {
+		it('... deselect first option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 3);
+			await checkRowCounts(2, 2, 3);
 			checkCounts([1, 1], [1, 1], [1, 1, 1]);
 		});
-		it('... deselect second option in second column', function () {
+		it('... deselect second option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 1, 3);
+			await checkRowCounts(2, 1, 3);
 			checkCounts([1, 0], [1], [1, 1, 1]);
 		});
-		it('... deselect first option in second column', function () {
+		it('... deselect first option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 2, 3);
+			await checkRowCounts(33, 2, 3);
 			checkCounts([2, 1], [1, 2], [1, 1, 1]);
 		});
-		it('... deselect second option in first column', function () {
+		it('... deselect second option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 			checkCounts([2], [2], [1, 1]);
 		});
-		it('... deselect first option in first column', function () {
+		it('... deselect first option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
 	});
 
 	describe('Functional tests - viewtotal - single items', function () {
 		dt.html('basic');
-		it('Check true - basic single item selections', function () {
+		it('Check true - basic single item selections', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -174,44 +175,44 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 				}
 			});
 
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
-		it('... clicking on row removes options', function () {
+		it('... clicking on row removes options', async function () {
 			$('div.dtsp-searchPane table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
-		it('... clicking on second pane', function () {
+		it('... clicking on second pane', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(1, 1, 2);
+			await checkRowCounts(1, 1, 2);
 			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... clicking on third pane', function () {
+		it('... clicking on third pane', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(1, 1, 1);
+			await checkRowCounts(1, 1, 1);
 			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... unclick third pane', function () {
+		it('... unclick third pane', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(1, 1, 2);
+			await checkRowCounts(1, 1, 2);
 			checkCounts(['1 (2)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... unclick second pane', function () {
+		it('... unclick second pane', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
-		it('... unclick first pane', function () {
+		it('... unclick first pane', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
 	});
 
 	describe('Functional tests - viewtotal - multiple items', function () {
 		dt.html('basic');
-		it('Check defaults (false)', function () {
+		it('Check defaults (false)', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -219,74 +220,74 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 					viewTotal: true
 				}
 			});
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
-		it('Clicking on option in first column', function () {
+		it('Clicking on option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
-		it('... and second option in first column', function () {
+		it('... and second option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(33, 2, 3);
+			await checkRowCounts(33, 2, 3);
 			checkCounts([2], ['1 (12)'], ['1 (1)']);
 		});
-		it('... Clicking on option in second column', function () {
+		it('... Clicking on option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(2, 1, 3);
+			await checkRowCounts(2, 1, 3);
 			checkCounts(['1 (2)', '0 (1)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... and second option in second column', function () {
+		it('... and second option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 3);
+			await checkRowCounts(2, 2, 3);
 			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
 		});
-		it('... Clicking on option in third column', function () {
+		it('... Clicking on option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(2, 2, 2);
+			await checkRowCounts(2, 2, 2);
 			checkCounts(['0 (2)', '1 (1)'], ['1 (12)'], ['0 (1)']);
 		});
-		it('... and second option in third column', function () {
+		it('... and second option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 2);
+			await checkRowCounts(2, 2, 2);
 			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
 		});
-		it('... deselect second option in third column', function () {
+		it('... deselect second option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 2);
+			await checkRowCounts(2, 2, 2);
 			checkCounts(['0 (2)', '1 (1)'], ['1 (12)'], ['0 (1)']);
 		});
-		it('... deselect first option in third column', function () {
+		it('... deselect first option in third column', async function () {
 			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 2, 3);
+			await checkRowCounts(2, 2, 3);
 			checkCounts(['1 (2)', '1 (1)'], ['1 (12)'], ['1 (1)']);
 		});
-		it('... deselect second option in second column', function () {
+		it('... deselect second option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(2, 1, 3);
+			await checkRowCounts(2, 1, 3);
 			checkCounts(['1 (2)', '0 (1)'], ['1 (5)'], ['1 (1)']);
 		});
-		it('... deselect first option in second column', function () {
+		it('... deselect first option in second column', async function () {
 			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 2, 3);
+			await checkRowCounts(33, 2, 3);
 			checkCounts([2], ['1 (12)'], ['1 (1)']);
 		});
-		it('... deselect second option in first column', function () {
+		it('... deselect second option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(getClickEvent());
-			checkRowCounts(33, 1, 2);
+			await checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
-		it('... deselect first option in first column', function () {
+		it('... deselect first option in first column', async function () {
 			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-			checkRowCounts(33, 7, 33);
+			await checkRowCounts(33, 7, 33);
 			checkCounts([2], [9], [1]);
 		});
 	});
 
 	describe('Functional tests - Odds and ends', function () {
 		dt.html('basic');
-		it('Select a row in each SearchPane', function () {
+		it('Select a row in each SearchPane', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -301,14 +302,14 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 			expect($('tr.selected').length).toBe(3);
 		});
-		it('Clear all clears everything', function () {
+		it('Clear all clears everything', async function () {
 			$('button.dtsp-clearAll').click();
 
 			expect($('tr.selected').length).toBe(0);
 		});
 
 		dt.html('basic');
-		it('Custom panes', function () {
+		it('Custom panes', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -338,19 +339,20 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
 
-			checkRowCounts(33, 1, 1, 1);
+			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1 (11)'], ['1 (3)'], ['1 (11)']);
 		});
 		it('... click on custom', async function () {
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+			await dt.sleep(100);
 			$('div.dtsp-searchPane:visible:eq(3) tbody tr:eq(0) td:eq(0)').click();
 
-			checkRowCounts(9, 1, 11, 2);
+			await checkRowCounts(9, 1, 11, 2);
 			checkCounts(['1 (1)'], ['12 (12)'], ['1 (1)'], ['12']);
 		});
 
 		dt.html('basic');
-		it('Custom panes - as a button', function () {
+		it('Custom panes - as a button', async function () {
 			table = $('#example').DataTable({
 				dom: 'Bfrtip',
 				buttons: [{
@@ -385,19 +387,20 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
 
-			checkRowCounts(33, 1, 1, 1);
+			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1 (11)'], ['1 (3)'], ['1 (11)']);
 		});
-		it('... click on custom', function () {
+		it('... click on custom', async function () {
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
+			await dt.sleep(100);
 			$('div.dtsp-searchPane:visible:eq(3) tbody tr:eq(0) td:eq(0)').click();
 
-			checkRowCounts(9, 1, 11, 2);
+			await checkRowCounts(9, 1, 11, 2);
 			checkCounts(['1 (1)'], ['12 (12)'], ['1 (1)'], ['12']);
 		});
 
 		dt.html('basic');
-		it('SaveState and cascadePanes', function () {
+		it('SaveState and cascadePanes', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pt',
 				stateSave: true,
@@ -410,11 +413,11 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			$('button.dt-button').click();
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
 
-			checkRowCounts(33, 1, 1, 1);
+			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1'], ['1']);
 		});
 		dt.html('basic');
-		it('... confirm still there on next initialisation', function () {
+		it('... confirm still there on next initialisation', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pt',
 				stateSave: true,
@@ -426,15 +429,15 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 			$('button.dt-button').click();
 
-			checkRowCounts(33, 1, 1, 1);
+			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1'], ['1']);
 		});
-		it('Tidy up', function () {
+		it('Tidy up', async function () {
 			table.state.clear();
 		});
 
 		dt.html('basic');
-		it('SaveState and cascadePanes as a Button', function () {
+		it('SaveState and cascadePanes as a Button', async function () {
 			table = $('#example').DataTable({
 				dom: 'Bt',
 				stateSave: true,
@@ -452,11 +455,11 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			$('button.dt-button').click();
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
 
-			checkRowCounts(33, 1, 1, 1);
+			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1'], ['1']);
 		});
 		dt.html('basic');
-		it('... confirm still there on next initialisation', function () {
+		it('... confirm still there on next initialisation', async function () {
 			table = $('#example').DataTable({
 				dom: 'Bt',
 				stateSave: true,
@@ -473,10 +476,10 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 			$('button.dt-button').click();
 
-			checkRowCounts(33, 1, 1, 1);
+			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1'], ['1']);
 		});
-		it('Tidy up', function () {
+		it('Tidy up', async function () {
 			table.state.clear();
 		});
 	});

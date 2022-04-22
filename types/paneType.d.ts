@@ -1,5 +1,6 @@
 /// <reference types="jquery" />
 /// <reference types="datatables.net" />
+/// <reference types="node" />
 export interface IClasses {
     badgePill?: string;
     bordered: string;
@@ -156,6 +157,7 @@ export interface IS {
     colExists: boolean;
     colOpts: any;
     customPaneSettings: IConfigPaneItem;
+    deselectTimeout?: NodeJS.Timeout;
     displayed: boolean;
     dt: any;
     dtPane: any;

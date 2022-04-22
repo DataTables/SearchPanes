@@ -151,6 +151,7 @@ export interface IS {
 	colExists: boolean;
 	colOpts: any;
 	customPaneSettings: IConfigPaneItem;
+	deselectTimeout?: NodeJS.Timeout;
 	displayed: boolean;
 	dt: any; // Parent DataTable
 	dtPane: any; // Pane DataTable Instance

@@ -52,7 +52,7 @@ export default class SearchPanesST extends SearchPanes {
 					.off('select.dtsp')
 					.on('select.dtsp', this._update(pane))
 					.off('deselect.dtsp')
-					.on('deselect.dtsp', this._update(pane));
+					.on('deselect.dtsp', this._updateTimeout(pane));
 			}
 		}
 
@@ -137,11 +137,29 @@ export default class SearchPanesST extends SearchPanes {
 
 	/**
 	 * Returns a function that updates the selection list based on a specific pane
+	 * Also clears the timeout to stop the deselect from running
 	 *
 	 * @param pane the pane that is to have it's selections loaded
 	 */
 	private _update(pane=undefined): () => void {
-		return () => this._updateSelectionList(pane);
+		return () => {
+			if (pane) {
+				clearTimeout(pane.s.deselectTimeout);
+			}
+			this._updateSelectionList(pane);
+		};
+	}
+
+	/**
+	 * Returns a function that updates the selection list based on a specific pane
+	 * Also sets a timeout incase a select is about to be made
+	 *
+	 * @param pane the pane that is to have it's selections loaded
+	 */
+	private _updateTimeout(pane=undefined): () => void {
+		return () => pane ?
+			pane.s.deselectTimeout = setTimeout(() => this._updateSelectionList(pane), 50) :
+			this._updateSelectionList();
 	}
 
 	/**
