@@ -287,7 +287,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 	describe('Functional tests - Odds and ends', function () {
 		dt.html('basic');
-		it('Select a row in each SearchPane', async function () {
+		it('Select a row in each SearchPane', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -305,11 +305,13 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		it('Clear all clears everything', async function () {
 			$('button.dtsp-clearAll').click();
 
+			await dt.sleep(100);
+
 			expect($('tr.selected').length).toBe(0);
 		});
 
 		dt.html('basic');
-		it('Select a row in one SearchPane', async function () {
+		it('Select a row in one SearchPane', function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -325,6 +327,8 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		});
 		it('Clear all clears everything', async function () {
 			$('div.dtsp-searchPane:visible:eq(2) .clearButton').click();
+
+			await dt.sleep(100);
 
 			expect($('tr.selected').length).toBe(0);
 			expect($('table#example tbody td:eq(0)').text()).toBe('Airi Satou');
