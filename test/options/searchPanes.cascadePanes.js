@@ -309,6 +309,28 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		});
 
 		dt.html('basic');
+		it('Select a row in one SearchPane', async function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true,
+					viewTotal: true
+				}
+			});
+
+			$('div.dtsp-searchPane:visible:eq(2) tbody tr:eq(0) td:eq(0)').click();
+
+			expect($('tr.selected').length).toBe(1);
+			expect($('table#example tbody td:eq(0)').text()).toBe('Tatyana Fitzpatrick');
+		});
+		it('Clear all clears everything', async function () {
+			$('div.dtsp-searchPane:visible:eq(2) .clearButton').click();
+
+			expect($('tr.selected').length).toBe(0);
+			expect($('table#example tbody td:eq(0)').text()).toBe('Airi Satou');
+		});
+
+		dt.html('basic');
 		it('Custom panes', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
