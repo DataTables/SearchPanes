@@ -9,9 +9,9 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 	function checkArray(pane, array) {
 		for (let i = 0; i < array.length; i++) {
-			expect($('div.dtsp-searchPane:eq(' + pane + ') table tbody tr:eq(' + i + ') td:eq(0) span.dtsp-pill').text()).toBe(
-				array[i].toString()
-			);
+			expect(
+				$('div.dtsp-searchPane:eq(' + pane + ') table tbody tr:eq(' + i + ') td:eq(0) span.dtsp-pill').text()
+			).toBe(array[i].toString());
 		}
 	}
 
@@ -97,7 +97,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 				searchPanes: {
 					cascadePanes: true
 				},
-				initComplete: async function () { }
+				initComplete: async function () {}
 			});
 
 			await checkRowCounts(33, 7, 33);
@@ -334,7 +334,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 							]
 						}
 					]
-				},
+				}
 			});
 
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
@@ -355,32 +355,34 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 		it('Custom panes - as a button', async function () {
 			table = $('#example').DataTable({
 				dom: 'Bfrtip',
-				buttons: [{
-					extend: 'searchPanes',
-					config: {
-						cascadePanes: true,
-						viewTotal: true,
-						panes: [
-							{
-								header: 'Custom',
-								options: [
-									{
-										label: 'Is London?',
-										value: function (rowData, rowIdx) {
-											return rowData[2] === 'London';
+				buttons: [
+					{
+						extend: 'searchPanes',
+						config: {
+							cascadePanes: true,
+							viewTotal: true,
+							panes: [
+								{
+									header: 'Custom',
+									options: [
+										{
+											label: 'Is London?',
+											value: function (rowData, rowIdx) {
+												return rowData[2] === 'London';
+											}
+										},
+										{
+											label: 'Is New York?',
+											value: function (rowData, rowIdx) {
+												return rowData[2] === 'New York';
+											}
 										}
-									},
-									{
-										label: 'Is New York?',
-										value: function (rowData, rowIdx) {
-											return rowData[2] === 'New York';
-										}
-									}
-								]
-							}
-						]
+									]
+								}
+							]
+						}
 					}
-				}]
+				]
 			});
 
 			$('button.dt-button').click();
@@ -397,6 +399,25 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 
 			await checkRowCounts(9, 1, 11, 2);
 			checkCounts(['1 (1)'], ['12 (12)'], ['1 (1)'], ['12']);
+		});
+
+		dt.html('basic');
+		it('Select item in pane so table pagination present', function () {
+			table = $('#example').DataTable({
+				dom: 'Pfrtip',
+				searchPanes: {
+					cascadePanes: true
+				}
+			});
+
+			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(1) td:eq(0)').click();
+
+			expect($('table#example tbody td:eq(0)').text()).toBe('Angelica Ramos');
+		});
+		it('... paging still works', function () {
+			$('.dataTables_paginate span .paginate_button:eq(1)').click();
+
+			expect($('table#example tbody td:eq(0)').text()).toBe('Tatyana Fitzpatrick');
 		});
 
 		dt.html('basic');
@@ -447,9 +468,9 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 						extend: 'searchPanes',
 						config: {
 							cascadePanes: true
-						},
+						}
 					}
-				],
+				]
 			});
 
 			$('button.dt-button').click();
@@ -469,9 +490,9 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 						extend: 'searchPanes',
 						config: {
 							cascadePanes: true
-						},
+						}
 					}
-				],
+				]
 			});
 
 			$('button.dt-button').click();
