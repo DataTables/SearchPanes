@@ -92,15 +92,6 @@ div.dtsp-topRow.dtsp-bordered:hover {
 	}
 }
 
-div.dtsp-narrow {
-	flex-direction: column !important;
-	
-	div.dtsp-subRows{
-		width: 100%;
-		text-align: right;
-	}
-}
-
 @media screen and (max-width: 767px) {
 	div.dtsp-columns-4,
 	div.dtsp-columns-5,

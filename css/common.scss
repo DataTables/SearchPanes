@@ -120,39 +120,65 @@ div.dt-button-collection.dtb-collection-closeable {
 
 div.dtsp-columns-1{
 	max-width: 100%;
+	min-width: 100%;
 	margin: 0px !important;
 }
 div.dtsp-columns-2{
 	max-width: 49%;
+	min-width: 49%;
 	margin: 0px !important;
 }
 div.dtsp-columns-3{
 	max-width: 32%;
+	min-width: 32%;
 	margin: 0px !important;
 }
 div.dtsp-columns-4{
 	max-width: 24%;
+	min-width: 24%;
 	margin: 0px !important;
 }
 div.dtsp-columns-5{
 	max-width: 19%;
+	min-width: 19%;
 	margin: 0px !important;
 }
 div.dtsp-columns-6{
 	max-width: 16%;
+	min-width: 16%;
 	margin: 0px !important;
 }
 div.dtsp-columns-7{
 	max-width: 14%;
+	min-width: 14%;
 	margin: 0px !important;
 }
 div.dtsp-columns-8{
+	max-width: 12%;
 	min-width: 12%;
 	margin: 0px !important;
 }
 div.dtsp-columns-9{
 	max-width: 10.5%;
+	min-width: 10.5%;
 	margin: 0px !important;
+}
+
+
+div.dtsp-narrow {
+	flex-direction: column !important;
+	
+	div.dtsp-subRow1,
+	div.dtsp-subRow2 {
+		width: 100%;
+	}
+
+	div.dtsp-subRow2 {
+		button {
+			margin: 0 !important;
+			width: 25% !important;
+		}
+	}
 }
 
 div.dt-button-collection{
