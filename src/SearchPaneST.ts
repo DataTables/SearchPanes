@@ -204,13 +204,27 @@ export default class SearchPaneST extends SearchPane {
 	 * @param bins The bins object that is to be incremented
 	 */
 	protected _updateShown(rowIdx: number, settings, bins = this.s.rowData.binsShown): void {
-		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
+		let orth = typeof this.s.colOpts.orthogonal === 'string'
+			? this.s.colOpts.orthogonal
+			: this.s.colOpts.orthogonal.search;
 
-		if (!bins[filter]) {
-			bins[filter] = 1;
+		let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, orth);
+		let add = (f) => {
+			if (!bins[f]) {
+				bins[f] = 1;
+			}
+			else {
+				bins[f] ++;
+			}
+		};
+
+		if (Array.isArray(filter)) {
+			for (let f of filter) {
+				add(f);
+			}
 		}
 		else {
-			bins[filter] ++;
+			add(filter);
 		}
 	}
 }
