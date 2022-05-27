@@ -760,7 +760,7 @@ export default class SearchPanes {
 		this._stateLoadListener();
 
 		// Listener for paging on main table
-		table.off('page.dtsps').on('page.dtsps', () => {
+		table.off('page.dtsps page-nc.dtsps').on('page.dtsps page-nc.dtsps', (e, s) => {
 			this.s.paging = true;
 			// This is an indicator to any selection tracking classes that paging has occured
 			// It has to happen here so that we don't stack event listeners unnecessarily
