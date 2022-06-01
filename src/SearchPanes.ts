@@ -134,8 +134,14 @@ export default class SearchPanes {
 		this._getState();
 
 		if (this.s.dt.page.info().serverSide) {
+			var hostSettings = this.s.dt.settings()[0];
+
 			// Listener to get the data into the server request before it is made
 			this.s.dt.on('preXhr.dtsps', (e, settings, data) => {
+				if (hostSettings !== settings) {
+					return;
+				}
+
 				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
@@ -353,6 +359,7 @@ export default class SearchPanes {
 	 * Set's the xhr listener so that SP can extact appropriate data from the response
 	 */
 	protected _setXHR(): void {
+		var hostSettings = this.s.dt.settings()[0];
 		var run = json => {
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
@@ -364,7 +371,9 @@ export default class SearchPanes {
 		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
 		// If viewTotal is not enabled then we simply update the data from the server
 		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
-			run(json);
+			if (hostSettings === settings) {
+				run(json);
+			}
 		});
 
 		// Account for the initial JSON fetch having already completed
