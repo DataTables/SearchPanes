@@ -353,15 +353,22 @@ export default class SearchPanes {
 	 * Set's the xhr listener so that SP can extact appropriate data from the response
 	 */
 	protected _setXHR(): void {
-		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
-		// If viewTotal is not enabled then we simply update the data from the server
-		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
+		var run = json => {
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
 				this._serverTotals();
 			}
+		}
+
+		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
+		// If viewTotal is not enabled then we simply update the data from the server
+		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
+			run(json);
 		});
+
+		// Account for the initial JSON fetch having already completed
+		run(this.s.dt.ajax.json());
 	}
 
 	/**
