@@ -118,7 +118,7 @@ export default class SearchPane {
 		this.classes = $.extend(true, {}, SearchPane.classes);
 
 		// Get options from user
-		this.c = $.extend(true, {}, SearchPane.defaults, opts);
+		this.c = $.extend(true, {}, SearchPane.defaults, opts, panes);
 
 		if (opts && opts.hideCount && opts.viewCount === undefined) {
 			this.c.viewCount = !this.c.hideCount;
@@ -557,14 +557,6 @@ export default class SearchPane {
 			return;
 		}
 
-		this.s.dtPane.select.style(
-			this.s.colOpts.dtOpts && this.s.colOpts.dtOpts.select && this.s.colOpts.dtOpts.select.style
-				? this.s.colOpts.dtOpts.select.style
-				: this.c.dtOpts && this.c.dtOpts.select && this.c.dtOpts.select.style
-					? this.c.dtOpts.select.style
-					: 'os'
-		);
-
 		// When an item is selected on the pane, add these to the array which holds selected items.
 		// Custom search will perform.
 		this.s.dtPane.off('select.dtsp').on('select.dtsp', () => {
@@ -733,9 +725,6 @@ export default class SearchPane {
 			this.s.dt.state.save();
 		});
 
-		// WORKAROUND
-		// If this line is removed, the select listeners aren't present on
-		// the panes for some reason when a rebuild occurs
 		this.s.dtPane.select.style(
 			this.s.colOpts.dtOpts && this.s.colOpts.dtOpts.select && this.s.colOpts.dtOpts.select.style
 				? this.s.colOpts.dtOpts.select.style
