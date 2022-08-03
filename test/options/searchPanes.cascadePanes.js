@@ -412,6 +412,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			});
 
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
 
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
 
@@ -500,6 +501,8 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			});
 
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
+
 			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(2) td:eq(0)').click();
 
 			await checkRowCounts(33, 1, 1, 1);
@@ -522,6 +525,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			});
 
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
 
 			await checkRowCounts(33, 1, 1, 1);
 			checkCounts(['2'], ['1'], ['1']);

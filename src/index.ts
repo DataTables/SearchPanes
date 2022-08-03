@@ -146,37 +146,59 @@ import SearchPanesST from './SearchPanesST';
 
 	$.fn.dataTable.ext.buttons.searchPanes = {
 		action(e, dt, node, config) {
-			this.popover(config._panes.getNode(), {
-				align: 'container',
-				span: 'container'
-			});
-			config._panes.rebuild(undefined, true);
+			if (! config._panes) {
+				this.processing(true);
+
+				setTimeout(() => {
+					let buttonOpts = $.extend(
+						{
+							filterChanged(count) {
+								dt.button(node).text(dt.i18n(
+									'searchPanes.collapse',
+									dt.context[0].oLanguage.searchPanes !== undefined ?
+										dt.context[0].oLanguage.searchPanes.collapse :
+										dt.context[0]._searchPanes.c.i18n.collapse,
+									count
+								));
+							}
+						},
+						config.config
+					);
+
+					let panes = buttonOpts && (buttonOpts.cascadePanes || buttonOpts.viewTotal) ?
+						new $.fn.dataTable.SearchPanesST(dt, buttonOpts) :
+						new $.fn.dataTable.SearchPanes(dt, buttonOpts);
+					dt.button(node).text(
+						config.text || dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0)
+					);
+					config._panes = panes;
+
+					this.popover(config._panes.getNode(), {
+						align: 'container',
+						span: 'container'
+					});
+
+					config._panes.rebuild(undefined, true);
+
+					this.processing(false);
+				}, 10);
+			}
+			else {
+				this.popover(config._panes.getNode(), {
+					align: 'container',
+					span: 'container'
+				});
+
+				config._panes.rebuild(undefined, true);
+			}
+		},
+		init: function (dt, node, config) {
+			dt.button(node).text(
+				config.text || dt.i18n('searchPanes.collapse', '', 0)
+			);
 		},
 		config: {},
-		init(dt, node, config) {
-			let buttonOpts = $.extend(
-				{
-					filterChanged(count) {
-						dt.button(node).text(dt.i18n(
-							'searchPanes.collapse',
-							dt.context[0].oLanguage.searchPanes !== undefined ?
-								dt.context[0].oLanguage.searchPanes.collapse :
-								dt.context[0]._searchPanes.c.i18n.collapse,
-							count
-						));
-					}
-				},
-				config.config
-			)
-			let panes = buttonOpts && (buttonOpts.cascadePanes || buttonOpts.viewTotal) ?
-				new $.fn.dataTable.SearchPanesST(dt, buttonOpts) :
-				new $.fn.dataTable.SearchPanes(dt, buttonOpts);
-			dt.button(node).text(
-				config.text || dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0)
-			);
-			config._panes = panes;
-		},
-		text: null
+		text: 'SearchPanes'
 	};
 
 	function _init(settings, options = null, fromPre = false) {

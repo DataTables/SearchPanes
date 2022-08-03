@@ -21,6 +21,7 @@ describe('searchPanes - integrations - Buttons', function () {
 		});
 		it('... clicking the button opens the SearchPanes', async function() {
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
 
 			expect($('div.dt-button-collection').length).toBe(1);
 			expect($('div.dtsp-searchPane').length).toBe(6);
@@ -62,6 +63,7 @@ describe('searchPanes - integrations - Buttons', function () {
 		});
 		it('... clicking the button opens the SearchPanes', async function () {
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
 
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant');
 		});
@@ -74,7 +76,10 @@ describe('searchPanes - integrations - Buttons', function () {
 						collapse: {0: 'Search 0', 1: 'Search 1 %d', _: 'Search other %d'}
 					}
 				},
-				buttons: ['searchPanes'],
+				buttons: [ {
+					extend: 'searchPanes',
+					text: 'Search 0'
+				} ],
 				dom: 'Bfrtip'
 			});
 
@@ -82,6 +87,8 @@ describe('searchPanes - integrations - Buttons', function () {
 		});
 		it('... clicking the button opens the SearchPanes', async function () {
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
+
 			expect($('button.dt-button').text()).toBe('Search 0');
 		});
 		it('... clicking one filter changes title', async function () {
@@ -114,6 +121,8 @@ describe('searchPanes - integrations - Buttons', function () {
 		});
 		it('... clicking the button opens the SearchPanes', async function () {
 			$('button.dt-button').click();
+			await dt.sleep(500); // SP initalisation is async
+
 			expect($('div.dtsp-title').text()).toBe('Filters Active - 0');
 		});
 		it('... closing keeps paging as it was', async function () {
