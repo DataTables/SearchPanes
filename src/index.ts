@@ -194,11 +194,11 @@ import SearchPanesST from './SearchPanesST';
 		},
 		init: function (dt, node, config) {
 			dt.button(node).text(
-				config.text || dt.i18n('searchPanes.collapse', '', 0)
+				config.text || dt.i18n('searchPanes.collapse', 'SearchPanes', 0)
 			);
 		},
 		config: {},
-		text: 'SearchPanes'
+		text: ''
 	};
 
 	function _init(settings, options = null, fromPre = false) {
