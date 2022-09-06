@@ -59,7 +59,7 @@ $(document).ready( function () {
 				},
 				searchPanes: {
 					orthogonal: 'sp',
-          show: true
+					show: true
 				}
 			}
 		]
