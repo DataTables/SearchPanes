@@ -58,7 +58,7 @@ node_modules/typescript/bin/tsc
 HEADER="$(head -n 3 src/index.ts)"
 
 rsync -r src/*.js $OUT_DIR/js
-js_frameworks searchPanes $OUT_DIR/js
+js_frameworks searchPanes $OUT_DIR/js "jquery datatables.net-FW datatables.net-searchPanes"
 
 OUT=$OUT_DIR ./node_modules/.bin/rollup $OUT_DIR/js/index.js \
     --banner "$HEADER" \
@@ -95,7 +95,7 @@ else
 	fi
 fi
 
-js_compress $OUT_DIR/js/dataTables.searchPanes.js
+js_wrap $OUT_DIR/js/dataTables.searchPanes.js "jquery datatables.net"
 
 # Copy and build examples
 rsync -r examples $OUT_DIR
