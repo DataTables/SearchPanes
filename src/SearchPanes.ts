@@ -787,7 +787,13 @@ export default class SearchPanes {
 		});
 
 		if (this.s.dt.page.info().serverSide) {
+			var hostSettings = this.s.dt.settings()[0];
+
 			table.off('preXhr.dtsps').on('preXhr.dtsps', (e, settings, data) => {
+				if (settings !== hostSettings) {
+					return;
+				}
+
 				if (!data.searchPanes) {
 					data.searchPanes = {};
 				}
