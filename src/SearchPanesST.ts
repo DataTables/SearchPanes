@@ -23,7 +23,8 @@ export default class SearchPanesST extends SearchPanes {
 
 		super(paneSettings, opts, fromPreInit, paneClass);
 
-		let loadedFilter = this.s.dt.state.loaded();
+		let dt = this.s.dt;
+		let loadedFilter = dt.state.loaded();
 
 		let loadFn = () => this._initSelectionListeners(
 			true,
@@ -32,7 +33,12 @@ export default class SearchPanesST extends SearchPanes {
 				this.c.preSelect
 		);
 
-		this.s.dt.off('init.dtsps').on('init.dtsps', loadFn);
+		if (dt.settings()[0]._bInitComplete) {
+			loadFn();
+		}
+		else {
+			dt.off('init.dtsps').on('init.dtsps', loadFn);
+		}
 	}
 
 	/**
