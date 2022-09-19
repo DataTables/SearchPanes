@@ -1,70 +1,30 @@
 /*! Bootstrap integration for DataTables' SearchPanes
- * ©2016 SpryMedia Ltd - datatables.net/license
+ * © SpryMedia Ltd - datatables.net/license
  */
-// Hack to allow TypeScript to compile our UMD
-declare let define: {
-	amd: string;
-	(stringValue, Function): any;
-};
-(function(factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD
-		define(['jquery', 'datatables.net-bs', 'datatables.net-searchpanes'], function($) {
-			return factory($);
-		});
-	}
-	else if (typeof exports === 'object') {
-		// CommonJS
-		module.exports = function(root, $) {
-			if (! root) {
-				root = window;
-			}
 
-			if (! $ || ! $.fn.dataTable) {
-				// eslint-disable-next-line @typescript-eslint/no-var-requires
-				$ = require('datatables.net-bs')(root, $).$;
-			}
+declare var DataTable: any;
 
-			if (! $.fn.dataTable.SearchPanes) {
-				// eslint-disable-next-line @typescript-eslint/no-var-requires
-				require('datatables.net-searchpanes')(root, $);
-			}
+$.extend(true, DataTable.SearchPane.classes, {
+	buttonGroup: 'btn-group',
+	disabledButton: 'disabled',
+	narrow: 'col narrow',
+	narrowSub: 'row',
+	pane: {
+		container: 'table'
+	},
+	paneButton: 'btn btn-light',
+	pill: 'badge badge-pill badge-light pill',
+	search: 'col-sm form-control search',
+	searchCont: 'input-group dtsp-searchCont',
+	searchLabelCont: 'input-group-btn',
+	subRow1: 'dtsp-subRow1 text-right',
+	subRow2: 'dtsp-subRow2 text-right',
+	table: 'table table-condensed'
+});
 
-			return factory($);
-		};
-	}
-	else {
-		// Browser
-		factory(jQuery);
-	}
-}(function($) {
-	'use strict';
-	let dataTable = $.fn.dataTable;
-
-	$.extend(true, dataTable.SearchPane.classes, {
-		buttonGroup: 'btn-group',
-		disabledButton: 'disabled',
-		narrow: 'col narrow',
-		narrowSub: 'row',
-		pane: {
-			container: 'table'
-		},
-		paneButton: 'btn btn-light',
-		pill: 'badge badge-pill badge-light pill',
-		search: 'col-sm form-control search',
-		searchCont: 'input-group dtsp-searchCont',
-		searchLabelCont: 'input-group-btn',
-		subRow1: 'dtsp-subRow1 text-right',
-		subRow2: 'dtsp-subRow2 text-right',
-		table: 'table table-condensed'
-	});
-
-	$.extend(true, dataTable.SearchPanes.classes, {
-		clearAll: 'dtsp-clearAll btn btn-light',
-		collapseAll: 'dtsp-collapseAll btn btn-light',
-		disabledButton: 'disabled',
-		showAll: 'dtsp-showAll btn btn-light'
-	});
-
-	return dataTable.searchPanes;
-}));
+$.extend(true, DataTable.SearchPanes.classes, {
+	clearAll: 'dtsp-clearAll btn btn-light',
+	collapseAll: 'dtsp-collapseAll btn btn-light',
+	disabledButton: 'disabled',
+	showAll: 'dtsp-showAll btn btn-light'
+});
