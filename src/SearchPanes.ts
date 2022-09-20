@@ -386,10 +386,13 @@ export default class SearchPanes {
 	 * Overridden by the method in SearchPanesST
 	 */
 	protected _stateLoadListener(): void {
+		var hostSettings = this.s.dt.settings()[0];
+
 		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
-			if (data.searchPanes === undefined) {
+			if (data.searchPanes === undefined || settings !== hostSettings) {
 				return;
 			}
+
 			this.clearSelections();
 			// Set the selection list for the panes so that the correct
 			// rows can be reselected and in the right order
@@ -727,6 +730,7 @@ export default class SearchPanes {
 		// Attach clear button and title bar to the document
 		this._attach();
 		this.dom.panes.empty();
+		var hostSettings = this.s.dt.settings()[0];
 
 		for (let pane of this.s.panes) {
 			pane.rebuildPane(Object.keys(this.s.serverData).length > 0 ? this.s.serverData : undefined);
@@ -767,6 +771,10 @@ export default class SearchPanes {
 
 		// Whenever a state save occurs store the selection list in the state object
 		this.s.dt.on('stateSaveParams.dtsps', (e, settings, data) => {
+			if (settings !== hostSettings) {
+				return;
+			}
+
 			if (data.searchPanes === undefined) {
 				data.searchPanes = {};
 			}
@@ -787,8 +795,6 @@ export default class SearchPanes {
 		});
 
 		if (this.s.dt.page.info().serverSide) {
-			var hostSettings = this.s.dt.settings()[0];
-
 			table.off('preXhr.dtsps').on('preXhr.dtsps', (e, settings, data) => {
 				if (settings !== hostSettings) {
 					return;
@@ -918,7 +924,11 @@ export default class SearchPanes {
 		this._updateFilterCount();
 
 		// If the table is destroyed and restarted then clear the selections so that they do not persist.
-		table.on('destroy.dtsps', () => {
+		table.on('destroy.dtsps', (e, settings) => {
+			if (settings !== hostSettings) {
+				return;
+			}
+
 			for (let pane of this.s.panes) {
 				pane.destroy();
 			}
@@ -941,7 +951,7 @@ export default class SearchPanes {
 			this.dom.clearAll.on('click.dtsps', () => this.clearSelections());
 		}
 
-		table.settings()[0]._searchPanes = this;
+		hostSettings._searchPanes = this;
 
 		// This state save is required so that state is maintained over multiple refreshes if no actions are made
 		this.s.dt.state.save();
