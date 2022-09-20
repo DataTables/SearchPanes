@@ -112,31 +112,11 @@ DataTable.ext.buttons.searchPanesClear = {
 DataTable.ext.buttons.searchPanes = {
 	action(e, dt, node, config) {
 		if (! config._panes) {
+			// No SearchPanes on this button yet - initialise and show
 			this.processing(true);
 
 			setTimeout(() => {
-				let buttonOpts = $.extend(
-					{
-						filterChanged(count) {
-							dt.button(node).text(dt.i18n(
-								'searchPanes.collapse',
-								dt.context[0].oLanguage.searchPanes !== undefined ?
-									dt.context[0].oLanguage.searchPanes.collapse :
-									dt.context[0]._searchPanes.c.i18n.collapse,
-								count
-							));
-						}
-					},
-					config.config
-				);
-
-				let panes = buttonOpts && (buttonOpts.cascadePanes || buttonOpts.viewTotal) ?
-					new DataTable.SearchPanesST(dt, buttonOpts) :
-					new DataTable.SearchPanes(dt, buttonOpts);
-				dt.button(node).text(
-					config.text || dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0)
-				);
-				config._panes = panes;
+				_buttonSourced(dt, node, config);
 
 				this.popover(config._panes.getNode(), {
 					align: 'container',
@@ -149,6 +129,7 @@ DataTable.ext.buttons.searchPanes = {
 			}, 10);
 		}
 		else {
+			// Already got SP - show it
 			this.popover(config._panes.getNode(), {
 				align: 'container',
 				span: 'container'
@@ -161,10 +142,42 @@ DataTable.ext.buttons.searchPanes = {
 		dt.button(node).text(
 			config.text || dt.i18n('searchPanes.collapse', 'SearchPanes', 0)
 		);
+
+		// If state save is enabled, we need to initialise SP immediately
+		// to allow any saved state to be restored. Otherwise we can delay
+		// the init until needed by button press
+		if (dt.init().stateSave) {
+			_buttonSourced(dt, node, config);
+		}
 	},
 	config: {},
 	text: ''
 };
+
+function _buttonSourced(dt, node, config) {
+	let buttonOpts = $.extend(
+		{
+			filterChanged(count) {
+				dt.button(node).text(dt.i18n(
+					'searchPanes.collapse',
+					dt.context[0].oLanguage.searchPanes !== undefined ?
+						dt.context[0].oLanguage.searchPanes.collapse :
+						dt.context[0]._searchPanes.c.i18n.collapse,
+					count
+				));
+			}
+		},
+		config.config
+	);
+
+	let panes = buttonOpts && (buttonOpts.cascadePanes || buttonOpts.viewTotal) ?
+		new DataTable.SearchPanesST(dt, buttonOpts) :
+		new DataTable.SearchPanes(dt, buttonOpts);
+	dt.button(node).text(
+		config.text || dt.i18n('searchPanes.collapse', panes.c.i18n.collapse, 0)
+	);
+	config._panes = panes;
+}
 
 function _init(settings, options = null, fromPre = false) {
 	let api = new dataTable.Api(settings);
