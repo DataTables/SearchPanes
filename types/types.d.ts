@@ -1,59 +1,101 @@
+// Type definitions for DataTables SearchPanes
+//
+// Project: https://datatables.net/extensions/SearchPanes/, https://datatables.net
+
 /// <reference types="jquery" />
-/// <reference types="datatables.net"/>
 
-
+import DataTables, {Api} from 'datatables.net';
 import * as paneType from './paneType';
 
-declare namespace DataTables {
+export default DataTables;
 
-	interface Settings {
+type DeepPartial<T> = T extends object ? {
+    [P in keyof T]?: DeepPartial<T[P]>;
+} : T;
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables' types integration
+ */
+declare module 'datatables.net' {
+	interface Config {
 		/**
 		 * SearchPanes extension options
 		 */
-		searchPanes?: boolean | string[] | paneType.IDefaults | paneType.IDefaults[];
-	}
-
-	interface LanguageSettings {
-		searchPanes?: {};
+		searchPanes?: boolean | string[] | ConfigSearchPanes | ConfigSearchPanes[];
 	}
 
 	interface Api<T> {
 		/**
-		 * SearchPanes API Methods
+		 * SearchPanes methods container
+		 * 
+		 * @returns Api for chaining with the additional SearchPanes methods
 		 */
-		searchPanes: SearchPanesGlobalApi;
+		searchPanes: ApiSearchPanes<T>;
 	}
 
-	interface SearchPanesGlobalApi {
-
+	interface ApiStatic {
 		/**
-		 * Clears the selections in all of the panes
-		 *
-		 * @returns self for chaining
+		 * SearchPanes class
 		 */
-		clearSelections(): Api<any>;
+		SearchPanes: {
+			/**
+			 * Create a new SearchPanes instance for the target DataTable
+			 */
+			new (dt: Api<any>, settings: string[] | ConfigSearchPanes | ConfigSearchPanes[]);
 
-		/**
-		 * Returns the node of the SearchPanes container
-		 *
-		 * @returns The node of the SearchPanes container
-		 */
-		container(): JQuery<HTMLElement>;
+			/**
+			 * SearchPanes version
+			 */
+			version: string;
 
-		/**
-		 * Rebuilds the SearchPanes, regathering the options from the table.
-		 *
-		 * @param index Optional. The index of a specific pane to rebuild
-		 * @param maintainSelect  Optional. Whether to remake the selections once the pane has been rebuilt.
-		 * @returns self for chaining
-		 */
-		rebuildPane(index?: number, maintainSelect?: boolean): Api<any>;
-
-		/**
-		 * Resize all of the SearchPanes to fill the container appropriately.
-		 *
-		 * @returns self for chaining
-		 */
-		resizePanes(): Api<any>;
+			/**
+			 * Default configuration values
+			 */
+			defaults: ConfigSearchPanes;
+		}
 	}
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Options
+ */
+
+interface ConfigSearchPanes extends DeepPartial<paneType.IDefaults> {}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * API
+ */
+interface ApiSearchPanes<T> extends Api<T> {
+	/**
+	 * Clears the selections in all of the panes
+	 *
+	 * @returns self for chaining
+	 */
+	clearSelections(): Api<T>;
+
+	/**
+	 * Returns the node of the SearchPanes container
+	 *
+	 * @returns The node of the SearchPanes container
+	 */
+	container(): JQuery<HTMLElement>;
+
+	/**
+	 * Rebuilds the SearchPanes, regathering the options from the table.
+	 *
+	 * @param index Optional. The index of a specific pane to rebuild
+	 * @param maintainSelect  Optional. Whether to remake the selections once the pane has been rebuilt.
+	 * @returns self for chaining
+	 */
+	rebuildPane(index?: number, maintainSelect?: boolean): Api<T>;
+
+	/**
+	 * Resize all of the SearchPanes to fill the container appropriately.
+	 *
+	 * @returns self for chaining
+	 */
+	resizePanes(): Api<T>;
 }
