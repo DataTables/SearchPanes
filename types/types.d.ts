@@ -25,6 +25,13 @@ declare module 'datatables.net' {
 		searchPanes?: boolean | string[] | ConfigSearchPanes | ConfigSearchPanes[];
 	}
 
+	interface ConfigLanguage {
+		/**
+		 * SearchBuilder language options
+		 */
+		 searchPanes?: ConfigSearchPanesLanguage;
+	}
+
 	interface Api<T> {
 		/**
 		 * SearchPanes methods container
@@ -63,6 +70,8 @@ declare module 'datatables.net' {
  */
 
 interface ConfigSearchPanes extends DeepPartial<paneType.IDefaults> {}
+
+interface ConfigSearchPanesLanguage extends DeepPartial<paneType.IDefaults['i18n']> {}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
