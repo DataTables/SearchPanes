@@ -126,7 +126,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 		// If client side updated the tables results
 		if (!this.s.dt.page.info().serverSide) {
-			this.s.dt.draw();
+			this.s.dt.draw(false);
 		}
 	}
 

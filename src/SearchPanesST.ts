@@ -224,7 +224,7 @@ export default class SearchPanesST extends SearchPanes {
 			let tmpSL = this.s.selectionList;
 			let anotherFilter = false;
 			this.clearSelections();
-			this.s.dt.draw();
+			this.s.dt.draw(false);
 
 			// When there are no selections present if the length of the data does not match the searched data
 			// then another filter is present
@@ -286,7 +286,7 @@ export default class SearchPanesST extends SearchPanes {
 				}
 
 				// Update the table to display the current results
-				this.s.dt.draw();
+				this.s.dt.draw(false);
 
 				let filteringActive = false;
 				let filterCount = 0;
@@ -325,7 +325,7 @@ export default class SearchPanesST extends SearchPanes {
 			}
 
 			// Update table to show final search results
-			this.s.dt.draw();
+			this.s.dt.draw(false);
 		}
 		else {
 			// Identify the last pane to have a change in selection
