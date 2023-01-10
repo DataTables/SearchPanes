@@ -62,7 +62,9 @@ export default class SearchPanes {
 		layout: 'auto',
 		order: [],
 		panes: [],
-		preSelect: []
+		preSelect: [],
+		viewCount: true,
+		viewTotal: false
 	};
 
 	public classes: IClasses;
@@ -172,6 +174,12 @@ export default class SearchPanes {
 				if (this.s.selectionList.length > 0) {
 					data.searchPanesLast = src;
 				}
+
+				// Config options that will change how the querying is done
+				data.searchPanes_options = {
+					viewCount: this.c.viewCount,
+					viewTotal: this.c.viewTotal,
+				};
 			});
 		}
 
@@ -858,6 +866,12 @@ export default class SearchPanes {
 						.column(this.s.selectionList[this.s.selectionList.length - 1].column)
 						.dataSrc();
 				}
+
+				// Config options that will change how the querying is done
+				data.searchPanes_options = {
+					viewCount: this.c.viewCount,
+					viewTotal: this.c.viewTotal,
+				};
 			});
 		}
 		else {

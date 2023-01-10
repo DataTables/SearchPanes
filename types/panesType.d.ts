@@ -51,6 +51,7 @@ export interface IDefaults {
     order: string[];
     panes: IConfigPaneItem[];
     preSelect: ISelectItem[];
+    viewCount: boolean;
     viewTotal: boolean;
 }
 export interface IDOM {
