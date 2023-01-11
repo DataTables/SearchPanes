@@ -1012,7 +1012,7 @@ export default class SearchPane {
 	protected _makeSelection(): void {
 		this.updateTable();
 		this.s.updating = true;
-		this.s.dt.draw();
+		this.s.dt.draw(false);
 		this.s.updating = false;
 	}
 
