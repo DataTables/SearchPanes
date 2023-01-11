@@ -25,6 +25,7 @@ export interface IConfigPaneItem {
 }
 
 export interface IDefaults {
+	cascadePanes: boolean;
 	clear: boolean;
 	collapse: boolean;
 	columns: number[];

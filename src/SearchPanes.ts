@@ -37,6 +37,7 @@ export default class SearchPanes {
 
 	// Define SearchPanes default options
 	private static defaults = {
+		cascadePanes: false,
 		clear: true,
 		collapse: true,
 		columns: [],
@@ -177,6 +178,7 @@ export default class SearchPanes {
 
 				// Config options that will change how the querying is done
 				data.searchPanes_options = {
+					cascade: this.c.cascadePanes,
 					viewCount: this.c.viewCount,
 					viewTotal: this.c.viewTotal,
 				};
@@ -869,6 +871,7 @@ export default class SearchPanes {
 
 				// Config options that will change how the querying is done
 				data.searchPanes_options = {
+					cascade: this.c.cascadePanes,
 					viewCount: this.c.viewCount,
 					viewTotal: this.c.viewTotal,
 				};
