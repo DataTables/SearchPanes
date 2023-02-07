@@ -23,6 +23,7 @@ $.extend(true, DataTable.SearchPanes.classes, {
 	collapseAll: 'dtsp-collapseAll button secondary',
 	disabledButton: 'disabled',
 	panes: 'panes dtsp-panesContainer',
+	search: DataTable.SearchPane.classes.search,
 	showAll: 'dtsp-showAll button secondary',
 	title: 'dtsp-title'
 });

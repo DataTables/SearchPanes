@@ -14,5 +14,6 @@ $.extend(true, DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll button',
 	collapseAll: 'dtsp-collapseAll button',
 	disabledButton: 'is-disabled',
+	search: DataTable.SearchPane.classes.search,
 	showAll: 'dtsp-showAll button'
 });

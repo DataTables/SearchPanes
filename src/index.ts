@@ -1,11 +1,11 @@
-/*! SearchPanes 2.1.1
+/*! SearchPanes 2.1.2-dev
  * 2019-2023 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     SearchPanes
  * @description Search Panes for DataTables columns
- * @version     2.1.1
+ * @version     2.1.2-dev
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   Copyright 2019-2022 SpryMedia Ltd.
  *

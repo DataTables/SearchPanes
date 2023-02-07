@@ -28,6 +28,7 @@ $.extend(true, DataTable.SearchPanes.classes, {
 	container: 'dtsp-searchPanes',
 	disabledButton: 'disabled',
 	panes: 'dtsp-panes dtsp-panesContainer',
+	search: DataTable.SearchPane.classes.search,
 	showAll: 'dtsp-showAll btn btn-light',
 	title: 'dtsp-title',
 	titleRow: 'dtsp-titleRow'
