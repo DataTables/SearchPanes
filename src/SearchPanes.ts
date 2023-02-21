@@ -716,7 +716,7 @@ export default class SearchPanes {
 
 		for (let pane of this.s.panes) {
 			// We want to make the same check whenever there is a collapse/expand
-			pane.dom.collapseButton.on('click.dtsps', () => this._checkCollapse());
+			pane.dom.topRow.on('collapse.dtsps', () => this._checkCollapse());
 		}
 
 		this._checkCollapse();

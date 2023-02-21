@@ -412,6 +412,7 @@ export default class SearchPane {
 		this.dom.collapseButton.addClass(this.classes.rotated);
 
 		this.dom.topRow.one('click.dtsp', () => this.show());
+		this.dom.topRow.trigger('collapse.dtsps');
 	}
 
 	/**
@@ -686,6 +687,7 @@ export default class SearchPane {
 			}
 
 			this.s.dt.state.save();
+			this.dom.topRow.trigger('collapse.dtsps');
 		});
 
 		// When the clear button is clicked reset the pane
@@ -808,6 +810,8 @@ export default class SearchPane {
 		this.dom.searchButton.removeClass(this.classes.disabledButton);
 		this.dom.collapseButton.removeClass(this.classes.rotated);
 		$(this.s.dtPane.table().container()).removeClass(this.classes.hidden);
+
+		this.dom.topRow.trigger('collapse.dtsps');
 	}
 
 	/**
