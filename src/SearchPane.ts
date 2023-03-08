@@ -1130,15 +1130,32 @@ export default class SearchPane {
 	 * @param notUpdating Whether the panes are updating themselves or not
 	 */
 	protected _updateSelection(notUpdating: boolean): void {
-		this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
-		if (this.s.dt.page.info().serverSide && !this.s.updating) {
-			if (!this.s.serverSelecting) {
-				this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
-				this.s.dt.draw(false);
+		let settings = this.s.dt.settings()[0];
+		let oApi = settings.oApi;
+
+		let run = () => {
+			this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
+			if (this.s.dt.page.info().serverSide && !this.s.updating) {
+				if (!this.s.serverSelecting) {
+					this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
+					this.s.dt.draw(false);
+				}
 			}
+			else if (notUpdating) {
+				this._makeSelection();
+			}
+
+			oApi._fnProcessingDisplay(settings, false);
+		};
+
+		// If the processing display is enabled, we need to allow the browser
+		// to draw it before performing our calculations
+		if (settings.oFeatures.bProcessing) {
+			oApi._fnProcessingDisplay(settings, true);
+			setTimeout(run, 1);
 		}
-		else if (notUpdating) {
-			this._makeSelection();
+		else {
+			run();
 		}
 	}
 
