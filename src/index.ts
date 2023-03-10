@@ -1,13 +1,13 @@
-/*! SearchPanes 2.1.2-dev
- * 2019-2023 SpryMedia Ltd - datatables.net/license
+/*! SearchPanes 2.1.2
+ * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     SearchPanes
  * @description Search Panes for DataTables columns
- * @version     2.1.2-dev
+ * @version     2.1.2
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
- * @copyright   Copyright 2019-2022 SpryMedia Ltd.
+ * @copyright   Copyright SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  * MIT license - http://datatables.net/license/mit

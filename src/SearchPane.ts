@@ -10,7 +10,7 @@ export function setJQuery(jq) {
 
 export default class SearchPane {
 
-	private static version = '2.0.0-dev';
+	private static version = '2.1.2';
 
 	private static classes = {
 		bordered: 'dtsp-bordered',
