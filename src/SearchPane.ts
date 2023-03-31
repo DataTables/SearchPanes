@@ -195,7 +195,7 @@ export default class SearchPane {
 			nameButton: $('<button type="button"></button>')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.nameButton),
-			panesContainer,
+			panesContainer: $(panesContainer),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
 			searchButton: $('<button type = "button"/>')
 				.addClass(this.classes.searchIcon)

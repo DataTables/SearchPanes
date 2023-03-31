@@ -103,8 +103,8 @@ div.dtsp-topRow.dtsp-bordered:hover {
 	cursor: pointer !important;
 }
 
-div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane table thead th,
-div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane table thead td {
+div.dtsp-searchPane table thead th,
+div.dtsp-searchPane table thead td {
   width: 100% !important;
 }
 
@@ -187,7 +187,9 @@ div.dt-button-collection{
 
 div.dtsp-panesContainer {
 	margin-bottom: 1em;
+}
 
+div.dtsp-searchPane {
 	div.dataTables_wrapper {
 		width: 100%;
 

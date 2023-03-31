@@ -1,59 +1,57 @@
 @import './common.scss';
 
-div.dtsp-panesContainer {
-	div.dtsp-searchPanes {
-		div.dtsp-searchPane {
-			div.dataTables_wrapper {
-				border: 2px solid #f0f0f0;
-				border-radius: 4px;
+div.dtsp-searchPane {
+	div.dataTables_wrapper {
+		border: 2px solid #f0f0f0;
+		border-radius: 4px;
 
-				&:hover{
-					border: 2px solid #cfcfcf;
-				}
-			}
-
-			div.dtsp-selected {
-				border: 2px solid #3276b1;
-				border-radius: 4px;
-
-				&:hover{
-					border: 2px solid #286092;
-				}
-			}
-		
-			div.dtsp-topRow {
-				div.dtsp-searchCont{
-					input.dtsp-search{
-						border: none;
-						padding-left: 3px;
-					}
-				}
-			}
-			
-			input.dtsp-paneInputButton,
-			button.dtsp-paneButton {
-				height: 35px;
-				width: 35px;
-				min-width: 0;
-				display: inline-block;
-				margin: 2px;
-				border: 0px solid transparent;
-				background-color: transparent;
-				margin-bottom: 0px;
-
-				&:hover{
-					background-color: #f0f0f0;
-					border-radius: 2px;
-					cursor: pointer;
-				}
-			}
-		
-			button.dtsp-paneButton {
-				opacity: 0.6;
-			}
+		&:hover{
+			border: 2px solid #cfcfcf;
 		}
 	}
 
+	div.dtsp-selected {
+		border: 2px solid #3276b1;
+		border-radius: 4px;
+
+		&:hover{
+			border: 2px solid #286092;
+		}
+	}
+
+	div.dtsp-topRow {
+		div.dtsp-searchCont{
+			input.dtsp-search{
+				border: none;
+				padding-left: 3px;
+			}
+		}
+	}
+	
+	input.dtsp-paneInputButton,
+	button.dtsp-paneButton {
+		height: 35px;
+		width: 35px;
+		min-width: 0;
+		display: inline-block;
+		margin: 2px;
+		border: 0px solid transparent;
+		background-color: transparent;
+		margin-bottom: 0px;
+
+		&:hover{
+			background-color: #f0f0f0;
+			border-radius: 2px;
+			cursor: pointer;
+		}
+	}
+
+	button.dtsp-paneButton {
+		opacity: 0.6;
+	}
+}
+
+div.dtsp-panesContainer {
 	button.dtsp-clearAll,
 	button.dtsp-collapseAll,
 	button.dtsp-showAll{

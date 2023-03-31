@@ -93,6 +93,7 @@ export interface ISVT extends IS {
 	reselecting: boolean;
 	serverSelect: any;
 	serverSelecting: any;
+	processing: number;
 }
 
 export interface ISelectItem {
