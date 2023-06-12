@@ -17,6 +17,7 @@ div.dtsp-panesContainer {
 			button.dtsp-paneButton {
 				height: 35px;
                 width: 35px;
+                padding: 0;
             }
 
             div.dtsp-searchCont {
@@ -31,6 +32,10 @@ div.dtsp-panesContainer {
 
             div.dtsp-topRow {
                 border-left: none;
+
+                input {
+                    padding-left: 4px;
+                }
             }
             
             div.dtsp-topRow.dtsp-bordered:hover {
@@ -42,6 +47,10 @@ div.dtsp-panesContainer {
                 input.dtsp-paneInputButton {
                     pointer-events: none;
                 }
+            }
+
+            span.dtsp-caret {
+                top: 7px;
             }
         }
     }

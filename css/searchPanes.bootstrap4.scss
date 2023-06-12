@@ -21,7 +21,8 @@ div.dtsp-panesContainer {
             button {
                 border: 1px solid #ced4da;
                 width: 35px;
-                line-height: 20px;
+                line-height: 32px;
+                padding: 0;
             }
     
             div.dtsp-subRow1 button {
@@ -29,7 +30,7 @@ div.dtsp-panesContainer {
             }
 
             span.dtsp-caret {
-                top: 4px;
+                top: 3px;
             }
 
             button.dtsp-rotated {
@@ -37,7 +38,7 @@ div.dtsp-panesContainer {
 
                 span {
                     transform: rotate(180deg);
-                    top: -4px;
+                    top: -2px;
                 }
             }
         }

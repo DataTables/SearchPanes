@@ -184,7 +184,7 @@ export default class SearchPane {
 						? this.s.customPaneSettings.className
 						: ''
 				),
-			countButton: $('<button type="button"></button>')
+			countButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.countButton),
 			dtP: $('<table><thead><tr><th>' +
@@ -192,12 +192,12 @@ export default class SearchPane {
 					? $(this.s.dt.column(this.s.index).header()).text()
 					: this.s.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
 			lower: $('<div/>').addClass(this.classes.subRow2).addClass(this.classes.narrowButton),
-			nameButton: $('<button type="button"></button>')
+			nameButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.nameButton),
 			panesContainer: $(panesContainer),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
-			searchButton: $('<button type = "button"/>')
+			searchButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.searchIcon)
 				.addClass(this.classes.paneButton),
 			searchCont: $('<div/>').addClass(this.classes.searchCont),

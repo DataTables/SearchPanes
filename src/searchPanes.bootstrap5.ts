@@ -11,7 +11,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	pane: {
 		container: 'table'
 	},
-	paneButton: 'btn btn-light',
+	paneButton: 'btn btn-subtle',
 	pill: 'badge rounded-pill bg-secondary',
 	search: 'form-control search',
 	table: 'table table-sm table-borderless',
@@ -19,13 +19,13 @@ $.extend(true, DataTable.SearchPane.classes, {
 });
 
 $.extend(true, DataTable.SearchPanes.classes, {
-	clearAll: 'dtsp-clearAll btn btn-light',
-	collapseAll: 'dtsp-collapseAll btn btn-light',
+	clearAll: 'dtsp-clearAll btn btn-subtle',
+	collapseAll: 'dtsp-collapseAll btn btn-subtle',
 	container: 'dtsp-searchPanes',
 	disabledButton: 'disabled',
 	panes: 'dtsp-panes dtsp-panesContainer',
 	search: DataTable.SearchPane.classes.search,
-	showAll: 'dtsp-showAll btn btn-light',
+	showAll: 'dtsp-showAll btn btn-subtle',
 	title: 'dtsp-title',
 	titleRow: 'dtsp-titleRow'
 });

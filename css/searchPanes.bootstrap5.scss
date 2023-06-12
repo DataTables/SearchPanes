@@ -1,5 +1,18 @@
 @import './common.scss';
 div.dtsp-panesContainer {
+    // https://github.com/twbs/bootstrap/issues/38748
+    button.btn-subtle {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+
+        &.disabled {
+            opacity: 0.5;
+        }
+
+        &:hover {
+            background-color: darken(#f8f9fa, 15%);
+        }
+    }
 
     button.dtsp-clearAll,
     button.dtsp-showAll {
@@ -15,20 +28,20 @@ div.dtsp-panesContainer {
             }
     
             button {
-                border: 1px solid #ced4da;
                 width: 35px;
                 line-height: 20px;
+
+                &.dtsp-searchIcon,
+                &.dtsp-nameButton,
+                &.dtsp-countButton {
+                    padding: 0;
+                }
             }
     
-            div.dtsp-subRow1{
-
+            div.dtsp-subRow1 {
                 button {
                     border-right: none;
                     margin-right: 1px;
-                    &:hover {
-                        background-color: #6c757d;
-                        color: white;
-                    }
                 }
 
                 input {
@@ -37,7 +50,7 @@ div.dtsp-panesContainer {
             }
 
             span.dtsp-caret {
-                top: 4px;
+                top: 3px;
             }
     
             button.dtsp-rotated {
@@ -45,7 +58,7 @@ div.dtsp-panesContainer {
     
                 span {
                     transform: rotate(180deg);
-                    top: -4px;
+                    top: -2px;
                 }
             }
         }
@@ -87,4 +100,71 @@ div.dt-button-collection{
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
+}
+
+html[data-bs-theme="dark"] {
+	div.dtsp-topRow {
+        button.dtsp-searchIcon span {
+            filter: #{"invert()"};
+        }
+	
+		button.dtsp-nameButton span {
+			filter: #{"invert()"};
+		}
+	
+		button.dtsp-countButton span {
+			filter: #{"invert()"};
+		}
+
+		input.dtsp-paneInputButton,
+		button {
+			color: inherit;
+		}
+	}
+
+	div.dtsp-panesContainer {
+        button.btn-subtle {
+            background-color: rgb(33, 37, 41);
+            border: var(--bs-border-width) solid var(--bs-border-color);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+		button.dtsp-clearAll,
+		button.dtsp-collapseAll,
+		button.dtsp-showAll {
+			color: inherit;
+
+			&:hover{
+				background-color: rgb(64, 69, 73);
+			}
+		}
+
+		button.dtsp-disabledButton {
+			color: rgb(124, 124, 124);
+		}
+	
+        div.dtsp-searchPane {
+            div.dataTables_wrapper {
+                border: 1px solid rgba(255, 255, 255, 0.2);
+
+                &:hover{
+                    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                }
+
+                div.dataTables_scrollBody {
+                    background: rgb(47, 52, 56) !important;
+        
+                    div.dtsp-nameCont {			
+                        span.dtsp-pill {
+                            background-color: rgb(33, 37, 41);
+                            color: inherit;
+                        }
+                    }
+                }
+            }
+        }
+	}	
 }

@@ -38,10 +38,11 @@ div.dtsp-searchPane {
             border: 1px solid #ced4da;
             width: 35px;
             height: 34px;
+            padding: 0;
         }
 
         span.dtsp-caret {
-            top: 4px;
+            top: 8px;
         }
 
         button.dtsp-rotated {
@@ -49,7 +50,7 @@ div.dtsp-searchPane {
 
             span {
                 transform: rotate(180deg);
-                top: -2px;
+                top: -8px;
             }
         }
     }

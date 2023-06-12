@@ -41,6 +41,8 @@ div.dtsp-searchPane {
         button {
 			width: 35px;
 			margin-bottom: 0;
+            padding: 0;
+            line-height: 38px;
 		}
 		
 		button.dtsp-searchIcon {
@@ -52,6 +54,22 @@ div.dtsp-searchPane {
                 right: 1px;
             }
         }
+
+        button.dtsp-collapseButton span.dtsp-caret {
+            top: 3px;
+        }
+
+        button.dtsp-searchIcon span {
+            filter: #{"invert()"};
+        }
+	
+		button.dtsp-nameButton span {
+			filter: #{"invert()"};
+		}
+	
+		button.dtsp-countButton span {
+			filter: #{"invert()"};
+		}
     }
 
     div.dtsp-topRow.dtsp-bordered:hover {
