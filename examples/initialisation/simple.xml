@@ -6,14 +6,22 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
+$('#example').DataTable({
+    dom: 'Plfrtip'
 });
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+    dom: 'Plfrtip'
+});
+
+]]>
+</js-vanilla>
 
 <title lib="searchPanes">Basic Initialisation</title>
 
