@@ -3,6 +3,7 @@
 
 <title lib="SearchPanes">Advanced SearchPanes</title>
 
+<js lib="jquery" />
 <info><![CDATA[
 
 This is the section to show how SearchPanes integrates with some other DataTables extensions.

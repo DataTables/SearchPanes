@@ -3,6 +3,7 @@
 
 <title lib="SearchPanes">Advanced SearchPanes</title>
 
+<js lib="jquery" />
 <info><![CDATA[
 
 This is the section for advanced Examples showing SearchPanes capabilities.
