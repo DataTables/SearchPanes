@@ -4,9 +4,4 @@ css/*.js
 examples/testing
 .sass-cache
 
-types/index.d.ts
-types/searchPane.d.ts
-types/searchPanes.d.ts
-types/searchPanes.*d.ts
-
 package-lock.json
