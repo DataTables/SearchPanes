@@ -79,7 +79,7 @@ rm \
     src/*.js \
     # src/*.d.ts
 
-mv src/*.d.ts types/
+rm src/*.d.ts
 
 # Copy Types
 if [ -d $OUT_DIR/types ]; then
