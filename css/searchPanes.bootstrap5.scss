@@ -155,8 +155,8 @@ html[data-bs-theme="dark"] {
                 }
 
                 div.dataTables_scrollBody {
-                    background: rgb(47, 52, 56) !important;
-        
+                    background: var(--bs-table-bg) !important;
+
                     div.dtsp-nameCont {			
                         span.dtsp-pill {
                             background-color: rgb(33, 37, 41);
