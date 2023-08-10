@@ -604,7 +604,7 @@ export default class SearchPane {
 					selected = this.s.dtPane
 						.rows({selected: true})
 						.data()
-						.map(item => item.filter.toString())
+						.map(item => item.filter !== null ? item.filter.toString() : null)
 						.toArray();
 					searchTerm = this.dom.searchBox.val();
 					order = this.s.dtPane.order();
