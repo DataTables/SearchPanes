@@ -169,6 +169,9 @@ export default class SearchPanes {
 						if (data.searchPanes[src][i] === null) {
 							data.searchPanes_null[src][i] = true;
 						}
+						else {
+							data.searchPanes_null[src][i] = false;
+						}
 					}
 				}
 
@@ -838,6 +841,9 @@ export default class SearchPanes {
 
 							if (!data.searchPanes[src][i]) {
 								data.searchPanes_null[src][i] = true;
+							}
+							else {
+								data.searchPanes_null[src][i] = false;
 							}
 
 							filterCount++;
