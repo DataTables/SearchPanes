@@ -41,7 +41,7 @@ declare module 'datatables.net' {
 		searchPanes: ApiSearchPanes<T>;
 	}
 
-	interface ApiStatic {
+	interface DataTablesStatic {
 		/**
 		 * SearchPanes class
 		 */
