@@ -106,16 +106,16 @@ html.dark {
 	div.dtsp-topRow {
 		div.dtsp-subRow1 {
 			button.dtsp-searchIcon span {
-				filter: #{"invert()"};
+				filter: invert(1);
 			}
 		}
 	
 		button.dtsp-nameButton span {
-			filter: #{"invert()"};
+			filter: invert(1);
 		}
 	
 		button.dtsp-countButton span {
-			filter: #{"invert()"};
+			filter: invert(1);
 		}
 
 		input.dtsp-paneInputButton,
