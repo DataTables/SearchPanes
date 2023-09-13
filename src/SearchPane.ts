@@ -1365,8 +1365,9 @@ export default class SearchPane {
 		// we need to set the select style to make sure the event
 		// handlers are added.
 		this.dom.dtP.on('init.dt', (e, s) => {
-			var style = this.s.dtPane.select.style();
-			this.s.dtPane.select.style(style);
+			var dt = this.dom.dtP.DataTable();
+			var style = dt.select.style();
+			dt.select.style(style as any);
 		});
 
 		this.s.dtPane = this.dom.dtP.DataTable($.extend(
