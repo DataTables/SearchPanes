@@ -60,15 +60,15 @@ div.dtsp-searchPane {
         }
 
         button.dtsp-searchIcon span {
-            filter: #{"invert()"};
+            filter: invert(1);
         }
 	
 		button.dtsp-nameButton span {
-			filter: #{"invert()"};
+			filter: invert(1);
 		}
 	
 		button.dtsp-countButton span {
-			filter: #{"invert()"};
+			filter: invert(1);
 		}
     }
 
