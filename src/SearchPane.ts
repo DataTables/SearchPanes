@@ -1361,6 +1361,14 @@ export default class SearchPane {
 		$.fn.dataTable.ext.errMode = 'none';
 		// eslint-disable-next-line no-extra-parens
 
+		// For async loading of a DataTable (e.g. language file)
+		// we need to set the select style to make sure the event
+		// handlers are added.
+		this.dom.dtP.on('init.dt', (e, s) => {
+			var style = this.s.dtPane.select.style();
+			this.s.dtPane.select.style(style);
+		});
+
 		this.s.dtPane = this.dom.dtP.DataTable($.extend(
 			true,
 			this._getPaneConfig(),
@@ -1409,9 +1417,6 @@ export default class SearchPane {
 
 		this.dom.searchBox.attr('placeholder', headerText);
 
-		// As the pane table is not in the document yet we must initialise select ourselves
-		// eslint-disable-next-line no-extra-parens
-		($.fn.dataTable as any).select.init(this.s.dtPane);
 		$.fn.dataTable.ext.errMode = errMode;
 
 		// If it is not a custom pane
@@ -1449,9 +1454,6 @@ export default class SearchPane {
 				}
 			}
 		}
-
-		// eslint-disable-next-line no-extra-parens
-		(dataTable as any).select.init(this.s.dtPane);
 
 		// If there are custom options set or it is a custom pane then get them
 		if (
