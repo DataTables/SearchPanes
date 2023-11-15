@@ -704,22 +704,26 @@ export default class SearchPanes {
 	 * Also sets and performs checks on current panes to see if they are collapsed
 	 */
 	private _setCollapseListener(): void {
-		this.dom.collapseAll.on('click.dtsps', () => {
-			this._collapseAll();
-			this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
-			this.dom.showAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
-			this.s.dt.state.save();
-		});
-		this.dom.showAll.on('click.dtsps', () => {
-			this._showAll();
-			this.dom.showAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
-			this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
-			this.s.dt.state.save();
-		});
+		this.dom.collapseAll
+			.off('click.dtsps')
+			.on('click.dtsps', () => {
+				this._collapseAll();
+				this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+				this.dom.showAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+				this.s.dt.state.save();
+			});
+		this.dom.showAll
+			.off('click.dtsps')
+			.on('click.dtsps', () => {
+				this._showAll();
+				this.dom.showAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+				this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+				this.s.dt.state.save();
+			});
 
 		for (let pane of this.s.panes) {
 			// We want to make the same check whenever there is a collapse/expand
-			pane.dom.topRow.on('collapse.dtsps', () => this._checkCollapse());
+			pane.dom.topRow.off('collapse.dtsps').on('collapse.dtsps', () => this._checkCollapse());
 		}
 
 		this._checkCollapse();
