@@ -466,6 +466,7 @@ export default class SearchPanes {
 		if (this.c.clear) {
 			this.dom.clearAll
 				.appendTo(this.dom.titleRow)
+				.off('click.dtsps')
 				.on('click.dtsps', () => this.clearSelections());
 		}
 
@@ -975,7 +976,9 @@ export default class SearchPanes {
 
 		// When the clear All button has been pressed clear all of the selections in the panes
 		if (this.c.clear) {
-			this.dom.clearAll.on('click.dtsps', () => this.clearSelections());
+			this.dom.clearAll
+				.off('click.dtsps')
+				.on('click.dtsps', () => this.clearSelections());
 		}
 
 		hostSettings._searchPanes = this;
