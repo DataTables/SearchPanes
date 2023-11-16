@@ -22,10 +22,7 @@ var dt = $('#example').DataTable({
 					{
 						label: 'Un-Checked',
 						value: function (rowData, rowIdx) {
-							return (
-								this.row(rowIdx, { selected: true }).any() ===
-								false
-							);
+							return this.row(rowIdx, { selected: true }).any() === false;
 						}
 					}
 				]
@@ -142,10 +139,7 @@ var dt = new DataTable('#example', {
 					{
 						label: 'Un-Checked',
 						value: function (rowData, rowIdx) {
-							return (
-								this.row(rowIdx, { selected: true }).any() ===
-								false
-							);
+							return this.row(rowIdx, { selected: true }).any() === false;
 						}
 					}
 				]

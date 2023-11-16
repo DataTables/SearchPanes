@@ -24,9 +24,8 @@ $('#example').DataTable({
 <js-vanilla>
 <![CDATA[
 
-document
-    .querySelectorAll('#example td')[2]
-    .innerHTML = 'Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.';
+document.querySelectorAll('#example td')[2].innerHTML =
+	'Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.Hi,mynameissandy.Thisiareallylongstringtotestwhathappenswhenimakeoneofthecellshuge.';
 
 new DataTable('#example', {
 	layout: {

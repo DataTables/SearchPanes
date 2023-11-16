@@ -17,10 +17,10 @@ $('#example').DataTable({
 			searchPanes: {
 				dtOpts: {
 					layout: {
-                        topStart: null,
-                        topEnd: null,
-                        bottomStart: null
-                    }
+						topStart: null,
+						topEnd: null,
+						bottomStart: null
+					}
 				}
 			}
 		}
@@ -30,11 +30,11 @@ $('#example').DataTable({
 			searchPanes: {
 				dtOpts: {
 					layout: {
-                        topStart: null,
-                        topEnd: null,
-                        bottomEnd: null
-                    },
-                    info: true
+						topStart: null,
+						topEnd: null,
+						bottomEnd: null
+					},
+					info: true
 				}
 			},
 			targets: [2]
@@ -54,10 +54,10 @@ new DataTable('#example', {
 			searchPanes: {
 				dtOpts: {
 					layout: {
-                        topStart: null,
-                        topEnd: null,
-                        bottomStart: null
-                    }
+						topStart: null,
+						topEnd: null,
+						bottomStart: null
+					}
 				}
 			}
 		}
@@ -67,11 +67,11 @@ new DataTable('#example', {
 			searchPanes: {
 				dtOpts: {
 					layout: {
-                        topStart: null,
-                        topEnd: null,
-                        bottomEnd: null
-                    },
-                    info: true
+						topStart: null,
+						topEnd: null,
+						bottomEnd: null
+					},
+					info: true
 				}
 			},
 			targets: [2]

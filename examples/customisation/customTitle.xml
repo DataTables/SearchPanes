@@ -7,17 +7,17 @@
 <![CDATA[
 
 $('#example').DataTable({
-    columnDefs: [
-        {
-            searchPanes: {
-                header: 'Length of Life'
-            },
-            targets: [3]
-        }
-    ],
-    layout: {
-        top1: 'searchPanes'
-    }
+	columnDefs: [
+		{
+			searchPanes: {
+				header: 'Length of Life'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
 });
 
 ]]>
@@ -27,17 +27,17 @@ $('#example').DataTable({
 <![CDATA[
 
 new DataTable('#example', {
-    columnDefs: [
-        {
-            searchPanes: {
-                header: 'Length of Life'
-            },
-            targets: [3]
-        }
-    ],
-    layout: {
-        top1: 'searchPanes'
-    }
+	columnDefs: [
+		{
+			searchPanes: {
+				header: 'Length of Life'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
 });
 
 ]]>

@@ -13,7 +13,11 @@ var table = $('#example').DataTable({
 });
 
 $('#rebuild').on('click', function () {
-	table.row(0).remove().draw().searchPanes.rebuildPane();
+	table
+		.row(0)
+		.remove()
+		.draw()
+		.searchPanes.rebuildPane();
 });
 
 ]]>
@@ -29,7 +33,11 @@ var table = new DataTable('#example', {
 });
 
 document.querySelector('#rebuild').addEventListener('click', function () {
-	table.row(0).remove().draw().searchPanes.rebuildPane();
+	table
+		.row(0)
+		.remove()
+		.draw()
+		.searchPanes.rebuildPane();
 });
 
 ]]>

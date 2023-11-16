@@ -17,10 +17,7 @@ $('#example').DataTable({
 							{
 								label: 'Accountants from Tokyo',
 								value: function (rowData, rowIdx) {
-									return (
-										rowData[1] === 'Accountant' &&
-										rowData[2] === 'Tokyo'
-									);
+									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
 								}
 							}
 						],
@@ -60,10 +57,7 @@ new DataTable('#example', {
 							{
 								label: 'Accountants from Tokyo',
 								value: function (rowData, rowIdx) {
-									return (
-										rowData[1] === 'Accountant' &&
-										rowData[2] === 'Tokyo'
-									);
+									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
 								}
 							}
 						],

@@ -7,9 +7,9 @@
 <![CDATA[
 
 $('#example').DataTable({
-    layout: {
-        top1: 'searchPanes'
-    }
+	layout: {
+		top1: 'searchPanes'
+	}
 });
 
 ]]>
@@ -19,9 +19,9 @@ $('#example').DataTable({
 <![CDATA[
 
 new DataTable('#example', {
-    layout: {
-        top1: 'searchPanes'
-    }
+	layout: {
+		top1: 'searchPanes'
+	}
 });
 
 ]]>

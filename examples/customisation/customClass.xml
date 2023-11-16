@@ -29,15 +29,16 @@ $('#example').DataTable({
 							{
 								label: 'Accountants from Tokyo',
 								value: function (rowData, rowIdx) {
-									return (
-										rowData[1] === 'Accountant' &&
-										rowData[2] === 'Tokyo'
-									);
+									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
 								}
 							}
 						],
 						dtOpts: {
-							dom: 'tp',
+							layout: {
+								topStart: null,
+								topEnd: null,
+								bottomStart: null
+							},
 							paging: true,
 							order: [[1, 'desc']]
 						},
@@ -51,6 +52,52 @@ $('#example').DataTable({
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	columnDefs: [
+		{
+			searchPanes: {
+				className: 'myCustomClass'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+								}
+							}
+						],
+						dtOpts: {
+							layout: {
+								topStart: null,
+								topEnd: null,
+								bottomStart: null
+							},
+							paging: true,
+							order: [[1, 'desc']]
+						},
+						className: 'myCustomClass'
+					}
+				]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
 
 <title lib="SearchPanes">Custom Pane Class</title>
 
