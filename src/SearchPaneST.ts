@@ -16,6 +16,8 @@ export default class SearchPaneST extends SearchPane {
 	 * @param dataIn The data that has been sent from the server
 	 */
 	public _serverPopulate(dataIn: {[keys: string]: any}): void {
+		let selection, row, data;
+
 		this.s.rowData.binsShown = {};
 		this.s.rowData.arrayFilter = [];
 
@@ -81,9 +83,9 @@ export default class SearchPaneST extends SearchPane {
 			this.s.dtPane.rows().remove();
 
 			// Add the rows that are to be shown into the pane
-			for (let data of this.s.rowData.arrayFilter) {
+			for (data of this.s.rowData.arrayFilter) {
 				if (this._shouldAddRow(data)) {
-					let row = this.addRow(
+					row = this.addRow(
 						data.display,
 						data.filter,
 						data.sort,
@@ -92,7 +94,7 @@ export default class SearchPaneST extends SearchPane {
 
 					// Select the row if it was selected before
 					for (let i = 0; i < selected.length; i++) {
-						let selection = selected[i];
+						selection = selected[i];
 						if (selection.filter === data.filter) {
 							// This flag stops another request being made to the server
 							this.s.serverSelecting = true;
@@ -109,10 +111,10 @@ export default class SearchPaneST extends SearchPane {
 			}
 
 			// Remake any selections that are no longer present
-			for (let selection of selected) {
-				for (let data of this.s.rowData.arrayOriginal) {
+			for (selection of selected) {
+				for (data of this.s.rowData.arrayOriginal) {
 					if (data.filter === selection.filter) {
-						let row = this.addRow(
+						row = this.addRow(
 							data.display,
 							data.filter,
 							data.sort,
@@ -182,7 +184,6 @@ export default class SearchPaneST extends SearchPane {
 	 * @param data the row data
 	 * @returns boolean indicating if the row should be added or not
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected _shouldAddRow(data): boolean {
 		return true;
 	}

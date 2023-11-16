@@ -24,6 +24,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 	public updateRows(): void {
 		// Note the currently selected values in the pane and remove all of the rows
 		let selected = this.s.dtPane.rows({selected: true}).data().toArray();
+		let selection;
 
 		if (
 			this.s.colOpts.options ||
@@ -49,7 +50,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 					continue;
 				}
 
-				for(let selection of selected) {
+				for(selection of selected) {
 					if(rowData.filter === selection.filter) {
 						row.select();
 						selected.splice(i, 1);
@@ -80,7 +81,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 				}
 
 				// Add the row to the pane
-				let row = this.addRow(
+				let newRow = this.addRow(
 					data.display,
 					data.filter,
 					data.sort,
@@ -89,13 +90,13 @@ export default class SearchPaneCascade extends SearchPaneST {
 				);
 
 				// Check if this row was selected
-				for (let i = 0; i < selected.length; i++) {
-					let selection = selected[i];
+				for (let j = 0; j < selected.length; j++) {
+					let selectedRow = selected[j];
 
-					if (selection.filter === data.filter) {
-						row.select();
+					if (selectedRow.filter === data.filter) {
+						newRow.select();
 						// Remove the row from the to find list and then add it to the selections list
-						selected.splice(i, 1);
+						selected.splice(j, 1);
 						this.s.selections.push(data.filter);
 						break;
 					}
@@ -103,18 +104,18 @@ export default class SearchPaneCascade extends SearchPaneST {
 			}
 
 			// Add all of the rows that were previously selected but aren't any more
-			for (let selection of selected) {
-				for (let data of this.s.rowData.arrayOriginal) {
-					if (data.filter === selection.filter) {
-						let row = this.addRow(
-							data.display,
-							data.filter,
-							data.sort,
-							data.type,
+			for (selection of selected) {
+				for (let origData of this.s.rowData.arrayOriginal) {
+					if (origData.filter === selection.filter) {
+						let addedRow = this.addRow(
+							origData.display,
+							origData.filter,
+							origData.sort,
+							origData.type,
 							undefined
 						);
-						row.select();
-						this.s.selections.push(data.filter);
+						addedRow.select();
+						this.s.selections.push(origData.filter);
 					}
 				}
 			}
@@ -190,8 +191,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 					}
 				}
 
-				for(let i = 0; i < tableValsShown.length; i++) {
-					if(comp.value.call(this.s.dt, tableValsShown[i], shownRows[0][i])) {
+				for(let j = 0; j < tableValsShown.length; j++) {
+					if(comp.value.call(this.s.dt, tableValsShown[j], shownRows[0][j])) {
 						comparisonObj.shown++;
 					}
 				}

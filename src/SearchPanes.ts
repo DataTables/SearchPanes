@@ -208,7 +208,9 @@ export default class SearchPanes {
 	 * Clear the selections of all of the panes
 	 */
 	public clearSelections(): SearchPane[] {
-		for (let pane of this.s.panes) {
+		let pane;
+
+		for (pane of this.s.panes) {
 			if (pane.s.dtPane) {
 				pane.s.scrollTop = pane.s.dtPane.table().node().parentNode.scrollTop;
 			}
@@ -227,7 +229,7 @@ export default class SearchPanes {
 
 		let returnArray = [];
 
-		for (let pane of this.s.panes) {
+		for (pane of this.s.panes) {
 			if (pane.s.dtPane) {
 				returnArray.push(pane.clearPane());
 			}
@@ -293,6 +295,8 @@ export default class SearchPanes {
 	 * Resizes all of the panes
 	 */
 	public resizePanes(): SearchPanes {
+		let pane;
+
 		if (this.c.layout === 'auto') {
 			let contWidth = $(this.s.dt.searchPanes.container()).width();
 			let target = Math.floor(contWidth / this.s.minPaneWidth); // The neatest number of panes per row
@@ -302,7 +306,7 @@ export default class SearchPanes {
 			// Get the indexes of all of the displayed panes
 			let dispIndex = [];
 
-			for (let pane of this.s.panes) {
+			for (pane of this.s.panes) {
 				if (pane.s.displayed) {
 					dispIndex.push(pane.s.index);
 				}
@@ -344,7 +348,7 @@ export default class SearchPanes {
 			});
 		}
 		else {
-			for (let pane of this.s.panes) {
+			for (pane of this.s.panes) {
 				pane.adjustTopRow();
 			}
 		}

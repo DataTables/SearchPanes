@@ -925,7 +925,6 @@ export default class SearchPane {
 	 * @param filter The filter value
 	 * @returns undefined
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected _getShown(filter: any): number {
 		return undefined;
 	}
@@ -1256,6 +1255,7 @@ export default class SearchPane {
 
 		// Other Variables
 		let loadedFilter = this.s.dt.state.loaded();
+		let row;
 
 		// If the listeners have not been set yet then using the latest state may result in funny errors
 		if (this.s.listSet) {
@@ -1429,17 +1429,17 @@ export default class SearchPane {
 		// If it is not a custom pane
 		if (this.s.colExists) {
 			// Add all of the search options to the pane
-			for (let i = 0, ien = this.s.rowData.arrayFilter.length; i < ien; i++) {
+			for (let j = 0, jen = this.s.rowData.arrayFilter.length; j < jen; j++) {
 				if (this.s.dt.page.info().serverSide) {
-					let row = this.addRow(
-						this.s.rowData.arrayFilter[i].display,
-						this.s.rowData.arrayFilter[i].filter,
-						this.s.rowData.arrayFilter[i].sort,
-						this.s.rowData.arrayFilter[i].type
+					row = this.addRow(
+						this.s.rowData.arrayFilter[j].display,
+						this.s.rowData.arrayFilter[j].filter,
+						this.s.rowData.arrayFilter[j].sort,
+						this.s.rowData.arrayFilter[j].type
 					);
 
 					for (let option of this.s.serverSelect) {
-						if (option.filter === this.s.rowData.arrayFilter[i].filter) {
+						if (option.filter === this.s.rowData.arrayFilter[j].filter) {
 							this.s.serverSelecting = true;
 							row.select();
 							this.s.serverSelecting = false;
@@ -1447,12 +1447,12 @@ export default class SearchPane {
 					}
 
 				}
-				else if (!this.s.dt.page.info().serverSide && this.s.rowData.arrayFilter[i]) {
+				else if (!this.s.dt.page.info().serverSide && this.s.rowData.arrayFilter[j]) {
 					this.addRow(
-						this.s.rowData.arrayFilter[i].display,
-						this.s.rowData.arrayFilter[i].filter,
-						this.s.rowData.arrayFilter[i].sort,
-						this.s.rowData.arrayFilter[i].type
+						this.s.rowData.arrayFilter[j].display,
+						this.s.rowData.arrayFilter[j].filter,
+						this.s.rowData.arrayFilter[j].sort,
+						this.s.rowData.arrayFilter[j].type
 					);
 				}
 				else if (!this.s.dt.page.info().serverSide) {
@@ -1479,7 +1479,7 @@ export default class SearchPane {
 
 		for (let selection of selectedRows) {
 			if (selection) {
-				for (let row of this.s.dtPane.rows().indexes().toArray()) {
+				for (row of this.s.dtPane.rows().indexes().toArray()) {
 					if (
 						this.s.dtPane.row(row).data() &&
 						selection.filter === this.s.dtPane.row(row).data().filter

@@ -218,6 +218,9 @@ export default class SearchPanesST extends SearchPanes {
 	 * Remake the selections that were present before new data or calculations have occured
 	 */
 	private _remakeSelections(): void {
+		let currPane;
+		let pane;
+
 		this.s.updating = true;
 
 		if (!this.s.dt.page.info().serverSide) {
@@ -235,7 +238,7 @@ export default class SearchPanesST extends SearchPanes {
 			this.s.selectionList = tmpSL;
 
 			// Update the rows in each pane
-			for (let pane of this.s.panes) {
+			for (pane of this.s.panes) {
 				if (pane.s.displayed) {
 					pane.s.filteringActive = anotherFilter;
 					pane.updateRows();
@@ -243,7 +246,8 @@ export default class SearchPanesST extends SearchPanes {
 			}
 
 			for (let selection of this.s.selectionList) {
-				let pane;
+				pane = null;
+
 				for(let paneCheck of this.s.panes) {
 					if(paneCheck.s.index === selection.column) {
 						pane = paneCheck;
@@ -294,7 +298,7 @@ export default class SearchPanesST extends SearchPanes {
 				let selectedPanes = 0;
 
 				// Add the number of all of the filters throughout the panes
-				for (let currPane of this.s.panes) {
+				for (currPane of this.s.panes) {
 					if (currPane.s.dtPane) {
 						filterCount += currPane.getPaneCount();
 						if (filterCount > prevSelectedPanes) {
@@ -306,7 +310,7 @@ export default class SearchPanesST extends SearchPanes {
 
 				filteringActive = filterCount > 0;
 
-				for (let currPane of this.s.panes) {
+				for (currPane of this.s.panes) {
 					if (currPane.s.displayed) {
 						// Set the filtering active flag
 						if (anotherFilter || pane.s.index !== currPane.s.index || !filteringActive) {
@@ -329,13 +333,12 @@ export default class SearchPanesST extends SearchPanes {
 		}
 		else {
 			// Identify the last pane to have a change in selection
-			let pane: SearchPaneCascade | SearchPaneCascadeViewTotal | SearchPaneViewTotal;
 			if (this.s.selectionList.length > 0) {
 				pane = this.s.panes[this.s.selectionList[this.s.selectionList.length-1].column];
 			}
 
 			// Update the rows of all of the other panes
-			for (let currPane of this.s.panes) {
+			for (currPane of this.s.panes) {
 				if (currPane.s.displayed && (!pane || currPane.s.index !== pane.s.index)) {
 					currPane.updateRows();
 				}
