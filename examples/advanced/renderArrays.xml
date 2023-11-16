@@ -5,59 +5,106 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    let dt = $('#example').DataTable({
-        ajax: '../resources/arrayData.json',
-        searchPanes: {
-			columns: [ 3 ]
-        },
-		dom: 'Plfrtip',
-        columns: [
-			{ 
-				data: "users.first_name"
+$('#example').DataTable({
+	ajax: '../resources/arrayData.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name'
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
 			},
-			{ 
-				data: "users.last_name"
-			},
-			{ 
-				data: "sites.name"
-			},
-			{ 
-				data: "permission",
-				render: {
-					_: '[, ].name',
-					sp: '[].name'
-				},
-				searchPanes: {
-					orthogonal: 'sp'
-				}
+			searchPanes: {
+				orthogonal: 'sp'
 			}
-		],
-		columnDefs: [
-            {
-                searchPanes: {
-                    show: true
-                },
-                targets: [3]
-            }
-        ],
-		initComplete: function() {
-			this.api().searchPanes.rebuildPane();
 		}
-    });
+	],
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [3]
+		}
+	],
+	initComplete: function () {
+		this.api().searchPanes.rebuildPane();
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [3]
+			}
+		}
+	}
 });
-
 
 ]]>
 </js>
 
-<title lib="searchPanes">Rendering Arrays</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/arrayData.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name'
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
+			},
+			searchPanes: {
+				orthogonal: 'sp'
+			}
+		}
+	],
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [3]
+		}
+	],
+	initComplete: function () {
+		this.api().searchPanes.rebuildPane();
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [3]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Rendering Arrays</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example demonstrates searching on arrays which are being rendered. The threshold is set to `1` so that the rendered columns will display their data. As the data is coming from an asynchronous Ajax call, the searchPanes need to be rebuilt upon table initialisation.
+This example demonstrates searching on arrays which are being rendered. The threshold is set to `1` so that the rendered columns will display their data. As the data is coming from an asynchronous Ajax call, the SearchPanes need to be rebuilt upon table initialisation.
 
 ]]></info>
 

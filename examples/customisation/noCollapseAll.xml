@@ -6,23 +6,40 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            collapse: false
-        }
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				collapse: false
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Hide Collapsing Button</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				collapse: false
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Hide Collapsing Button</title>
 
 <info><![CDATA[
 
-This example shows how the `-init searchPanes.collapse` option can be used to disallow the collapsing of all of the panes. To do this the `-init searchPanes.collapse` option must also be set to false.
+This example shows how the `-feature searchPanes.collapse` option can be used to disallow the collapsing of all of the panes. To do this the `-feature searchPanes.collapse` option must also be set to false.
 
 ]]></info>
 

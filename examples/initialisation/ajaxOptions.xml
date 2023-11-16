@@ -6,39 +6,72 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready( function() {
-  var table = $('#example').DataTable({
-    ajax: '../resources/options.json',
-    dom: 'Plfrtip',
-    columns: [
-        { data: "users.first_name" },
-        { data: "users.last_name" },
-        { data: "users.phone" },
-        { data: "sites.name" }
-    ],
-    searchPanes: {
-          "viewTotal": true
-    },
-    columnDefs: [{
-        searchPanes: {
-            show: true
-        },
-        targets: [0, 1, 2, 3]
-    }]
-  });
-} );
-
+$('#example').DataTable({
+	ajax: '../resources/options.json',
+	columns: [
+		{ data: 'users.first_name' },
+		{ data: 'users.last_name' },
+		{ data: 'users.phone' },
+		{ data: 'sites.name' }
+	],
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0, 1, 2, 3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
+});
 
 ]]>
 </js>
 
-<title lib="searchPanes">Ajax Loaded SearchPanes Options</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/options.json',
+	columns: [
+		{ data: 'users.first_name' },
+		{ data: 'users.last_name' },
+		{ data: 'users.phone' },
+		{ data: 'sites.name' }
+	],
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0, 1, 2, 3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Ajax Loaded SearchPanes Options</title>
 
 <info><![CDATA[
 
-This is the `-init searchPanes`extension for DataTables. This example shows how SearchPanes can be populated via ajax, while using client-side processing. The SearchPanes options must be defined in the ajax json data for this to happen, otherwise SearchPanes will just extract the data from the table as usual. The structure of the JSON required is documented [here](https://datatables.net/extensions/searchpanes/serverside#Implementation-details) under the "Returned Data" heading.
+This is the SearchPanes extension for DataTables. This example shows how SearchPanes can be populated via ajax, while using client-side processing. The SearchPanes options must be defined in the ajax json data for this to happen, otherwise SearchPanes will just extract the data from the table as usual. The structure of the JSON required is documented [here](https://datatables.net/extensions/searchpanes/serverside#Implementation-details) under the "Returned Data" heading.
 
-It is worth noting that due to the requirements for users to provide accurate data for the SearchPanes options, neither `-init searchPanes.cascadePanes` or `-init searchPanes.viewTotal` are supported using this setup. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
+It is worth noting that due to the requirements for users to provide accurate data for the SearchPanes options, neither `-feature searchPanes.cascadePanes` or `-feature searchPanes.viewTotal` are supported using this setup. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
 
 ]]></info>
 

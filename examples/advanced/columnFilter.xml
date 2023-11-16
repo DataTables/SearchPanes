@@ -6,42 +6,74 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example tfoot th').each(function() {
-        var title = $(this).text();
-        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-    });
+$('#example').DataTable({
+	initComplete: function () {
+		this.api()
+			.columns()
+			.every(function () {
+				var column = this;
+				var title = column.footer().textContent;
 
-    var table = $('#example').DataTable({
-        searchPanes: {
-            viewTotal: true
-        },
-        dom: 'Plfrtip'
-    });
-
-     table.columns().every( function() {
-        var that = this;
- 
-        $('input', this.footer()).on('keyup change', function() {
-            if (that.search() !== this.value) {
-                that
-                    .search(this.value)
-                    .draw();
-            }
-        });
-    });
+				// Create input element and add event listener
+				$('<input type="text" placeholder="Search ' + title + '" />')
+					.appendTo($(column.footer()).empty())
+					.on('keyup change clear', function () {
+						if (column.search() !== this.value) {
+							column.search(this.value).draw();
+						}
+					});
+			});
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Column Filter Integration</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	initComplete: function () {
+		this.api()
+			.columns()
+			.every(function () {
+				var column = this;
+				var title = column.footer().textContent;
+
+				// Create input element and add event listener
+				$('<input type="text" placeholder="Search ' + title + '" />')
+					.appendTo($(column.footer()).empty())
+					.on('keyup change clear', function () {
+						if (column.search() !== this.value) {
+							column.search(this.value).draw();
+						}
+					});
+			});
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Column Filter Integration</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows how column filtering can be used alongside searchPanes. By enabling `-init searchPanes.viewTotal` the count will display the number of the matching records; `cascadePanes` could also be activated to only show options present in the table.
+This example shows how column filtering can be used alongside SearchPanes. By enabling `-feature searchPanes.viewTotal` the count will display the number of the matching records; `cascadePanes` could also be activated to only show options present in the table.
 
 ]]></info>
 

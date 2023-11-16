@@ -6,27 +6,42 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        language: {
-            searchPanes: {
-                emptyPanes: 'There are no panes to display. :/'
-            }
-        }
-    });
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	language: {
+		searchPanes: {
+			emptyPanes: 'There are no panes to display. :/'
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Empty Table</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	language: {
+		searchPanes: {
+			emptyPanes: 'There are no panes to display. :/'
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Empty Table</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows that searchPanes is not visible when no records are present in the table as default, and a customised string can be displayed instead.
+This example shows that SearchPanes is not visible when no records are present in the table as default, and a customised string can be displayed instead.
 
 If the `emptyPanes` option is not set and there are no panes to display then a default message will be shown. In order not to display anything then `emptyPanes` should be set to `null`.
 

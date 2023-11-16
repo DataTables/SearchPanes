@@ -6,22 +6,30 @@
 <js lib="jquery semanticui datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    var table = $('#example').DataTable({
-        searchPanes: true
-    });
-    table.searchPanes.container().prependTo(table.table().container());
-    table.searchPanes.resizePanes();
+$('#example').DataTable({
+    layout: {
+        top1: 'searchPanes'
+    }
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Fomantic-UI (formally Semantic-UI) styling</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+    layout: {
+        top1: 'searchPanes'
+    }
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Fomantic-UI (formally Semantic-UI) styling</title>
 
 <info><![CDATA[
-
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows DataTables and the searchPanes extension being used with [Fomantic-UI](https://fomantic-ui.com) (a maintained fork of [Semantic-UI](https://semantic-ui.com/)). The DataTables / Fomantic-UI integration provides seamless integration for DataTables to be used in a Fomantic-UI page.
 

@@ -5,39 +5,62 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            threshold: 0.4
-        },
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    threshold: 1
-                },
-                targets: [0]
-            }
-        ]
-    });
+$('#example').DataTable({
+	columnDefs: [
+		{
+			searchPanes: {
+				threshold: 1
+			},
+			targets: [0]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				threshold: 0.4
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Uniqueness Threshold</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	columnDefs: [
+		{
+			searchPanes: {
+				threshold: 1
+			},
+			targets: [0]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				threshold: 0.4
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Uniqueness Threshold</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows how `-init searchPanes.threshold` allows the user to define the level of uniqueness for a pane to be displayed.
+This example shows how `-feature searchPanes.threshold` allows the user to define the level of uniqueness for a pane to be displayed.
 
 The ratio of uniqueness is the number of different values throughout the table divided by the total number of values, i.e. as the number approaches 1 the more unique the values are.
 
 Thresholds can also be set for individual columns using the `-init columns.searchPanes.threshold` option. Here we set the threshold of the Name column to be 1, meaning even though the column consists entirely of unique values, the searchPane will still be displayed. This is discouraged, to force a pane to show the `-init columns.searchPanes.show` options should be used.
 
-The default for `-init searchPanes.threshold` is 0.6.
+The default for `-feature searchPanes.threshold` is 0.6.
 
 ]]></info>
 

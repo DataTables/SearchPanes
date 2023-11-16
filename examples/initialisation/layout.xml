@@ -6,33 +6,56 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            layout: 'columns-6'
-        },
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    show: true
-                },
-                targets: [0, 1, 2, 3, 4, 5]
-            }
-        ]
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				layout: 'columns-6'
+			}
+		}
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0, 1, 2, 3, 4, 5]
+		}
+	]
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Change SearchPanes Layout</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				layout: 'columns-6'
+			}
+		}
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0, 1, 2, 3, 4, 5]
+		}
+	]
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Change SearchPanes Layout</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example demonstrates the `-init searchPanes.layout` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is `auto` which will allow SearchPanes to determine the best fit.
+This example demonstrates the `-feature searchPanes.layout` option. This option allows you to define how many panes are displayed in one row before a new line is taken. The default is `auto` which will allow SearchPanes to determine the best fit.
 
 ]]></info>
 

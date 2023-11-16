@@ -6,23 +6,33 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    let table = $('#example').DataTable();
-    new $.fn.dataTable.SearchPanes(table, {});
-    table.searchPanes.container().prependTo(table.table().container());
-    table.searchPanes.resizePanes();
-});
+var table = $('#example').DataTable();
+new DataTable.SearchPanes(table, {});
+
+table.searchPanes.container().prependTo(table.table().container());
+table.searchPanes.resizePanes();
 
 ]]>
 </js>
 
-<title lib="searchPanes">API Initialisation</title>
+<js-vanilla>
+<![CDATA[
+
+let table = new DataTable('#example');
+new DataTable.SearchPanes(table, {});
+
+table.searchPanes.container().prependTo(table.table().container());
+table.searchPanes.resizePanes();
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">API Initialisation</title>
 
 <info><![CDATA[
 
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example shows how to initialise searchPanes using the API.
+This example shows how to initialise SearchPanes through the `DataTable.SearchPanes` constructor. Note that it is unlikely you'll ever need to do this, but it is included here for completeness.
 
 ]]></info>
 

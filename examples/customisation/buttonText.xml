@@ -6,29 +6,46 @@
 <js lib="jquery datatables searchpanes select buttons">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        language: {
-            searchPanes: {
-                clearMessage: 'Obliterate Selections',
-                collapse: {0: 'Search Options', _: 'Search Options (%d)'}
-            }
-        },
-        buttons: [
-            'searchPanes'
-        ],
-        dom: 'Bfrtip'
-    });
+$('#example').DataTable({
+	language: {
+		searchPanes: {
+			clearMessage: 'Obliterate Selections',
+			collapse: { 0: 'Search Options', _: 'Search Options (%d)' }
+		}
+	},
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	language: {
+		searchPanes: {
+			clearMessage: 'Obliterate Selections',
+			collapse: { 0: 'Search Options', _: 'Search Options (%d)' }
+		}
+	},
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Button text</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to edit the text in the clear message and the filter button.
 

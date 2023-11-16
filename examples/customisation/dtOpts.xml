@@ -11,42 +11,83 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            dtOpts: {
-                dom: "tp",
-                paging: true,
-                pagingType: 'numbers',
-                searching: false
-            }
-        },
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    dtOpts: {
-                        dom: "ti",
-                        info: true
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				dtOpts: {
+					layout: {
+                        topStart: null,
+                        topEnd: null,
+                        bottomStart: null
                     }
-                },
-                targets: [2]
-            }
-        ]
-    });
+				}
+			}
+		}
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				dtOpts: {
+					layout: {
+                        topStart: null,
+                        topEnd: null,
+                        bottomEnd: null
+                    },
+                    info: true
+				}
+			},
+			targets: [2]
+		}
+	]
 });
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				dtOpts: {
+					layout: {
+                        topStart: null,
+                        topEnd: null,
+                        bottomStart: null
+                    }
+				}
+			}
+		}
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				dtOpts: {
+					layout: {
+                        topStart: null,
+                        topEnd: null,
+                        bottomEnd: null
+                    },
+                    info: true
+				}
+			},
+			targets: [2]
+		}
+	]
+});
+
+]]>
+</js-vanilla>
 
 
 <title lib="SearchPanes">Pane customisation</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows the activation of paging within the panes by enabling the searchPanes `-init searchPanes.dtOpts` property for `-init paging`, and setting the `-init pagingType` to `numbers`. It also enables `-init info` of the third column's pane. The `-init dom` property must be set to include whatever visual additions are made to the DataTable as SearchPanes as default overrides this to be just `t`.
+This example shows the activation of paging within the panes by enabling the searchPanes `-feature searchPanes.dtOpts` property for `-init paging`, and setting the `-init pagingType` to `numbers`. It also enables `-init info` of the third column's pane. The `-init layout` property is used to define where you want the table controls.
 
 The default for `-init searching` is true and `-init info` is false. This occurs on all of the panes, the `-init info` is displayed only on the second column's pane.
 

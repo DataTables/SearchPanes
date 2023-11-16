@@ -6,24 +6,32 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    var table = $('#example').DataTable({
-        searchPanes: true
-    });
-    table.searchPanes.container().prependTo(table.table().container());
-    table.searchPanes.resizePanes();
+$('#example').DataTable({
+    layout: {
+        top1: 'searchPanes'
+    }
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Bootstrap 5</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+    layout: {
+        top1: 'searchPanes'
+    }
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Bootstrap 5</title>
 
 <info><![CDATA[
 
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows DataTables and the searchPanes extension being used with [Bootstrap 5](http://getbootstrap.com) providing the styling. The DataTables / Bootstrap integration provides seamless integration for DataTables to be used in a Bootstrap 5 page.
+This example shows DataTables and the SearchPanes extension being used with [Bootstrap 5](http://getbootstrap.com) providing the styling. The DataTables / Bootstrap integration provides seamless integration for DataTables to be used in a Bootstrap 5 page.
 
 
 ]]></info>

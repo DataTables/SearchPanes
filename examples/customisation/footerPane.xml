@@ -6,22 +6,32 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'frtipP'
-    });
+$('#example').DataTable({
+	layout: {
+		bottom: 'searchPanes'
+	}
 });
 
 ]]>
 </js>
 
-<title lib="SearchPanes">Panes in footer of DataTable</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		bottom: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Panes in below of DataTable</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example demonstrates how to make the searchPanes appear at the base of the dataTable rather than the top by setting the `-init dom` config option of `P` for SearchPanes at the end of the string rather than the start.
+This example demonstrates how to make the searchPanes appear at the base of the DataTable rather than the top through the use of the `-init layout` option.
 
 ]]></info>
 

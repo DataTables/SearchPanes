@@ -5,27 +5,46 @@
 
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-		dom: 'Plfrtip'
-    });
-    $('#rebuild').click(function() {
-        $('#example').DataTable().row(0).remove().draw().searchPanes.rebuildPane();
-    });
+
+var table = $('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	}
 });
+
+$('#rebuild').on('click', function () {
+	table.row(0).remove().draw().searchPanes.rebuildPane();
+});
+
 ]]>
 </js>
 
-<title lib="searchPanes">Deleting rows Mid-search</title>
+<js-vanilla>
+<![CDATA[
+
+var table = new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+document.querySelector('#rebuild').addEventListener('click', function () {
+	table.row(0).remove().draw().searchPanes.rebuildPane();
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Deleting rows mid-search</title>
 
 <info><![CDATA[
+
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 searchPanes can be refreshed when data is changed in the table. To demonstrate this, try some of the following.
 
-First select 'A' in the pane then play around with the following.
-
-* press this button to delete the first row and run the rebuild method on both of the panes <button id="rebuild">Delete and Rebuild</button>
+1. First select 'A' in the pane then play around with the following.
+2. Press this button to delete the first row and run the rebuild method on both of the panes: <button id="rebuild">Delete and Rebuild</button>
 
 ]]></info>
     <custom-table>

@@ -6,47 +6,90 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            order: ['ageName', 'Custom Name', 'Position'],
-            panes: [
-                {
-                    name: 'Custom Name',
-                    header: 'Custom',
-                    options: [
-                        {
-                            label: 'Accountants from Tokyo',
-                            value: function(rowData, rowIdx) {
-                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        columnDefs: [
-            {
-                searchPanes: {
-                    name: 'ageName'
-                },
-                targets: [3]
-            }
-        ]
-    });
+$('#example').DataTable({
+	columnDefs: [
+		{
+			searchPanes: {
+				name: 'ageName'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				order: ['ageName', 'Custom Name', 'Position'],
+				panes: [
+					{
+						name: 'Custom Name',
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	columnDefs: [
+		{
+			searchPanes: {
+				name: 'ageName'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				order: ['ageName', 'Custom Name', 'Position'],
+				panes: [
+					{
+						name: 'Custom Name',
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Custom Pane Order</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows how to customise the order of the Panes. The `-init searchPanes.order` property defines the order that the panes should take. It is an array of strings which is then matched against the `-init columns.searchPanes.name` property. This is particularly useful for mixing custom panes with automatically generated ones.
+This example shows how to customise the order of the Panes. The `-feature searchPanes.order` property defines the order that the panes should take. It is an array of strings which is then matched against the `-init columns.searchPanes.name` property. This is particularly useful for mixing custom panes with automatically generated ones.
 
 ]]></info>
 

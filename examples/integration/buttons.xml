@@ -5,24 +5,40 @@
 <js lib="jquery datatables buttons searchpanes select jszip pdfmake vfsfonts buttons-html5 buttons-print">
 <![CDATA[
 
-$(document).ready(function() {
-	$('#example').DataTable( {
-		dom: 'PBfrtip',
-		buttons: [
-			'copy', 'csv', 'excel', 'pdf', 'print'
-		]
-	} );
-} );
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes',
+		topStart: {
+			buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+		}
+	}
+});
 
 ]]>
 </js>
 
-<title lib="Buttons">Buttons Integration</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes',
+		topStart: {
+			buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="Buttons">Buttons integration</title>
 
 <info><![CDATA[
 
-Buttons can be initialised very easily though the `b-init buttons` object which can be given as an array of the buttons that you wish to display. The `-string B` option in the `dt-init dom` parameter will instruct DataTables where the buttons and the SearchPanes should be placed in the document - in this case, at the top left (CSS also plays a part).
+The Buttons extension for DataTables provides a framework for buttons and manipulate and uses the DataTable's data. This includes exporting of files, as demonstrated in this example.
 
+The `-init layout` option is used to position the Buttons and SearchPane control around the table.
 
 ]]></info>
 

@@ -6,30 +6,48 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    header: 'Length of Life'
-                },
-                targets: [3]
-            }
-        ]
-    });
+$('#example').DataTable({
+    columnDefs: [
+        {
+            searchPanes: {
+                header: 'Length of Life'
+            },
+            targets: [3]
+        }
+    ],
+    layout: {
+        top1: 'searchPanes'
+    }
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+    columnDefs: [
+        {
+            searchPanes: {
+                header: 'Length of Life'
+            },
+            targets: [3]
+        }
+    ],
+    layout: {
+        top1: 'searchPanes'
+    }
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Custom Pane Title</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows how to add a custom title to a pane
+This example shows how to add a custom title to a pane.
 
 ]]></info>
 

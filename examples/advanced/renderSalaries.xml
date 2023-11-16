@@ -5,59 +5,120 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        ajax: '../resources/objects.json',
-        searchPanes: {
-            columns: [5]
-        },
-        columnDefs: [{
-            searchPanes: {
-                show: true
-            },
-            targets: [5]
-        }],
-        dom: 'Plfrtip',
-        columns: [
-			{data: null, render: function(data, type, row) {
+$('#example').DataTable({
+	ajax: '../resources/objects.json',
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [5]
+		}
+	],
+	columns: [
+		{
+			data: null,
+			render: function (data, type, row) {
 				// Combine the first and last names into a single table field
 				return data.first_name + ' ' + data.last_name;
-			}},
-			{data: "position"},
-			{data: "office"},
-			{data: "extn"},
-			{data: "start_date"},
-			{ 
-				data: "salary", 
-				render: function(data, type, row) {
-                    if (type === 'sort' || type === 'type') {
-                        return row.salary;
-                    }
-                    if (row.salary <= 200000) {
-                        return "Low";
-                    }
-                    else if (row.salary <=800000) {
-                        return "Medium";
-                    }
-                    else {
-                        return "High";
-                    }
-                } 
 			}
-		]
-    });
+		},
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{
+			data: 'salary',
+			render: function (data, type, row) {
+				if (type === 'sort' || type === 'type') {
+					return row.salary;
+				}
+				if (row.salary <= 200000) {
+					return 'Low';
+				}
+				else if (row.salary <= 800000) {
+					return 'Medium';
+				}
+				else {
+					return 'High';
+				}
+			}
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [5]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Using Render Function to Create Custom Options</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/objects.json',
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [5]
+		}
+	],
+	columns: [
+		{
+			data: null,
+			render: function (data, type, row) {
+				// Combine the first and last names into a single table field
+				return data.first_name + ' ' + data.last_name;
+			}
+		},
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{
+			data: 'salary',
+			render: function (data, type, row) {
+				if (type === 'sort' || type === 'type') {
+					return row.salary;
+				}
+				if (row.salary <= 200000) {
+					return 'Low';
+				}
+				else if (row.salary <= 800000) {
+					return 'Medium';
+				}
+				else {
+					return 'High';
+				}
+			}
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [5]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Using Render Function to Create Custom Options</title>
 
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
-This example demonstrates searching on rendered data. The `-init searchPanes.columns` property is set to `5` so that only the Salary column is displayed as a pane.
+This example demonstrates searching on rendered data. The `-feature searchPanes.columns` property is set to `5` so that only the Salary column is displayed as a pane.
 
 ]]></info>
 

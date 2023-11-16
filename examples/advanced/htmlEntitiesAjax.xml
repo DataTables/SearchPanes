@@ -6,43 +6,80 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-
-$(document).ready( function () {
-  var table = $('#example').DataTable({
-    ajax: '../resources/arrayDataEntities.json',
-    dom: 'Plfrtip',
-    columns: [
-			{ 
-				data: "users.first_name"
-			},
-			{ 
-				data: "users.last_name"
-			},
-			{ 
-				data: "sites.name",
-        searchPanes: {
-          show: true
-        }
-			},
-			{ 
-				data: "permission",
-				render: {
-					_: '[, ].name',
-					sp: '[].name'
-				},
-				searchPanes: {
-					orthogonal: 'sp',
-          			show: true
-				}
+$('#example').DataTable({
+	ajax: '../resources/arrayDataEntities.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name',
+			searchPanes: {
+				show: true
 			}
-		]
-  });
-} );
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
+			},
+			searchPanes: {
+				orthogonal: 'sp',
+				show: true
+			}
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
 
 ]]>
 </js>
 
-<title lib="searchPanes">HTML Entities from Ajax</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/arrayDataEntities.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name',
+			searchPanes: {
+				show: true
+			}
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
+			},
+			searchPanes: {
+				orthogonal: 'sp',
+				show: true
+			}
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">HTML Entities from Ajax</title>
 
 <info><![CDATA[
 

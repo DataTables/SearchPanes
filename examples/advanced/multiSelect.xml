@@ -6,23 +6,44 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        searchPanes: {
-            dtOpts: {
-				select: {
-					style: 'multi'
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				dtOpts: {
+					select: {
+						style: 'multi'
+					}
 				}
 			}
-        },
-        dom: 'Plfrtip'
-    });
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Selection style to work with mobile devices</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				dtOpts: {
+					select: {
+						style: 'multi'
+					}
+				}
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Selection style to work with mobile devices</title>
 
 <info><![CDATA[
 

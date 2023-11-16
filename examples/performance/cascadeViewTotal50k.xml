@@ -6,36 +6,60 @@
 <js lib="jquery datatables searchpanes select scroller">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-		searchPanes: {
-			cascadePanes: true,
-			viewTotal: true
-		},
-		ajax: '../../../../examples/ajax/data/data_50k.txt',
-		columns: [
-            { data: "name" },
-            { data: "position" },
-            { data: "office" },
-            { data: "extn" },
-            { data: "start_date" },
-            { data: "salary" }
-        ],
-        deferRender: true
-    });
+$('#example').DataTable({
+	ajax: '../../../../examples/ajax/data/data_50k.txt',
+	columns: [
+		{ data: 'name' },
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{ data: 'salary' }
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true,
+				viewTotal: true
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">50k Rows with cascadePanes and viewTotal</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../../../../examples/ajax/data/data_50k.txt',
+	columns: [
+		{ data: 'name' },
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{ data: 'salary' }
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true,
+				viewTotal: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">50k Rows with cascadePanes and viewTotal</title>
 
 <info><![CDATA[
 
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example demonstrates the performance when large volumes of data are managed.
+This example demonstrates the performance of SearchPanes with `cascadePanes` and `viewTotal` enabled when large volumes of data are managed (50k rows in this case).
 
 ]]></info>
 

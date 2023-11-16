@@ -3,26 +3,37 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
+<js lib="jquery datatables searchpanes select"/>
+<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
+<js>
 <![CDATA[
 
-table = $(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip',
-        stateSave: true
-    });
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	stateSave: true
 });
-
 
 ]]>
 </js>
-<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
 
-<title lib="searchPanes">StateSave</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	stateSave: true
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">StateSave</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates how to keep selections in the pane consistent after page reloads by enabling `-init stateSave`.
 

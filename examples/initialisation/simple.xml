@@ -7,7 +7,9 @@
 <![CDATA[
 
 $('#example').DataTable({
-    dom: 'Plfrtip'
+    layout: {
+        top1: 'searchPanes'
+    }
 });
 
 ]]>
@@ -17,19 +19,23 @@ $('#example').DataTable({
 <![CDATA[
 
 new DataTable('#example', {
-    dom: 'Plfrtip'
+    layout: {
+        top1: 'searchPanes'
+    }
 });
 
 ]]>
 </js-vanilla>
 
-<title lib="searchPanes">Basic Initialisation</title>
+<title lib="SearchPanes">Basic Initialisation</title>
 
 <info><![CDATA[
 
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+This is the `-feature searchPanes` extension for DataTables. It allows results to be filtered based on the values of columns.
 
-See other examples for more detail.
+The SearchPanes control can be inserted into the document using the `-init layout` option, which allows its position around the table to be defined. In this case it is placed in the `top1` row, which is above the default controls DataTables provides.
+
+See other examples for more details and configuration options.
 
 ]]></info>
 

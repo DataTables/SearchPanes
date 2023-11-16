@@ -6,28 +6,46 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    viewCount: false
-                },
-                targets: [3]
-            }
-        ]
-    });
+$('#example').DataTable({
+	columnDefs: [
+		{
+			searchPanes: {
+				viewCount: false
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+$('#example').DataTable({
+	columnDefs: [
+		{
+			searchPanes: {
+				viewCount: false
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Hide Count Column on Specific Pane</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to hide the count for an individual column by setting the `-init columns.searchPanes.viewCount` config option to `false`.
 

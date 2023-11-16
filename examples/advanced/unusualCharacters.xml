@@ -6,38 +6,68 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example tr:eq(0) td:eq(1)').html('&');
-    $('#example tr:eq(0) td:eq(2)').html('&');
-    $('#example tr:eq(1) td:eq(1)').html('<');
-    $('#example tr:eq(1) td:eq(2)').html('<');
-    $('#example tr:eq(2) td:eq(1)').html('>');
-    $('#example tr:eq(2) td:eq(2)').html('>');
-    $('#example tr:eq(3) td:eq(1)').html('€');
-    $('#example tr:eq(3) td:eq(2)').html('€');
+$('#example tr:eq(0) td:eq(1)').html('&');
+$('#example tr:eq(0) td:eq(2)').html('&');
+$('#example tr:eq(1) td:eq(1)').html('<');
+$('#example tr:eq(1) td:eq(2)').html('<');
+$('#example tr:eq(2) td:eq(1)').html('>');
+$('#example tr:eq(2) td:eq(2)').html('>');
+$('#example tr:eq(3) td:eq(1)').html('€');
+$('#example tr:eq(3) td:eq(2)').html('€');
 
-    $('#example').DataTable({
-        columnDefs: [{
-            searchPanes: {
-                show: true
-            },
-            targets: [3]
-        }],
-        dom: 'Plfrtip',
-        paging: false
-    });
+$('#example').DataTable({
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Dealing with unusual characters</title>
+<js-vanilla>
+<![CDATA[
+
+var cells = document.querySelectorAll('#example tbody td');
+
+cells[1].innerHTML = '&';
+cells[2].innerHTML = '&';
+cells[7].innerHTML = '<';
+cells[8].innerHTML = '<';
+cells[13].innerHTML = '>';
+cells[14].innerHTML = '>';
+cells[19].innerHTML = '€';
+cells[20].innerHTML = '€';
+
+new DataTable('#example', {
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Dealing with unusual characters</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows that the panes are able to deal with non-alphabetic characters, including utf-8 characters.
+This example shows that the panes are able to deal with non-alphabetic characters, including UTF-8 characters.
 
 ]]></info>
 

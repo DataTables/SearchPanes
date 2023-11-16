@@ -6,34 +6,58 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    show: true
-                },
-                targets: [0]
-            },
-            {
-                searchPanes: {
-                    show: false
-                },
-                targets: [2]
-            }
-        ]
-    });
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0]
+		},
+		{
+			searchPanes: {
+				show: false
+			},
+			targets: [2]
+		}
+	]
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Force Panes to Show/Hide for Specified Columns</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0]
+		},
+		{
+			searchPanes: {
+				show: false
+			},
+			targets: [2]
+		}
+	]
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Force Panes to Show/Hide for Specified Columns</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates the `-init columns.searchPanes.show` option for defining whether a column should show a pane or not. Here we have set the Name column to have a pane when it would normally be hidden due to the variance. Conversely, the Office column is hidden when it would normally be shown.
 

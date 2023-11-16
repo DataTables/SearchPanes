@@ -6,44 +6,82 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-
-$(document).ready( function () {
-  var table = $('#example').DataTable({
-    ajax: '../resources/arrayDataHTML.json',
-    dom: 'Plfrtip',
-    columns: [
-			{ 
-				data: "users.first_name"
+$('#example').DataTable({
+	ajax: '../resources/arrayDataHTML.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name',
+			searchPanes: {
+				show: true
 			},
-			{ 
-				data: "users.last_name"
+			render: DataTable.render.text()
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
 			},
-			{ 
-				data: "sites.name",
-				searchPanes: {
-					show: true
-				},
-				render: $.fn.dataTable.render.text()
-			},
-			{ 
-				data: "permission",
-				render: {
-					_: '[, ].name',
-					sp: '[].name'
-				},
-				searchPanes: {
-					orthogonal: 'sp',
-					show: true
-				}
+			searchPanes: {
+				orthogonal: 'sp',
+				show: true
 			}
-		]
-  });
-} );
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
 
 ]]>
 </js>
 
-<title lib="searchPanes">Unencoded HTML characters with a Rendering Function from Ajax</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/arrayDataHTML.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name',
+			searchPanes: {
+				show: true
+			},
+			render: DataTable.render.text()
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
+			},
+			searchPanes: {
+				orthogonal: 'sp',
+				show: true
+			}
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Unencoded HTML characters with a Rendering Function from Ajax</title>
 
 <info><![CDATA[
 

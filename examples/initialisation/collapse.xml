@@ -6,23 +6,40 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            initCollapsed: true
-        }
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				initCollapsed: true
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Collapsed Panes</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				initCollapsed: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Collapsed Panes</title>
 
 <info><![CDATA[
 
-This example shows how the `-init searchPanes.initCollapsed` option can be used to collapse all of the panes on initialisation. To do this the `-init searchPanes.collapse` option must also be set to true, which is the default.
+This example shows how the `-feature searchPanes.initCollapsed` option can be used to collapse all of the panes on initialisation. To do this the `-feature searchPanes.collapse` option must also be set to true, which is the default.
 
 ]]></info>
 

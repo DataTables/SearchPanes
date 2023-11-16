@@ -6,29 +6,44 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            cascadePanes: true,
-            viewTotal: true
-        },
-        dom: 'Plfrtip'
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true,
+				viewTotal: true
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Viewing Totals, Subtotals and Cascading Panes</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true,
+				viewTotal: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Viewing Totals, Subtotals and Cascading Panes</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+This example demonstrates the `-feature searchPanes.cascadePanes` feature working alongside the `-feature searchPanes.viewTotal` feature. Cascading panes allow the panes to be filtered based on the values selected in the other panes.
 
-This example demonstrates the `-init searchPanes.cascadePanes` feature working alongside the `-init searchPanes.viewTotal` feature. Cascading panes allow the panes to be filtered based on the values
-selected in the other panes.
-
-Both `-init searchPanes.cascadePanes` and `-init searchPanes.viewTotal` are `false` by default.
+Both `-feature searchPanes.cascadePanes` and `-feature searchPanes.viewTotal` are `false` by default.
 
 ]]></info>
 

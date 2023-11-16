@@ -6,41 +6,62 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            viewTotal: true 
-        },
-        dom: 'Plfrtip',
-        language: {
-            searchPanes: {
-                count: '{total} found',
-                countFiltered: '{shown} / {total}'
-            }
-        }
-    });
+$('#example').DataTable({
+	language: {
+		searchPanes: {
+			count: '{total} found',
+			countFiltered: '{shown} / {total}'
+		}
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">View Totals and Subtotals</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	language: {
+		searchPanes: {
+			count: '{total} found',
+			countFiltered: '{shown} / {total}'
+		}
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">View totals and subtotals</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+This example demonstrates the `-feature searchPanes.viewTotal` option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
 
-This example demonstrates the `-init searchPanes.viewTotal` option. This option allows the table to display how many values are being displayed, in relation to the total number of values in the table.
+`-feature searchPanes.i18n.count` - this is the format of the count column when no filters have been applied to the table.
 
-`-init searchPanes.i18n.count` - this is the format of the count column when no filters have been applied to the table.
-
-`-init searchPanes.i18n.countFiltered` - this is the format of the count column when filters have been applied to the table.
+`-feature searchPanes.i18n.countFiltered` - this is the format of the count column when filters have been applied to the table.
 
 `{total}` - This is the token which is replaced by the total count of that value in the table.
 
 `{shown}` - This is the token which is replaced by the count of each value where that row is being displayed currently. 
 
-The default for `-init searchPanes.viewTotal` is `false`. 
+The default for `-feature searchPanes.viewTotal` is `false`. 
 
 ]]></info>
 

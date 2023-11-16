@@ -6,23 +6,44 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-
-$(document).ready( function () {
-  var table = $('#example').DataTable({
-    dom: 'Plfrtip',
-    columnDefs: [{
-      targets: [2,3],
-      searchPanes: {
-        show: true
-      }
-    }]
-  });
-} );
+$('#example').DataTable({
+	columnDefs: [
+		{
+			targets: [2, 3],
+			searchPanes: {
+				show: true
+			}
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
 
 ]]>
 </js>
 
-<title lib="searchPanes">HTML Entities from the DOM</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	columnDefs: [
+		{
+			targets: [2, 3],
+			searchPanes: {
+				show: true
+			}
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">HTML Entities from the DOM</title>
 
 <info><![CDATA[
 

@@ -6,39 +6,82 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Age Range',
-                    options: [
-                        {
-                            label: 'Over 50',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] > 50;
-                            }
-                        },
-                        {
-                            label: 'Under 50',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] < 50;
-                            }
-                        }
-                    ]
-                }
-            ],
-            preSelect:[{
-                column: 6,
-                rows: ['Over 50']
-            }]
-        },
-        dom: 'Plfrtip'
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Age Range',
+						options: [
+							{
+								label: 'Over 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] > 50;
+								}
+							},
+							{
+								label: 'Under 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] < 50;
+								}
+							}
+						]
+					}
+				],
+				preSelect: [
+					{
+						column: 6,
+						rows: ['Over 50']
+					}
+				]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Age Range',
+						options: [
+							{
+								label: 'Over 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] > 50;
+								}
+							},
+							{
+								label: 'Under 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] < 50;
+								}
+							}
+						]
+					}
+				],
+				preSelect: [
+					{
+						column: 6,
+						rows: ['Over 50']
+					}
+				]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
 
 <title lib="SearchPanes">Custom Filtering Pane with PreSelections</title>
 
@@ -50,7 +93,7 @@ This example demonstrates the functionality to add custom panes. Panes are popul
 
 Technically this is also possible to do with a custom function in any of the automatically occurring Panes. This just seems a bit neater.
 
-The `-init searchPanes.panes` config option holds an object for each custom Pane.
+The `-feature searchPanes.panes` config option holds an object for each custom Pane.
 
 To select a custom pane for preselection, the `column` value that should be selected is calculated by adding the last column's index, and the number of custom pane that this is. If this is the second custom, and the last column index is 5 then the value of `column` would be `7`.
 

@@ -5,28 +5,50 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            preSelect: [{
-                rows:['Edinburgh','London'],
-                column: 2
-            }]
-        },
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				preSelect: [
+					{
+						rows: ['Edinburgh', 'London'],
+						column: 2
+					}
+				]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Pre-Select Rows</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				preSelect: [
+					{
+						rows: ['Edinburgh', 'London'],
+						column: 2
+					}
+				]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Pre-Select Rows</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example shows how to set up the panes so that values are pre-selected. Here the Office column is being targeted and told to pre-select 'Edinburgh' and 'London'. This is done by setting the `-init searchPanes.preSelect` option to be an array with an object that contains a `rows` property which indicates which rows are to be selected, and a `column` property which indicates which pane the selection should be made in.
+This example shows how to set up the panes so that values are pre-selected. Here the Office column is being targeted and told to pre-select 'Edinburgh' and 'London'. This is done by setting the `-feature searchPanes.preSelect` option to be an array with an object that contains a `rows` property which indicates which rows are to be selected, and a `column` property which indicates which pane the selection should be made in.
 
 ]]></info>
 

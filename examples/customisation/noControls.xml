@@ -6,28 +6,46 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    controls: false
-                },
-                targets: [3]
-            }
-        ]
-    });
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				controls: false
+			},
+			targets: [3]
+		}
+	]
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				controls: false
+			},
+			targets: [3]
+		}
+	]
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Hide All Controls on Specific Pane</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how to hide the Control Buttons and disable searching for an individual column by setting the `-init columns.searchPanes.controls` config option to `false`.
 

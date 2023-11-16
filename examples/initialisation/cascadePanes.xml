@@ -6,25 +6,41 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            cascadePanes: true
-        },
-        dom: 'Plfrtip'
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Cascade Panes</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Cascade Panes</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+This SearchPanes example demonstrates the `-feature searchPanes.cascadePanes` functionality. This allows the panes to be filtered based on the values selected in the other panes. `-feature searchPanes.cascadePanes` is `false` as default.
 
-This example demonstrates the `-init searchPanes.cascadePanes` functionality. This allows the panes to be filtered based on the values selected in the other panes. `-init searchPanes.cascadePanes` is `false` as default.
 ]]></info>
 
 </dt-example>

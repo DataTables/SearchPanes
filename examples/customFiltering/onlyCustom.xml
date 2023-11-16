@@ -6,39 +6,88 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Custom',
-                    options: [
-                        {
-                            label: 'Accountants from Tokyo',
-                            value: function(rowData, rowIdx) {
-                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                            }
-                        }
-                    ],
-                    dtOpts: {
-                        searching: false,
-                        order: [[1, 'desc']]
-                    }
-                }
-            ]
-        },
-        columnDefs: [{
-            searchPanes: {
-                show: false
-            },
-            targets: ['_all']
-        }],
-        dom: 'Plfrtip'
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								}
+							}
+						],
+						dtOpts: {
+							searching: false,
+							order: [[1, 'desc']]
+						}
+					}
+				]
+			}
+		}
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: false
+			},
+			targets: ['_all']
+		}
+	]
 });
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								}
+							}
+						],
+						dtOpts: {
+							searching: false,
+							order: [[1, 'desc']]
+						}
+					}
+				]
+			}
+		}
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: false
+			},
+			targets: ['_all']
+		}
+	]
+});
+
+]]>
+</js-vanilla>
 
 <title lib="SearchPanes">Only Custom Panes</title>
 

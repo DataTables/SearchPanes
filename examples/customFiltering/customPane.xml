@@ -6,46 +6,84 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Custom',
-                    options: [
-                        {
-                            label: 'Accountants from Tokyo',
-                            value: function(rowData, rowIdx) {
-                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                            },
-                            className: 'tokyo'
-                        }
-                    ],
-                    dtOpts: {
-                        searching: false,
-                        order: [[1, 'desc']]
-                    }
-                }
-            ]
-        },
-        dom: 'Plfrtip'
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								},
+								className: 'tokyo'
+							}
+						],
+						dtOpts: {
+							searching: false,
+							order: [[1, 'desc']]
+						}
+					}
+				]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								},
+								className: 'tokyo'
+							}
+						],
+						dtOpts: {
+							searching: false,
+							order: [[1, 'desc']]
+						}
+					}
+				]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Custom Filtering Pane</title>
 
 <info><![CDATA[
 
-This is the SearchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example demonstrates the functionality to add custom panes. Panes are populated with custom options which can search the table across multiple columns.
+This example of SearchPanes demonstrates the functionality to add custom panes. Panes are populated with custom options which can search the table across multiple columns.
 
 Technically this is also possible to do with a custom function in any of the automatically occurring Panes. This just seems a bit neater.
 
-The `-init searchPanes.panes` config option holds an object for each custom Pane.
+The `-feature searchPanes.panes` config option holds an object for each custom Pane.
 
 ]]></info>
 

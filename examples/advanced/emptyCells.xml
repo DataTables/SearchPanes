@@ -6,34 +6,58 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        searchPanes: {
-            i18n: {
-                emptyMessage: "<i><b>EMPTY</b></i>"
-            }
-        },
-        dom: 'Plfrtip'
-    });
-
-    dt.cell(2,2).data('');
-    dt.cell(4,2).data('Edi');
-    dt.cell(6,2).data('');
-    dt.cell(2,3).data('');
-    dt.searchPanes.rebuildPane(3);
-    dt.searchPanes.rebuildPane(2);
+var dt = $('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					emptyMessage: '<i><b>EMPTY</b></i>'
+				}
+			}
+		}
+	}
 });
+
+dt.cell(2, 2).data('');
+dt.cell(4, 2).data('Edi');
+dt.cell(6, 2).data('');
+dt.cell(2, 3).data('');
+dt.searchPanes.rebuildPane(3);
+dt.searchPanes.rebuildPane(2);
 
 ]]>
 </js>
 
-<title lib="searchPanes">Table with empty cells</title>
+<js-vanilla>
+<![CDATA[
+
+var dt = new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					emptyMessage: '<i><b>EMPTY</b></i>'
+				}
+			}
+		}
+	}
+});
+
+dt.cell(2, 2).data('');
+dt.cell(4, 2).data('Edi');
+dt.cell(6, 2).data('');
+dt.cell(2, 3).data('');
+dt.searchPanes.rebuildPane(3);
+dt.searchPanes.rebuildPane(2);
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Table with empty cells</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
-This example demonstrates sorting on cells when no data is present. As an empty cell isn't very clear in a pane, a string can be used instead to denote the empty value. The default for `-init searchPanes.i18n.emptyMessage` is "<i>No Data</i>".
+This example demonstrates sorting on cells when no data is present. As an empty cell isn't very clear in a pane, a string can be used instead to denote the empty value. The default for `-feature searchPanes.i18n.emptyMessage` is "<i>No Data</i>".
 
 ]]></info>
 

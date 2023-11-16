@@ -6,29 +6,48 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        language: {
-            searchPanes: {
-                title: {
-                    _: 'Filters Selected - %d',
-                    0: 'No Filters Selected',
-                    1: 'One Filter Selected'
-                }
-            }
-        }
-    });
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	language: {
+		searchPanes: {
+			title: {
+				_: 'Filters Selected - %d',
+				0: 'No Filters Selected',
+				1: 'One Filter Selected'
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	language: {
+		searchPanes: {
+			title: {
+				_: 'Filters Selected - %d',
+				0: 'No Filters Selected',
+				1: 'One Filter Selected'
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
 <title lib="SearchPanes">Internationalisation Language Options</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example shows how the internationalisation functionality built into dataTables can be used to show how many filters have been applied in the title section. Values can be defined for individual values like '0' with '_' being for the rest.
 

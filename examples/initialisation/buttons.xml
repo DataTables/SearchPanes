@@ -6,27 +6,38 @@
 <js lib="jquery datatables searchpanes select buttons">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        buttons: [
-            'searchPanes'
-        ],
-        dom: 'Bfrtip'
-    });
+$('#example').DataTable({
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Button Initialisation</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Button Initialisation</title>
 
 <info><![CDATA[
 
-This is the `-init searchPanes`extension for DataTables. It allows results to be filtered based on the values of columns.
+This example demonstrates SearchPanes being operated using a [Buttons extension](https://datatables.net/extensions/buttons) button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focused on.
 
-This example demonstrates searchPanes being operated using a [Buttons extension](https://datatables.net/extensions/buttons) button. The panes are not visible on initialisation but when the button is pressed they are displayed on the screen and focused on.
-
-The button and SearchPanes can be configured using the `-init button.searchPanes` config option. You can see this in action at [this example](buttonsConfig.html). Please note that when initialising SearchPanes with a button any config has to be set as shown in that example.
+The button and SearchPanes can be configured using the `config` property of the `-button searchPanes` Button. You can see this in action at [this example](buttonsConfig.html). Please note that when initialising SearchPanes with a button any config has to be set as shown in that example.
 
 ]]></info>
 

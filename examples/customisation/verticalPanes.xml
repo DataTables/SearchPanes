@@ -58,30 +58,47 @@ div.dtsp-verticalContainer div.container{
 div.dtsp-panesContainer {
     border: 1px solid #ccc;
     border-radius: 6px;
-    padding: 5px;
+    padding: 1em !important;
+}
+
+html.dark div.dtsp-panesContainer {
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 </css>
 
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready( function () {
-  var table = $('#example').DataTable({
-        searchPanes: {
-            layout: 'columns-1'
-        },
-        dom: '<"dtsp-dataTable"frtip>',
-        pageLength: 20
-    });
-  table.searchPanes()
-  $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-} );
+var table = $('#example').DataTable({
+	searchPanes: {
+		layout: 'columns-1'
+	},
+	pageLength: 25
+});
 
+$('div.dtsp-verticalPanes').append(table.searchPanes.container());
 
 ]]>
 </js>
 
-<title lib="searchPanes">Panes Vertically Stacked next to DataTable</title>
+<js-vanilla>
+<![CDATA[
+
+let table = new DataTable('#example', {
+	searchPanes: {
+		layout: 'columns-1'
+	},
+	pageLength: 25
+});
+
+document
+	.querySelector('div.dtsp-verticalPanes')
+	.appendChild(table.searchPanes.container().get(0));
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Panes Vertically Stacked next to DataTable</title>
 
 <info><![CDATA[
 

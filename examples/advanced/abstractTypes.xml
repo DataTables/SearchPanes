@@ -3,30 +3,51 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
+<js lib="jquery datatables searchpanes select" />
+<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
+<js>
 <![CDATA[
 
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {type: 'ip-address', targets: 1},
-            {
-                searchPanes: {
-                    show: true
-                },
-                targets: ['_all']
-            }
-        ]
-    });
-
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{ type: 'ip-address', targets: 1 },
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: ['_all']
+		}
+	]
 });
 
 ]]>
 </js>
-<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
 
-<title lib="searchPanes">Abstract Types</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{ type: 'ip-address', targets: 1 },
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: ['_all']
+		}
+	]
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Abstract Types</title>
 
 <info><![CDATA[
 

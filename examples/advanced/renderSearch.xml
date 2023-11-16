@@ -5,44 +5,90 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        ajax: '../resources/objects.json',
-        searchPanes: {
-            columns: [0,5]
-        },
-		columnDefs: [{
+$('#example').DataTable({
+	ajax: '../resources/objects.json',
+	columnDefs: [
+		{
 			searchPanes: {
 				show: true
 			},
-			targets: [0,5]
-		}],
-		dom: 'Plfrtip',
-        columns: [
-			{data: null, render: function(data, type, row) {
+			targets: [0, 5]
+		}
+	],
+	columns: [
+		{
+			data: null,
+			render: function (data, type, row) {
 				// Combine the first and last names into a single table field
 				return data.first_name + ' ' + data.last_name;
-			}},
-			{data: "position"},
-			{data: "office"},
-			{data: "extn"},
-			{data: "start_date"},
-			{ 
-				data: "salary", 
-				render: $.fn.dataTable.render.number(',', '.', 0, '$') 
 			}
-		]
-    });
+		},
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{
+			data: 'salary',
+			render: DataTable.render.number(',', '.', 0, '$')
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [0, 5]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Integration with DataTables Rendering Function</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/objects.json',
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0, 5]
+		}
+	],
+	columns: [
+		{
+			data: null,
+			render: function (data, type, row) {
+				// Combine the first and last names into a single table field
+				return data.first_name + ' ' + data.last_name;
+			}
+		},
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{
+			data: 'salary',
+			render: DataTable.render.number(',', '.', 0, '$')
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [0, 5]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Integration with DataTables Rendering Function</title>
 
 <info><![CDATA[
-
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
 
 This example demonstrates searching on rendered data, in this case the Office and Salary columns. searchPanes will use the same rendering as the associated table.
 

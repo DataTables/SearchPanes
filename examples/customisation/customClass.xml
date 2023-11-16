@@ -10,39 +10,43 @@ div.myCustomClass{
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Custom',
-                    options: [
-                        {
-                            label: 'Accountants from Tokyo',
-                            value: function(rowData, rowIdx) {
-                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                            }
-                        }
-                    ],
-                    dtOpts: {
-                        dom: "tp",
-                        paging: true,
-                        order: [[1, 'desc']]
-                    },
-                    className: 'myCustomClass'
-                }
-            ]
-        },
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    className: 'myCustomClass'
-                },
-                targets: [3]
-            }
-        ]
-    });
+$('#example').DataTable({
+	columnDefs: [
+		{
+			searchPanes: {
+				className: 'myCustomClass'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return (
+										rowData[1] === 'Accountant' &&
+										rowData[2] === 'Tokyo'
+									);
+								}
+							}
+						],
+						dtOpts: {
+							dom: 'tp',
+							paging: true,
+							order: [[1, 'desc']]
+						},
+						className: 'myCustomClass'
+					}
+				]
+			}
+		}
+	}
 });
 
 ]]>
@@ -52,11 +56,9 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
-
 This example shows how to add a custom class to a specific pane by setting the `-init columns.searchPanes.className` property to be a string containing the custom classes.
 
-This example also shows how to add a custom class to custom panes using the `-init searchPanes.panes.className` property. 
+This example also shows how to add a custom class to custom panes using the `-feature searchPanes.panes.className` property. 
 
 As you can see in the CSS section below the DataTable, the border property of `myCustomClass` has been set to red. This is shown around the Age pane.
 

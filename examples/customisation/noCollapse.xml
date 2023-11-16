@@ -6,19 +6,44 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            collapse: false
-        }
-    });
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				collapse: false
+			},
+			targets: [3]
+		}
+	]
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Hide Collapsing Button on Specific Pane</title>
+<js-vanilla>
+<![CDATA[
+
+$('#example').DataTable({
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				collapse: false
+			},
+			targets: [3]
+		}
+	]
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Hide Collapsing Button on Specific Pane</title>
 
 <info><![CDATA[
 

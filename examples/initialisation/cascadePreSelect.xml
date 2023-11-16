@@ -5,40 +5,64 @@
 <js lib="jquery datatables searchpanes select">
 <![CDATA[
 
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        //stateSave: true,
-        searchPanes: {
-            cascadePanes: true,
-            preSelect: [
-                {
-                    rows:['Edinburgh','London'],
-                    column: 2
-                },
-                {
-                    rows: ['Software Engineer'],
-                    column: 1
-                }
-            ]
-        },
-    });
+$('#example').DataTable({
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true,
+				preSelect: [
+					{
+						rows: ['Edinburgh', 'London'],
+						column: 2
+					},
+					{
+						rows: ['Software Engineer'],
+						column: 1
+					}
+				]
+			}
+		}
+	}
 });
 
 ]]>
 </js>
 
-<title lib="searchPanes">Pre-Select Rows with Cascade</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true,
+				preSelect: [
+					{
+						rows: ['Edinburgh', 'London'],
+						column: 2
+					},
+					{
+						rows: ['Software Engineer'],
+						column: 1
+					}
+				]
+			}
+		}
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">Pre-Select Rows with Cascade</title>
 
 <info><![CDATA[
 
-This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.
+This example shows how to set up the panes so that values are pre-selected, while `-feature searchPanes.cascadePanes` *is* enabled. This is not something that was possible before version 2.0.0.
 
-This example shows how to set up the panes so that values are pre-selected, while `-init searchPanes.cascadePanes` *is* enabled. This is not something that was possible before version 2.0.0.
+Here the Office column is being targeted and told to pre-select 'Edinburgh' and 'London'. This is done by setting the `-feature searchPanes.preSelect` option to be an array, and then setting the first object within that to contain a `rows` property, which is an array of strings representing the rows that are to be selected. The `column` property indicates which pane the selection is to be made in.
 
-Here the Office column is being targeted and told to pre-select 'Edinburgh' and 'London'. This is done by setting the `-init searchPanes.preSelect` option to be an array, and then setting the first object within that to contain a `rows` property, which is an array of strings representing the rows that are to be selected. The `column` property indicates which pane the selection is to be made in.
-
-In the case that the row does not exist when SearchPanes tries to select it, be it because it was never present in the table or `-init searchPanes.cascadePanes` has removed it, nothing will be selected and SearchPanes will move to the next pane. It is important therefore to set the preselections in the correct order when using `-init searchPanes.cascadePanes`.
+In the case that the row does not exist when SearchPanes tries to select it, be it because it was never present in the table or `-feature searchPanes.cascadePanes` has removed it, nothing will be selected and SearchPanes will move to the next pane. It is important therefore to set the preselections in the correct order when using `-feature searchPanes.cascadePanes`.
 
 ]]></info>
 

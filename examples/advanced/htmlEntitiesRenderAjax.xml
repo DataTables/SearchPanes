@@ -3,73 +3,87 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
+<js lib="jquery datatables searchpanes select" />
+<js lib="//cdn.datatables.net/plug-ins/1.13.7/dataRender/ellipsis.js" />
+<js>
 <![CDATA[
-	jQuery.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {	
-		return function ( d, type, row ) {
-			// Order, search and type get the original data
-			if ( type !== 'display' ) {
-				return d;
-			}
-	
-			if ( typeof d !== 'number' && typeof d !== 'string' ) {
-				return d;
-			}
-	
-			d = d.toString(); // cast numbers
-	
-			if ( d.length <= cutoff ) {
-				return d;
-			}
-	
-			var shortened = d.substr(0, cutoff-1);
-	
-			// Find the last white space character in the string
-			if ( wordbreak ) {
-				shortened = shortened.replace(/\s([^\s]*)$/, '');
-			}
-	
-			return '<span class="ellipsis" title="'+d+'">'+shortened+'&#8230;</span>';
-		};
-	};
 
-$(document).ready( function () {
-  var table = $('#example').DataTable({
-    ajax: '../resources/arrayDataEntities.json',
-    dom: 'Plfrtip',
-    columns: [
-			{ 
-				data: "users.first_name"
+$('#example').DataTable({
+	ajax: '../resources/arrayDataEntities.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name',
+			searchPanes: {
+				show: true
 			},
-			{ 
-				data: "users.last_name"
+			render: DataTable.render.ellipsis(10)
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
 			},
-			{ 
-				data: "sites.name",
-				searchPanes: {
-					show: true
-				},
-				render: $.fn.dataTable.render.ellipsis(10)
-			},
-			{ 
-				data: "permission",
-				render: {
-					_: '[, ].name',
-					sp: '[].name'
-				},
-				searchPanes: {
-					orthogonal: 'sp',
-					show: true
-				}
+			searchPanes: {
+				orthogonal: 'sp',
+				show: true
 			}
-		]
-  });
-} );
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
 
 ]]>
 </js>
 
-<title lib="searchPanes">HTML Entities from an Ajax Request with a Rendering Function</title>
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../resources/arrayDataEntities.json',
+	columns: [
+		{
+			data: 'users.first_name'
+		},
+		{
+			data: 'users.last_name'
+		},
+		{
+			data: 'sites.name',
+			searchPanes: {
+				show: true
+			},
+			render: DataTable.render.ellipsis(10)
+		},
+		{
+			data: 'permission',
+			render: {
+				_: '[, ].name',
+				sp: '[].name'
+			},
+			searchPanes: {
+				orthogonal: 'sp',
+				show: true
+			}
+		}
+	],
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+]]>
+</js-vanilla>
+
+<title lib="SearchPanes">HTML Entities from an Ajax Request with a Rendering Function</title>
 
 <info><![CDATA[
 
