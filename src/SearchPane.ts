@@ -1039,14 +1039,13 @@ export default class SearchPane {
 		// Retrieve the rendered data from the cell using the fnGetCellData function
 		// rather than the cell().render API method for optimisation
 		if (typeof this.s.colOpts.orthogonal === 'string') {
-			let rendered = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal);
+			let rendered = this.s.dt.cell(rowIdx, this.s.index).render(this.s.colOpts.orthogonal);
 			this.s.rowData.filterMap.set(rowIdx, rendered);
 			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
 			this.s.rowData.totalOptions++;
 		}
 		else {
-
-			let filter = settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
+			let filter = this.s.dt.cell(rowIdx, this.s.index).render(this.s.colOpts.orthogonal.search);
 
 			// Null and empty string are to be considered the same value
 			if (filter === null) {
@@ -1060,12 +1059,14 @@ export default class SearchPane {
 			this.s.rowData.filterMap.set(rowIdx, filter);
 
 			if (!bins[filter]) {
+				var cell = this.s.dt.cell(rowIdx, this.s.index);
+
 				bins[filter] = 1;
 				this._addOption(
 					filter,
-					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.display),
-					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.sort),
-					settings.oApi._fnGetCellData(settings, rowIdx, this.s.index, this.s.colOpts.orthogonal.type),
+					cell.render(this.s.colOpts.orthogonal.display),
+					cell.render(this.s.colOpts.orthogonal.sort),
+					cell.render(this.s.colOpts.orthogonal.type),
 					arrayFilter,
 					bins
 				);
@@ -1132,8 +1133,18 @@ export default class SearchPane {
 	 * @param notUpdating Whether the panes are updating themselves or not
 	 */
 	protected _updateSelection(notUpdating: boolean): void {
-		let settings = this.s.dt.settings()[0];
-		let oApi = settings.oApi;
+		let processing = (state) => {
+			if (DataTable.versionCheck('2')) {
+				this.s.dt.processing(state);
+			}
+			else {
+				// Legacy v1
+				let settings = this.s.dt.settings()[0];
+				let oApi = settings.oApi;
+
+				oApi._fnProcessingDisplay(settings, false);
+			}
+		}
 
 		let run = () => {
 			this.s.scrollTop = $(this.s.dtPane.table().node()).parent()[0].scrollTop;
@@ -1147,18 +1158,11 @@ export default class SearchPane {
 				this._makeSelection();
 			}
 
-			oApi._fnProcessingDisplay(settings, false);
+			processing(false);
 		};
 
-		// If the processing display is enabled, we need to allow the browser
-		// to draw it before performing our calculations
-		if (settings.oFeatures.bProcessing) {
-			oApi._fnProcessingDisplay(settings, true);
-			setTimeout(run, 1);
-		}
-		else {
-			run();
-		}
+		processing(true);
+		setTimeout(run, 1);
 	}
 
 	/**

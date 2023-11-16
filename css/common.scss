@@ -185,6 +185,7 @@ div.dtsp-panesContainer {
 }
 
 div.dtsp-searchPane {
+	div.dt-container,
 	div.dataTables_wrapper {
 		width: 100%;
 
@@ -193,13 +194,15 @@ div.dtsp-searchPane {
 			padding: 0;
 		}
 
+		div.dt-scroll-head,
 		div.dataTables_scrollHead {
 			display: none !important;
 		}
 
+		div.dt-scroll-body,
 		div.dataTables_scrollBody {
 			background: white !important;
-			border-bottom: none;
+			border: none;
 		
 			thead {
 				display: none;
@@ -283,10 +286,12 @@ div.dtsp-panesContainer {
 			font-size: 0.9em;
 			margin-top: 15px !important;
 
+			div.dt-container,
 			div.dataTables_wrapper {
 				flex: 1;
 				box-sizing: border-box;
 
+				div.dt-search,
 				div.dataTables_filter {
 					display: none;
 				}
