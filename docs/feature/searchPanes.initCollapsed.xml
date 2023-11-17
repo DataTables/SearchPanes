@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.initCollapsed</name>
+	<summary>Collapse the SearchPanes on initialisation</summary>
+	<since>SearchPanes 1.4.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.initCollapsed` option to `true` all of the SearchPanes will be initialised in the collapsed state.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init searchPanes.initCollapsed` parameter is `false`, meaning that as standard the searchpanes are not collapsed on initialisation.
+	</default>
+	<description>
+		<![CDATA[
+As standard, SearchPanes will not be collapsed on initialisation. This option allows that to happen. The SearchPanes will not be collapsed on initialisation even if this option is set to `true` in a variety of scenarios. Firstly, if `-init searchPanes.collapse` or `-init columns.searchPanes.collapse` are set to false. Secondly, if statesaving is enabled and this SearchPane was not collapsed at the point of the last state save. 
+
+This behaviour can be set on a column by column basis by using the `-init columns.searchPanes.initCollapsed` initialisation option.
+		]]>
+	</description>
+
+	<example title="Collapse all SearchPanes on initialisation"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				initCollapsed: true
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.initCollapsed</related>
+<related type="option">columns.searchPanes.collapse</related>
+<related type="option">searchPanes.collapse</related>
+
+</dt-option>

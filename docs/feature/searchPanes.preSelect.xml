@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.preSelect</name>
+	<summary>Pre-selected options in a pane</summary>
+	<since>SearchPanes 2.0.0</since>
+
+	<type type="Array">
+		<description>
+			`-init searchPanes.preSelect` is an array of objects that contain the details required to preselect rows in the corresponding panes. 
+		</description>
+	</type>
+	<default value="[]">
+		The default value for the `-init searchPanes.preSelect` parameter is `[]`. When this default value is in place, no values will be preSelected in the panes.
+	</default>
+	<description>
+		<![CDATA[
+			As standard, SearchPanes will not pre-select any values in any of the panes.
+
+			The objects stored within this array contain 2 values.
+
+			* `column` `-type number` - The column index for the pane where these selections are to be made.
+			* `rows` `-type string[]` - An array of strings that contain the filter values of the rows that are to be selected within the corresponding pane.
+
+			If any of the elements in the array held in `searchPanes.preSelect.rows` are present in the pane then they will be pre-selected.
+
+			This option replaces the deprecated `-init columns.searchPanes.preSelect` option. In this format it is now possible to set the order in which selections are made. This means that preSelect is now compatible with `-init searchPanes.cascadePanes`.
+
+			To make preselections in custom panes, the `searchPanes.preSelect.column` value should be set to the sum of the last column's index, and the number of custom pane this is. For example if the last column index was 5, and the selection was to be made in the second custom pane then the value of `searchPanes.preSelect.column` should be set to `7`.
+		]]>
+	</description>
+
+	<example title="Pre-select values in a pane"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				preSelect: [
+					{
+						column: 3,
+						rows: ['Edinburgh', 'London']
+					}
+				]
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

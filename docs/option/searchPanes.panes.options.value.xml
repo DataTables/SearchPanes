@@ -24,37 +24,30 @@
     </default>
 	<description>
 		<![CDATA[
-As standard, the value of the `value` is undefined.
+			This option is an alias to `-feature searchPanes.panes.options.value`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-`-init searchPanes.panes.options.value` can be either a string or a function. If it is a string then a straight `===` comparison will be performed between it and the data in the table. It is worth noting that this cannot be the case for completely custom panes with no column attached to them as SearchPanes does not know what to compare it to. In this case SearchPanes must use a function.
-
-Setting `-init searchPanes.panes.options.value` to be a function allows searchPanes to use that function to search for results from the DataTable. The data from the row and the row index are passed into this function. The context is the parent DataTable. The internals of the function are down to the behaviour that you wish to create. Returning `true` from the function will include that row in the results, conversely `false` will exclude the row.
-
-Having the `value` property as a function means that comparisons can be made at a variety of different levels of complexity, all completely open to the developers needs.
-
-The example below shows a very simple function which compares data from multiple columns.
+			Please refer to the documentation for `-feature searchPanes.panes.options.value` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Define custom pane options"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		panes: [
+			{
+				options: [
 					{
-						options: [
-							{
-								label: 'Accountants in Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-								}
-							}
-						]
+						label: 'Accountants in Tokyo',
+						value: function (rowData, rowIdx) {
+							return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+						}
 					}
 				]
 			}
-		}
+		]
 	}
 });
 ]]></example>

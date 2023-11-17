@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.title</name>
+	<summary>Add internationalisation to the title showing how many panes are selected</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            As standard `-init searchPanes.i18n.title` is simply a string that contains a replacement for the number of selections that have been made.
+        </description>
+	</type>
+
+    <type type="object">
+        <description>
+            It is possible to set the value of `-init searchPanes.i18n.title` to an object that would allow for the actual text to also change as the number of selections increases. 
+        </description>
+    </type>
+
+	<default value="Filters Active - %d">
+        The default value for the `-init searchPanes.i18n.title` parameter is `Filters Active - %d`.
+    </default>
+	<description>
+		<![CDATA[
+		SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'. This property allows that message to be configured.
+
+		This option will default to the value given by `-init language.searchPanes.title`, which should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table, but if needed, this option is available to override that on a per instance basis.
+        ]]>
+	</description>
+
+	<example title="Alter title messages with an object"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: {
+						_: 'Filters Selected - %d',
+						0: 'No Filters Selected',
+						1: 'One Filter Selected'
+					}
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+<example title="Alter title message to be a static string"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: 'Select filters below'
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

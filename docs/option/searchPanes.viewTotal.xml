@@ -15,26 +15,19 @@
     </default>
 	<description>
 		<![CDATA[
-			By setting the `-init searchPanes.viewTotal` parameter to true, the message displayed in the count column will change when a search is applied to the DataTable.
+			This option is an alias to `-feature searchPanes.viewTotal`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is applied. When filtering is active the count column will display the number of entries that satisfy this condition currently on display followed in brackets by the total in the table which satisfy the condition.
-
-			This is useful for seeing which options actually have entries present in the table when it has been searched upon.
-
-			It is possible to adjust the messages shown both when searching is taking place and when it isn't, by using the `-init searchPanes.i18n.count` and `-init searchPanes.i18n.countFiltered` options. The `-init searchPanes.i18n.countFiltered` message will only be shown when `-init searchPanes.viewtotal` is set to true, otherwise only `-init searchPanes.i18n.count` will be shown.
-		
-			Note: When loading SearchPanes options over ajax, but then using `-init serverSide` processing, neither `-init searchPanes.viewTotal` or `-init searchPanes.cascadePanes` are supported. This is due to the requirements for users to provide accurate data for the SearchPanes options, whose values change when using these two options. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
+			Please refer to the documentation for `-feature searchPanes.viewTotal` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Enable viewTotal"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				viewTotal: true
-			}
-		}
+		top1: 'viewTotal'
+	},
+	searchPanes: {
+		viewTotal: true
 	}
 });
 ]]></example>

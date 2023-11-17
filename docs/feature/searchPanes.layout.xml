@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.layout</name>
+	<summary>Set the layout of how the panes are displayed on the page</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            This property has a variety of possible values. The default value is `'auto'` When this is in place, SearchPanes will fit the panes to their best fit on the page, including responsively. By setting the `-init searchPanes.layout` to `columns-%d` the searchPanes are displayed in columns, with %d panes in each column.
+        </description>
+	</type>
+
+	<default value="'auto'">
+        The default value for the `-init searchPanes.layout` parameter is `'auto'`. This will allow SearchPanes to fit the panes optimally depending on the size of the display. 
+    </default>
+	<description>
+		<![CDATA[
+			This property has a variety of possible values. The default value is `'auto'` When this is in place, SearchPanes will fit the panes to their best fit on the page, including responsively. By setting the `-init searchPanes.layout` parameter to `columns-3`, the panes will be displayed in 3 columns.
+
+			There are 9 sizes supported from 1 pane in a row to 9 panes in a row. Altering the number at the end of `columns-` will alter the number of panes on a row.
+		]]>
+	</description>
+
+	<example title="Set the number of panes in a row to 2"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				layout: 'columns-2'
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

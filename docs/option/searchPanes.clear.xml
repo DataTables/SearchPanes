@@ -15,20 +15,19 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will display the buttons which allow selections to be cleared in individual panes and across all panes. When `-init searchPanes.clear` is set to `false`, the clear buttons will not be present.
+			This option is an alias to `-feature searchPanes.clear`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			The `-init searchPanes.clear` functionality is useful when wanting to quickly deselect all of the options in a pane. It is useful to be able to disable these buttons, for example on smaller tables with less options it may be preferable to employ a custom user interface. 
+			Please refer to the documentation for `-feature searchPanes.clear` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Disable Clear Buttons"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				clear: false
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		clear: false
 	}
 });
 ]]></example>

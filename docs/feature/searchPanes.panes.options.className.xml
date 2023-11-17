@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.options.className</name>
+	<summary>Add classes to specific options of a custom pane</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            The `-init searchPanes.panes.className` is the class that will be added to the row for the custom option in the pane.
+        </description>
+	</type>
+
+	<default value="Undefined">
+    </default>
+	<description>
+		<![CDATA[
+			As standard, the value of the `className` is undefined.
+
+			Setting `-init searchPanes.panes.options.className` to a string value will set the class of the row for the option in the custom pane. This is useful for adding custom styling to specific rows. 
+		]]>
+	</description>
+
+	<example title="Define custom pane options"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						options: [
+							{
+								label: 'Accountants in Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+								},
+								className: 'tokyo'
+							}
+						]
+					}
+				]
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.options.label</related>
+<related type="option">searchPanes.panes.options.value</related>
+<related type="option">columns.searchPanes.options.value</related>
+
+</dt-option>

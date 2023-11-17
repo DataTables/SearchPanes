@@ -15,11 +15,9 @@
 	</default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will set the SearchPanes Button to display the total number of selections across the panes alongside the SearchPanes title.
+			This option is an alias to `-feature searchPanes.i18n.collapse`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-        The value of `-init searchPanes.i18n.collapse` is passed into an `-api i18n()` function, `%d` is replaced by the count of selections across the panes. To just set the Button text to be a string no matter the count, just set `-init searchPanes.i18n.collapse` to the desired `-type string`.
-
-        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.collapse` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
+			Please refer to the documentation for `-feature searchPanes.i18n.collapse` for full details of this option.
 		]]>
 	</description>
 

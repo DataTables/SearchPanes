@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.loadMessage</name>
+	<summary>Add internationalisation to the message shown when the panes are loading</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            The `-init searchPanes.i18n.loadMessage` is displayed to the user in the SearchPanes container when the panes are loading and have not yet been displayed. This is typically only seen for large data sets or when using server-side processing. 
+        </description>
+	</type>
+
+	<description>
+		<![CDATA[
+		SearchPanes will display a message while still loading, which is defined by this parameter.
+
+		It is a global setting that will impact all instances of SearchPanes on a DataTable (it should be noted that it is uncommon to have more than one instance!). The per-instance parameter is `-feature searchPanes.i18n.loadMessage`, which also defines the default.
+
+		This option is useful as the `-init language` object can be loaded by Ajax, or set locally and define all language strings used by DataTables and its extensions.
+        ]]>
+	</description>
+
+	<example title="Alter SearchPanes Loading Message"><![CDATA[
+new DataTable('#myTable', {
+	language: {
+		searchPanes: {
+			loadMessage: 'Loading filtering options...'
+		}
+	},
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+]]></example>
+
+</dt-option>

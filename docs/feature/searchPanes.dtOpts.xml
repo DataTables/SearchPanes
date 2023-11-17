@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.dtOpts</name>
+	<summary>Define properties of the DataTables being used as Panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="object">
+		<description>
+			The panes can be customised in the same way as a standard DataTable, as they are also instances of DataTables. Their properties can be defined within the dtOpts object.
+		</description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init searchPanes.dtOpts` parameter is `-type undefined`. When this default value is in place the defaults for SearchPanes are applied.
+    </default>
+	<description>
+		<![CDATA[
+			As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`. SearchPanes' internal DataTable has `-init layout` set to only show the table. As such, if you are added paging or something visual then you must also modify the `-init layout` option.
+
+			By overwriting this value in the initialisation, the panes can be customised as much as a standard DataTables. 
+
+			This functionality is useful as it allows all of the standard DataTables options and API Methods to be available to the panes.
+
+			Individual panes can be altered by using the `-init columns.searchPanes.dtOpts` option.
+		]]>
+	</description>
+
+	<example title="Alter searching and info of the Panes:"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				dtOpts: {
+					paging: true,
+					pagingType: 'numbers',
+					searching: false
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.dtOpts</related>
+</dt-option>

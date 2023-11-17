@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.collapse</name>
+	<summary>Allow the SearchPanes to be collapsed</summary>
+	<since>SearchPanes 1.4.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.collapse` option to `false` the searchpane will not be collapsible and the collapse button will not be shown at the top of the panes.
+        </description>
+	</type>
+
+	<default value="true">
+        The default value for the `-init searchPanes.collapse` parameter is `true`, meaning that as standard the searchpanes are all collapsible.
+	</default>
+	<description>
+		<![CDATA[
+As standard, SearchPanes will be collapsible. A button is shown on the control row above the SearchPane table and the right most button toggles the state of the pane from being collapsed to expanded.
+
+If this option is set to false the panes will not be collapsible and the button will not be shown. It is possible to set this for specific columns using the `-init columns.searchPanes.collapse` option, and the SearchPanes can be initialised in the collapsed state by using the `-init searchPanes.initCollapsed` or `-init columns.searchPanes.initCollapsed` options.
+
+		]]>
+	</description>
+
+	<example title="Don't allow SearchPanes to be collapsible"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				collapse: false
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.collapse</related>
+<related type="option">searchPanes.initCollapsed</related>
+<related type="option">columns.searchPanes.initCollapsed</related>
+
+</dt-option>

@@ -15,27 +15,22 @@
     </default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`. SearchPanes' internal DataTable has `-init layout` set to only show the table. As such, if you are added paging or something visual then you must also modify the `-init layout` option.
+			This option is an alias to `-feature searchPanes.dtOpts`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			By overwriting this value in the initialisation, the panes can be customised as much as a standard DataTables. 
-
-			This functionality is useful as it allows all of the standard DataTables options and API Methods to be available to the panes.
-
-			Individual panes can be altered by using the `-init columns.searchPanes.dtOpts` option.
+			Please refer to the documentation for `-feature searchPanes.dtOpts` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Alter searching and info of the Panes:"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				dtOpts: {
-					paging: true,
-					pagingType: 'numbers',
-					searching: false
-				}
-			}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		dtOpts: {
+			paging: true,
+			pagingType: 'numbers',
+			searching: false
 		}
 	}
 });

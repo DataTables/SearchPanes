@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.order</name>
+	<summary>Set the order of the Panes</summary>
+	<since>SearchPanes 1.1.0</since>
+
+	<type type="string">
+		<description>
+			By setting the `-init searchPanes.order` to an array of the `-init columns.searchPanes.name` property of the SearchPanes, the panes are displayed in that order.
+
+			By default the `-init columns.searchPanes.name` is set to be the title of the column, or the `-init searchPanes.panes.header` value for custom Panes. This can be overridden if desired.
+		</description>
+	</type>
+
+	<default value="[]">
+		The default value for the `-init searchPanes.order` parameter is an empty array allowing SearchPanes to use the default order.. 
+	</default>
+	<description>
+		<![CDATA[
+			By setting the `-init searchPanes.order` to an array of the `-init columns.searchPanes.name` property of the SearchPanes, the panes are displayed in that order.
+
+			By default the `-init columns.searchPanes.name` is set to be the title of the column. This can be overridden if desired. This is particularly useful for mixing custom and auto generated panes. If the `-init searchPanes.order` property is set then any panes that would normally have shown but are not present in the array will not be shown at all.
+		]]>
+	</description>
+
+	<example title="Set the order of the panes"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				order: ['Age', 'Office', 'Position']
+			}
+		}
+	}
+});
+]]></example>
+
+<example title="Set the order of the panes including a custom name"><![CDATA[
+new DataTable('#myTable', {
+	columnDefs: [
+		{
+			searchPanes: {
+				name: 'Length of Life'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				order: ['Length of Life', 'Office', 'Position']
+			}
+		}
+	}
+});
+]]></example>
+<related type="option">columns.searchPanes.name</related>
+<related type="option">searchPanes.panes.header</related>
+</dt-option>

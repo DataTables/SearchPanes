@@ -15,27 +15,22 @@
 	</default>
 	<description>
 		<![CDATA[
-		As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place.
+			This option is an alias to `-feature searchPanes.i18n.countFiltered`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-		SearchPanes replace two strings when creating the output for the count column: `{shown}` is the count for each different value that is currently displayed in the DataTable, `{total}` is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will be the same value.
-
-		This message will not be displayed if `-init searchPanes.viewTotal` is not set to be `true`.
-
-		This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.countFiltered` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
+			Please refer to the documentation for `-feature searchPanes.i18n.countFiltered` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Change messages for viewTotal:"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				viewTotal: true,
-				i18n: {
-					count: '{total} found',
-					countFiltered: '{shown} ({total})'
-				}
-			}
+		top1: 'countFiltered'
+	},
+	searchPanes: {
+		viewTotal: true,
+		i18n: {
+			count: '{total} found',
+			countFiltered: '{shown} ({total})'
 		}
 	}
 });

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.viewCount</name>
+	<summary>Show the count column in all panes</summary>
+	<since>SearchPanes 1.3.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.viewCount` option to `false` the count column will be hidden in all of the panes.
+        </description>
+	</type>
+
+	<default value="true">
+        The default value for the `-init searchPanes.viewCount` parameter is `true`, meaning that as standard the count column will be included in the panes.
+	</default>
+	<description>
+		<![CDATA[	
+			As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init searchPanes.viewCount` is set to `false` then the count column won't be displayed in any of the panes.
+
+			The count column can be hidden for individual panes by the `-init columns.searchPanes.viewCount` option.
+
+			This option replaces the deprecated `-init searchPanes.hideCount` from version 1.2.1+. It was replaced to maintain consistency with `-init searchPanes.viewTotal`. 
+		]]>
+	</description>
+
+	<example title="Hide count for all panes"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewCount: false
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.viewCount</related>
+
+</dt-option>

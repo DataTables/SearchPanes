@@ -20,17 +20,12 @@
 	<default value="false">
 		The default value for the `-init searchPanes` parameter is `false`. When this default value is in place no panes will be displayed and you will display a standard DataTable along with any other extensions that are in use.
 	</default>
+
 	<description>
 		<![CDATA[
-			SearchPanes is an extension that allows for clearer more accesisble searching functionality. 
+			This option is an alias to `-feature searchPanes`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			When a selection is made in one of the associated panes, the DataTable will be searched for records that meet the criteria of the selections made in the panes. These records will then be displayed while all of the records that do not meet the criteria will not be included in the DataTable.
-
-			SearchPanes can be enabled by setting the dom property to `dom: 'Plfrtip'`, which will set the configuration options to be the defaults as defined by `$.fn.dataTable.SearchPanes.defaults` or an object with further properties to define operation which is different to the defaults. It can also be enabled through the API.
-
-			Please note that as with all other configuration options for SearchPanes, this option is an extension to the [default set of DataTables options](/reference/option). This property should be set in the DataTables initialisation object.
-
-			Where speed is a concern, SearchPanes operates fairly normally on the client side for tables with less than 2,000 rows. If increasing above this level then performance hits will occur and it will take longer to both load and operate the panes.
+			Please refer to the documentation for `-feature searchPanes` for full details of this option.
 		]]>
 	</description>
 
@@ -38,6 +33,9 @@
 new DataTable('#myTable', {
 	layout: {
 		top1: 'searchPanes'
+	},
+	searchPanes: {
+		// config options...
 	}
 });
 ]]></example>

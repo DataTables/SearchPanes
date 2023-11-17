@@ -14,34 +14,24 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will not pre-select any values in any of the panes.
+			This option is an alias to `-feature searchPanes.preSelect`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			The objects stored within this array contain 2 values.
-
-			* `column` `-type number` - The column index for the pane where these selections are to be made.
-			* `rows` `-type string[]` - An array of strings that contain the filter values of the rows that are to be selected within the corresponding pane.
-
-			If any of the elements in the array held in `searchPanes.preSelect.rows` are present in the pane then they will be pre-selected.
-
-			This option replaces the deprecated `-init columns.searchPanes.preSelect` option. In this format it is now possible to set the order in which selections are made. This means that preSelect is now compatible with `-init searchPanes.cascadePanes`.
-
-			To make preselections in custom panes, the `searchPanes.preSelect.column` value should be set to the sum of the last column's index, and the number of custom pane this is. For example if the last column index was 5, and the selection was to be made in the second custom pane then the value of `searchPanes.preSelect.column` should be set to `7`.
+			Please refer to the documentation for `-feature searchPanes.preSelect` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Pre-select values in a pane"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				preSelect: [
-					{
-						column: 3,
-						rows: ['Edinburgh', 'London']
-					}
-				]
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		preSelect: [
+			{
+				column: 3,
+				rows: ['Edinburgh', 'London']
 			}
-		}
+		]
 	}
 });
 ]]></example>

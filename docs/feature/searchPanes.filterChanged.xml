@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.filterChanged</name>
+	<summary>Function to update title text when selections are made.</summary>
+	<since>SearchPanes 1.2.0</since>
+
+	<type type="function">
+        <signature>searchPanes.filterChanged(count)</signature>
+        <parameter type="number" name="count">Number of options selected in SearchPanes.</parameter>
+	</type>
+
+	<description>
+		<![CDATA[
+            This function is called every time the number of SearchPanes options that have been selected changes. As default this is used to update the SearchPanes title (set using the `-init searchPanes.i18n.title` config option alongside an `-api i18n()` api call).
+            
+            The SearchPanes button also uses this configuration option to update the button text to reflect the selection numbers (text is set using `-init searchPanes.i18n.collapse` and an `-api i18n()` api call).
+
+            The context of the function is the DataTables instance, meaning that API methods can be called directly from within the function. For example, `this.i18n(...);`.
+
+            Note: When using this function with `-init searchPanes.cascadePanes` this function is likely to run multiple times. This is simply down to how `-init searchPanes.cascadePanes` is implemented.
+		]]>
+	</description>
+
+	<example title="Set text for custom element"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				filterChanged: function (count) {
+					$('.SPDetails').text(
+						this.i18n(
+							'searchPanes.collapse',
+							{ 0: 'Advanced filter', _: 'Advanced filter (%d)' },
+							count
+						)
+					);
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

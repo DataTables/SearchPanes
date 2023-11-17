@@ -15,48 +15,21 @@
 	</default>
 	<description>
 		<![CDATA[
-      This option is deprecated from version 1.2.2+. It was replaced by `-init searchPanes.i18n.emptyMessage` to maintain consistency with the naming of language options. For now this option can still be used, but it will be removed in the future.
+			This option is an alias to `-feature searchPanes.emptyMessage`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			Empty cells will be represented in the panes by the option `-init searchPanes.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell. The value is passed through the `-api i18n()` function.
-
-      This value is used if both `-init searchPanes.i18n.emptyMessage` is undefined and `-init columns.searchPanes.emptyMessage` are both undefined for the column corresponding to this SearchPane.
+			Please refer to the documentation for `-feature searchPanes.emptyMessage` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Altering Empty Message"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				emptyMessage: '</i></b>EMPTY</b></i>'
-			}
-		}
-	}
-});
-]]></example>
-
-	<example title="Altering Empty Message for each column"><![CDATA[
-var table = new DataTable('#myTable', {
-	layout: {
 		top1: 'searchPanes'
 	},
-	columnDefs: [
-		{
-			searchPanes: {
-				emptyMessage: '</i></b>EMPTY</b></i>'
-			},
-			targets: [2]
-		}
-	]
+	searchPanes: {
+		emptyMessage: '</i></b>EMPTY</b></i>'
+	}
 });
-
-table.cell(2, 2).data('');
-table.cell(6, 5).data('');
-table.cell(2, 3).data('');
-table.cell(2, 0).data('');
-table.cell(6, 1).data('');
-table.cell(2, 4).data('');
-table.searchPanes.rebuildPane();
 ]]></example>
 
 <related type="option">language.searchPanes.emptyMessage</related>

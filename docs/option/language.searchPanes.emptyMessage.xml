@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.emptyMessage</name>
+	<summary>Add internationalisation to the empty message displayed as a pane option</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+			By setting the `-init searchPanes.i18n.emptyMessage` option to a string, any empty cells found in the table will be represented in the pane by that string.
+		</description>
+	</type>
+
+	<description>
+		<![CDATA[
+			Empty cells will be represented in the panes by the string defined by this option. This is useful as it's a more user-friendly way than just having a blank cell. It is a global setting that will impact all instances of SearchPanes on a DataTable (it should be noted that it is uncommon to have more than one instance!). The per-instance parameter is `-feature searchPanes.i18n.emptyMessage`, which also defines the default.
+
+			This option is useful as the `-init language` object can be loaded by Ajax, or set locally and define all language strings used by DataTables and its extensions.
+		]]>
+	</description>
+
+	<example title="Altering Empty Message"><![CDATA[
+new DataTable('#myTable', {
+	language: {
+		searchPanes: {
+			emptyMessage: '</i></b>EMPTY</b></i>'
+		}
+	},
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+]]></example>
+
+<related type="option">searchPanes.emptyMessage</related>
+<related type="option">columns.searchPanes.emptyMessage</related>
+
+</dt-option>

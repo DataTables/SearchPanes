@@ -15,20 +15,19 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will be displayed with the ordering buttons included in the interface, allowing the user to change the order of the selections in each pane. However if the value of `-init searchPanes.orderable` is set to `false` then the ordering buttons will no longer be displayed in any of the panes.
+			This option is an alias to `-feature searchPanes.orderable`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			The ordering buttons can be hidden for individual panes by the `-init columns.searchPanes.orderable` option.
+			Please refer to the documentation for `-feature searchPanes.orderable` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Hide ordering buttons for all panes"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				orderable: false
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		orderable: false
 	}
 });
 ]]></example>

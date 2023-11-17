@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.collapse</name>
+	<summary>Set the message to be displayed in the SearchPanes Button</summary>
+	<since>SearchPanes 1.1.0</since>
+
+	<type type="string | object">
+		<description>
+        `-init searchPanes.i18n.collapse` changes what will be displayed in the text of the SearchPanes Button. It can also display the count of selections across the panes.
+		</description>
+	</type>
+
+	<default value="{0: 'SearchPanes', _: 'SearchPanes (%d)'}">
+		The default value for the `-init searchPanes.i18n.collapse` parameter is `{0: 'SearchPanes', _: 'SearchPanes (%d)'}`. 
+	</default>
+	<description>
+		<![CDATA[
+			SearchPanes will set the SearchPanes Button to display the total number of selections across the panes alongside the SearchPanes title.
+
+			The value of `-init searchPanes.i18n.collapse` is passed into an `-api i18n()` function, `%d` is replaced by the count of selections across the panes. To just set the Button text to be a string no matter the count, just set `-init searchPanes.i18n.collapse` to the desired `-type string`.
+
+			This option will default to the value given by `-init language.searchPanes.collapse`, which should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table, but if needed, this option is available to override that on a per instance basis.
+		]]>
+	</description>
+
+	<example title="Change message for SearchPanes button which also displays selection count:"><![CDATA[
+new DataTable('#myTable', {
+	searchPanes: {
+		i18n: {
+			collapse: {
+				0: 'Search Options',
+				1: 'Search (one selected)',
+				_: 'Search Options (%d)'
+			}
+		}
+	},
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
+});
+]]></example>
+
+	<example title="Change message for SearchPanes button to only be a string:"><![CDATA[
+new DataTable('#myTable', {
+	searchPanes: {
+		i18n: {
+			collapse: 'Search Options'
+		}
+	},
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
+});
+]]></example>
+
+<related type="api">i18n()</related>
+
+</dt-option>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes</name>
+	<summary>Define custom panes to filter across all columns</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="array">
+		<description>
+            The `-init searchPanes.panes` array contains object defining each pane. Each object contains a `header` property which holds the title of the pane. There is also an options array in the same form as `-init columns.searchPanes.options`. It is also possible to defined dtOpts and custom classes within the object. See `-init columns.searchPanes.dtOpts` and `-init columns.searchPanes.className` for details on these.
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value of `-init searchPanes.panes` is undefined. If there are no custom panes defined then none will be added.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, SearchPanes will not add any custom panes to the page.
+
+        It operates in a similair way to  the `options` array in `-init columns.searchPanes.options`. With the addition of a `header` property to hold the title of the pane.
+
+        This is useful when you want to make searches across columns. Technically this would be possible by just adding an option to an already existing Pane but that may confuse the end user as they may think the option only applied to the corresponding column and not the table as a whole.
+        ]]>
+	</description>
+
+	<example title="Define custom pane:"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'custom',
+						options: [
+							{
+								label: 'Accountants in Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.options</related>
+<related type="option">columns.searchPanes.dtOpts</related>
+<related type="option">columns.searchPanes.className</related>
+
+</dt-option>

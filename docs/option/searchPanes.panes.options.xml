@@ -15,32 +15,31 @@
     </default>
 	<description>
 		<![CDATA[
-        As standard, Custom panes have no options.
+			This option is an alias to `-feature searchPanes.panes.options`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-        Setting `-init searchPanes.panes.options` to contain objects made up of both `-init searchPanes.panes.options.label` and `-init searchPanes.panes.options.value` will allow options to be defined within the custom panes. The `label` option is what will be displayed to the user and the `value` option is a function that will be used to search the DataTable.
+			Please refer to the documentation for `-feature searchPanes.panes.options` for full details of this option.
         ]]>
 	</description>
 
 	<example title="Define custom pane options"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		panes: [
+			{
+				options: [
 					{
-						options: [
-							{
-								label: 'Accountants in Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-								},
-								className: 'tokyo'
-							}
-						]
+						label: 'Accountants in Tokyo',
+						value: function (rowData, rowIdx) {
+							return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+						},
+						className: 'tokyo'
 					}
 				]
 			}
-		}
+		]
 	}
 });
 ]]></example>

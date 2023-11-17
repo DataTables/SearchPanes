@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.countFiltered</name>
+	<summary>Set the message to be displayed in the count column when searching</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+		`-init searchPanes.i18n.countFiltered` changes what will be displayed in the count column if the `-init searchPanes.viewTotal` option is set to true and filtering is taking place.
+	</description>
+	</type>
+
+	<default value="{shown} ({total})">
+		The default value for the `-init searchPanes.i18n.countFiltered` parameter is `{shown} ({total})`.
+	</default>
+	<description>
+		<![CDATA[
+		SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is taking place.
+
+		SearchPanes replace two strings when creating the output for the count column: `{shown}` is the count for each different value that is currently displayed in the DataTable, `{total}` is the total count for each different value that is in the DataTable. When no filtering is taking place, `{total}` and `{shown}` will be the same value.
+
+		This message will not be displayed if `-init searchPanes.viewTotal` is not set to be `true`.
+
+		This option will default to the value given by `-init language.searchPanes.countFiltered`, which should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table, but if needed, this option is available to override that on a per instance basis.
+		]]>
+	</description>
+
+	<example title="Change messages for viewTotal:"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true,
+				i18n: {
+					count: '{total} found',
+					countFiltered: '{shown} ({total})'
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">language.searchPanes.count</related>
+<related type="option">searchPanes.viewTotal</related>
+
+</dt-option>

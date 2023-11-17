@@ -15,20 +15,19 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will consider all of the columns when creating searchPanes. When `-init searchPanes.columns` is defined with an array of numbers, then only the columns with those indexes will be considered when creating panes. Note they still may not be displayed based upon the calculations of `-init searchPanes.threshold` or `-init columns.searchPanes.threshold`, but can be forced to show using `-init columns.searchPanes.show`.
+			This option is an alias to `-feature searchPanes.columns`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			The `-init searchPanes.columns` functionality is useful when wanting to restrict which columns will be considered when displaying panes. This may result in faster load times as there is not as much validation to be done. 
+			Please refer to the documentation for `-feature searchPanes.columns` for full details of this option. 
 		]]>
 	</description>
 
 	<example title="Specify columns for consideration:"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				columns: [1, 3, 5]
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		columns: [1, 3, 5]
 	}
 });
 ]]></example>

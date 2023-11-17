@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.viewTotal</name>
+	<summary>Update the count column when searching to show visible count</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="boolean">
+		<description>
+            By setting the `-init searchPanes.viewTotal` to true, when a search is applied to the table, the message in the count columns of the panes will change to represent the currently visible entries.
+        </description>
+	</type>
+
+	<default value="false">
+        The default value for the `-init searchPanes.viewTotal` parameter is `false`. 
+    </default>
+	<description>
+		<![CDATA[
+			By setting the `-init searchPanes.viewTotal` parameter to true, the message displayed in the count column will change when a search is applied to the DataTable.
+
+			As standard, SearchPanes will set the count column to display the total number of different values visible in the column when no filtering is applied. When filtering is active the count column will display the number of entries that satisfy this condition currently on display followed in brackets by the total in the table which satisfy the condition.
+
+			This is useful for seeing which options actually have entries present in the table when it has been searched upon.
+
+			It is possible to adjust the messages shown both when searching is taking place and when it isn't, by using the `-init searchPanes.i18n.count` and `-init searchPanes.i18n.countFiltered` options. The `-init searchPanes.i18n.countFiltered` message will only be shown when `-init searchPanes.viewtotal` is set to true, otherwise only `-init searchPanes.i18n.count` will be shown.
+		
+			Note: When loading SearchPanes options over ajax, but then using `-init serverSide` processing, neither `-init searchPanes.viewTotal` or `-init searchPanes.cascadePanes` are supported. This is due to the requirements for users to provide accurate data for the SearchPanes options, whose values change when using these two options. While it is still possible to enable these options, it is not advised and may lead to unexpected behaviour.
+		]]>
+	</description>
+
+	<example title="Enable viewTotal"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">searchPanes.i18n.count</related>
+<related type="option">searchPanes.i18n.countFiltered</related>
+
+</dt-option>

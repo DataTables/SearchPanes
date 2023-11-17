@@ -10,16 +10,13 @@
 		</description>
 	</type>
 
-	<default value="undefined">
-		The default value for the `-init language.searchPanes` object is `-type undefined`. Meaning that as standard there are no extra options to add to the panes for language.
-	</default>
 	<description>
 		<![CDATA[
-			As standard, no custom options will be applied to the pane specific language options if `-init language.searchPanes` is undefined. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propagate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
+			This parameter is an object that can be used to customise the language strings used by SearchPanes.
 
-			This is a set of default values that can be set, they are overridden by `-init searchPanes.i18n` for case specific options.
+			It is a global setting that will impact all instances of SearchPanes on a DataTable (it should be noted that it is uncommon to have more than one instance!). Per-instance parameters are found under the `-feature searchPanes.i18n` object's parameters which also defines the default values.
 
-			This is useful as it means that the language options can be set for panes leading to increased internationalisation.
+			This top level option is useful as the `-init language` object can be loaded by Ajax, or set locally and define all language strings used by DataTables and its extensions.
 		]]>
 	</description>
 

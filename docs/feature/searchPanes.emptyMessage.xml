@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.emptyMessage</name>
+	<summary>Deprecated. Set custom empty message</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+			By setting the `-init searchPanes.emptyMessage` option to a string, any empty cells found in the table will be represented in the pane by that string.
+		</description>
+	</type>
+
+	<default value="&lt;/i&gt;No Data&lt;/i&gt;">
+		The default value for the `-init searchPanes.emptyMessage` parameter is `\&lt;i\&gt;No Data\&lt;/i\&gt;`.
+	</default>
+	<description>
+		<![CDATA[
+			This option is deprecated from version 1.2.2+. It was replaced by `-init searchPanes.i18n.emptyMessage` to maintain consistency with the naming of language options. For now this option can still be used, but it will be removed in the future.
+
+			Empty cells will be represented in the panes by the option `-init searchPanes.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell. The value is passed through the `-api i18n()` function.
+
+			This value is used if both `-init searchPanes.i18n.emptyMessage` is undefined and `-init columns.searchPanes.emptyMessage` are both undefined for the column corresponding to this SearchPane.
+		]]>
+	</description>
+
+	<example title="Altering Empty Message"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				emptyMessage: '</i></b>EMPTY</b></i>'
+			}
+		}
+	}
+});
+]]></example>
+
+	<example title="Altering Empty Message for each column"><![CDATA[
+var table = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				emptyMessage: '</i></b>EMPTY</b></i>'
+			},
+			targets: [2]
+		}
+	]
+});
+
+table.cell(2, 2).data('');
+table.cell(6, 5).data('');
+table.cell(2, 3).data('');
+table.cell(2, 0).data('');
+table.cell(6, 1).data('');
+table.cell(2, 4).data('');
+table.searchPanes.rebuildPane();
+]]></example>
+
+<related type="option">language.searchPanes.emptyMessage</related>
+<related type="option">columns.searchPanes.emptyMessage</related>
+
+</dt-option>

@@ -28,27 +28,26 @@
 	<example title="Define custom pane DataTable options"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		panes: [
+			{
+				header: 'Custom',
+				options: [
 					{
-						header: 'Custom',
-						options: [
-							{
-								label: 'Accountants from Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-								}
-							}
-						],
-						dtOpts: {
-							paging: true,
-							order: [[1, 'desc']]
+						label: 'Accountants from Tokyo',
+						value: function (rowData, rowIdx) {
+							return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
 						}
 					}
-				]
+				],
+				dtOpts: {
+					paging: true,
+					order: [[1, 'desc']]
+				}
 			}
-		}
+		]
 	}
 });
 ]]></example>

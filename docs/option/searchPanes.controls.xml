@@ -15,20 +15,19 @@
 	</default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will be displayed with the control buttons included in the interface with searching enabled. However if the value of `-init searchPanes.controls` is set to `false` then the control buttons will no longer be displayed and searching will be disabled in all of the panes.
+			This option is an alias to `-feature searchPanes.controls`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			The control buttons can be hidden and searching disabled for individual panes by the `-init columns.searchPanes.controls` option.
+			Please refer to the documentation for `-feature searchPanes.controls` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Hide control buttons and disable searching for all panes"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				controls: false
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		controls: false
 	}
 });
 ]]></example>

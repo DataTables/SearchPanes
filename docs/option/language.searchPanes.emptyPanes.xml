@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.emptyPanes</name>
+	<summary>Add internationalisation to the message shown when no panes are displayed</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            By setting the `-init searchPanes.i18n.emptyPanes` option to a message, if there are no panes to be displayed then this message will be displayed in their place. 
+        </description>
+	</type>
+
+	<description>
+		<![CDATA[
+			SearchPanes will display the message defined here in the `-tag div` that is meant to hold the panes if there are none to display. If the value of this option is set to null then the div will not be shown.
+
+			It is a global setting that will impact all instances of SearchPanes on a DataTable (it should be noted that it is uncommon to have more than one instance!). The per-instance parameter is `-feature searchPanes.i18n.emptyPanes`, which also defines the default.
+
+			This option is useful as the `-init language` object can be loaded by Ajax, or set locally and define all language strings used by DataTables and its extensions.
+        ]]>
+	</description>
+
+	<example title="Alter Empty Pane Message"><![CDATA[
+new DataTable('#myTable', {
+	language: {
+		searchPanes: {
+			emptyPanes: 'There are no panes to display. :/'
+		}
+	},
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+]]></example>
+
+    <example title="Hide the div that is meant to contain the SearchPanes"><![CDATA[
+new DataTable('#myTable', {
+	language: {
+		searchPanes: {
+			emptyPanes: null
+		}
+	},
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+]]></example>
+
+</dt-option>

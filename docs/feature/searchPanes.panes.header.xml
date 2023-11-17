@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.header</name>
+	<summary>Define the header for custom panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+			The `-init searchPanes.panes.header` string allows a custom header to be set for custom panes.
+		</description>
+	</type>
+
+	<default value="Custom Pane">
+		The default value of `-init searchPanes.panes.header` is the string `Custom Pane` to make it clear that it is a custom Pane for developers. It is expected this value will be changed. For standard panes, use `-init columns.searchPanes.header`.
+	</default>
+	<description>
+		<![CDATA[
+			As standard, Custom panes will be titled with the string "Custom Pane".
+
+			Setting `-init searchPanes.panes.header` to any other string value will cause that string to be displayed in the title of the Pane.
+		]]>
+	</description>
+
+	<example title="Define custom pane header"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'My Pane',
+						options: [
+							{
+								label: 'Accountants in Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n</name>
+	<summary>Container for options for language</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+			This option is capable of holding all of the sub-options for languages for the panes for specific applications.
+		</description>
+	</type>
+
+	<default value="object">
+		The default value for the `-init searchPanes.i18n` is an object containing all of the default values for the `searchPanes.i18n.*` options. These are the default values that SearchPanes uses.
+	</default>
+	<description>
+		<![CDATA[
+        No custom options will be applied to the pane specific language options if `-init searchPanes.i18n` is unaltered. Otherwise the related options will be applied if they are defined within this object. The language options from the parent table propagate down to the SearchPanes DataTable, so any language options set there will also affect the panes. The table specific language options for SearchPanes can be set using `-init searchPanes.dtOpts` and setting the `-init language` option within it.
+
+        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `-init language.searchPanes` has the same effect as setting this option and should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table. If both are provided, this will take preference.
+		]]>
+	</description>
+
+	<example title="Alter title messages: "><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: {
+						_: 'Filters Selected - %d',
+						0: 'No Filters Selected',
+						1: 'One Filter Selected'
+					}
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+<example title="Change messages for viewTotal:"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true,
+				i18n: {
+					count: '{total} found',
+					countFiltered: '{shown} ({total})'
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">searchPanes.i18n.count</related>
+<related type="option">searchPanes.i18n.countFiltered</related>
+<related type="option">searchPanes.viewTotal</related>
+<related type="option">searchPanes.i18n.title</related>
+
+</dt-option>

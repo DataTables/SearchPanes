@@ -15,21 +15,19 @@
 	</default>
 	<description>
 		<![CDATA[
-As standard, SearchPanes will be collapsible. A button is shown on the control row above the SearchPane table and the right most button toggles the state of the pane from being collapsed to expanded.
+			This option is an alias to `-feature searchPanes.collapse`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-If this option is set to false the panes will not be collapsible and the button will not be shown. It is possible to set this for specific columns using the `-init columns.searchPanes.collapse` option, and the SearchPanes can be initialised in the collapsed state by using the `-init searchPanes.initCollapsed` or `-init columns.searchPanes.initCollapsed` options.
-
+			Please refer to the documentation for `-feature searchPanes.collapse` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Don't allow SearchPanes to be collapsible"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				collapse: false
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		collapse: false
 	}
 });
 ]]></example>

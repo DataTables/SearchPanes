@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.emptyMessage</name>
+	<summary>Add internationalisation to the empty message displayed as a pane option</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+			By setting the `-init searchPanes.i18n.emptyMessage` option to a string, any empty cells found in the table will be represented in the pane by that string.
+		</description>
+	</type>
+
+	<default value="undefined">
+		The default value for the `-init searchPanes.i18n.emptyMessage` parameter is undefined. This means that the value of `-init searchPanes.emptyMessage` will be used. That value is `\&lt;i\&gt;No Data\&lt;/i\&gt;`.
+	</default>
+	<description>
+		<![CDATA[
+		Empty cells will be represented in the panes by the option `-init searchPanes.i18n.emptyMessage`. This is useful as it's a more user-friendly way than just having a blank cell. The value is passed through the `-api i18n()` function.
+
+		This value supersedes `-init searchPanes.emptyMessage` (deprecated) and `-init columns.searchPanes.emptyMessage`. If it is desired for those values to be used `-init searchPanes.i18n.emptyMessage` should be undefined, as it is by default. When this is the case the two previous options will be used.
+
+		This option will default to the value given by `-init language.searchPanes.emptyMessage`, which should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table, but if needed, this option is available to override that on a per instance basis.
+		]]>
+	</description>
+
+	<example title="Altering Empty Message"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					emptyMessage: '</i></b>EMPTY</b></i>'
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">searchPanes.emptyMessage</related>
+<related type="option">columns.searchPanes.emptyMessage</related>
+
+</dt-option>

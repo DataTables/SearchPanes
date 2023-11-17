@@ -54,6 +54,7 @@
 	<example title="Normal Render Function Which Uses Default Value of orthogonal"><![CDATA[
 
 
+
 { 
     data: "salary", 
     render: DataTable.render.number( ',', '.', 0, '$' ) 
@@ -62,6 +63,7 @@
 ]]></example>
 
 <example title="Render Function for Arrays"><![CDATA[
+
 
 {
 	data: 'permission',

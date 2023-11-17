@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.clearMessage</name>
+	<summary>Set the message to be displayed in the Clear button</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            Setting the `-init searchPanes.i18n.clearMessage` option to a string of your choice allows the Clear All button to have custom text within it.
+            
+            This property is passed through an `-api i18n()` function. 
+        </description>
+	</type>
+
+	<default value="undefined">
+        The default value for the `-init searchPanes.i18n.clearMessage` parameter is `"Clear All"`.
+    </default>
+	<description>
+		<![CDATA[
+			This option defined the text to be shown by the clear button in SearchPanes.
+
+			This option will default to the value given by `-init language.searchPanes.clearMessage`, which should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table, but if needed, this option is available to override that on a per instance basis.
+        ]]>
+	</description>
+
+	<example title="Change message for the Clear button"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		i18n: {
+			clearMessage: 'Obliterate Selections'
+		}
+	}
+});
+]]></example>
+
+</dt-option>

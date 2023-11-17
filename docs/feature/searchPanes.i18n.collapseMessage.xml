@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.i18n.collapseMessage</name>
+	<summary>Set the message to be displayed in the Collapse button</summary>
+	<since>SearchPanes 1.4.0</since>
+
+	<type type="string">
+		<description>
+            Setting the `-init searchPanes.i18n.collapseMessage` option to a string of your choice allows the Collapse All button to have custom text within it.
+            
+            This property is passed through an `-api i18n()` function. 
+        </description>
+	</type>
+
+	<default value="Collapse All">
+        The default value for the `-init searchPanes.i18n.collapseMessage` parameter is `"Collapse All"`.
+    </default>
+	<description>
+		<![CDATA[
+			SearchPanes will set the message to be displayed in the Collapse button to 'Collapse All'. This property allows that message to be configured.
+
+			This option will default to the value given by `-init language.searchPanes.collapseMessage`, which should generally be preferred over this option as the language strings can be loaded by Ajax and shared for the whole table, but if needed, this option is available to override that on a per instance basis.
+        ]]>
+	</description>
+
+	<example title="Change message for the Collapse button"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					collapseMessage: 'Hide SearchPanes'
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

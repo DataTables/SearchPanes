@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="SearchPanes">
 	<name>searchPanes.hideCount</name>
-	<summary>Deprecated. Hide the count column in all panes</summary>
+	<summary>Hide the count column in all panes</summary>
 	<since>SearchPanes 1.0.0</since>
 
 	<type type="boolean">
@@ -13,24 +13,26 @@
 	<default value="false">
         The default value for the `-init searchPanes.hideCount` parameter is `false`, meaning that as standard the count column will be included in the panes.
 	</default>
+
+	<deprecated>
+		This option is deprecated from version 1.2.1+. It was replaced by `-init columns.searchPanes.viewCount` to maintain consistency with `-init searchPanes.viewTotal`. For now this option can still be used, but it will be removed in the future.
+	</deprecated>
+
 	<description>
 		<![CDATA[
-			This option is deprecated from version 1.2.1+. It was replaced by `-init columns.searchPanes.viewCount` to maintain consistency with `-init searchPanes.viewTotal`. For now this option can still be used, but it will be removed in the future.
-			
-			As standard, SearchPanes will be displayed with the count column included in the table. However if the value of `-init searchPanes.hideCount` is set to `true` then the count column won't be displayed in any of the panes.
+			This option is an alias to `-feature searchPanes.hideCount`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			The count column can be hidden for individual panes by the `-init columns.searchPanes.hideCount` option.
+			Please refer to the documentation for `-feature searchPanes.hideCount` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Hide count for all panes"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				hideCount: true
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		hideCount: true
 	}
 });
 ]]></example>

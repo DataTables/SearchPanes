@@ -14,32 +14,31 @@
     </default>
 	<description>
 		<![CDATA[
-			As standard, the value of the `className` is undefined.
+			This option is an alias to `-feature searchPanes.panes.options.className`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			Setting `-init searchPanes.panes.options.className` to a string value will set the class of the row for the option in the custom pane. This is useful for adding custom styling to specific rows. 
+			Please refer to the documentation for `-feature searchPanes.panes.options.className` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Define custom pane options"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		panes: [
+			{
+				options: [
 					{
-						options: [
-							{
-								label: 'Accountants in Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-								},
-								className: 'tokyo'
-							}
-						]
+						label: 'Accountants in Tokyo',
+						value: function (rowData, rowIdx) {
+							return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+						},
+						className: 'tokyo'
 					}
 				]
 			}
-		}
+		]
 	}
 });
 ]]></example>

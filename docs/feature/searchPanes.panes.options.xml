@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.options</name>
+	<summary>Define the options for custom panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="Array">
+		<description>
+            The `-init searchPanes.panes.options` array allows custom options to be declared for Custom Panes.
+        </description>
+	</type>
+
+	<default value="Undefined">
+        The default value of `-init searchPanes.panes.options` is undefined as custom panes must be externally defined.
+    </default>
+	<description>
+		<![CDATA[
+        As standard, Custom panes have no options.
+
+        Setting `-init searchPanes.panes.options` to contain objects made up of both `-init searchPanes.panes.options.label` and `-init searchPanes.panes.options.value` will allow options to be defined within the custom panes. The `label` option is what will be displayed to the user and the `value` option is a function that will be used to search the DataTable.
+        ]]>
+	</description>
+
+	<example title="Define custom pane options"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						options: [
+							{
+								label: 'Accountants in Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+								},
+								className: 'tokyo'
+							}
+						]
+					}
+				]
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">searchPanes.panes.options.label</related>
+<related type="option">columns.searchPanes.options.label</related>
+<related type="option">searchPanes.panes.options.value</related>
+<related type="option">columns.searchPanes.options.value</related>
+
+</dt-option>

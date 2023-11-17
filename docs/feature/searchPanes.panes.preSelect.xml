@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.panes.preSelect</name>
+	<summary>Deprecated. Define any preSelections for the custom panes</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="Array">
+		<description>
+            The `-init searchPanes.panes.preSelect` array allows custom options to be preSelected for Custom Panes. The array is to be populated with strings that match the `-init searchPanes.panes.options.label` string.
+        </description>
+	</type>
+
+	<default value="Undefined">
+        The default value of `-init searchPanes.panes.preSelect` is undefined as by default there should be no preSelected options.
+    </default>
+
+	<deprecated since="2.0.0">
+		This option is deprecated from version 2.0.0+. It was replaced by `-init searchPanes.preSelect` which allowed the order that the selections were made in to be defined. This allowed preselecting to become compatible with `-init searchPanes.cascadePanes`.
+	</deprecated>
+
+	<description>
+		<![CDATA[
+        As standard, Custom panes have no preSelected options.
+
+        Setting `-init searchPanes.panes.preSelect` to contain strings that match the value of an options `-init searchPanes.panes.options.label` will allow SearchPanes to select that option for preSelection.
+
+        Note: Before version 2.0.0 where this option was deprecated, `-init searchPanes.panes.preSelect` was not supported with `-init searchPanes.cascadePanes`. This was because in order to have the cascade operate as expected the selections has to be made in the correct order. It is however now in versions after 2.0.0 using `-init searchPanes.preSelect`.
+        ]]>
+	</description>
+
+	<example title="PreSelect 'Over 50' custom pane option"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Age Range',
+						options: [
+							{
+								label: 'Over 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] > 50;
+								}
+							},
+							{
+								label: 'Under 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] < 50;
+								}
+							}
+						],
+						preSelect: ['Over 50']
+					}
+				]
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">searchPanes.panes.options.label</related>
+<related type="option">searchPanes.panes.options.value</related>
+<related type="option">searchPanes.preSelect</related>
+
+</dt-option>

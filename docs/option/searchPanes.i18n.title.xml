@@ -21,24 +21,23 @@
     </default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'. This property allows that message to be configured.
-        
-        This option allows direct configuration on the language options for the SearchPanes instance. At this time using `language.searchPanes.title` has the same effect as setting this option. If both are provided, this will take preference, We've made this change for consistency in our APIs moving forward.
+			This option is an alias to `-feature searchPanes.i18n.title`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
+
+			Please refer to the documentation for `-feature searchPanes.i18n.title` for full details of this option.
         ]]>
 	</description>
 
 	<example title="Alter title messages with an object"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				i18n: {
-					title: {
-						_: 'Filters Selected - %d',
-						0: 'No Filters Selected',
-						1: 'One Filter Selected'
-					}
-				}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		i18n: {
+			title: {
+				_: 'Filters Selected - %d',
+				0: 'No Filters Selected',
+				1: 'One Filter Selected'
 			}
 		}
 	}
@@ -48,12 +47,11 @@ new DataTable('#myTable', {
 <example title="Alter title message to be a static string"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				i18n: {
-					title: 'Select filters below'
-				}
-			}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		i18n: {
+			title: 'Select filters below'
 		}
 	}
 });

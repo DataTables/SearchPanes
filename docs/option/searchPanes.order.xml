@@ -17,20 +17,19 @@
 	</default>
 	<description>
 		<![CDATA[
-			By setting the `-init searchPanes.order` to an array of the `-init columns.searchPanes.name` property of the SearchPanes, the panes are displayed in that order.
+			This option is an alias to `-feature searchPanes.order`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-			By default the `-init columns.searchPanes.name` is set to be the title of the column. This can be overridden if desired. This is particularly useful for mixing custom and auto generated panes. If the `-init searchPanes.order` property is set then any panes that would normally have shown but are not present in the array will not be shown at all.
+			Please refer to the documentation for `-feature searchPanes.order` for full details of this option.
 		]]>
 	</description>
 
 	<example title="Set the order of the panes"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				order: ['Age', 'Office', 'Position']
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		order: ['Age', 'Office', 'Position']
 	}
 });
 ]]></example>
@@ -46,11 +45,10 @@ new DataTable('#myTable', {
 		}
 	],
 	layout: {
-		top1: {
-			searchPanes: {
-				order: ['Length of Life', 'Office', 'Position']
-			}
-		}
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		order: ['Length of Life', 'Office', 'Position']
 	}
 });
 ]]></example>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>language.searchPanes.title</name>
+	<summary>Add internationalisation to the title showing how many panes are selected</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="string">
+		<description>
+            As standard `-init searchPanes.i18n.title` is simply a string that contains a replacement for the number of selections that have been made.
+        </description>
+	</type>
+
+    <type type="object">
+        <description>
+            It is possible to set the value of `-init searchPanes.i18n.title` to an object that would allow for the actual text to also change as the number of selections increases. 
+        </description>
+    </type>
+
+	<default value="Filters Active - %d">
+        The default value for the `-init searchPanes.i18n.title` parameter is `Filters Active - %d`.
+    </default>
+	<description>
+		<![CDATA[
+		SearchPanes will set the title to display the number of filters in the style of the following 'Filters Active - %d'. This property allows that message to be configured.
+
+		It is a global setting that will impact all instances of SearchPanes on a DataTable (it should be noted that it is uncommon to have more than one instance!). The per-instance parameter is `-feature searchPanes.i18n.title`, which also defines the default.
+
+		This option is useful as the `-init language` object can be loaded by Ajax, or set locally and define all language strings used by DataTables and its extensions.
+        ]]>
+	</description>
+
+	<example title="Alter title messages with an object"><![CDATA[
+new DataTable('#myTable', {
+	language: {
+		searchPanes: {
+			title: {
+				_: 'Filters Selected - %d',
+				0: 'No Filters Selected',
+				1: 'One Filter Selected'
+			}
+		}
+	},
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+]]></example>
+
+<example title="Alter title message to be a static string"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: 'Select filters below'
+				}
+			}
+		}
+	}
+});
+]]></example>
+
+</dt-option>

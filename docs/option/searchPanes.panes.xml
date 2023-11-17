@@ -15,34 +15,31 @@
     </default>
 	<description>
 		<![CDATA[
-        As standard, SearchPanes will not add any custom panes to the page.
+			This option is an alias to `-feature searchPanes.panes`, which should be preferred when using DataTables 2+. It can be used to configure SearchPanes regardless of how the panes are inserted into the document (`-init layout` or `-button searchPanes`).
 
-        It operates in a similair way to  the `options` array in `-init columns.searchPanes.options`. With the addition of a `header` property to hold the title of the pane.
-
-        This is useful when you want to make searches across columns. Technically this would be possible by just adding an option to an already existing Pane but that may confuse the end user as they may think the option only applied to the corresponding column and not the table as a whole.
+			Please refer to the documentation for `-feature searchPanes.panes` for full details of this option.
         ]]>
 	</description>
 
 	<example title="Define custom pane:"><![CDATA[
 new DataTable('#myTable', {
 	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
+		top1: 'searchPanes'
+	},
+	searchPanes: {
+		panes: [
+			{
+				header: 'custom',
+				options: [
 					{
-						header: 'custom',
-						options: [
-							{
-								label: 'Accountants in Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-								}
-							}
-						]
+						label: 'Accountants in Tokyo',
+						value: function (rowData, rowIdx) {
+							return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+						}
 					}
 				]
 			}
-		}
+		]
 	}
 });
 ]]></example>

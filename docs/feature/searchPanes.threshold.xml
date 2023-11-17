@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="SearchPanes">
+	<name>searchPanes.threshold</name>
+	<summary>Set the minimum ratio of unique values to total values needed in a column to display it's pane</summary>
+	<since>SearchPanes 1.0.0</since>
+
+	<type type="Decimal">
+		<description>
+            By setting the `-init searchPanes.threshold` option to a decimal value between 0 and 1 it is possible to alter when the panes are automatically displayed.
+        </description>
+	</type>
+
+	<default value="0.6">
+        The default value for the `-init searchPanes.threshold` parameter is `0.6`.
+    </default>
+	<description>
+		<![CDATA[
+			As standard, SearchPanes will automatically determine which columns should be used for filtering. It does this by calculating the ratio of distinct values in a column to the total number of values within the same column. This ratio is then compared to the value of `-init searchPanes.threshold`. If the ratio is less than or equal to this value then the pane will be displayed to the user.
+
+			Consider a table with 4 rows and 4 columns. For column 1, each row has a different distinct value. This will give a value of 1 for our ratio and therefore a pane will not be displayed for this column.
+
+			Column 2 has one distinct value in rows 1 and 2, and a different distinct value in rows 3 and 4. Our ratio for this column therefore will be 0.5 (2 distinct values to 4 total values) and the pane will be displayed.
+
+			Column 3 has one distinct value in rows 1 and 2, and 2 different distinct values in rows 3 and 4. Our ratio for this column is 0.75 (3 distinct values to 4 total values) and the pane will not be displayed.
+
+			Column 4 has a single distinct value that is the same across all of the rows. This pane will not be subject to the threshold check as there is only one distinct value in the whole column - it makes no sense to filter on it.
+
+			In effect, as the value of the ratio rises towards 1, the more "unique" the data in that column is.  
+
+			This system can also be applied to columns which have arrays in place. As the total number of options are calculated rather than just using the row count it is still possible to perform an accurate calculation. Say you have a column that uses arrays with 2 rows. Row 1 contains 4 distinct values and row 2 contains 4 values 2 of which are shared with row 1, the remaining 2 are distinct to the set. This means there are a total of 6 distinct options within the column, across the 8 values that are presented giving a ratio of 0.75 (6/8).
+
+			Therefore by setting the `-init searchPanes.threshold` option to a different decimal value, the point at which the panes are displayed can be altered. This is useful for keeping a clean user interface and only displaying the panes that are likely to provide "useful" filtering.
+
+			The threshold of the uniqueness ratio can also be set for individual columns by making use of the `-init columns.searchPanes.threshold` option.
+
+			If you want to force specific panes to always be present, or to always be hidden, use the `-init columns.searchPanes.show` option. This is a much cleaner way of forcing panes to show/hide.
+		]]>
+	</description>
+
+	<example title="Change the threshold of the uniqueness ratio"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				threshold: 0.4
+			}
+		}
+	}
+});
+]]></example>
+
+<related type="option">columns.searchPanes.show</related>
+<related type="option">columns.searchPanes.threshold</related>
+
+</dt-option>
