@@ -9,7 +9,7 @@ var dt = $('#example').DataTable({
 	columnDefs: [
 		{
 			orderable: false,
-			className: 'select-checkbox',
+			render: DataTable.render.select(),
 			searchPanes: {
 				show: true,
 				options: [
@@ -126,7 +126,7 @@ var dt = new DataTable('#example', {
 	columnDefs: [
 		{
 			orderable: false,
-			className: 'select-checkbox',
+			render: DataTable.render.select(),
 			searchPanes: {
 				show: true,
 				options: [
