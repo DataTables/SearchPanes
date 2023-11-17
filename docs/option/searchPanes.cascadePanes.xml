@@ -26,16 +26,15 @@
 	</description>
 
 	<example title="Enable cascading panes:"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            cascadePanes: true
-        },
-		dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				cascadePanes: true
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

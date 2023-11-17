@@ -24,41 +24,37 @@
 	</description>
 
 	<example title="Change message for SearchPanes button which also displays selection count:"><![CDATA[
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            i18n: {
-                collapse: {
-					0: 'Search Options',
-					1: 'Search (one selected)',
-					_: 'Search Options (%d)'
-				}
-            }
-        },
-        buttons: [
-            'searchPanes'
-        ],
-        dom: 'Bfrtip'
-    });
+new DataTable('#myTable', {
+	searchPanes: {
+		i18n: {
+			collapse: {
+				0: 'Search Options',
+				1: 'Search (one selected)',
+				_: 'Search Options (%d)'
+			}
+		}
+	},
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
 });
-
 ]]></example>
 
 	<example title="Change message for SearchPanes button to only be a string:"><![CDATA[
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            i18n: {
-                collapse: 'Search Options"
-            }
-        },
-        buttons: [
-            'searchPanes'
-        ],
-        dom: 'Bfrtip'
-    });
+new DataTable('#myTable', {
+	searchPanes: {
+		i18n: {
+			collapse: 'Search Options'
+		}
+	},
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
 });
-
 ]]></example>
 
 <related type="api">i18n()</related>

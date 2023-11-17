@@ -22,27 +22,31 @@
 	</description>
 
 	<example title="Alter Empty Pane Message"><![CDATA[
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            i18n: {
-                emptyPanes: 'There are no panes to display. :/'
-            }
-        }
-    });
-
-    ]]></example>
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					emptyPanes: 'There are no panes to display. :/'
+				}
+			}
+		}
+	}
+});
+]]></example>
 
     <example title="Hide the div that is meant to contain the SearchPanes"><![CDATA[
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            i18n: {
-                emptyPanes: null
-            }
-        }
-    });
-
-    ]]></example>
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					emptyPanes: null
+				}
+			}
+		}
+	}
+});
+]]></example>
 
 </dt-option>

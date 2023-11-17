@@ -26,35 +26,34 @@
 	</description>
 
 	<example title="PreSelect 'Over 50' custom pane option"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Age Range',
-                    options: [
-                        {
-                            label: 'Over 50',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] > 50;
-                            }
-                        },
-                        {
-                            label: 'Under 50',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] < 50;
-                            }
-                        }
-                    ],
-                    preSelect: ['Over 50']
-                }
-            ]
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Age Range',
+						options: [
+							{
+								label: 'Over 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] > 50;
+								}
+							},
+							{
+								label: 'Under 50',
+								value: function (rowData, rowIdx) {
+									return rowData[3] < 50;
+								}
+							}
+						],
+						preSelect: ['Over 50']
+					}
+				]
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">searchPanes.panes.options.label</related>

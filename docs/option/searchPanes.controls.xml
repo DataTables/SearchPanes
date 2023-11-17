@@ -22,16 +22,15 @@
 	</description>
 
 	<example title="Hide control buttons and disable searching for all panes"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-		dom: 'Plfrtip',
-        searchPanes: {
-            controls: false
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				controls: false
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.controls</related>

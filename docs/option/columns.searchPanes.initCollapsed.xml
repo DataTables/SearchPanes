@@ -22,19 +22,19 @@ This behaviour can be set on for all columns by using the `-init columns.searchP
 	</description>
 
 	<example title="Collapse a Specific SearchPane on Initialisation"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-		dom: 'Plfrtip',
-		columnDefs:[{
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
 			searchPanes: {
 				initCollapsed: true
 			},
 			targets: [1]
-		}]
-    });
+		}
+	]
 });
-
 ]]></example>
 
 <related type="option">searchPanes.initCollapsed</related>

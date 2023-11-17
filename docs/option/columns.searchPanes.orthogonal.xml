@@ -52,24 +52,30 @@
 	</description>
 
 	<example title="Normal Render Function Which Uses Default Value of orthogonal"><![CDATA[
+
+
 { 
     data: "salary", 
-    render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) 
+    render: DataTable.render.number( ',', '.', 0, '$' ) 
 }
 
 ]]></example>
 
 <example title="Render Function for Arrays"><![CDATA[
-{ 
-    data: "permission",
-    render: {
-        _: '[, ].name',
-        sp: '[].name'
-    },
-    searchPanes: {
-        orthogonal: 'sp'
-    },
-    dom: 'Plfrtip'
+
+{
+	data: 'permission',
+	render: {
+		_: '[, ].name',
+		sp: '[].name'
+	},
+	layout: {
+		top1: {
+			searchPanes: {
+				orthogonal: 'sp'
+			}
+		}
+	}
 }
 ]]></example>
 

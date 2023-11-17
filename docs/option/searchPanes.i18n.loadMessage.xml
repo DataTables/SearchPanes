@@ -21,15 +21,17 @@
 	</description>
 
 	<example title="Alter SearchPanes Loading Message"><![CDATA[
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            i18n: {
-                loadMessage: 'Loading filtering options...'
-            }
-        }
-    });
-
-    ]]></example>
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					loadMessage: 'Loading filtering options...'
+				}
+			}
+		}
+	}
+});
+]]></example>
 
 </dt-option>

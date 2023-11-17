@@ -18,11 +18,14 @@
 	</description>
 
 	<example title="Select a row in a pane and clear the selections:"><![CDATA[
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
-    $('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
-    $('#example').DataTable().searchPanes.clearSelections();
+var dt = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+new DataTable('#myTable').searchPanes.clearSelections();
 ]]></example>
 
 </dt-api>

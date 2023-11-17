@@ -21,10 +21,13 @@
 	</description>
 
 	<example title="Add a class to the searchPanes container:"><![CDATA[
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
-	dt.searchPanes.container().addClass('sp_class');
+var dt = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	}
+});
+
+dt.searchPanes.container().addClass('sp_class');
 ]]></example>
 
 </dt-api>

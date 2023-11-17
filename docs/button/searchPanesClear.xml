@@ -16,15 +16,13 @@
 	</option>
 
 	<example title="Basic SearchPanesClear button initialisation"><![CDATA[
-
-$('#myTable').DataTable( {
-	dom: 'Bfrtip',
-	buttons: [
-		'searchPanesClear',
-		'searchPanes'
-	]
-} );
-
+new DataTable('#myTable', {
+	layout: {
+		topStart: {
+			buttons: ['searchPanesClear', 'searchPanes']
+		}
+	}
+});
 ]]></example>
 
 </dt-button>

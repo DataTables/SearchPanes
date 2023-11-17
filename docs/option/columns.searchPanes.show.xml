@@ -28,27 +28,25 @@
 	</description>
 
 	<example title="Force panes to hide and show"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    show: true
-                },
-                targets: [0]
-            },
-            {
-                searchPanes: {
-                    show: false
-                },
-                targets: [2]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0]
+		},
+		{
+			searchPanes: {
+				show: false
+			},
+			targets: [2]
+		}
+	]
 });
-
 ]]></example>
 
 <related type="option">searchPanes.threshold</related>

@@ -24,16 +24,15 @@
 	</description>
 
 	<example title="Hide count for all panes"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-		dom: 'Plfrtip',
-        searchPanes: {
-            viewCount: false
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewCount: false
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.viewCount</related>

@@ -24,21 +24,19 @@
 	</description>
 
 	<example title="Hide count for the 5th columns pane"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    hideCount: true
-                },
-                targets: [4]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				hideCount: true
+			},
+			targets: [4]
+		}
+	]
 });
-
 ]]></example>
 
 <related type="option">searchPanes.hideCount</related>

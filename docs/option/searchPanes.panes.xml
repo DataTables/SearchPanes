@@ -24,28 +24,27 @@
 	</description>
 
 	<example title="Define custom pane:"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            panes: [
-                {
-                    header: 'custom',
-                    options: [
-                        {
-                            label: 'Accountants in Tokyo',
-                            value: function(rowData, rowIdx) {
-                                return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'custom',
+						options: [
+							{
+								label: 'Accountants in Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.options</related>

@@ -28,37 +28,35 @@
 	</description>
 
 	<example title="Alter title messages with an object"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            i18n: {
-                title: {
-                    _: 'Filters Selected - %d',
-                    0: 'No Filters Selected',
-                    1: 'One Filter Selected'
-                }
-            }
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: {
+						_: 'Filters Selected - %d',
+						0: 'No Filters Selected',
+						1: 'One Filter Selected'
+					}
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <example title="Alter title message to be a static string"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            i18n: {
-                title: 'Select filters below'
-            }
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: 'Select filters below'
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

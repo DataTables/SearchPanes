@@ -24,17 +24,17 @@
 	</description>
 
 	<example title="Change message for the Clear button"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            i18n: {
-                clearMessage: 'Obliterate Selections'
-            }
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					clearMessage: 'Obliterate Selections'
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

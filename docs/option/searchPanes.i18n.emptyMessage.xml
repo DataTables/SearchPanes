@@ -24,18 +24,17 @@
 	</description>
 
 	<example title="Altering Empty Message"><![CDATA[
-
- $(document).ready(function() {
-    var dt = $('#example').DataTable({
-        searchPanes: {
-			i18n: {
-                emptyMessage: "</i></b>EMPTY</b></i>"
-            }
-        }
-		dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					emptyMessage: '</i></b>EMPTY</b></i>'
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">searchPanes.emptyMessage</related>

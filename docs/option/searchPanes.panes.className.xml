@@ -22,27 +22,28 @@
 	</description>
 
 	<example title="Add class name to custom panes"><![CDATA[
-
-table = $('#example').DataTable({
-	dom: 'Plfrtip',
-	searchPanes: {
-		panes: [
-			{
-				header: 'Custom',
-				options: [
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
 					{
-						label: 'Accountants from Tokyo',
-						value: function(rowData, rowIdx) {
-							return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-						}
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+								}
+							}
+						],
+						className: 'PaneSpecific'
 					}
-				],
-				className: "PaneSpecific"
+				]
 			}
-		]
+		}
 	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.className</related>

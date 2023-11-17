@@ -24,41 +24,40 @@
 	</description>
 
 	<example title="Altering Empty Message"><![CDATA[
-
- $(document).ready(function() {
-    var dt = $('#example').DataTable({
-        searchPanes: {
-            emptyMessage: "</i></b>EMPTY</b></i>"
-        },
-		    dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				emptyMessage: '</i></b>EMPTY</b></i>'
+			}
+		}
+	}
 });
-
 ]]></example>
 
 	<example title="Altering Empty Message for each column"><![CDATA[
-	$(document).ready( function() {
-  var table = $('#example').DataTable({
-    dom: 'Plfrtip',
-    columnDefs: [
-      {
-         searchPanes: {
-            emptyMessage: "</i></b>EMPTY</b></i>"
-        },
-        targets: [2]
-      }
-    ]
-  });
+var table = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				emptyMessage: '</i></b>EMPTY</b></i>'
+			},
+			targets: [2]
+		}
+	]
+});
 
-    table.cell(2,2).data('');
-    table.cell(6,5).data('');
-    table.cell(2,3).data('');
-    table.cell(2,0).data('');
-    table.cell(6,1).data('');
-    table.cell(2,4).data('');
-    table.searchPanes.rebuildPane();
-} );
-	]]></example>
+table.cell(2, 2).data('');
+table.cell(6, 5).data('');
+table.cell(2, 3).data('');
+table.cell(2, 0).data('');
+table.cell(6, 1).data('');
+table.cell(2, 4).data('');
+table.searchPanes.rebuildPane();
+]]></example>
 
 <related type="option">language.searchPanes.emptyMessage</related>
 <related type="option">columns.searchPanes.emptyMessage</related>

@@ -22,16 +22,15 @@
 	</description>
 
 	<example title="Set the number of panes in a row to 2"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            layout: 'columns-2'
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				layout: 'columns-2'
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

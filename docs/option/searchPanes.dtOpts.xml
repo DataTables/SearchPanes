@@ -15,7 +15,7 @@
     </default>
 	<description>
 		<![CDATA[
-			As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`. As Standard SearchPanes internal DataTable has a `-init dom` property of only `t`, meaning that if you are added paging or something visual then you must also modify the `-init dom` property.
+			As standard, SearchPanes will overwrite the options defined by the SearchPanes code with the options defined in `-init searchPanes.dtOpts`. SearchPanes' internal DataTable has `-init layout` set to only show the table. As such, if you are added paging or something visual then you must also modify the `-init layout` option.
 
 			By overwriting this value in the initialisation, the panes can be customised as much as a standard DataTables. 
 
@@ -26,17 +26,18 @@
 	</description>
 
 	<example title="Alter searching and info of the Panes:"><![CDATA[
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            dtOpts: {
-                paging: true,
-                pagingType: 'numbers',
-                searching: false
-            }
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				dtOpts: {
+					paging: true,
+					pagingType: 'numbers',
+					searching: false
+				}
+			}
+		}
+	}
 });
 ]]></example>
 

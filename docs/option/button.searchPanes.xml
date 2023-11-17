@@ -18,17 +18,19 @@ SearchPanes makes use of the following Buttons properties.
 	</description>
 
 	<example title="SearchPanes Button initialisation: Set the config for SearchPanes to enable the `-init cascadePanes` option"><![CDATA[
-$('#example').DataTable({
-	buttons: [
-		{
-			extend: 'searchPanes',
-			config: {
-				cascadePanes: true
-			}
+new DataTable('#myTable', {
+	layout: {
+		topStart: {
+			buttons: [
+				{
+					extend: 'searchPanes',
+					config: {
+						cascadePanes: true
+					}
+				}
+			]
 		}
-	],
-	dom: 'Bfrtip'
+	}
 });
-
 ]]></example>
 </dt-button>

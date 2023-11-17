@@ -26,21 +26,19 @@
 	</description>
 
 	<example title="Pre-select values in a pane"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    preSelect: ['Edinburgh','London']
-                },
-                targets: [3]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				preSelect: ['Edinburgh', 'London']
+			},
+			targets: [3]
+		}
+	]
 });
-
 ]]></example>
 
 <related type="option">searchPanes.preSelect</related>

@@ -21,28 +21,27 @@
 	</description>
 
 	<example title="Define custom pane options"><![CDATA[
-
-$(document).ready(function() {
-	$('#example').DataTable({
-		searchPanes: {
-			panes: [
-				{
-					options: [
-						{
-							label: 'Accountants in Tokyo',
-							value: function(rowData, rowIdx) {
-								return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
-							},
-							className: 'tokyo
-						}
-					]
-				}
-			]
-		},
-		dom: 'Plfrtip'
-	});
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						options: [
+							{
+								label: 'Accountants in Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[2] === 'Accountant' && rowData[3] === 'Tokyo';
+								},
+								className: 'tokyo'
+							}
+						]
+					}
+				]
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.options.label</related>

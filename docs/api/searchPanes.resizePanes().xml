@@ -16,15 +16,13 @@
 		This method should be called when initialising and inserting SearchPanes through the API, immediately after the container has been inserted, otherwise the panes will display in a single column. It can also be called at any other time to attempt to resize the panes to their best fit, although SearchPanes should do this automatically.
 	</description>
 
-	<example title="Initialise SearchPanes, Insert into dom and resize."><![CDATA[
-
-$(document).ready(function() {
-    var table = $('#example').DataTable({
-        searchPanes: true
-    });
-    table.searchPanes.container().prependTo(table.table().container());
-	table.searchPanes.resizePanes();
+	<example title="Initialise SearchPanes, insert into DOM, and resize."><![CDATA[
+var table = new DataTable('#myTable', {
+	searchPanes: true
 });
+
+table.searchPanes.container().prependTo(table.table().container());
+table.searchPanes.resizePanes();
 ]]></example>
 
 <related type="option">searchPanes.layout</related>

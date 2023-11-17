@@ -26,30 +26,31 @@
 	</description>
 
 	<example title="Define custom pane DataTable options"><![CDATA[
-
-    table = $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Custom',
-                    options: [
-                        {
-                            label: 'Accountants from Tokyo',
-                            value: function(rowData, rowIdx) {
-                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-                            }
-                        }
-                    ],
-                    dtOpts: {
-                        paging: true,
-                        order: [[1, 'desc']]
-                    }
-                }
-            ]
-        }
-    });
-
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				panes: [
+					{
+						header: 'Custom',
+						options: [
+							{
+								label: 'Accountants from Tokyo',
+								value: function (rowData, rowIdx) {
+									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+								}
+							}
+						],
+						dtOpts: {
+							paging: true,
+							order: [[1, 'desc']]
+						}
+					}
+				]
+			}
+		}
+	}
+});
 ]]></example>
 
 <related type="option">searchPanes.dtOpts</related>

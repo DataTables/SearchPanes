@@ -22,39 +22,37 @@
 	</description>
 
 	<example title="Alter title messages: "><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        searchPanes: {
-            i18n: {
-                title: {
-                    _: 'Filters Selected - %d',
-                    0: 'No Filters Selected',
-                    1: 'One Filter Selected'
-                }
-            }
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					title: {
+						_: 'Filters Selected - %d',
+						0: 'No Filters Selected',
+						1: 'One Filter Selected'
+					}
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <example title="Change messages for viewTotal:"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            viewTotal: true,
-            i18n: {
-                count: '{total} found',
-                countFiltered: '{shown} ({total})'
-            }
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true,
+				i18n: {
+					count: '{total} found',
+					countFiltered: '{shown} ({total})'
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">searchPanes.i18n.count</related>

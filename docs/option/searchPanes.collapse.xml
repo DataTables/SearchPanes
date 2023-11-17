@@ -23,16 +23,15 @@ If this option is set to false the panes will not be collapsible and the button 
 	</description>
 
 	<example title="Don't allow SearchPanes to be collapsible"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-		dom: 'Plfrtip',
-        searchPanes: {
-            collapse: false
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				collapse: false
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.collapse</related>

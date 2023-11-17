@@ -22,27 +22,29 @@
     </option>
 
 	<example title="Basic SearchPanes button initialisation"><![CDATA[
-
-$('#myTable').DataTable( {
-	buttons: [
-		'searchPanes'
-	],
-} );
-
+new DataTable('#myTable', {
+	layout: {
+		topStart: {
+			buttons: ['searchPanes']
+		}
+	}
+});
 ]]></example>
 
 	<example title="SearchPanes configuration using a button"><![CDATA[
-
-new $.fn.dataTable.Buttons( table, {
-	buttons: [
-		{
-			extend: 'searchPanes',
-			config: {
-				cascadePanes: true
-			}
+new DataTable('#myTable', {
+	layout: {
+		topStart: {
+			buttons: [
+				{
+					extend: 'searchPanes',
+					config: {
+						cascadePanes: true
+					}
+				}
+			]
 		}
-	],
-} );
-
+	}
+});
 ]]></example>
 </dt-button>

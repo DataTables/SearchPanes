@@ -38,16 +38,15 @@
 	</description>
 
 	<example title="Change the threshold of the uniqueness ratio"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            threshold: 0.4
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				threshold: 0.4
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.show</related>

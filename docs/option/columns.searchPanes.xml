@@ -22,172 +22,161 @@
 	</description>
 
 	<example title="Alter searching and info of the third columns pane"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                dtOpts: {
-                    searching: false,
-                    info: true
-                },
-                targets[2]
-            }
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			dtOpts: {
+				searching: false,
+				info: true
+			},
+			targets: [2]
+		}
+	]
 });
-
 ]]></example>
 
 <example title="Hide count for the 5th columns pane:"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    viewCount: false
-                }
-                targets: [4]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				viewCount: false
+			},
+			targets: [4]
+		}
+	]
 });
-
 ]]></example>
 	<example title="Define custom Options for a specific pane"><![CDATA[
-
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [ 
-            {
-                searchPanes: {
-                    options: [
-                        {
-                            label: 'Under 20',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] < 20;
-                            }
-                        },
-                        {
-                            label: '20 to 30',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 30 && rowData[4] >=20;
-                            }
-                        },
-                         {
-                            label: '30 to 40',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 40 && rowData[4] >=30;
-                            }
-                        },
-                         {
-                            label: '40 to 50',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 50 && rowData[4] >=40;
-                            }
-                        },
-                         {
-                            label: '50 to 60',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] <= 60 && rowData[4] >=50;
-                            }
-                        },
-                         {
-                            label: 'Over 60',
-                            value: function(rowData, rowIdx) {
-                                return rowData[4] > 60;
-                            }
-                        }
-                    ]
-                },
-                targets: [4]
-            },
-            {
-                searchPanes: {
-                    options: [
-                        {
-                            label: 'Not Edinburgh',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] !== 'Edinburgh';
-                            }
-                        },
-                        {
-                            label: 'Not London',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] !== 'London';
-                            }
-                        }
-                    ]
-                },
-                targets: [3]
-            }
-        ]
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				options: [
+					{
+						label: 'Under 20',
+						value: function (rowData, rowIdx) {
+							return rowData[4] < 20;
+						}
+					},
+					{
+						label: '20 to 30',
+						value: function (rowData, rowIdx) {
+							return rowData[4] <= 30 && rowData[4] >= 20;
+						}
+					},
+					{
+						label: '30 to 40',
+						value: function (rowData, rowIdx) {
+							return rowData[4] <= 40 && rowData[4] >= 30;
+						}
+					},
+					{
+						label: '40 to 50',
+						value: function (rowData, rowIdx) {
+							return rowData[4] <= 50 && rowData[4] >= 40;
+						}
+					},
+					{
+						label: '50 to 60',
+						value: function (rowData, rowIdx) {
+							return rowData[4] <= 60 && rowData[4] >= 50;
+						}
+					},
+					{
+						label: 'Over 60',
+						value: function (rowData, rowIdx) {
+							return rowData[4] > 60;
+						}
+					}
+				]
+			},
+			targets: [4]
+		},
+		{
+			searchPanes: {
+				options: [
+					{
+						label: 'Not Edinburgh',
+						value: function (rowData, rowIdx) {
+							return rowData[3] !== 'Edinburgh';
+						}
+					},
+					{
+						label: 'Not London',
+						value: function (rowData, rowIdx) {
+							return rowData[3] !== 'London';
+						}
+					}
+				]
+			},
+			targets: [3]
+		}
+	]
 });
-
 ]]></example>
 
 <example title="Pre-Select Values in a Pane"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    preSelect: ['Edinburgh','London']
-                },
-                targets: [3]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				preSelect: ['Edinburgh', 'London']
+			},
+			targets: [3]
+		}
+	]
 });
-
 ]]></example>
 
 <example title="Force panes to hide and show"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    show: true
-                },
-                targets: [0]
-            },
-            {
-                searchPanes: {
-                    show: false
-                },
-                targets: [2]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				show: true
+			},
+			targets: [0]
+		},
+		{
+			searchPanes: {
+				show: false
+			},
+			targets: [2]
+		}
+	]
 });
-
 ]]></example>
 
 <example title="Change the threshold of the uniqueness ratio for a specific column"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    threshold: 0.99
-                },
-                targets: [0]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				threshold: 0.99
+			},
+			targets: [0]
+		}
+	]
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.dtOpts</related>

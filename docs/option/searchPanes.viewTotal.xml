@@ -28,16 +28,15 @@
 	</description>
 
 	<example title="Enable viewTotal"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            viewTotal: true
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">searchPanes.i18n.count</related>

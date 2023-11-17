@@ -22,16 +22,15 @@
 	</description>
 
 	<example title="Disable Clear Buttons"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            clear: false
-        },
-		dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				clear: false
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

@@ -28,20 +28,19 @@
 	</description>
 
 	<example title="Change messages for row count:"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            viewTotal: true,
-			i18n: {
-                count: '{total} found',
-                countFiltered: '{shown} ({total})'
-            }
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				viewTotal: true,
+				i18n: {
+					count: '{total} found',
+					countFiltered: '{shown} ({total})'
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">searchPanes.i18n.countFiltered</related>

@@ -38,38 +38,35 @@
 	</description>
 
 	<example title="Delete a row and redraw the first pane"><![CDATA[
-
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
-
-	$('#example').DataTable().row(0).remove();
-	$('#example').DataTable().searchPanes.rebuildPane(0);
+var dt = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	}
 });
+
+dt.row(0).remove();
+dt.searchPanes.rebuildPane(0);
 ]]></example>
 
 <example title="Delete a row and redraw all of the panes"><![CDATA[
-
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
-
-	$('#example').DataTable().row(0).remove();
-	$('#example').DataTable().searchPanes.rebuildPane();
+var dt = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	}
 });
+
+dt.row(0).remove();
+dt.searchPanes.rebuildPane();
 ]]></example>
 
 	<example title="Redraw the first pane while maintaining selections"><![CDATA[
-
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
-
-	$('#example').DataTable().searchPanes.rebuildPane(0, true);
+var dt = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	}
 });
+
+dt.searchPanes.rebuildPane(0, true);
 ]]></example>
 
 </dt-api>

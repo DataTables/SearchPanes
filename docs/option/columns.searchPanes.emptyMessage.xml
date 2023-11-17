@@ -23,21 +23,19 @@
 	</description>
 
 	<example title="Set the empty message for a specific column"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    emptyMessage: 'Age not provided'
-                },
-                targets: [3]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				emptyMessage: 'Age not provided'
+			},
+			targets: [3]
+		}
+	]
 });
-
 ]]></example>
 
 <related type="option">searchPanes.emptyMessage</related>

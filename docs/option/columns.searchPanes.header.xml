@@ -20,21 +20,19 @@
 	</description>
 
 	<example title="Set the Header of the Pane to a custom string"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    header: 'Length of Life'
-                },
-                targets: [3]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				header: 'Length of Life'
+			},
+			targets: [3]
+		}
+	]
 });
-
 ]]></example>
 
 </dt-option>

@@ -24,37 +24,35 @@
 	</description>
 
 	<example title="Set the order of the panes"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            order: ['Age', 'Office', 'Position']
-        },
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				order: ['Age', 'Office', 'Position']
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <example title="Set the order of the panes including a custom name"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            order: ['Length of Life', 'Office', 'Position']
-        },
-        columnDefs: [
-            {
-                searchPanes: {
-                    name: 'Length of Life'
-                },
-                targets: [3]
-            }
-        ],
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	columnDefs: [
+		{
+			searchPanes: {
+				name: 'Length of Life'
+			},
+			targets: [3]
+		}
+	],
+	layout: {
+		top1: {
+			searchPanes: {
+				order: ['Length of Life', 'Office', 'Position']
+			}
+		}
+	}
 });
-
 ]]></example>
 <related type="option">columns.searchPanes.name</related>
 <related type="option">searchPanes.panes.header</related>

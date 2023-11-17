@@ -38,21 +38,19 @@
 	</description>
 
 	<example title="Change the threshold of the uniqueness ratio for a specific column"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    threshold: 0.99
-                },
-                targets: [0]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				threshold: 0.99
+			},
+			targets: [0]
+		}
+	]
 });
-
 ]]></example>
 
 	<related type="option">columns.searchPanes.show</related>

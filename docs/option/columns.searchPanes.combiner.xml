@@ -24,58 +24,54 @@
 	</description>
 
 	<example title="Set the Combiner Option to and Logic"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [
-            {
-                searchPanes: {
-                    combiner: 'and'
-                },
-                targets: [4]
-            }
-        ]
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				combiner: 'and'
+			},
+			targets: [4]
+		}
+	]
 });
-
 ]]></example>
 
 <example title="Using the combiner option to eliminate rows"><![CDATA[
-
-$(document).ready(function() {
-    var dt = $('#example').DataTable({
-        dom: 'Plfrtip',
-        columnDefs: [ 
-            {
-                searchPanes: {
-                    options: [
-                        {
-                            label: 'Not Edinburgh',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] !== 'Edinburgh';
-                            }
-                        },
-                        {
-                            label: 'Not London',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] !== 'London';
-                            }
-                        }
-                    ],
-                    combiner: 'and'
-                },
-                targets: [3]
-            }
-        ],
-        select: {
-			style:    'os',
-			selector: 'td:first-child'
-		},
-		order: [[ 1, 'asc' ]]
-    });
+var dt = new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	},
+	columnDefs: [
+		{
+			searchPanes: {
+				options: [
+					{
+						label: 'Not Edinburgh',
+						value: function (rowData, rowIdx) {
+							return rowData[3] !== 'Edinburgh';
+						}
+					},
+					{
+						label: 'Not London',
+						value: function (rowData, rowIdx) {
+							return rowData[3] !== 'London';
+						}
+					}
+				],
+				combiner: 'and'
+			},
+			targets: [3]
+		}
+	],
+	select: {
+		style: 'os',
+		selector: 'td:first-child'
+	},
+	order: [[1, 'asc']]
 });
-
 ]]></example>
 
 </dt-option>

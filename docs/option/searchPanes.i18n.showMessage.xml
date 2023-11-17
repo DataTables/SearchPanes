@@ -24,17 +24,17 @@
 	</description>
 
 	<example title="Change message for the Show button"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            i18n: {
-                showMessage: 'Display SearchPanes'
-            }
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				i18n: {
+					showMessage: 'Display SearchPanes'
+				}
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

@@ -22,16 +22,15 @@
 	</description>
 
 	<example title="Hide ordering buttons for all panes"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-		dom: 'Plfrtip',
-        searchPanes: {
-            orderable: false
-        }
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				orderable: false
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">columns.searchPanes.orderable</related>

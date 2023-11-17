@@ -35,13 +35,11 @@
 	</description>
 
 	<example title="Enable SearchPanes"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: 'searchPanes'
+	}
 });
-
 ]]></example>
 
 </dt-option>

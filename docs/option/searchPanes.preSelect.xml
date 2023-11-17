@@ -30,19 +30,20 @@
 	</description>
 
 	<example title="Pre-select values in a pane"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        dom: 'Plfrtip',
-		searchPanes: {
-			preSelect: [{
-				column: 3,
-				rows: ['Edinburgh','London']
-			}]
-		},
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				preSelect: [
+					{
+						column: 3,
+						rows: ['Edinburgh', 'London']
+					}
+				]
+			}
+		}
+	}
 });
-
 ]]></example>
 
 </dt-option>

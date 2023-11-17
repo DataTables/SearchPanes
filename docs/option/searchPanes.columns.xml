@@ -22,16 +22,15 @@
 	</description>
 
 	<example title="Specify columns for consideration:"><![CDATA[
-
-$(document).ready(function() {
-    $('#example').DataTable({
-        searchPanes: {
-            columns: [1,3,5]
-        },
-		dom: 'Plfrtip'
-    });
+new DataTable('#myTable', {
+	layout: {
+		top1: {
+			searchPanes: {
+				columns: [1, 3, 5]
+			}
+		}
+	}
 });
-
 ]]></example>
 
 <related type="option">searchPanes.threshold</related>
