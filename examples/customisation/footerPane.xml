@@ -27,7 +27,7 @@ new DataTable('#example', {
 ]]>
 </js-vanilla>
 
-<title lib="SearchPanes">Panes in below of DataTable</title>
+<title lib="SearchPanes">Panes below DataTable</title>
 
 <info><![CDATA[
 
