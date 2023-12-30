@@ -74,6 +74,7 @@ div.dtsp-panesContainer {
             }
         }
     
+        div.dt-container,
         div.dataTables_wrapper {
             border: 2px #f0f0f0 solid;
             border-radius: 4px;
@@ -95,12 +96,13 @@ div.dtsp-panesContainer {
     }
 }
 
-div.dt-button-collection{
+// Popover view
+div.dt-button-collection {
     div.dtsp-panesContainer {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
+        padding: 9px 1rem;
     }
 }
+
 
 html[data-bs-theme="dark"] {
 	div.dtsp-topRow {
@@ -147,6 +149,7 @@ html[data-bs-theme="dark"] {
 		}
 	
         div.dtsp-searchPane {
+            div.dt-container,
             div.dataTables_wrapper {
                 border: 1px solid rgba(255, 255, 255, 0.2);
 

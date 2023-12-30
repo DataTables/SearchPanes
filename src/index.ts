@@ -111,6 +111,8 @@ DataTable.ext.buttons.searchPanesClear = {
 
 DataTable.ext.buttons.searchPanes = {
 	action(e, dt, node, config) {
+		var that = this;
+
 		if (! config._panes) {
 			// No SearchPanes on this button yet - initialise and show
 			this.processing(true);
@@ -125,7 +127,10 @@ DataTable.ext.buttons.searchPanes = {
 
 				config._panes.rebuild(undefined, true);
 
-				this.processing(false);
+				// Tables were hidden in the popover, need to be resized
+				$('table.dataTable', config._panes.getNode()).DataTable().columns.adjust();
+
+				that.processing(false);
 			}, 10);
 		}
 		else {

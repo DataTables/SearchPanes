@@ -7,10 +7,11 @@ button.dtsp-showAll {
 
 div.dt-button-collection {
     z-index: 2002 !important;
+
     div.dtsp-panesContainer {
-        padding: 5px;
         z-index: 2002;
         width: 100%;
+        padding: 1em;
     }
 }
 
@@ -66,6 +67,7 @@ div.dtsp-searchPane {
         }
     }
 
+    div.dt-container,
     div.dataTables_wrapper {
         border: 2px #f0f0f0 solid;
         border-radius: 4px;

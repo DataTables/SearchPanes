@@ -7,8 +7,10 @@ div.dtsp-panesContainer {
 
 	div.dtsp-searchPanes {
 		div.dtsp-searchPane {
+            div.dt-container,
             div.dataTables_wrapper {
                 border: 1px solid #dbdbdb;
+
                 &:hover{
 					border: 1px solid #bdbdbd;
 				}
@@ -56,8 +58,9 @@ div.dtsp-panesContainer {
     }
 }
 
+// Popover view
 div.dt-button-collection {
     div.dtsp-panesContainer {
-        padding: 10px;
+        padding: 1rem;
     }
 }

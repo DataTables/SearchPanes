@@ -16,6 +16,7 @@ div.dtsp-searchPane {
 		text-align: left;
 	}
 
+    div.dt-container,
 	div.dataTables_wrapper {
 		border: 1px solid #c5c5c5 !important;
 
@@ -30,8 +31,10 @@ div.dtsp-searchPane {
 	}
 }
 
+// Popover view
 div.dt-button-collection {
 	div.dtsp-panesContainer {
+        padding: 1rem;
 		background: transparent;
 		border: none;
 	}

@@ -9,13 +9,6 @@ button.dtsp-collapseAll {
     margin-right: 1px !important;
 }
 
-div.dt-button-collection {
-    div.dtsp-panesContainer {
-        width: 100%;
-        padding: 10px;
-    }
-}
-
 div.dtsp-searchPane {
 	div.dtsp-title {
 		button {
@@ -83,6 +76,7 @@ div.dtsp-searchPane {
         }
     }
 
+    div.dt-container,
     div.dataTables_wrapper {
         border: 2px #f0f0f0 solid;
 
@@ -99,5 +93,12 @@ div.dtsp-searchPane {
                 display: none;
             }
         }
+    }
+}
+
+// Popover view
+div.dt-button-collection {
+    div.dtsp-panesContainer {
+        padding: 1rem;
     }
 }

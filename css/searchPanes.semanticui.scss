@@ -97,6 +97,7 @@ div.dtsp-searchPane {
         }
     }
 
+    div.dt-container,
     div.dataTables_wrapper {
         margin-left: 0 !important;
         margin-right: 0 !important;
@@ -133,9 +134,9 @@ div.dtsp-searchPane {
 div.dt-button-collection {
     border: 1px solid rgb(240, 240, 240);
     border-radius: 3px;
+
     div.dtsp-panesContainer {
-        font-size: 14px;
-        padding: 5px;
+        padding: 1em !important;
 
         span.dtsp-caret {
             right: 0px;

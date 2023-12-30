@@ -177,7 +177,11 @@ div.dtsp-narrow {
 }
 
 div.dt-button-collection{
-	float: none;
+    div.dtsp-panesContainer {
+        padding-left: 1em;
+        padding-right: 1em;
+		margin-bottom: 0;
+    }
 }
 
 div.dtsp-panesContainer {
@@ -308,7 +312,6 @@ div.dtsp-panesContainer {
 	button.dtsp-collapseAll,
 	button.dtsp-showAll {
 		float: right;
-		padding: 10px;
 	}
 }
 
