@@ -1034,16 +1034,18 @@ export default class SearchPane {
 		settings,
 		bins: {[keys: string]: number} = this.s.rowData.bins
 	): void {
-		// Retrieve the rendered data from the cell using the fnGetCellData function
+		// Retrieve the rendered data from the cell using the fastData function
 		// rather than the cell().render API method for optimisation
+		var fastData = settings.fastData;
+
 		if (typeof this.s.colOpts.orthogonal === 'string') {
-			let rendered = this.s.dt.cell(rowIdx, this.s.index).render(this.s.colOpts.orthogonal);
+			let rendered = fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal);
 			this.s.rowData.filterMap.set(rowIdx, rendered);
 			this._addOption(rendered, rendered, rendered, rendered, arrayFilter, bins);
 			this.s.rowData.totalOptions++;
 		}
 		else {
-			let filter = this.s.dt.cell(rowIdx, this.s.index).render(this.s.colOpts.orthogonal.search);
+			let filter = fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal.search);
 
 			// Null and empty string are to be considered the same value
 			if (filter === null) {
@@ -1057,14 +1059,12 @@ export default class SearchPane {
 			this.s.rowData.filterMap.set(rowIdx, filter);
 
 			if (!bins[filter]) {
-				var cell = this.s.dt.cell(rowIdx, this.s.index);
-
 				bins[filter] = 1;
 				this._addOption(
 					filter,
-					cell.render(this.s.colOpts.orthogonal.display),
-					cell.render(this.s.colOpts.orthogonal.sort),
-					cell.render(this.s.colOpts.orthogonal.type),
+					fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal.display),
+					fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal.sort),
+					fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal.type),
 					arrayFilter,
 					bins
 				);
@@ -1705,7 +1705,7 @@ export default class SearchPane {
 	private _populatePane(): void {
 		this.s.rowData.arrayFilter = [];
 		this.s.rowData.bins = {};
-		let settings = this.s.dt.settings()[0];
+		let settings = this.s.dt.context[0];
 
 		if (!this.s.dt.page.info().serverSide) {
 			for (let index of this.s.dt.rows().indexes().toArray()) {
