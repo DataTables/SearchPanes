@@ -157,6 +157,7 @@ html[data-bs-theme="dark"] {
                     border: 1px solid rgba(255, 255, 255, 0.3) !important;
                 }
 
+                div.dt-scroll-body,
                 div.dataTables_scrollBody {
                     background: var(--bs-table-bg) !important;
 

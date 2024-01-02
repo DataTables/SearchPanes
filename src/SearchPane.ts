@@ -187,7 +187,7 @@ export default class SearchPane {
 			countButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.countButton),
-			dtP: $('<table><thead><tr><th>' +
+			dtP: $('<table width="100%"><thead><tr><th>' +
 				(this.s.colExists
 					? $(this.s.dt.column(this.s.index).header()).text()
 					: this.s.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
