@@ -88,6 +88,15 @@ div.dtsp-panesContainer {
                 line-height: 1.25em;
                 margin-top: 3.5px;
             }
+            
+            // Overrides to make the table layout fit
+            > div.row.mt-2 {
+                margin: 0 !important;
+
+                > * {
+                    padding: 0;
+                }
+            }
         }
     }
 

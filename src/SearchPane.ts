@@ -999,7 +999,6 @@ export default class SearchPane {
 				}
 			],
 			deferRender: true,
-			dom: 't',
 			info: false,
 			language: langOpts,
 			paging: haveScroller ? true : false,
@@ -1394,13 +1393,13 @@ export default class SearchPane {
 			$.fn.dataTable.versionCheck('2')
 				? {
 					layout: {
-						bottomLeft: null,
-						bottomRight: null,
-						topLeft: null,
-						topRight: null
+						bottomStart: null,
+						bottomEnd: null,
+						topStart: null,
+						topEnd: null
 					}
 				}
-				: {},
+				: {dom: 't'},
 		));
 
 		this.dom.dtP.addClass(this.classes.table);

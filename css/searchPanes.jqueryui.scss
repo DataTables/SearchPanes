@@ -23,6 +23,10 @@ div.dtsp-searchPane {
 		&:hover {
 			border: 1px solid #aaa !important;
 		}
+
+		div.dt-scroll {
+			margin: -10px 0;
+		}
 	}
 
 	div.dtsp-topRow.dtsp-bordered {

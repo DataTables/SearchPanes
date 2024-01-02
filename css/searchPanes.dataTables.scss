@@ -10,6 +10,10 @@ div.dtsp-searchPane {
 		&:hover{
 			border: 1px solid #cfcfcf;
 		}
+
+		div.dt-scroll {
+			margin: -5px 0;
+		}
 	}
 
 	div.dtsp-topRow {
