@@ -4,6 +4,10 @@ div.dtsp-searchPane {
     div.dtsp-topRow {
         margin: 0.5em 0;
 
+        div.dtsp-subRow1 div.dtsp-searchCont input[disabled="disabled"] + i {
+            display: none;
+        }
+
         div.dtsp-subRow2 {
             margin-left: 0.5em;
             button {

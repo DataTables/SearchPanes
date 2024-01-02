@@ -35,6 +35,10 @@ div.dtsp-panesContainer {
             div.dtsp-topRow {
                 border-left: none;
 
+                div.dtsp-subRow1 input[disabled="disabled"] {
+                    padding-bottom: 5px;
+                }
+
                 input {
                     padding-left: 4px;
                 }

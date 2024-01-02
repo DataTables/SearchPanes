@@ -7,7 +7,6 @@ div.dtsp-topRow {
     justify-content: space-around;
     align-content: flex-start;
 	align-items: flex-start;
-	min-height: 37px;
 	
 	input.dtsp-search{
 		text-overflow: ellipsis;
@@ -28,12 +27,6 @@ div.dtsp-topRow {
 		div.dtsp-searchCont{
 			position: relative;
 			width: 100%;
-
-			input.dtsp-disabledButton {
-				padding-top: 10px;
-				padding-bottom: 10px;
-				background-color: transparent;
-			}
 		}
 
 		input {
@@ -41,6 +34,23 @@ div.dtsp-topRow {
 			width: 100% !important;
 			box-sizing: border-box;
 			font-size: 1em;
+
+			&[disabled="disabled"] {
+				background-color: transparent;
+				border: none;
+				cursor: initial;
+				box-shadow: none;
+				padding-bottom: 0;
+				padding-top: 0;
+				min-height: 1em;
+				height: fit-content;
+				box-sizing: content-box;
+
+				&::placeholder {
+					color: initial;
+					opacity: 1;
+				}
+			}
 		}
 
 		button.dtsp-searchIcon{
@@ -315,4 +325,11 @@ div.dtsp-panesContainer {
 
 div.dtsp-hidden{
 	display: none !important;
+}
+
+html.dark,
+html[data-bs-theme="dark"] {
+	div.dtsp-topRow div.dtsp-subRow1 div.dtsp-searchCont input[disabled="disabled"]::placeholder {
+		color: white;
+	}
 }
