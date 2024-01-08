@@ -61,6 +61,17 @@ div.dtsp-panesContainer {
     padding: 1em !important;
 }
 
+div.dtsp-titleRow {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+div.dtsp-titleRow div.dtsp-title {
+  margin-top: 0 !important;
+  padding-top: 0;
+}
+
 html.dark div.dtsp-panesContainer {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
