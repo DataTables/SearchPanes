@@ -2,9 +2,11 @@
 <dt-example table-type="html" table-class="display nowrap" order="3">
 
 <css lib="datatables searchpanes select">
-    div.dt-searchPane div.dataTables_length{
-        float: none;
-        text-align: center;
+    div.dtsp-searchPanes div.dt-container div.dt-paging,
+	div.dtsp-searchPanes div.dt-container div.dt-info {
+		width: fit-content;
+		margin: 0 auto;
+		min-height: 3em;
     }
 </css>
 
