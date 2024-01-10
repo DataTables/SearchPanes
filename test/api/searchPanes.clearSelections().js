@@ -31,13 +31,13 @@ describe('searchPanes - api - searchPanes.clearSelections()', function() {
 
 	describe('Functional tests', function() {
 		dt.html('basic');
-		it('Select single pane', function() {
+		it('Select single pane', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true
 			});
 
-			$('div.dtsp-searchPanes tbody tr:eq(0) td:eq(0)').click();
+			await dt.searchPaneSelect(1, 0);
 
 			expect($('div.dtsp-searchPanes tbody tr.selected').length).toBe(1);
 		});
@@ -45,9 +45,9 @@ describe('searchPanes - api - searchPanes.clearSelections()', function() {
 			table.searchPanes.clearSelections();
 			expect($('div.dtsp-searchPanes tbody tr.selected').length).toBe(0);
 		});
-		it('Select two panes', function() {
-			$('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').click();
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').click();
+		it('Select two panes', async function() {
+			await dt.searchPaneSelect(1, 0);
+			await dt.searchPaneSelect(2, 0);
 
 			expect($('div.dtsp-searchPanes tbody tr.selected').length).toBe(2);
 		});

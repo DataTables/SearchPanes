@@ -19,18 +19,41 @@ describe('searchPanes - integrations - stateSave', function() {
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
 		}
 
-		it('Check selection', function() {
+		function checkTotals(pane, exp) {
+			for (let i = 0; i < exp.length; i++) {
+				expect(
+					$('div.dtsp-searchPane:visible:eq(' + pane + ') table tbody tr:eq(' + i + ') span.dtsp-pill').text()
+				).toBe(exp[i]);
+			}
+		}
+
+		function checkCascades() {
+			checkTotals(0, ['2 (6)']);
+			checkTotals(1, ['1 (9)', '2 (12)', '1 (11)', '2 (14)']);
+			checkTotals(2, ['1 (1)', '1 (2)']);
+		}
+
+		function checkOrdering() {
+			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
+				'Technical Author'
+			);
+			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
+				'San Francisco'
+			);
+		}
+
+		it('Check selection', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true,
 				stateSave: true
 			});
 
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.searchPaneSelect(2, 0);
 
 			checkSelection();
 		});
-		it('... still same after reload', async function(done) {
+		it('... still same after reload', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -41,23 +64,9 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkSelection();
-
-			done();
 		});
 
-		function checkTotals(pane, exp) {
-			for (let i = 0; i < exp.length; i++) {
-				expect(
-					$('div.dtsp-searchPane:visible:eq(' + pane + ') table tbody tr:eq(' + i + ') span.dtsp-pill').text()
-				).toBe(exp[i]);
-			}
-		}
-		function checkCascades() {
-			checkTotals(0, ['2 (6)']);
-			checkTotals(1, ['1 (9)', '2 (12)', '1 (11)', '2 (14)']);
-			checkTotals(2, ['1 (1)', '1 (2)']);
-		}
-		it('Test viewtotal and cascadePanes', async function(done) {
+		it('Test viewtotal and cascadePanes', async function() {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -71,16 +80,13 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			await dt.sleep(500);
 
-			$('div.dtsp-searchPane:visible:eq(0) table tbody tr:eq(26) td:eq(0)').click();
-			$('div.dtsp-searchPane:visible:eq(1) table tbody tr:eq(1) td:eq(0)').click();
-
+			await dt.searchPaneSelect(1, 26);
+			await dt.searchPaneSelect(2, 1);
 			await dt.sleep(500);
 
 			checkCascades();
-
-			done();
 		});
-		it('... still same after reload', async function(done) {
+		it('... still same after reload', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -95,20 +101,9 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkCascades();
-
-			done();
 		});
 
-		function checkOrdering() {
-			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
-				'Technical Author'
-			);
-			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe(
-				'San Francisco'
-			);
-		}
-
-		it('Test ordering', async function(done) {
+		it('Test ordering', async function() {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -121,13 +116,12 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			$('div.dtsp-searchPane:eq(1) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(1)').click();
 			$('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(2)').click();
+			await dt.sleep(50);
 
 			checkOrdering();
-
-			done();
 		});
 
-		it('... still same after reload', async function(done) {
+		it('... still same after reload', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -138,8 +132,6 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkOrdering();
-
-			done();
 		});
 
 		function checkSearch() {
@@ -147,7 +139,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr').length).toBe(4);
 		}
 
-		it('Test searching', async function(done) {
+		it('Test searching', async function() {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -162,11 +154,9 @@ describe('searchPanes - integrations - stateSave', function() {
 			$('div.dtsp-searchPane:eq(1) div.dtsp-topRow input').trigger('input');
 
 			checkSearch();
-
-			done();
 		});
 
-		it('... still same after reload', async function(done) {
+		it('... still same after reload', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -177,8 +167,6 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkSearch();
-
-			done();
 		});
 
 		function checkCustom() {
@@ -188,7 +176,7 @@ describe('searchPanes - integrations - stateSave', function() {
 			expect($('#example tbody tr:eq(1) td:eq(0)').text()).toBe('Garrett Winters');
 		}
 
-		it('Test custom panes', async function(done) {
+		it('Test custom panes', async function() {
 			table.state.clear();
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
@@ -213,15 +201,11 @@ describe('searchPanes - integrations - stateSave', function() {
 
 			await dt.sleep(500);
 
-			$('div.dtsp-searchPane:visible:eq(3) table tbody tr:eq(0) td:eq(0)').click();
-
-			await dt.sleep(500);
+			await dt.searchPaneSelect(6, 0);
 
 			checkCustom();
-
-			done();
 		});
-		it('... still same after reload', async function(done) {
+		it('... still same after reload', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				destroy: true,
@@ -246,8 +230,6 @@ describe('searchPanes - integrations - stateSave', function() {
 			await dt.sleep(500);
 
 			checkCustom();
-
-			done();
 		});
 		it('Tidy up', function() {
 			table.state.clear();

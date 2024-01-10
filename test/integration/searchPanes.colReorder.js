@@ -8,13 +8,14 @@ describe('searchPanes - integrations - colReorder', function() {
 
 	describe('Check the behaviour', function() {
 		dt.html('basic');
-		it('Standard position initially', function() {
+		it('Standard position initially', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				colReorder: true
 			});
 			table.searchPanes.clearSelections();
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
+
+			await dt.searchPaneSelect(2, 1);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
 		});
 		it('Move office column to the start', function() {
@@ -22,15 +23,13 @@ describe('searchPanes - integrations - colReorder', function() {
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('London');
 		});
 		it('Deselect option', async function() {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
-			await dt.sleep(100);
+			await dt.searchPaneSelect(2, 1);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Tokyo');
 		});
 		it('Reselect option', async function() {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
-			await dt.sleep(100);
+			await dt.searchPaneSelect(2, 1);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('London');
-			expect($('.dataTables_info').text()).toBe('Showing 1 to 10 of 12 entries (filtered from 57 total entries)');
+			expect($('.dt-info').text()).toBe('Showing 1 to 10 of 12 entries (filtered from 57 total entries)');
 		});
 	});
 });

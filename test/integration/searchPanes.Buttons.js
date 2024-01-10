@@ -29,7 +29,7 @@ describe('searchPanes - integrations - Buttons', function () {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0)').text()).toBe('Accountant2');
 		});
 		it('... clicking on a pane filters table immediately', async function() {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(3) td:eq(0)').click();
+			await dt.searchPaneSelect(2, 3);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 		it('... can close panes', async function() {
@@ -92,15 +92,15 @@ describe('searchPanes - integrations - Buttons', function () {
 			expect($('button.dt-button').text()).toBe('Search 0');
 		});
 		it('... clicking one filter changes title', async function () {
-			$('div.dtsp-searchPane:eq(1) tbody tr:eq(3) td:eq(0)').click();
+			await dt.searchPaneSelect(1, 3);
 			expect($('button.dt-button').text()).toBe('Search 1 1');
 		});
 		it('... clicking another filter changes title', async function () {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(3) td:eq(0)').click();
+			await dt.searchPaneSelect(2, 3);
 			expect($('button.dt-button').text()).toBe('Search other 2');
 		});
 		it('... clicking another filter changes title', async function () {
-			$('div.dtsp-searchPane:eq(3) tbody tr:eq(3) td:eq(0)').click();
+			await dt.searchPaneSelect(3, 3);
 			expect($('button.dt-button').text()).toBe('Search other 3');
 		});
 		it('... closing keeps string', async function () {
