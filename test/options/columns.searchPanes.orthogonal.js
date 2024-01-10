@@ -39,9 +39,9 @@ describe('searchPanes - options - columns.searchPanes.orthogonal', function () {
 			);
 			expect($('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('9');
 		});
-		it('Check filter of rendered options', function () {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').click();
-			expect($('div.dataTables_info').text()).toBe(
+		it('Check filter of rendered options', async function () {
+			await dt.searchPaneSelect(2, 0);
+			expect($('div.dt-info').text()).toBe(
 				'Showing 1 to 9 of 9 entries (filtered from 57 total entries)'
 			);
 		});

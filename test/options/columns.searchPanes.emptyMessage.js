@@ -23,8 +23,8 @@ describe('searchPanes - options - columns.searchPanes.emptyMessage', function() 
 				'<em>No data</em>'
 			);
 		});
-		it('Refers to expected row', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Refers to expected row', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 
@@ -54,8 +54,8 @@ describe('searchPanes - options - columns.searchPanes.emptyMessage', function() 
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('A test 1');
 			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('A test 2');
 		});
-		it('Refers to expected row', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Refers to expected row', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 
@@ -82,8 +82,8 @@ describe('searchPanes - options - columns.searchPanes.emptyMessage', function() 
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('A test 1');
 			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('A test global');
 		});
-		it('Refers to expected row', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Refers to expected row', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 	});

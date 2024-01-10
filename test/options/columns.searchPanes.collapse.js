@@ -34,7 +34,7 @@ describe('searchPanes - options - columns.searchPanes.collapse', function () {
 		});
 		it('... unable to collapse all when not collapsible', function () {
 			$('button.dtsp-collapseAll').click();
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(1);
+			expect($('div.dtsp-searchPanes div.dt-container:visible').length).toBe(1);
 		});
 	});
 });

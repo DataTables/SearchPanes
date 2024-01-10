@@ -51,11 +51,11 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				]
 			});
 
-			expect($('div.dataTables_paginate').length).toBe(2);
+			expect($('div.dt-paging').length).toBe(2);
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
-			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
+			$('div.dtsp-searchPane:eq(1) .dt-paging-button.next').click();
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Financial Controller');
 		});
 
@@ -81,11 +81,11 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dataTables_paginate').length).toBe(2);
+			expect($('div.dt-paging').length).toBe(2);
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
-			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
+			$('div.dtsp-searchPane:eq(1) .dt-paging-button.next').click();
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Financial Controller');
 		});
 
@@ -111,8 +111,8 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dataTables_paginate').length).toBe(3);
-			expect($('div.dtsp-searchPane:eq(1) div.dataTables_paginate').length).toBe(0);
+			expect($('div.dt-paging').length).toBe(3);
+			expect($('div.dtsp-searchPane:eq(1) div.dt-paging').length).toBe(0);
 		});
 
 		dt.html('basic');
@@ -137,8 +137,8 @@ describe('searchPanes - options - columns.searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dataTables_paginate').length).toBe(2);
-			expect($('div.dtsp-searchPane:eq(1) div.dataTables_paginate').length).toBe(1);
+			expect($('div.dt-paging').length).toBe(2);
+			expect($('div.dtsp-searchPane:eq(1) div.dt-paging').length).toBe(1);
 		});
 	});
 });

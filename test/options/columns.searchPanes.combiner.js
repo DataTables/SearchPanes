@@ -44,7 +44,7 @@ describe('searchPanes - options - columns.searchPanes.combiner', function () {
 		});
 
 		dt.html('empty');
-		it('Check And logic', function () {
+		it('Check And logic', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				data: data,
@@ -64,11 +64,12 @@ describe('searchPanes - options - columns.searchPanes.combiner', function () {
 				}]
 			});
 
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.searchPaneSelect(1, 0);
 
 			var clickEvent = $.Event('click');
 			clickEvent.shiftKey = true;
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').trigger(clickEvent);
+
+			await dt.searchPaneSelect(1, 1, clickEvent);
 
 			expect($('#example tbody tr').length).toBe(2);
 		});
