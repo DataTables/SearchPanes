@@ -57,8 +57,9 @@ describe('searchPanes - options - columns.searchPanes.header', function() {
 				}
 			});
 		});
-		it('Rebuild the panes', function() {
+		it('Rebuild the panes', async function() {
 			table.searchPanes.rebuildPane();
+			await dt.sleep(100);
 			expect($('div.dtsp-searchPane').length).toBe(6);
 			expect($('div.dtsp-searchPane:eq(1) div.dtsp-searchCont input').attr('placeholder')).toBe('testposition');
 		});

@@ -15,12 +15,12 @@ describe('searchPanes - options - language.searchPanes.title', function() {
 
 			expect($('div.dtsp-title').text()).toBe('Filters Active - 0');
 		});
-		it('Check defaults - one', function() {
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+		it('Check defaults - one', async function() {
+			await dt.searchPaneSelect(1, 0);
 			expect($('div.dtsp-title').text()).toBe('Filters Active - 1');
 		});
-		it('Check defaults - two', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Check defaults - two', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('div.dtsp-title').text()).toBe('Filters Active - 2');
 		});
 
@@ -42,12 +42,12 @@ describe('searchPanes - options - language.searchPanes.title', function() {
 
 			expect($('div.dtsp-title').text()).toBe('unittest none');
 		});
-		it('Check defaults - one', function() {
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0)').click();
+		it('Check defaults - one', async function() {
+			await dt.searchPaneSelect(1, 0);
 			expect($('div.dtsp-title').text()).toBe('unittest one 1');
 		});
-		it('Check defaults - two', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Check defaults - two', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('div.dtsp-title').text()).toBe('unittest 2');
 		});
 

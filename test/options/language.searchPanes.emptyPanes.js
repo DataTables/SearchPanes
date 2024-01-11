@@ -70,7 +70,7 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-title:visible').length).toBe(1);
 		});
 		it('SearchPanes still work', async function() {
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(1) td:eq(0)').click();
+			await dt.searchPaneSelect(1, 1);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
 		});
 		it('Clear All still works', async function() {

@@ -209,7 +209,8 @@ export default class SearchPaneST extends SearchPane {
 			? this.s.colOpts.orthogonal
 			: this.s.colOpts.orthogonal.search;
 
-		let filter = this.s.dt.cell(rowIdx, this.s.index).render(orth);
+		let fastData = this.s.dt.settings()[0].fastData;
+		let filter = fastData(rowIdx, this.s.index, orth);
 		let add = (f) => {
 			if (!bins[f]) {
 				bins[f] = 1;
