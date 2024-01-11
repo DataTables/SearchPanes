@@ -290,7 +290,7 @@ export default class SearchPanesST extends SearchPanes {
 				}
 
 				// Update the table to display the current results
-				this.s.dt.draw(false);
+				this.s.dt.draw();
 
 				let filteringActive = false;
 				let filterCount = 0;
