@@ -64,7 +64,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			await checkRowCounts(33, 7, 33);
 		});
 		it('... clicking on row removes options', async function () {
-			await dt.searchPaneSelect(0, 0);
+			await dt.searchPaneSelect(1, 0);
 			await checkRowCounts(33, 1, 2);
 		});
 		it('... clicking on second pane', async function () {
@@ -179,7 +179,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			checkCounts([2], [9], [1]);
 		});
 		it('... clicking on row removes options', async function () {
-			await dt.searchPaneSelect(0, 0);
+			await dt.searchPaneSelect(1, 0);
 			await checkRowCounts(33, 1, 2);
 			checkCounts([2], ['2 (5)'], ['1 (1)']);
 		});
@@ -442,7 +442,7 @@ describe('searchPanes - options - searchPanes.cascadePanes', function () {
 			expect($('table#example tbody td:eq(0)').text()).toBe('Angelica Ramos');
 		});
 		it('... paging still works', function () {
-			$('.dataTables_paginate span .paginate_button:eq(1)').click();
+			$('.dt-paging .dt-paging-button:eq(3)').click();
 
 			expect($('table#example tbody td:eq(0)').text()).toBe('Tatyana Fitzpatrick');
 		});

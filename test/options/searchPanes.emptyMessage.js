@@ -18,8 +18,8 @@ describe('searchPanes - options - searchPanes.emptyMessage', function() {
 				'<em>No data</em>'
 			);
 		});
-		it('Refers to expected row', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Refers to expected row', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 
@@ -37,8 +37,8 @@ describe('searchPanes - options - searchPanes.emptyMessage', function() {
 				'<i><b>EMPTY</b></i>'
 			);
 		});
-		it('Refers to expected row', function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
+		it('Refers to expected row', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 	});

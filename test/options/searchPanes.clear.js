@@ -19,7 +19,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 				);
 			});
 			it('... and the behaviour', async function() {
-				$('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0)').click();
+				await dt.searchPaneSelect(2, 3);
 				expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 
 				$('div.dtsp-searchPane:eq(2) div.dtsp-topRow div.dtsp-buttonGroup button.dtsp-paneButton:eq(0)').click();
@@ -33,7 +33,7 @@ describe('searchPanes - options - searchPanes.clear', function() {
 				expect($('button.dtsp-clearAll').text()).toBe('Clear All');
 			});
 			it('... and the behaviour', async function() {
-				$('div.dtsp-searchPane:eq(2) table tbody tr:eq(3) td:eq(0)').click();
+				await dt.searchPaneSelect(2, 3);
 				expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 
 				$('button.dtsp-clearAll').click();

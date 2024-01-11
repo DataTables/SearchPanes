@@ -60,8 +60,8 @@ describe('searchPanes - options - searchPanes.preSelect', function() {
 		it('Ensure search performed', function() {
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
-		it('Ensure selections not fixed', function() {
-			$('div.dtsp-searchPane:eq(2) tbody tr:eq(0) td:eq(0)').click();
+		it('Ensure selections not fixed', async function() {
+			await dt.searchPaneSelect(2, 0);
 			expect($('div.dtsp-searchPane:eq(2) tr.selected').length).toBe(1);
 			expect($('div.dtsp-searchPane:eq(2) tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Edinburgh');
 		});
@@ -112,27 +112,27 @@ describe('searchPanes - options - searchPanes.preSelect', function() {
 			});
 		});
 		it('First - now not showing all values', function() {
-			expect($('div.dtsp-searchPane:eq(2) .dataTables_scrollBody tbody tr').length).toBe(2);
-			expect($('div.dtsp-searchPane:eq(2) .dataTables_scrollBody tbody tr.selected').length).toBe(2);
+			expect($('div.dtsp-searchPane:eq(2) .dt-scroll-body tbody tr').length).toBe(2);
+			expect($('div.dtsp-searchPane:eq(2) .dt-scroll-body tbody tr.selected').length).toBe(2);
 			expect(
 				$(
-					'div.dtsp-searchPane:eq(2) .dataTables_scrollBody tbody tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)'
+					'div.dtsp-searchPane:eq(2) .dt-scroll-body tbody tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)'
 				).text()
 			).toBe('New York');
 			expect(
 				$(
-					'div.dtsp-searchPane:eq(2) .dataTables_scrollBody tbody tr.selected:eq(1) td:eq(0) span.dtsp-name:eq(0)'
+					'div.dtsp-searchPane:eq(2) .dt-scroll-body tbody tr.selected:eq(1) td:eq(0) span.dtsp-name:eq(0)'
 				).text()
 			).toBe('San Francisco');
 		});
 		it('Second - showing all values', function() {
-			expect($('div.dtsp-searchPane:eq(3) .dataTables_scrollBody tbody tr').length).toBe(21);
-			expect($('div.dtsp-searchPane:eq(3) .dataTables_scrollBody tbody tr.selected').length).toBe(1);
-			expect($('div.dtsp-searchPane:eq(3) .dataTables_scrollBody tbody tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('66');
+			expect($('div.dtsp-searchPane:eq(3) .dt-scroll-body tbody tr').length).toBe(21);
+			expect($('div.dtsp-searchPane:eq(3) .dt-scroll-body tbody tr.selected').length).toBe(1);
+			expect($('div.dtsp-searchPane:eq(3) .dt-scroll-body tbody tr.selected:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('66');
 		});
 	
 		dt.html('basic');
-		it('Custom Panes - Pre-select first entry', function() {
+		it('Custom Panes - Pre-select first entry', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				columnDefs: [
@@ -170,11 +170,13 @@ describe('searchPanes - options - searchPanes.preSelect', function() {
 				}
 			});
 
+			await dt.sleep(100);
+
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 
 		dt.html('basic');
-		it('Custom Panes - Pre-select second entry', function() {
+		it('Custom Panes - Pre-select second entry', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				columnDefs: [
@@ -212,11 +214,13 @@ describe('searchPanes - options - searchPanes.preSelect', function() {
 				}
 			});
 
+			await dt.sleep(100);
+
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
 		});
 
 		dt.html('basic');
-		it('Custom Panes - Pre-select from two panes', function() {
+		it('Custom Panes - Pre-select from two panes', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				columnDefs: [
@@ -268,6 +272,8 @@ describe('searchPanes - options - searchPanes.preSelect', function() {
 					]
 				}
 			});
+
+			await dt.sleep(100);
 
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Haley Kennedy');
 		});

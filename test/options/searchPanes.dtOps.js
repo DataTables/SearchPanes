@@ -59,7 +59,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dataTables_paginate').length).toBe(1);
+			expect($('div.dt-paging').length).toBe(1);
 		});
 
 		dt.html('basic');
@@ -74,11 +74,11 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dataTables_paginate').length).toBe(4);
+			expect($('div.dt-paging').length).toBe(4);
 		});
 		it('... and you can page', function() {
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Accountant');
-			$('div.dtsp-searchPane:eq(1) .paginate_button.next').click();
+			$('div.dtsp-searchPane:eq(1) .dt-paging-button.next').click();
 			expect($('div.dtsp-searchPane:eq(1) tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('Financial Controller');
 		});
 
@@ -107,7 +107,7 @@ describe('searchPanes - options - searchPanes.dtOpts', function() {
 				}
 			});
 
-			expect($('div.dtsp-searchPane:eq(6) div.dataTables_paginate').length).toBe(1);
+			expect($('div.dtsp-searchPane:eq(6) div.dt-paging').length).toBe(1);
 		});
 	});
 });

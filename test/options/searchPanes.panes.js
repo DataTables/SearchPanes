@@ -8,7 +8,7 @@ describe('searchPanes - options - searchPanes.panes', function() {
 
 	describe('Functional tests', function() {
 		dt.html('basic');
-		it('Single pane with existing panes', function() {
+		it('Single pane with existing panes', async function() {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -28,7 +28,7 @@ describe('searchPanes - options - searchPanes.panes', function() {
 				}
 			});
 
-			$('div.dtsp-searchPane:eq(6) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.searchPaneSelect(6, 0);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 		it('... clear all works on custom pane', async function() {
@@ -39,8 +39,7 @@ describe('searchPanes - options - searchPanes.panes', function() {
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Airi Satou');
 		});
 		it('... standard panes still function', async function() {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0)').click();
-
+			await dt.searchPaneSelect(2, 0);
 			await dt.sleep(100);
 
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Cedric Kelly');
@@ -89,8 +88,9 @@ describe('searchPanes - options - searchPanes.panes', function() {
 			expect($('div.dtsp-searchPane table tbody tr:eq(1) td:eq(0) span.dtsp-name:eq(0)').text()).toBe('test london');
 			expect($('div.dtsp-searchPane table tbody tr:eq(1) td:eq(0) span.dtsp-pill:eq(0)').text()).toBe('12');
 		});
-		it('... can perform search', function() {
+		it('... can perform search', async function() {
 			$('div.dtsp-searchPane:not(.dtsp-hidden) table tbody tr:eq(0) td:eq(0)').click();
+			await dt.sleep(100);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Ashton Cox');
 		});
 		it('... can change title', function() {

@@ -30,12 +30,12 @@ describe('searchPanes - options - searchPanes', function () {
 
 			expect($('div.dtsp-searchPane').length).toBe(9);
 		});
-		it('... and can filter on first table', function() {
-			$('#example_one_wrapper div.dtsp-searchPane:eq(2) tbody tr:eq(1) td:eq(0)').click();
+		it('... and can filter on first table', async function() {
+			await dt.searchPaneSelect('#example_one_wrapper', 2, 1);
 			expect($('#example_one tbody tr:eq(0) td:eq(0)').text()).toBe('Angelica Ramos');
 		});
-		it('... and can filter on second table', function() {
-			$('#example_two_wrapper div.dtsp-searchPane:eq(1) tbody tr:eq(2) td:eq(0)').click();
+		it('... and can filter on second table', async function() {
+			await dt.searchPaneSelect('#example_two_wrapper', 1, 2);
 			expect($('#example_two tbody tr:eq(0) td:eq(0)').text()).toBe('Milan');
 		});
 		it('... and clear only affects one table', async function() {
@@ -113,8 +113,8 @@ describe('searchPanes - options - searchPanes', function () {
 			await dt.sleep(1000);
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 		});
-		it('... select a row', function() {
-			$('div.dtsp-searchPane:visible:eq(0) tbody tr:eq(0) td:eq(0)').click();
+		it('... select a row', async function() {
+			await dt.searchPaneSelect(1, 0);
 			expect($('div.dtsp-searchPane:visible:eq(0) tr.selected span:eq(0)').text()).toBe('Accountant');
 		});
 		it('... still selected and three panes after ajax reload', async function() {
@@ -140,8 +140,8 @@ describe('searchPanes - options - searchPanes', function () {
 			await dt.sleep(1000);
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 		});
-		it('... select a row in middle pane', function() {
-			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(1) td:eq(0)').click();
+		it('... select a row in middle pane', async function() {
+			await dt.searchPaneSelect(2, 1);
 			expect($('div.dtsp-searchPane:visible:eq(1) tr.selected span:eq(0)').text()).toBe('London');
 		});
 		it('... still three after and row selected an ajax reload', async function() {
@@ -177,8 +177,8 @@ describe('searchPanes - options - searchPanes', function () {
 			await dt.sleep(1000);
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 		});
-		it('... select a row', function() {
-			$('div.dtsp-searchPane:visible:eq(2) tbody tr:eq(9) td:eq(0)').click();
+		it('... select a row', async function() {
+			await dt.searchPaneSelect(3, 9);
 			expect($('div.dtsp-searchPane tr.selected').length).toBe(1);
 			expect($('div.dtsp-searchPane:visible:eq(2) tr.selected span:eq(0)').text()).toBe('33');
 		});
@@ -218,14 +218,15 @@ describe('searchPanes - options - searchPanes', function () {
 			});
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span:eq(0)').text()).toBe('Aaa "\'single quote\' & ^£ "double"');
 		});
-		it('... and it is clickable', function () {
-			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span:eq(0)').click()
+		it('... and it is clickable', async function () {
+			$('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span:eq(0)').click();
+			await dt.sleep(100);
 			expect($('#example tbody tr:eq(0)').length).toBe(1);
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Aaa');
 		});
 
 		dt.html('basic');
-		it('Can change page when a pane item is selected', function () {
+		it('Can change page when a pane item is selected', async function () {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: {
@@ -234,11 +235,12 @@ describe('searchPanes - options - searchPanes', function () {
 				}
 			});
 
-			$('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(2) td:eq(0)').click();
+			await dt.searchPaneSelect(2, 2);
+			// $('div.dtsp-searchPane:visible:eq(1) tbody tr:eq(2) td:eq(0)').click();
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Brielle Williamson');
 		});
 		it('Change page', function () {
-			$('.dataTables_paginate span a.paginate_button:eq(1)').click();
+			$('.dt-paging .dt-paging-button:eq(3)').click();
 			expect($('#example tbody tr:eq(0) td:eq(0)').text()).toBe('Zenaida Frank');
 		});
 	});

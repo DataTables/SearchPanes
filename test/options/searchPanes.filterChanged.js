@@ -40,18 +40,18 @@ describe('searchPanes - options - searchPanes.filterChanged', function () {
 
 			expect(count).toBe(0);
 		});
-		it('Single selection', function () {
-			$('div.dtsp-searchPane:eq(2) table tbody tr:eq(1) td:eq(0)').click();
+		it('Single selection', async function () {
+			await dt.searchPaneSelect(2, 1);
 			expect(count).toBe(1);
 		});
-		it('Second selection', function () {
-			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(1) td:eq(0)').click();
+		it('Second selection', async function () {
+			await dt.searchPaneSelect(3, 1);
 			expect(count).toBe(2);
 		});
-		it('Third selection - two in same pane', function () {
+		it('Third selection - two in same pane', async function () {
 			var clickEvent = $.Event('click');
 			clickEvent.shiftKey = true;
-			$('div.dtsp-searchPane:eq(3) table tbody tr:eq(2) td:eq(0)').trigger(clickEvent);
+			await dt.searchPaneSelect(3, 2, clickEvent);
 			expect(count).toBe(3);
 		});
 	});

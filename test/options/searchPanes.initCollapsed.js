@@ -13,7 +13,7 @@ describe('searchPanes - options - searchPanes.initCollapsed', function () {
 				dom: 'Pfrtip'
 			});
 
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(3);
+			expect($('div.dtsp-searchPanes div.dt-container:visible').length).toBe(3);
 		});
 
 		dt.html('basic');
@@ -25,7 +25,7 @@ describe('searchPanes - options - searchPanes.initCollapsed', function () {
 				}
 			});
 
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(0);
+			expect($('div.dtsp-searchPanes div.dt-container:visible').length).toBe(0);
 		});
 
 		dt.html('basic');
@@ -37,7 +37,7 @@ describe('searchPanes - options - searchPanes.initCollapsed', function () {
 				}
 			});
 
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(3);
+			expect($('div.dtsp-searchPanes div.dt-container:visible').length).toBe(3);
 		});
 
 		dt.html('basic');
@@ -57,10 +57,10 @@ describe('searchPanes - options - searchPanes.initCollapsed', function () {
 				]
 			});
 
-			expect($('div.dtsp-searchPanes div.dataTables_wrapper:visible').length).toBe(2);
-			expect($('div.dtsp-searchPane:eq(1) div.dataTables_wrapper:visible').length).toBe(0);
-			expect($('div.dtsp-searchPane:eq(2) div.dataTables_wrapper:visible').length).toBe(1);
-			expect($('div.dtsp-searchPane:eq(3) div.dataTables_wrapper:visible').length).toBe(1);
+			expect($('div.dtsp-searchPanes div.dt-container:visible').length).toBe(2);
+			expect($('div.dtsp-searchPane:eq(1) div.dt-container:visible').length).toBe(0);
+			expect($('div.dtsp-searchPane:eq(2) div.dt-container:visible').length).toBe(1);
+			expect($('div.dtsp-searchPane:eq(3) div.dt-container:visible').length).toBe(1);
 		});
 	});
 });
