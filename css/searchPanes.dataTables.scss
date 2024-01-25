@@ -14,6 +14,10 @@ div.dtsp-searchPane {
 		div.dt-scroll {
 			margin: -5px 0;
 		}
+
+		table.dataTable {
+			border-bottom: none !important;
+		}
 	}
 
 	div.dtsp-topRow {

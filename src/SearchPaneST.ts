@@ -154,7 +154,11 @@ export default class SearchPaneST extends SearchPane {
 			row.shown = typeof this.s.rowData.binsShown[row.filter] === 'number' ?
 				this.s.rowData.binsShown[row.filter] :
 				0;
-			this.s.dtPane.row(row.index).data(row);
+			this.s.dtPane
+				.row(function (idx, data) {
+					return data && (data.index === row.index);
+				})
+				.data(row);
 		}
 
 		// Show updates in the pane

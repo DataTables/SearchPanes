@@ -14,6 +14,14 @@ div.dtsp-panesContainer {
                 &:hover{
 					border: 1px solid #bdbdbd;
 				}
+
+                div.dt-scroll-foot {
+                    display: none;
+                }
+
+                > div.columns {
+                    margin-bottom: -0.75em !important;
+                }
             }
             input.dtsp-paneInputButton,
 			button.dtsp-paneButton {
