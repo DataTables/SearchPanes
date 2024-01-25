@@ -134,6 +134,13 @@ export default class SearchPanes {
 			return;
 		}
 
+		// When the panes update, we check it the clear buttons needs to be updated
+		$(document).on('draw.dt', (e) => {
+			if (this.dom.container.find(e.target).length) {
+				this._updateFilterCount();
+			}
+		});
+
 		this._getState();
 
 		if (this.s.dt.page.info().serverSide) {
@@ -994,11 +1001,16 @@ export default class SearchPanes {
 	 */
 	protected _updateFilterCount(): void {
 		let filterCount = 0;
+		let tableSearch = 0;
 
 		// Add the number of all of the filters throughout the panes
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
 				filterCount += pane.getPaneCount();
+
+				if (pane.s.dtPane.search()) {
+					tableSearch++;
+				}
 			}
 		}
 
@@ -1009,7 +1021,7 @@ export default class SearchPanes {
 			this.c.filterChanged.call(this.s.dt, filterCount);
 		}
 
-		if (filterCount === 0) {
+		if (filterCount === 0 && tableSearch === 0) {
 			this.dom.clearAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
 		}
 		else {
