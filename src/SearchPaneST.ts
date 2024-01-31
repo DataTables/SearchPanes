@@ -9,6 +9,39 @@ export default class SearchPaneST extends SearchPane {
 	}
 
 	/**
+	 * When server-side processing is enabled, SP will remove rows and then readd them,
+	 * resulting in Select's reference to the last selected cell being lost.
+	 * This function is provided to update that reference.
+	 *
+	 * @returns Function
+	 */
+	public _emptyPane() {
+		let dt = this.s.dtPane;
+
+		if (DataTable.versionCheck('2')) {
+			let last = dt.select.last();
+			let selectedIndex;
+
+			if (last) {
+				selectedIndex = dt.row(last.row).data().index;
+			}
+
+			dt.rows().remove();
+
+			return function () {
+				if (selectedIndex !== undefined) {
+					let idx = dt.row((i, data) => data.index === selectedIndex).index();
+					dt.select.last({row: idx, column: 0});
+				}
+			}
+		}
+
+		dt.rows().remove();
+
+		return () => {};
+	}
+
+	/**
 	 * Populates the SearchPane based off of the data that has been recieved from the server
 	 *
 	 * This method overrides SearchPane's _serverPopulate() method
@@ -80,7 +113,7 @@ export default class SearchPaneST extends SearchPane {
 		if (this.s.dtPane) {
 			// Not the selections that have been made and remove all of the rows
 			let selected = this.s.serverSelect;
-			this.s.dtPane.rows().remove();
+			let reselect = this._emptyPane();
 
 			// Add the rows that are to be shown into the pane
 			for (data of this.s.rowData.arrayFilter) {
@@ -132,6 +165,8 @@ export default class SearchPaneST extends SearchPane {
 			this.s.serverSelect = this.s.dtPane.rows({selected: true}).data().toArray();
 			// Update the pane
 			this.s.dtPane.draw();
+
+			reselect();
 		}
 	}
 
