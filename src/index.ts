@@ -148,15 +148,14 @@ DataTable.ext.buttons.searchPanes = {
 			config.text || dt.i18n('searchPanes.collapse', 'SearchPanes', 0)
 		);
 
-		// If state save is enabled, we need to initialise SP immediately
-		// to allow any saved state to be restored. Otherwise we can delay
-		// the init until needed by button press
-		if (dt.init().stateSave) {
+		// For cases when we need to initialise the SearchPane immediately
+		if (dt.init().stateSave || config.delayInit === false) {
 			_buttonSourced(dt, node, config);
 		}
 	},
 	config: {},
-	text: ''
+	text: '',
+	delayInit: true
 };
 
 function _buttonSourced(dt, node, config) {

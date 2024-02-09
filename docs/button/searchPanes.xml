@@ -20,6 +20,9 @@
     <option name="action" type="function">
         The action function for the SearchPanes button displays the SearchPanes container to the user in a popover.
     </option>
+    <option name="delayInit" type="boolean" default="true" since="2.3.0">
+        By default SearchPanes will not be initialised until the button to show it is pressed. While this helps spread the initial start up time, allowing a faster response for the end user at table start up time, there are cases where you might wish to have SearchPanes initialise immediately, such as if you are using a predefined SearchPane filter.
+    </option>
 
 	<example title="Basic SearchPanes button initialisation"><![CDATA[
 new DataTable('#myTable', {
@@ -40,6 +43,23 @@ new DataTable('#myTable', {
 					extend: 'searchPanes',
 					config: {
 						cascadePanes: true
+					}
+				}
+			]
+		}
+	}
+});
+]]></example>
+
+	<example title="Initialise SearchPanes during the table initialisation"><![CDATA[
+new DataTable('#myTable', {
+	layout: {
+		topStart: {
+			buttons: [
+				{
+					extend: 'searchPanes',
+					config: {
+						delayInit: false
 					}
 				}
 			]
