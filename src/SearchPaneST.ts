@@ -22,7 +22,7 @@ export default class SearchPaneST extends SearchPane {
 			let last = dt.select.last();
 			let selectedIndex;
 
-			if (last) {
+			if (last && dt.row(last.row).any()) {
 				selectedIndex = dt.row(last.row).data().index;
 			}
 
