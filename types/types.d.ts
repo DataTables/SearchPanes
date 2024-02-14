@@ -49,7 +49,7 @@ declare module 'datatables.net' {
 			/**
 			 * Create a new SearchPanes instance for the target DataTable
 			 */
-			new (dt: Api<any>, settings: string[] | ConfigSearchPanes | ConfigSearchPanes[]): void;
+			new (dt: Api<any>, settings: string[] | ConfigSearchPanes | ConfigSearchPanes[]): DataTablesStatic['SearchPanes'];
 
 			/**
 			 * SearchPanes version
