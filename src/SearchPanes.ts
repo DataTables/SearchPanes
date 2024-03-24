@@ -705,7 +705,14 @@ export default class SearchPanes {
 			// Otherwise add the paneStartup function to the list of functions
 			// that are to be run when the table is initialised. This will garauntee that the
 			// panes are initialised before the init event and init Complete callback is fired
-			this.s.dt.settings()[0].aoInitComplete.push(() => this._startup(table));
+			if (dataTable.versionCheck('2')) {
+				this.s.dt.settings()[0].aoInitComplete.push(() => this._startup(table));
+			}
+			else {
+				this.s.dt.settings()[0].aoInitComplete.push({
+                    			fn: function () { return _this._startup(table); }
+                		});
+			}
 		}
 	}
 
