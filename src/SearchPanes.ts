@@ -710,7 +710,7 @@ export default class SearchPanes {
 			}
 			else {
 				this.s.dt.settings()[0].aoInitComplete.push({
-                    			fn: function () { return _this._startup(table); }
+                    			fn: () => this._startup(table)
                 		});
 			}
 		}
