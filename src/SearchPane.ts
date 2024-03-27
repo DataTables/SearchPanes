@@ -1036,7 +1036,12 @@ export default class SearchPane {
 	): void {
 		// Retrieve the rendered data from the cell using the fastData function
 		// rather than the cell().render API method for optimisation
-		var fastData = settings.fastData;
+		let fastData = settings.fastData
+			? settings.fastData
+			: function (row, col, orth) {
+				// Legacy DT1
+				return settings.oApi._fnGetCellData(settings, row, col, orth);
+			};
 
 		if (typeof this.s.colOpts.orthogonal === 'string') {
 			let rendered = fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal);

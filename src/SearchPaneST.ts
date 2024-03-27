@@ -248,7 +248,13 @@ export default class SearchPaneST extends SearchPane {
 			? this.s.colOpts.orthogonal
 			: this.s.colOpts.orthogonal.search;
 
-		let fastData = this.s.dt.settings()[0].fastData;
+		let fastData = settings.fastData
+			? settings.fastData
+			: function (row, col, orth) {
+				// Legacy DT1
+				return settings.oApi._fnGetCellData(settings, row, col, orth);
+			};
+
 		let filter = fastData(rowIdx, this.s.index, orth);
 		let add = (f) => {
 			if (!bins[f]) {
