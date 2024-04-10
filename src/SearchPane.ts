@@ -187,10 +187,7 @@ export default class SearchPane {
 			countButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.countButton),
-			dtP: $('<table width="100%"><thead><tr><th>' +
-				(this.s.colExists
-					? $(this.s.dt.column(this.s.index).header()).text()
-					: this.s.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
+			dtP: $('<table width="100%"><thead><tr><th></th><th></th></tr></thead></table>'),
 			lower: $('<div/>').addClass(this.classes.subRow2).addClass(this.classes.narrowButton),
 			nameButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
@@ -206,6 +203,12 @@ export default class SearchPane {
 			upper: $('<div/>').addClass(this.classes.subRow1).addClass(this.classes.narrowSearch)
 		};
 
+		var title = this.s.colExists
+			? $(this.s.dt.column(this.s.index).header()).text()
+			: (this.s.customPaneSettings.header || 'Custom Pane');
+
+		this.dom.dtP.find('th').eq(0).html(title);
+
 		// Set the value of name incase ordering is desired
 		if (this.s.colOpts.name) {
 			this.s.name = this.s.colOpts.name;
@@ -214,9 +217,7 @@ export default class SearchPane {
 			this.s.name = this.s.customPaneSettings.name;
 		}
 		else {
-			this.s.name = this.s.colExists ?
-				$(this.s.dt.column(this.s.index).header()).text() :
-				this.s.customPaneSettings.header || 'Custom Pane';
+			this.s.name = title;
 		}
 
 		let tableNode = this.s.dt.table(0).node();
