@@ -32,6 +32,10 @@ declare module 'datatables.net' {
 		 searchPanes?: ConfigSearchPanesLanguage;
 	}
 
+	interface Feature {
+		searchPanes?: string[] | ConfigSearchPanes | ConfigSearchPanes[];
+	}
+
 	interface Api<T> {
 		/**
 		 * SearchPanes methods container
