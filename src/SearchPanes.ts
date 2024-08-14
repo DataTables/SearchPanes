@@ -18,7 +18,7 @@ import SearchPane from './SearchPane';
 
 export default class SearchPanes {
 
-	private static version = '2.3.1';
+	private static version = '2.3.2';
 
 	private static classes = {
 		clear: 'dtsp-clear',
