@@ -945,8 +945,8 @@ export default class SearchPane {
 		let haveScroller = (dataTable as any).Scroller;
 
 		let langOpts = this.s.dt.settings()[0].oLanguage;
-		langOpts.url = undefined;
-		langOpts.sUrl = undefined;
+		langOpts.url = null;
+		langOpts.sUrl = null;
 
 		return {
 			columnDefs: [
