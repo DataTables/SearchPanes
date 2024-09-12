@@ -1070,7 +1070,6 @@ export default class SearchPane {
 			this.s.rowData.filterMap.set(rowIdx, filter);
 
 			if (!bins[filter]) {
-				bins[filter] = 1;
 				this._addOption(
 					filter,
 					fastData(rowIdx, this.s.index, this.s.colOpts.orthogonal.display),
@@ -1242,6 +1241,7 @@ export default class SearchPane {
 		}
 		// Otherwise we must just be adding an option
 		else {
+			bins[filter] = 1;
 			arrayFilter.push({
 				display,
 				filter,
