@@ -208,6 +208,10 @@ div.dtsp-searchPane {
 			padding: 0;
 		}
 
+		div.dt-layout-row:not(.dt-layout-table) {
+			margin: 0;
+		}
+
 		div.dt-scroll-head,
 		div.dataTables_scrollHead {
 			display: none !important;
