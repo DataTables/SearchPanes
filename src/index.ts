@@ -189,11 +189,6 @@ function _init(settings, options = null, fromPre = false) {
 		? options
 		: api.init().searchPanes || dataTable.defaults.searchPanes;
 
-	// Don't create a SearchPane for a SearchPane (can happen if a default is set)
-	if (api.table().container().closest('.dtsp-searchPanes')) {
-		return null;
-	}
-
 	let searchPanes = opts && (opts.cascadePanes || opts.viewTotal) ?
 		new SearchPanesST(api, opts, fromPre) :
 		new SearchPanes(api, opts, fromPre);

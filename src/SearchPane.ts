@@ -1386,6 +1386,24 @@ export default class SearchPane {
 			dt.select.style(style as any);
 		});
 
+		let layout;
+
+		if ($.fn.dataTable.versionCheck('2')) {
+			// We need to modify the layout default to null all entries, keeping in
+			// mind that the default might have been modified by the dev using DT,
+			// so it needs to be dynamic.
+			let cloned = $.extend(true, {}, $.fn.dataTable.defaults.layout);
+
+			$.each(cloned, function (key, val) {
+				cloned[key] = null;
+			});
+
+			layout = {layout: cloned};
+		}
+		else {
+			layout = {dom: 't'};
+		}
+
 		this.s.dtPane = this.dom.dtP.DataTable($.extend(
 			true,
 			this._getPaneConfig(),
@@ -1401,16 +1419,7 @@ export default class SearchPane {
 			this.s.customPaneSettings !== null && this.s.customPaneSettings.dtOpts ?
 				this.s.customPaneSettings.dtOpts :
 				{},
-			$.fn.dataTable.versionCheck('2')
-				? {
-					layout: {
-						bottomStart: null,
-						bottomEnd: null,
-						topStart: null,
-						topEnd: null
-					}
-				}
-				: {dom: 't'},
+			layout,
 		));
 
 		this.dom.dtP.addClass(this.classes.table);
