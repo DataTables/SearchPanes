@@ -6,6 +6,7 @@
 
 import DataTables, {Api} from 'datatables.net';
 import * as paneType from './paneType';
+import * as paneTypes from './paneTypes';
 
 export default DataTables;
 
@@ -75,7 +76,7 @@ declare module 'datatables.net' {
 
 interface ConfigSearchPanes extends DeepPartial<paneType.IDefaults> {}
 
-interface ConfigSearchPanesLanguage extends DeepPartial<paneType.IDefaults['i18n']> {}
+interface ConfigSearchPanesLanguage extends DeepPartial<paneTypes.IDefaults['i18n']> {}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
