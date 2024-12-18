@@ -880,13 +880,10 @@ export default class SearchPanes {
 					if (filterCount !== this.s.filterCount) {
 						data.start = 0;
 						this.s.page = 0;
-					}
-					// Otherwise it is a paging request and we need to read from whatever the paging has been set to
-					else {
-						data.start = this.s.page * this.s.dt.page.len();
+
+						this.s.dt.page(this.s.page);
 					}
 
-					this.s.dt.page(this.s.page);
 					this.s.filterCount = filterCount;
 				}
 
