@@ -666,7 +666,9 @@ export default class SearchPane {
 		//  change the ordering to whatever it isn't currently
 		this.dom.countButton.off('click.dtsp').on('click.dtsp', () => {
 			let currentOrder = this.s.dtPane.order()[0][1];
-			this.s.dtPane.order([[1, currentOrder === 'asc' ? 'desc' : 'asc']]).draw();
+			let dir = currentOrder === 'asc' ? 'desc' : 'asc';
+
+			this.s.dtPane.order([[2, dir], [1, dir]]).draw();
 			// This state save is required so that the ordering of the panes is maintained
 			this.s.dt.state.save();
 		});
@@ -1002,6 +1004,13 @@ export default class SearchPane {
 					searchable: false,
 					targets: 1,
 					visible: false
+				},
+				{
+					data: 'shown',
+					searchable: false,
+					targets: 2,
+					visible: false,
+					defaultContent: 0
 				}
 			],
 			deferRender: true,
