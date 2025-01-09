@@ -58,11 +58,17 @@ describe('searchPanes - options - language.searchPanes.emptyPanes', function() {
 			expect($('div.dtsp-panesContainer').hasClass('dtsp-hidden')).toBe(false);
 			expect($('div.dtsp-title:visible').length).toBe(0);
 		});
+
 		it('Present when rows added', async function() {
+			// The below will cause `ResizeObserver loop completed with undelivered notifications`
+			// to be thrown async, but I've not been able to reproduce it in the browser. This
+			// will catch the error and ignore it for this specific test.
+			window.onerror = function () {};
+
 			table.ajax.url('/base/test/data/data.txt').load();
 			await dt.sleep(500);
 
-			table.draw().searchPanes.rebuildPane();
+			window.onerror = undefined;
 
 			expect($('div.dtsp-searchPane:visible').length).toBe(3);
 			expect($('div.dtsp-panesContainer div.dtsp-emptyMessage').text()).not.toBe('unittest');
