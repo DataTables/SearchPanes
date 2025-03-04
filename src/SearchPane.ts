@@ -62,9 +62,17 @@ export default class SearchPane {
 		emptyMessage: null,
 		hideCount: false,
 		i18n: {
+			aria: {
+				clearPane: 'Clear selection',
+				clearSearch: 'Clear search',
+				collapse: 'Collapse / show pane',
+				orderByCount: 'Order by count',
+				orderByLabel: 'Order by label'
+			},
 			clearPane: '&times;',
 			count: '{total}',
 			emptyMessage: '<em>No data</em>',
+			searchTitle: 'Search: {name}'
 		},
 		initCollapsed: false,
 		layout: 'auto',
@@ -164,10 +172,12 @@ export default class SearchPane {
 				.addClass(this.classes.disabledButton)
 				.addClass(this.classes.paneButton)
 				.addClass(this.classes.clearButton)
+				.attr('aria-label', table.i18n('searchPanes.buttons.clearPane', this.c.i18n.aria.clearPane))
 				.html(this.s.dt.i18n('searchPanes.clearPane', this.c.i18n.clearPane)),
 			collapseButton: $('<button type="button"><span class="'+this.classes.caret+'">&#x5e;</span></button>')
 				.addClass(this.classes.paneButton)
-				.addClass(this.classes.collapseButton),
+				.addClass(this.classes.collapseButton)
+				.attr('aria-label', table.i18n('searchPanes.buttons.collapse', this.c.i18n.aria.collapse)),
 			container: $('<div/>')
 				.addClass(this.classes.container)
 				.addClass(this.s.colOpts.className)
@@ -186,17 +196,20 @@ export default class SearchPane {
 				),
 			countButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
-				.addClass(this.classes.countButton),
+				.addClass(this.classes.countButton)
+				.attr('aria-label', table.i18n('searchPanes.buttons.orderByCount', this.c.i18n.aria.orderByCount)),
 			dtP: $('<table width="100%"><thead><tr><th></th><th></th></tr></thead></table>'),
 			lower: $('<div/>').addClass(this.classes.subRow2).addClass(this.classes.narrowButton),
 			nameButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.paneButton)
-				.addClass(this.classes.nameButton),
+				.addClass(this.classes.nameButton)
+				.attr('aria-label', table.i18n('searchPanes.buttons.orderByLabel', this.c.i18n.aria.orderByLabel)),
 			panesContainer: $(panesContainer),
 			searchBox: $('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
 			searchButton: $('<button type="button"><span></span></button>')
 				.addClass(this.classes.searchIcon)
-				.addClass(this.classes.paneButton),
+				.addClass(this.classes.paneButton)
+				.attr('aria-label', table.i18n('searchPanes.buttons.clearSearch', this.c.i18n.aria.clearSearch)),
 			searchCont: $('<div/>').addClass(this.classes.searchCont),
 			searchLabelCont: $('<div/>').addClass(this.classes.searchLabelCont),
 			topRow: $('<div/>').addClass(this.classes.topRow),
@@ -1449,8 +1462,13 @@ export default class SearchPane {
 		}
 
 		headerText = this._escapeHTML(headerText);
+		let titleText = this.s.dt
+			.i18n('searchBuilder.searchTitle', this.c.i18n.searchTitle)
+			.replace('{name}', headerText);
 
-		this.dom.searchBox.attr('placeholder', headerText);
+		this.dom.searchBox
+			.attr('placeholder', headerText)
+			.attr('title', titleText);
 
 		$.fn.dataTable.ext.errMode = errMode;
 

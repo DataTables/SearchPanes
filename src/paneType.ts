@@ -72,10 +72,18 @@ export interface IDefaults {
 	emptyMessage: string;
 	hideCount: boolean;
 	i18n: {
+		aria: {
+			clearPane: string;
+			clearSearch: string;
+			collapse: string;
+			orderByCount: string;
+			orderByLabel: string;
+		};
 		clearPane: string;
 		count: string;
 		countFiltered: string;
 		emptyMessage: string;
+		searchTitle: string;
 	};
 	initCollapsed: boolean;
 	layout: string;
