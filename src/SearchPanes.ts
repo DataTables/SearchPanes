@@ -54,7 +54,7 @@ export default class SearchPanes {
 			},
 			collapseMessage: 'Collapse All',
 			count: '{total}',
-			emptyMessage: '<em>No data</em>',
+			emptyMessage: '<em>Empty</em>',
 			emptyPanes: 'No SearchPanes',
 			loadMessage: 'Loading Search Panes...',
 			showMessage: 'Show All',
