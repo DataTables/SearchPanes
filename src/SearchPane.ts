@@ -71,7 +71,7 @@ export default class SearchPane {
 			},
 			clearPane: '&times;',
 			count: '{total}',
-			emptyMessage: '<em>No data</em>',
+			emptyMessage: '<em>Empty</em>',
 			searchTitle: 'Search: {name}'
 		},
 		initCollapsed: false,
