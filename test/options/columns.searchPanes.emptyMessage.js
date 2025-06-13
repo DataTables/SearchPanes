@@ -17,10 +17,10 @@ describe('searchPanes - options - columns.searchPanes.emptyMessage', function() 
 			});
 
 			expect($('div.dtsp-searchPane:eq(2) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
-				'<em>No data</em>'
+				'<em>Empty</em>'
 			);
 			expect($('div.dtsp-searchPane:eq(1) table tbody tr:eq(0) td:eq(0) span.dtsp-name:eq(0)').html()).toBe(
-				'<em>No data</em>'
+				'<em>Empty</em>'
 			);
 		});
 		it('Refers to expected row', async function() {
