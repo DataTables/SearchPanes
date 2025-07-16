@@ -492,9 +492,10 @@ export default class SearchPanes {
 			this.dom.panes.append(pane.dom.container);
 		}
 
+		this.dom.container.children().detach();
+
 		// Attach everything to the document
 		this.dom.container
-			.text('')
 			.removeClass(this.classes.hide)
 			.append(this.dom.titleRow)
 			.append(this.dom.panes);
