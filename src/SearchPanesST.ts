@@ -1,11 +1,12 @@
+import { Context, StateLoad } from 'datatables.net';
 import { ISelectItem, ISVT } from './panesType';
+import SearchPane from './SearchPane';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';
 import SearchPanes from './SearchPanes';
 import SearchPaneViewTotal from './SearchPaneViewTotal';
 
 export default class SearchPanesST extends SearchPanes {
-
 	public s: ISVT;
 
 	public constructor(paneSettings, opts, fromPreInit = false) {
@@ -26,14 +27,17 @@ export default class SearchPanesST extends SearchPanes {
 		let dt = this.s.dt;
 		let loadedFilter = dt.state.loaded();
 
-		let loadFn = () => this._initSelectionListeners(
-			true,
-			loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList ?
-				loadedFilter.searchPanes.selectionList :
-				this.c.preSelect
-		);
+		let loadFn = () =>
+			this._initSelectionListeners(
+				true,
+				loadedFilter &&
+					loadedFilter.searchPanes &&
+					loadedFilter.searchPanes.selectionList
+					? loadedFilter.searchPanes.selectionList
+					: this.c.preSelect
+			);
 
-		if (dt.settings()[0]._bInitComplete) {
+		if (dt.settings()[0].initDone) {
 			loadFn();
 		}
 		else {
@@ -42,11 +46,15 @@ export default class SearchPanesST extends SearchPanes {
 	}
 
 	/**
-	 * Ensures that the correct selection listeners are set for selection tracking
+	 * Ensures that the correct selection listeners are set for selection
+	 * tracking
 	 *
 	 * @param preSelect Any values that are to be preselected
 	 */
-	protected _initSelectionListeners(isPreselect = true, preSelect: ISelectItem[] = []): void {
+	protected _initSelectionListeners(
+		isPreselect = true,
+		preSelect: ISelectItem[] = []
+	): void {
 		if (isPreselect) {
 			this.s.selectionList = preSelect;
 		}
@@ -75,12 +83,18 @@ export default class SearchPanesST extends SearchPanes {
 	protected _serverTotals(): void {
 		for (let pane of this.s.panes) {
 			if (pane.s.colOpts.show) {
-				let colTitle = this.s.dt.column(pane.s.index).dataSrc();
+				let colTitle = this.s.dt
+					.column(pane.s.index)
+					.dataSrc()
+					.toString();
 				let blockVT = true;
 
-				// If any of the counts are not equal to the totals filtering must be active
+				// If any of the counts are not equal to the totals filtering
+				// must be active
 				if (this.s.serverData.searchPanes.options[colTitle]) {
-					for (let data of this.s.serverData.searchPanes.options[colTitle]) {
+					for (let data of this.s.serverData.searchPanes.options[
+						colTitle
+					]) {
 						if (data.total !== data.count) {
 							blockVT = false;
 							break;
@@ -88,7 +102,8 @@ export default class SearchPanesST extends SearchPanes {
 					}
 				}
 
-				// Set if filtering is present on the pane and populate the data arrays
+				// Set if filtering is present on the pane and populate the data
+				// arrays
 				pane.s.filteringActive = !blockVT;
 				pane._serverPopulate(this.s.serverData);
 			}
@@ -101,17 +116,20 @@ export default class SearchPanesST extends SearchPanes {
 	 * Overrides the method in SearchPanes
 	 */
 	protected _stateLoadListener(): void {
-		let stateLoadFunction = (e, settings, data) => {
+		let stateLoadFunction = (
+			e: Event,
+			settings: Context,
+			data: StateLoad
+		) => {
 			if (data.searchPanes === undefined) {
 				return;
 			}
 
 			// Set the selection list for the panes so that the correct
 			// rows can be reselected and in the right order
-			this.s.selectionList =
-				data.searchPanes.selectionList ?
-					data.searchPanes.selectionList :
-					[];
+			this.s.selectionList = data.searchPanes.selectionList
+				? data.searchPanes.selectionList
+				: [];
 
 			// Find the panes that match from the state and the actual instance
 			if (data.searchPanes.panes) {
@@ -120,6 +138,7 @@ export default class SearchPanesST extends SearchPanes {
 						if (loadedPane.id === pane.s.index && pane.s.dtPane) {
 							// Set the value of the searchbox
 							pane.dom.searchBox.val(loadedPane.searchTerm);
+
 							// Set the value of the order
 							pane.s.dtPane.order(loadedPane.order);
 						}
@@ -129,7 +148,10 @@ export default class SearchPanesST extends SearchPanes {
 
 			this._updateSelectionList();
 		};
-		this.s.dt.off('stateLoadParams.dtsps', stateLoadFunction).on('stateLoadParams.dtsps', stateLoadFunction);
+
+		this.s.dt
+			.off('stateLoadParams.dtsps', stateLoadFunction)
+			.on('stateLoadParams.dtsps', stateLoadFunction);
 	}
 
 	/**
@@ -142,67 +164,88 @@ export default class SearchPanesST extends SearchPanes {
 	}
 
 	/**
-	 * Returns a function that updates the selection list based on a specific pane
-	 * Also clears the timeout to stop the deselect from running
+	 * Returns a function that updates the selection list based on a specific
+	 * pane Also clears the timeout to stop the deselect from running
 	 *
 	 * @param pane the pane that is to have it's selections loaded
 	 */
-	private _update(pane=undefined): () => void {
+	private _update(pane: SearchPane | undefined = undefined): () => void {
 		return () => {
 			if (pane) {
 				clearTimeout(pane.s.deselectTimeout);
 			}
+
 			this._updateSelectionList(pane);
 		};
 	}
 
 	/**
-	 * Returns a function that updates the selection list based on a specific pane
-	 * Also sets a timeout incase a select is about to be made
+	 * Returns a function that updates the selection list based on a specific
+	 * pane Also sets a timeout in case a select is about to be made
 	 *
 	 * @param pane the pane that is to have it's selections loaded
 	 */
-	private _updateTimeout(pane=undefined): () => void {
-		return () => pane ?
-			pane.s.deselectTimeout = setTimeout(() => this._updateSelectionList(pane), 50) :
-			this._updateSelectionList();
+	private _updateTimeout(
+		pane: SearchPane | undefined = undefined
+	): () => void {
+		return () =>
+			pane
+				? (pane.s.deselectTimeout = setTimeout(
+						() => this._updateSelectionList(pane),
+						50
+				  ))
+				: this._updateSelectionList();
 	}
 
 	/**
-	 * Updates the selection list to include the latest selections for a given pane
+	 * Updates the selection list to include the latest selections for a given
+	 * pane
 	 *
 	 * @param index The index of the pane that is to be updated
 	 * @param selected Which rows are selected within the pane
 	 */
-	private _updateSelectionList(paneIn = undefined): void {
+	private _updateSelectionList(
+		paneIn: SearchPane | undefined = undefined
+	): void {
 		// Bail if any of these flags are set
 		if (this.s.pagingST) {
 			// Reset pagingST flag
 			this.s.pagingST = false;
 			return;
 		}
-		else if (this.s.updating || paneIn && paneIn.s.serverSelecting) {
+		else if (this.s.updating || (paneIn && paneIn.s.serverSelecting)) {
 			return;
 		}
 
 		if (paneIn !== undefined) {
 			if (this.s.dt.page.info().serverSide) {
-				paneIn._updateSelection();
+				paneIn._updateSelection(false);
 			}
 
 			// Get filter values for all of the rows and the selections
-			let rows = paneIn.s.dtPane.rows({selected: true}).data().toArray().map(el => el.filter);
-			this.s.selectionList = this.s.selectionList.filter(selection => selection.column !== paneIn.s.index);
+			let rows = paneIn.s.dtPane
+				.rows({ selected: true })
+				.data()
+				.toArray()
+				.map(el => el.filter);
+
+			this.s.selectionList = this.s.selectionList.filter(
+				selection => selection.column !== paneIn.s.index
+			);
 
 			if (rows.length > 0) {
 				this.s.selectionList.push({
 					column: paneIn.s.index,
 					rows
 				});
-				paneIn.dom.clear.removeClass(this.classes.disabledButton).removeAttr('disabled');
+				paneIn.dom.clear
+					.classRemove(this.classes.disabledButton)
+					.attrRemove('disabled');
 			}
 			else {
-				paneIn.dom.clear.addClass(this.classes.disabledButton).attr('disabled', 'true');
+				paneIn.dom.clear
+					.classAdd(this.classes.disabledButton)
+					.attr('disabled', 'true');
 			}
 
 			if (this.s.dt.page.info().serverSide) {
@@ -215,7 +258,8 @@ export default class SearchPanesST extends SearchPanes {
 	}
 
 	/**
-	 * Remake the selections that were present before new data or calculations have occured
+	 * Remake the selections that were present before new data or calculations
+	 * have occurred
 	 */
 	private _remakeSelections(): void {
 		let currPane;
@@ -229,9 +273,12 @@ export default class SearchPanesST extends SearchPanes {
 			this.clearSelections();
 			this.s.dt.draw(false);
 
-			// When there are no selections present if the length of the data does not match the searched data
-			// then another filter is present
-			if (this.s.dt.rows().toArray()[0].length > this.s.dt.rows({search: 'applied'}).toArray()[0].length) {
+			// When there are no selections present if the length of the data
+			// does not match the searched data then another filter is present
+			if (
+				this.s.dt.rows().toArray()[0].length >
+				this.s.dt.rows({ search: 'applied' }).toArray()[0].length
+			) {
 				anotherFilter = true;
 			}
 
@@ -248,14 +295,14 @@ export default class SearchPanesST extends SearchPanes {
 			for (let selection of this.s.selectionList) {
 				pane = null;
 
-				for(let paneCheck of this.s.panes) {
-					if(paneCheck.s.index === selection.column) {
+				for (let paneCheck of this.s.panes) {
+					if (paneCheck.s.index === selection.column) {
 						pane = paneCheck;
 						break;
 					}
 				}
 
-				if(!pane.s.dtPane) {
+				if (!pane || !pane.s.dtPane) {
 					continue;
 				}
 
@@ -270,21 +317,22 @@ export default class SearchPanesST extends SearchPanes {
 						let data = currRow.data();
 
 						if (selection.rows[i] === data.filter) {
-							currRow.select();
+							(currRow as any).select();
 							rowFound = true;
 						}
 					}
 
 					if (!rowFound) {
-						selection.rows.splice(i,1);
+						selection.rows.splice(i, 1);
 						i--;
 					}
 				}
 
 				pane.s.selections = selection.rows;
 
-				// If there are no rows selected then don't bother continuing past here
-				// Will just increase processing time and skew the rows that are shown in the table
+				// If there are no rows selected then don't bother continuing
+				// past here Will just increase processing time and skew the
+				// rows that are shown in the table
 				if (selection.rows.length === 0) {
 					continue;
 				}
@@ -313,8 +361,13 @@ export default class SearchPanesST extends SearchPanes {
 				for (currPane of this.s.panes) {
 					if (currPane.s.displayed) {
 						// Set the filtering active flag
-						if (anotherFilter || pane.s.index !== currPane.s.index || !filteringActive) {
-							currPane.s.filteringActive = filteringActive || anotherFilter;
+						if (
+							anotherFilter ||
+							pane.s.index !== currPane.s.index ||
+							!filteringActive
+						) {
+							currPane.s.filteringActive =
+								filteringActive || anotherFilter;
 						}
 						else if (selectedPanes === 1) {
 							currPane.s.filteringActive = false;
@@ -334,12 +387,19 @@ export default class SearchPanesST extends SearchPanes {
 		else {
 			// Identify the last pane to have a change in selection
 			if (this.s.selectionList.length > 0) {
-				pane = this.s.panes[this.s.selectionList[this.s.selectionList.length-1].column];
+				pane =
+					this.s.panes[
+						this.s.selectionList[this.s.selectionList.length - 1]
+							.column
+					];
 			}
 
 			// Update the rows of all of the other panes
 			for (currPane of this.s.panes) {
-				if (currPane.s.displayed && (!pane || currPane.s.index !== pane.s.index)) {
+				if (
+					currPane.s.displayed &&
+					(!pane || currPane.s.index !== pane.s.index)
+				) {
 					currPane.updateRows();
 				}
 			}

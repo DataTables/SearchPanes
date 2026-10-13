@@ -1,34 +1,23 @@
 {
     "compilerOptions": {
-        "target": "ES3",
+        "target": "ES6",
         "module": "ES6",
+		"moduleResolution": "bundler",
         "lib": ["es2017", "es2016", "dom"],
         "allowUnreachableCode": true,
         "allowSyntheticDefaultImports": true,
         "pretty": true,
-        "declaration": true
+        "declaration": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"skipLibCheck": true,
+		"outDir": "dist",
+        "rootDir": "src",
+        "types": [],
+        "noImplicitThis": false
     },
-    "exclude": [
-        "./node_modules/**/*"
-    ],
     "files": [
-        "src/SearchPanes.ts",
-        "src/SearchPanesST.ts",
-        "src/SearchPane.ts",
-        "src/SearchPaneST.ts",
-        "src/SearchPaneCascade.ts",
-        "src/SearchPaneCascadeViewTotal.ts",
-        "src/SearchPaneViewTotal.ts",
-        "src/index.ts",
-        "src/paneType.ts",
-        "src/panesType.ts",
-        "src/searchPanes.dataTables.ts",
-        "src/searchPanes.bootstrap4.ts",
-        "src/searchPanes.bootstrap5.ts",
-        "src/searchPanes.bootstrap.ts",
-        "src/searchPanes.bulma.ts",
-        "src/searchPanes.foundation.ts",
-        "src/searchPanes.jqueryui.ts",
-        "src/searchPanes.semanticui.ts",
+        "src/dataTables.searchPanes.ts"
     ]
 }

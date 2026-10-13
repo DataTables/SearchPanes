@@ -1,3 +1,5 @@
+import { Api, Dom } from 'datatables.net';
+
 export interface IClasses {
 	badgePill?: string;
 	bordered: string;
@@ -43,7 +45,7 @@ export interface IClasses {
 
 export interface IConfigPaneItem {
 	className: string;
-	dtOpts: {[keys: string]: any}; // All dtOpts
+	dtOpts: { [keys: string]: any }; // All dtOpts
 	header: string;
 	name: string;
 	options: IOption[];
@@ -68,7 +70,7 @@ export interface IDefaults {
 	combiner: string;
 	container: (dt: any) => HTMLElement; // Function?
 	controls: boolean;
-	dtOpts: {[keys: string]: any}; // All dtOpts
+	dtOpts: { [keys: string]: any }; // All dtOpts
 	emptyMessage: string;
 	hideCount: boolean;
 	i18n: {
@@ -96,21 +98,21 @@ export interface IDefaults {
 }
 
 export interface IDOM {
-	buttonGroup: JQuery<HTMLElement>;
-	clear: JQuery<HTMLElement>;
-	collapseButton: JQuery<HTMLElement>;
-	container: JQuery<HTMLElement>; // Container Method needs to return a JQuery
-	countButton: JQuery<HTMLElement>;
-	dtP: JQuery<HTMLElement>;
-	lower: JQuery<HTMLElement>;
-	nameButton: JQuery<HTMLElement>;
-	panesContainer: JQuery<HTMLElement>;
-	searchBox: JQuery<HTMLElement>;
-	searchButton: JQuery<HTMLElement>;
-	searchCont: JQuery<HTMLElement>;
-	searchLabelCont: JQuery<HTMLElement>;
-	topRow: JQuery<HTMLElement>;
-	upper: JQuery<HTMLElement>;
+	buttonGroup: Dom<HTMLElement>;
+	clear: Dom<HTMLElement>;
+	collapseButton: Dom<HTMLElement>;
+	container: Dom<HTMLElement>; // Container Method needs to return a Dom
+	countButton: Dom<HTMLElement>;
+	dtP: Dom<HTMLElement>;
+	lower: Dom<HTMLElement>;
+	nameButton: Dom<HTMLElement>;
+	panesContainer: Dom<HTMLElement>;
+	searchBox: Dom<HTMLElement>;
+	searchButton: Dom<HTMLElement>;
+	searchCont: Dom<HTMLElement>;
+	searchLabelCont: Dom<HTMLElement>;
+	topRow: Dom<HTMLElement>;
+	upper: Dom<HTMLElement>;
 }
 
 export interface IIndexes {
@@ -138,8 +140,8 @@ export interface IOrthogonal {
 export interface IRowData {
 	arrayFilter: IDataArray[];
 	arrayOriginal: IDataArray[];
-	bins: {[keys: string]: number};
-	binsOriginal: {[keys: string]: number};
+	bins: { [keys: string]: number };
+	binsOriginal: { [keys: string]: number };
 	filterMap: Map<number, any>;
 	totalOptions: number;
 }
@@ -148,9 +150,9 @@ export interface IRowDataST extends IRowData {
 	arrayFilter: IDataArrayST[];
 	arrayOriginal: IDataArrayST[];
 	arrayShown: IDataArrayST[];
-	bins: {[keys: string]: number};
-	binsOriginal: {[keys: string]: number};
-	binsShown: {[keys: string]: number};
+	bins: { [keys: string]: number };
+	binsOriginal: { [keys: string]: number };
+	binsShown: { [keys: string]: number };
 	filterMap: Map<number, any>;
 	totalOptions: number;
 }
@@ -159,10 +161,10 @@ export interface IS {
 	colExists: boolean;
 	colOpts: any;
 	customPaneSettings: IConfigPaneItem;
-	deselectTimeout?: NodeJS.Timeout;
+	deselectTimeout?: ReturnType<typeof setTimeout>;
 	displayed: boolean;
-	dt: any; // Parent DataTable
-	dtPane: any; // Pane DataTable Instance
+	dt: Api;
+	dtPane: Api;
 	firstSet: boolean;
 	index: number;
 	indexes: IIndexes[];

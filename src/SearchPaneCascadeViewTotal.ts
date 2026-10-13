@@ -1,10 +1,5 @@
+import { util } from 'datatables.net';
 import SearchPaneCascade from './SearchPaneCascade';
-
-let $;
-
-export function setJQuery(jq) {
-	$ = jq;
-}
 
 export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
@@ -15,7 +10,13 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 			}
 		};
 
-		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
+		super(
+			paneSettings,
+			util.object.assign(override, opts),
+			index,
+			panesContainer,
+			panes
+		);
 	}
 
 	/**
@@ -29,8 +30,16 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 		let settings = this.s.dt.settings()[0];
 
 		if (!this.s.dt.page.info().serverSide) {
-			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings, this.s.rowData.binsShown);
+			for (let index of this.s.dt
+				.rows({ search: 'applied' })
+				.indexes()
+				.toArray()) {
+				this._populatePaneArray(
+					index,
+					this.s.rowData.arrayFilter,
+					settings,
+					this.s.rowData.binsShown
+				);
 			}
 		}
 	}
@@ -44,8 +53,14 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 	 * @returns string - the message that is to be shown for the count of each entry
 	 */
 	protected _getMessage(row: any): string {
-		let countMessage = this.s.dt.i18n('searchPanes.count', this.c.i18n.count);
-		let filteredMessage = this.s.dt.i18n('searchPanes.countFiltered', this.c.i18n.countFiltered);
+		let countMessage = this.s.dt.i18n(
+			'searchPanes.count',
+			this.c.i18n.count
+		);
+		let filteredMessage = this.s.dt.i18n(
+			'searchPanes.countFiltered',
+			this.c.i18n.countFiltered
+		);
 
 		return (this.s.filteringActive ? filteredMessage : countMessage)
 			.replace(/{total}/g, row.total)

@@ -1,10 +1,5 @@
+import { util } from 'datatables.net';
 import SearchPaneST from './SearchPaneST';
-
-let $;
-
-export function setJQuery(jq) {
-	$ = jq;
-}
 
 export default class SearchPaneCascade extends SearchPaneST {
 	public constructor(paneSettings, opts, index, panesContainer, panes) {
@@ -13,7 +8,13 @@ export default class SearchPaneCascade extends SearchPaneST {
 				count: '{shown}'
 			}
 		};
-		super(paneSettings, $.extend(override, opts), index, panesContainer, panes);
+		super(
+			paneSettings,
+			util.object.assign(override, opts),
+			index,
+			panesContainer,
+			panes
+		);
 	}
 
 	/**
@@ -22,15 +23,17 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * This overrides the method in SearchPane
 	 */
 	public updateRows(): void {
-		// Note the currently selected values in the pane and remove all of the rows
-		let selected = this.s.dtPane.rows({selected: true}).data().toArray();
+		// Note the currently selected values in the pane and remove all of the
+		// rows
+		let selected = this.s.dtPane.rows({ selected: true }).data().toArray();
 		let selection;
 
 		if (
 			this.s.colOpts.options ||
-			this.s.customPaneSettings && this.s.customPaneSettings.options
+			(this.s.customPaneSettings && this.s.customPaneSettings.options)
 		) {
-			// If there are custom options set or it is a custom pane then get them
+			// If there are custom options set or it is a custom pane then get
+			// them
 			this._getComparisonRows();
 
 			let rows = this.s.dtPane.rows().toArray()[0];
@@ -39,7 +42,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 				let row = this.s.dtPane.row(rows[i]);
 				let rowData = row.data();
 
-				if(rowData === undefined) {
+				if (rowData === undefined) {
 					continue;
 				}
 
@@ -50,9 +53,9 @@ export default class SearchPaneCascade extends SearchPaneST {
 					continue;
 				}
 
-				for(selection of selected) {
-					if(rowData.filter === selection.filter) {
-						row.select();
+				for (selection of selected) {
+					if (rowData.filter === selection.filter) {
+						(row as any).select();
 						selected.splice(i, 1);
 						this.s.selections.push(rowData.filter);
 						break;
@@ -66,8 +69,15 @@ export default class SearchPaneCascade extends SearchPaneST {
 				this._activePopulatePane();
 				this.s.rowData.binsShown = {};
 
-				for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-					this._updateShown(index, this.s.dt.settings()[0], this.s.rowData.binsShown);
+				for (let index of this.s.dt
+					.rows({ search: 'applied' })
+					.indexes()
+					.toArray()) {
+					this._updateShown(
+						index,
+						this.s.dt.settings()[0],
+						this.s.rowData.binsShown
+					);
 				}
 			}
 
@@ -75,7 +85,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 			// Go over all of the rows that could be displayed
 			for (let data of this.s.rowData.arrayFilter) {
-				// Cascade - If there are no rows present in the table don't show the option
+				// Cascade - If there are no rows present in the table don't
+				// show the option
 				if (data.shown === 0) {
 					continue;
 				}
@@ -95,7 +106,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 					if (selectedRow.filter === data.filter) {
 						newRow.select();
-						// Remove the row from the to find list and then add it to the selections list
+						// Remove the row from the to find list and then add it
+						// to the selections list
 						selected.splice(j, 1);
 						this.s.selections.push(data.filter);
 						break;
@@ -103,7 +115,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 				}
 			}
 
-			// Add all of the rows that were previously selected but aren't any more
+			// Add all of the rows that were previously selected but aren't any
+			// more
 			for (selection of selected) {
 				for (let origData of this.s.rowData.arrayOriginal) {
 					if (origData.filter === selection.filter) {
@@ -123,7 +136,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 		// Show updates in the pane
 		this.s.dtPane.draw();
-		this.s.dtPane.table().node().parentNode.scrollTop = this.s.scrollTop;
+		this.s.dtPane.table().node().parentElement!.scrollTop =
+			this.s.scrollTop;
 
 		// If client side updated the tables results
 		if (!this.s.dt.page.info().serverSide) {
@@ -132,7 +146,8 @@ export default class SearchPaneCascade extends SearchPaneST {
 	}
 
 	/**
-	 * Fill the array with the values that are currently being displayed in the table
+	 * Fill the array with the values that are currently being displayed in the
+	 * table
 	 */
 	protected _activePopulatePane(): void {
 		this.s.rowData.arrayFilter = [];
@@ -140,38 +155,45 @@ export default class SearchPaneCascade extends SearchPaneST {
 		let settings = this.s.dt.settings()[0];
 
 		if (!this.s.dt.page.info().serverSide) {
-			for (let index of this.s.dt.rows({search: 'applied'}).indexes().toArray()) {
-				this._populatePaneArray(index, this.s.rowData.arrayFilter, settings);
+			for (let index of this.s.dt
+				.rows({ search: 'applied' })
+				.indexes()
+				.toArray()) {
+				this._populatePaneArray(
+					index,
+					this.s.rowData.arrayFilter,
+					settings
+				);
 			}
 		}
 	}
 
 	protected _getComparisonRows(): any[] {
-		// Find the appropriate options depending on whether this is a pane for a specific column or a custom pane
+		// Find the appropriate options depending on whether this is a pane for
+		// a specific column or a custom pane
 		let options = this.s.colOpts.options
 			? this.s.colOpts.options
 			: this.s.customPaneSettings && this.s.customPaneSettings.options
-				? this.s.customPaneSettings.options
-				: undefined;
+			? this.s.customPaneSettings.options
+			: undefined;
 
 		if (options === undefined) {
-			return;
+			return [];
 		}
 
 		let allRows = this.s.dt.rows();
-		let shownRows = this.s.dt.rows({search: 'applied'});
+		let shownRows = this.s.dt.rows({ search: 'applied' });
 		let tableValsTotal = allRows.data().toArray();
 		let tableValsShown = shownRows.data().toArray();
 		let rows = [];
-		// Clear all of the other rows from the pane, only custom options are to be displayed when they are defined
+		// Clear all of the other rows from the pane, only custom options are to
+		// be displayed when they are defined
 		this.s.dtPane.clear();
 		this.s.indexes = [];
 
 		for (let comp of options) {
 			// Initialise the object which is to be placed in the row
-			let insert = comp.label !== '' ?
-				comp.label :
-				this.emptyMessage();
+			let insert = comp.label !== '' ? comp.label : this.emptyMessage();
 			let comparisonObj = {
 				className: comp.className,
 				display: insert,
@@ -184,15 +206,28 @@ export default class SearchPaneCascade extends SearchPaneST {
 
 			// If a custom function is in place
 			if (typeof comp.value === 'function') {
-				// Count the number of times the function evaluates to true for the original data in the Table
+				// Count the number of times the function evaluates to true for
+				// the original data in the Table
 				for (let i = 0; i < tableValsTotal.length; i++) {
-					if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
+					if (
+						comp.value.call(
+							this.s.dt,
+							tableValsTotal[i],
+							allRows[0][i]
+						)
+					) {
 						comparisonObj.total++;
 					}
 				}
 
-				for(let j = 0; j < tableValsShown.length; j++) {
-					if(comp.value.call(this.s.dt, tableValsShown[j], shownRows[0][j])) {
+				for (let j = 0; j < tableValsShown.length; j++) {
+					if (
+						comp.value.call(
+							this.s.dt,
+							tableValsShown[j],
+							shownRows[0][j]
+						)
+					) {
 						comparisonObj.shown++;
 					}
 				}
@@ -203,44 +238,51 @@ export default class SearchPaneCascade extends SearchPaneST {
 				}
 			}
 
-			rows.push(this.addRow(
-				comparisonObj.display,
-				comparisonObj.filter,
-				comparisonObj.sort,
-				comparisonObj.type,
-				comparisonObj.className,
-				comparisonObj.total,
-				comparisonObj.shown
-			));
+			rows.push(
+				this.addRow(
+					comparisonObj.display,
+					comparisonObj.filter,
+					comparisonObj.sort,
+					comparisonObj.type,
+					comparisonObj.className,
+					comparisonObj.total,
+					comparisonObj.shown
+				)
+			);
 		}
 
 		return rows;
 	}
 
 	/**
-	 * Gets the message that is to be used to indicate the count for each SearchPane row
+	 * Gets the message that is to be used to indicate the count for each
+	 * SearchPane row
 	 *
-	 * This method overrides _getMessage() in SearchPane and is overridden by SearchPaneCascadeViewTotal
+	 * This method overrides _getMessage() in SearchPane and is overridden by
+	 * SearchPaneCascadeViewTotal
 	 *
 	 * @param row The row object that is being processed
-	 * @returns string - the message that is to be shown for the count of each entry
+	 * @returns string - the message that is to be shown for the count of each
+	 * entry
 	 */
-	protected _getMessage(row: {[keys: string]: any}): string {
-		return this.s.dt.i18n('searchPanes.count', this.c.i18n.count)
+	protected _getMessage(row: { [keys: string]: any }): string {
+		return this.s.dt
+			.i18n('searchPanes.count', this.c.i18n.count)
 			.replace(/{total}/g, row.total)
 			.replace(/{shown}/g, row.shown);
 	}
 
 	/**
-	 * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+	 * Overrides the blank method in SearchPane to return the number of times a
+	 * given value is currently being displayed
 	 *
 	 * @param filter The filter value
 	 * @returns number - The number of times the value is shown
 	 */
 	protected _getShown(filter: string): number {
-		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
-			this.s.rowData.binsShown[filter] :
-			0;
+		return this.s.rowData.binsShown && this.s.rowData.binsShown[filter]
+			? this.s.rowData.binsShown[filter]
+			: 0;
 	}
 
 	/**
@@ -251,7 +293,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * @param data the row data
 	 * @returns boolean indicating if the row should be added or not
 	 */
-	protected _shouldAddRow(data: {[keys: string]: any}): boolean {
+	protected _shouldAddRow(data: { [keys: string]: any }): boolean {
 		return data.shown > 0;
 	}
 }

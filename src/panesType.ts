@@ -1,6 +1,13 @@
+import { Api, Dom } from 'datatables.net';
 import SearchPane from './SearchPane';
-import SearchPaneViewTotal from './SearchPaneViewTotal';
 import SearchPaneCascade from './SearchPaneCascade';
+import SearchPaneViewTotal from './SearchPaneViewTotal';
+
+type DeepPartial<T> = T extends object
+	? {
+			[P in keyof T]?: DeepPartial<T[P]>;
+	  }
+	: T;
 
 export interface IClasses {
 	clear: string;
@@ -30,7 +37,7 @@ export interface IDefaults {
 	collapse: boolean;
 	columns: number[];
 	container: (dt: any) => any;
-	filterChanged: (count: number) => any;
+	filterChanged?: (count: number) => any;
 	i18n: {
 		clearMessage: string;
 		clearPane: string;
@@ -55,15 +62,17 @@ export interface IDefaults {
 	viewTotal: boolean;
 }
 
+export interface IConfig extends DeepPartial<IDefaults> {};
+
 export interface IDOM {
-	clearAll: JQuery<HTMLElement>;
-	collapseAll: JQuery<HTMLElement>;
-	container: JQuery<HTMLElement>; // Container Method needs to return a JQuery
-	emptyMessage: JQuery<HTMLElement>;
-	panes: JQuery<HTMLElement>;
-	showAll: JQuery<HTMLElement>;
-	title: JQuery<HTMLElement>;
-	titleRow: JQuery<HTMLElement>;
+	clearAll: Dom<HTMLElement>;
+	collapseAll: Dom<HTMLElement>;
+	container: Dom<HTMLElement>; // Container Method needs to return a Dom
+	emptyMessage: Dom<HTMLElement>;
+	panes: Dom<HTMLElement>;
+	showAll: Dom<HTMLElement>;
+	title: Dom<HTMLElement>;
+	titleRow: Dom<HTMLElement>;
 }
 
 export interface IOption {
@@ -73,7 +82,7 @@ export interface IOption {
 
 export interface IS {
 	colOpts: any[];
-	dt: any; // DataTable Instance
+	dt: Api;
 	filterCount: number;
 	minPaneWidth: number;
 	page: number;

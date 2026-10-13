@@ -1,23 +1,17 @@
-let $;
-let dataTable;
-
-export function setJQuery(jq) {
-	$ = jq;
-	dataTable = jq.fn.dataTable;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-namespace DataTables {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	interface IStaticFunctions {
-		select: any;
-	}
-}
-import { IClasses, IDefaults, IDOM, IS } from './panesType';
+import DataTable, {
+	AjaxData,
+	AjaxResponse,
+	Api,
+	Context,
+	Dom,
+	State,
+	StateLoad,
+	util
+} from 'datatables.net';
+import { IClasses, IConfig, IDefaults, IDOM, IS } from './panesType';
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
-
 	private static version = '2.3.5';
 
 	private static classes = {
@@ -36,12 +30,12 @@ export default class SearchPanes {
 	};
 
 	// Define SearchPanes default options
-	private static defaults = {
+	private static defaults: IDefaults = {
 		cascadePanes: false,
 		clear: true,
 		collapse: true,
 		columns: [],
-		container(dt) {
+		container(dt: Api) {
 			return dt.table().container();
 		},
 		filterChanged: undefined,
@@ -54,6 +48,7 @@ export default class SearchPanes {
 			},
 			collapseMessage: 'Collapse All',
 			count: '{total}',
+			countFiltered: '',
 			emptyMessage: '<em>Empty</em>',
 			emptyPanes: 'No SearchPanes',
 			loadMessage: 'Loading Search Panes...',
@@ -73,44 +68,76 @@ export default class SearchPanes {
 	public c: IDefaults;
 	public s: IS;
 
-	public constructor(paneSettings, opts, fromPreInit = false, paneClass = SearchPane) {
+	public constructor(
+		hostCtx: Api | Context,
+		opts: IConfig,
+		fromPreInit = false,
+		paneClass = SearchPane
+	) {
 		// Check that the required version of DataTables is included
-		if (!dataTable || !dataTable.versionCheck || !dataTable.versionCheck('1.10.0')) {
-			throw new Error('SearchPane requires DataTables 1.10 or newer');
+		if (
+			!DataTable ||
+			!DataTable.versionCheck ||
+			!DataTable.versionCheck('3')
+		) {
+			throw new Error('SearchPanes requires DataTables 3 or newer');
 		}
 
 		// Check that Select is included
 		// eslint-disable-next-line no-extra-parens
-		if (!(dataTable as any).select) {
-			throw new Error('SearchPane requires Select');
+		if (!(DataTable as any).select) {
+			throw new Error(
+				'SearchPanes requires the Select extension for DataTables'
+			);
 		}
 
-		let table = new dataTable.Api(paneSettings);
-		this.classes = $.extend(true, {}, SearchPanes.classes);
+		let table = new DataTable.Api(hostCtx);
 
-		// Get options from user
-		this.c = $.extend(true, {}, SearchPanes.defaults, opts);
+		this.classes = util.object.assignDeep({}, SearchPanes.classes);
+		this.c = util.object.assignDeep({}, SearchPanes.defaults, opts);
 
 		// Add extra elements to DOM object including clear
 		this.dom = {
-			clearAll: $('<button type="button"/>')
-				.addClass(this.classes.clearAll)
-				.html(table.i18n('searchPanes.clearMessage', this.c.i18n.clearMessage)),
-			collapseAll: $('<button type="button"/>')
-				.addClass(this.classes.collapseAll)
-				.html(table.i18n('searchPanes.collapseMessage', this.c.i18n.collapseMessage)),
-			container: $('<div/>').addClass(this.classes.panes).html(
-				table.i18n('searchPanes.loadMessage', this.c.i18n.loadMessage)
-			),
-			emptyMessage: $('<div/>').addClass(this.classes.emptyMessage),
-			panes: $('<div/>').addClass(this.classes.container),
-			showAll: $('<button type="button"/>')
-				.addClass(this.classes.showAll)
-				.addClass(this.classes.disabledButton)
+			clearAll: Dom.c('button')
+				.attr('type', 'button')
+				.classAdd(this.classes.clearAll)
+				.html(
+					table.i18n(
+						'searchPanes.clearMessage',
+						this.c.i18n.clearMessage
+					)
+				),
+			collapseAll: Dom.c('button')
+				.classAdd(this.classes.collapseAll)
+				.html(
+					table.i18n(
+						'searchPanes.collapseMessage',
+						this.c.i18n.collapseMessage
+					)
+				),
+			container: Dom.c('div')
+				.classAdd(this.classes.panes)
+				.html(
+					table.i18n(
+						'searchPanes.loadMessage',
+						this.c.i18n.loadMessage
+					)
+				),
+			emptyMessage: Dom.c('div').classAdd(this.classes.emptyMessage),
+			panes: Dom.c('div').classAdd(this.classes.container),
+			showAll: Dom.c('button')
+				.attr('type', 'button')
+				.classAdd(this.classes.showAll)
+				.classAdd(this.classes.disabledButton)
 				.attr('disabled', 'true')
-				.html(table.i18n('searchPanes.showMessage', this.c.i18n.showMessage)),
-			title: $('<div/>').addClass(this.classes.title),
-			titleRow: $('<div/>').addClass(this.classes.titleRow),
+				.html(
+					table.i18n(
+						'searchPanes.showMessage',
+						this.c.i18n.showMessage
+					)
+				),
+			title: Dom.c('div').classAdd(this.classes.title),
+			titleRow: Dom.c('div').classAdd(this.classes.titleRow)
 		};
 
 		this.s = {
@@ -134,8 +161,9 @@ export default class SearchPanes {
 			return;
 		}
 
-		// When the panes update, we check it the clear buttons needs to be updated
-		$(document).on('draw.dt', (e) => {
+		// When the panes update, we check it the clear buttons needs to be
+		// updated
+		Dom.s(document).on('draw.dt', e => {
 			if (this.dom.container.find(e.target).length) {
 				this._updateFilterCount();
 			}
@@ -146,65 +174,73 @@ export default class SearchPanes {
 		if (this.s.dt.page.info().serverSide) {
 			var hostSettings = this.s.dt.settings()[0];
 
-			// Listener to get the data into the server request before it is made
-			this.s.dt.on('preXhr.dtsps', (e, settings, data) => {
-				if (hostSettings !== settings) {
-					return;
-				}
-
-				if (data.searchPanes === undefined) {
-					data.searchPanes = {};
-				}
-				if (data.searchPanes_null === undefined) {
-					data.searchPanes_null = {};
-				}
-
-				let src: string;
-				for (let selection of this.s.selectionList) {
-					src = this.s.dt.column(selection.column).dataSrc();
-
-					if (data.searchPanes[src] === undefined) {
-						data.searchPanes[src] = {};
-					}
-					if (data.searchPanes_null[src] === undefined) {
-						data.searchPanes_null[src] = {};
+			// Listener to get the data into the server request before it is
+			// made
+			this.s.dt.on(
+				'preXhr.dtsps',
+				(e: Event, settings: Context, data: any) => {
+					if (hostSettings !== settings) {
+						return;
 					}
 
-					for (let i = 0; i < selection.rows.length; i++) {
-						data.searchPanes[src][i] = selection.rows[i];
+					if (data.searchPanes === undefined) {
+						data.searchPanes = {};
+					}
+					if (data.searchPanes_null === undefined) {
+						data.searchPanes_null = {};
+					}
 
-						if (data.searchPanes[src][i] === null) {
-							data.searchPanes_null[src][i] = true;
+					let src: string = '';
+
+					for (let selection of this.s.selectionList) {
+						src = this.s.dt
+							.column(selection.column)
+							.dataSrc()
+							.toString();
+
+						if (data.searchPanes[src] === undefined) {
+							data.searchPanes[src] = {};
 						}
-						else {
-							data.searchPanes_null[src][i] = false;
+						if (data.searchPanes_null[src] === undefined) {
+							data.searchPanes_null[src] = {};
+						}
+
+						for (let i = 0; i < selection.rows.length; i++) {
+							data.searchPanes[src][i] = selection.rows[i];
+
+							if (data.searchPanes[src][i] === null) {
+								data.searchPanes_null[src][i] = true;
+							}
+							else {
+								data.searchPanes_null[src][i] = false;
+							}
 						}
 					}
-				}
 
-				if (this.s.selectionList.length > 0) {
-					data.searchPanesLast = src;
-				}
+					if (this.s.selectionList.length > 0) {
+						data.searchPanesLast = src;
+					}
 
-				// Config options that will change how the querying is done
-				data.searchPanes_options = {
-					cascade: this.c.cascadePanes,
-					viewCount: this.c.viewCount,
-					viewTotal: this.c.viewTotal,
-				};
-			});
+					// Config options that will change how the querying is done
+					data.searchPanes_options = {
+						cascade: this.c.cascadePanes,
+						viewCount: this.c.viewCount,
+						viewTotal: this.c.viewTotal
+					};
+				}
+			);
 		}
 
 		this._setXHR();
 
 		table.settings()[0]._searchPanes = this;
 
-		if (this.s.dt.settings()[0]._bInitComplete || fromPreInit) {
-			this._paneDeclare(table, paneSettings, opts);
+		if (fromPreInit) {
+			this._paneDeclare(table, hostCtx, opts);
 		}
 		else {
-			table.one('preInit.dtsps', () => {
-				this._paneDeclare(table, paneSettings, opts);
+			this.s.dt.ready(() => {
+				this._paneDeclare(table, hostCtx, opts);
 			});
 		}
 
@@ -219,16 +255,20 @@ export default class SearchPanes {
 
 		for (pane of this.s.panes) {
 			if (pane.s.dtPane) {
-				pane.s.scrollTop = pane.s.dtPane.table().node().parentNode.scrollTop;
+				pane.s.scrollTop = pane.s.dtPane
+					.table()
+					.node().parentElement!.scrollTop;
 			}
 		}
 		// Load in all of the searchBoxes in the documents
-		let searches = this.dom.container.find('.' + this.classes.search.replace(/\s+/g, '.'));
+		let searches = this.dom.container.find(
+			'.' + this.classes.search.replace(/\s+/g, '.')
+		);
 
 		// For each searchBox set the input text to be empty and then trigger
 		// an input on them so that they no longer filter the panes
-		searches.each(function() {
-			$(this).val('').trigger('input');
+		searches.each(el => {
+			Dom.s(el).val('').trigger('input');
 		});
 
 		// Clear the selectionList
@@ -248,31 +288,34 @@ export default class SearchPanes {
 	/**
 	 * returns the container node for the searchPanes
 	 */
-	public getNode(): JQuery<HTMLElement> {
+	public getNode(): Dom<HTMLElement> {
 		return this.dom.container;
 	}
 
 	/**
 	 * rebuilds all of the panes
 	 */
-	public rebuild(targetIdx: boolean | number = false, maintainSelection = false): SearchPane | SearchPane[] {
+	public rebuild(
+		targetIdx: boolean | number = false,
+		maintainSelection = false
+	): SearchPane | SearchPane[] {
 		this.dom.emptyMessage.detach();
 
-		// As a rebuild from scratch is required, empty the searchpanes container.
+		// As a rebuild from scratch is required, empty the searchpanes
+		// container.
 		if (targetIdx === false) {
 			this.dom.panes.empty();
 		}
 
-		// Rebuild each pane individually, if a specific pane has been selected then only rebuild that one
+		// Rebuild each pane individually, if a specific pane has been selected
+		// then only rebuild that one
 		let returnArray = [];
 
 		for (let pane of this.s.panes) {
 			if (targetIdx === false || pane.s.index === targetIdx) {
 				pane.clearData();
 				pane.rebuildPane(
-					this.s.dt.page.info().serverSide ?
-						this.s.serverData :
-						undefined,
+					this.s.dt.page.info().serverSide ? this.s.serverData : null,
 					maintainSelection
 				);
 				this.dom.panes.append(pane.dom.container);
@@ -287,8 +330,9 @@ export default class SearchPanes {
 		this._attachPaneContainer();
 		this._initSelectionListeners(false);
 
-		// If the selections are to be maintained, then it is safe to assume that paging is also to be maintained
-		// Otherwise, the paging should be reset
+		// If the selections are to be maintained, then it is safe to assume
+		// that paging is also to be maintained Otherwise, the paging should be
+		// reset
 		this.s.dt.draw(!maintainSelection);
 
 		// Resize the panes incase there has been a change
@@ -305,7 +349,7 @@ export default class SearchPanes {
 		let pane;
 
 		if (this.c.layout === 'auto') {
-			let contWidth = $(this.s.dt.searchPanes.container()).width();
+			let contWidth = this.s.dt.searchPanes.container().width();
 			let target = Math.floor(contWidth / this.s.minPaneWidth); // The neatest number of panes per row
 			let highest = 1;
 			let highestmod = 0;
@@ -326,7 +370,8 @@ export default class SearchPanes {
 				highest = target;
 			}
 			else {
-				// Go from the target down and find the value with the most panes left over, this will be the best fit
+				// Go from the target down and find the value with the most
+				// panes left over, this will be the best fit
 				for (let ppr = target; ppr > 1; ppr--) {
 					let rem = displayCount % ppr;
 
@@ -335,8 +380,8 @@ export default class SearchPanes {
 						highestmod = 0;
 						break;
 					}
-					// If there are more left over at this amount of panes per row (ppr)
-					// then it fits better so new values
+					// If there are more left over at this amount of panes per
+					// row (ppr) then it fits better so new values
 					else if (rem > highestmod) {
 						highest = ppr;
 						highestmod = rem;
@@ -345,12 +390,23 @@ export default class SearchPanes {
 			}
 
 			// If there is a perfect fit then none are to be wider
-			let widerIndexes = highestmod !== 0 ? dispIndex.slice(dispIndex.length - highestmod, dispIndex.length) : [];
+			let widerIndexes =
+				highestmod !== 0
+					? dispIndex.slice(
+							dispIndex.length - highestmod,
+							dispIndex.length
+					  )
+					: [];
 
 			this.s.panes.forEach(pane => {
 				// Resize the pane with the new layout
 				if (pane.s.displayed) {
-					pane.resize('columns-' + (!widerIndexes.includes(pane.s.index) ? highest : highestmod));
+					pane.resize(
+						'columns-' +
+							(!widerIndexes.includes(pane.s.index)
+								? highest
+								: highestmod)
+					);
 				}
 			});
 		}
@@ -364,44 +420,52 @@ export default class SearchPanes {
 	}
 
 	/**
-	 * Holder method that is userd in SearchPanesST to set listeners that have an effect on other panes
-	 * 
-	 * @param isPreselect boolean to indicate if the preselect array is to override the current selection list.
+	 * Holder method that is userd in SearchPanesST to set listeners that have
+	 * an effect on other panes
+	 *
+	 * @param isPreselect boolean to indicate if the preselect array is to
+	 * override the current selection list.
 	 */
 	protected _initSelectionListeners(isPreselect: boolean): void {
 		return;
 	}
 
 	/**
-	 * Blank method that is overridden in SearchPanesST to retrieve the totals from the server data
+	 * Blank method that is overridden in SearchPanesST to retrieve the totals
+	 * from the server data
 	 */
 	protected _serverTotals(): void {
 		return;
 	}
 
 	/**
-	 * Set's the xhr listener so that SP can extact appropriate data from the response
+	 * Set's the xhr listener so that SP can extact appropriate data from the
+	 * response
 	 */
 	protected _setXHR(): void {
 		var hostSettings = this.s.dt.settings()[0];
-		var run = json => {
+		var run = (json: AjaxResponse) => {
 			if (json && json.searchPanes && json.searchPanes.options) {
 				this.s.serverData = json;
 				this.s.serverData.tableLength = json.recordsTotal;
 				this._serverTotals();
 			}
-		}
+		};
 
-		// We are using the xhr event to rebuild the panes if required due to viewTotal being enabled
-		// If viewTotal is not enabled then we simply update the data from the server
-		this.s.dt.on('xhr.dtsps', (e, settings, json) => {
-			if (hostSettings === settings) {
-				run(json);
+		// We are using the xhr event to rebuild the panes if required due to
+		// viewTotal being enabled If viewTotal is not enabled then we simply
+		// update the data from the server
+		this.s.dt.on(
+			'xhr.dtsps',
+			(e: Event, settings: Context, json: AjaxResponse) => {
+				if (hostSettings === settings) {
+					run(json);
+				}
 			}
-		});
+		);
 
 		// Account for the initial JSON fetch having already completed
-		run(this.s.dt.ajax.json());
+		run(this.s.dt.ajax.json() as AjaxResponse);
 	}
 
 	/**
@@ -412,35 +476,44 @@ export default class SearchPanes {
 	protected _stateLoadListener(): void {
 		var hostSettings = this.s.dt.settings()[0];
 
-		this.s.dt.on('stateLoadParams.dtsps', (e, settings, data) => {
-			if (data.searchPanes === undefined || settings !== hostSettings) {
-				return;
-			}
+		this.s.dt.on(
+			'stateLoadParams.dtsps',
+			(e: Event, settings: Context, data: StateLoad) => {
+				if (
+					data.searchPanes === undefined ||
+					settings !== hostSettings
+				) {
+					return;
+				}
 
-			this.clearSelections();
-			// Set the selection list for the panes so that the correct
-			// rows can be reselected and in the right order
-			this.s.selectionList =
-				data.searchPanes.selectionList ?
-					data.searchPanes.selectionList :
-					[];
+				this.clearSelections();
+				// Set the selection list for the panes so that the correct
+				// rows can be reselected and in the right order
+				this.s.selectionList = data.searchPanes.selectionList
+					? data.searchPanes.selectionList
+					: [];
 
-			// Find the panes that match from the state and the actual instance
-			if (data.searchPanes.panes) {
-				for (let loadedPane of data.searchPanes.panes) {
-					for (let pane of this.s.panes) {
-						if (loadedPane.id === pane.s.index && pane.s.dtPane) {
-							// Set the value of the searchbox
-							pane.dom.searchBox.val(loadedPane.searchTerm);
-							// Set the value of the order
-							pane.s.dtPane.order(loadedPane.order);
+				// Find the panes that match from the state and the actual
+				// instance
+				if (data.searchPanes.panes) {
+					for (let loadedPane of data.searchPanes.panes) {
+						for (let pane of this.s.panes) {
+							if (
+								loadedPane.id === pane.s.index &&
+								pane.s.dtPane
+							) {
+								// Set the value of the searchbox
+								pane.dom.searchBox.val(loadedPane.searchTerm);
+								// Set the value of the order
+								pane.s.dtPane.order(loadedPane.order);
+							}
 						}
 					}
 				}
-			}
 
-			this._makeSelections(this.s.selectionList);
-		});
+				this._makeSelections(this.s.selectionList);
+			}
+		);
 	}
 
 	/**
@@ -453,8 +526,13 @@ export default class SearchPanes {
 
 		for (let pane of this.s.panes) {
 			if (pane.s.dtPane) {
-				let rows = pane.s.dtPane.rows({ selected: true }).data().toArray().map(el => el.filter);
-				if(rows.length) {
+				let rows = pane.s.dtPane
+					.rows({ selected: true })
+					.data()
+					.toArray()
+					.map(el => el.filter);
+
+				if (rows.length) {
 					this.s.selectionList.push({
 						column: pane.s.index,
 						rows
@@ -469,7 +547,7 @@ export default class SearchPanes {
 	 */
 	private _attach(): void {
 		this.dom.titleRow
-			.removeClass(this.classes.hide)
+			.classRemove(this.classes.hide)
 			.detach()
 			.append(this.dom.title);
 
@@ -487,25 +565,27 @@ export default class SearchPanes {
 			this._setCollapseListener();
 		}
 
-		// Attach the container for each individual pane to the overall container
+		// Attach the container for each individual pane to the overall
+		// container
 		for (let pane of this.s.panes) {
 			this.dom.panes.append(pane.dom.container);
 		}
 
-		// Remove everything - need to use childNodes to make sure we get text nodes
+		// Remove everything - need to use childNodes to make sure we get text
+		// nodes
 		this.dom.container[0].childNodes.forEach(el => el.remove());
 
 		// Attach everything to the document
 		this.dom.container
-			.removeClass(this.classes.hide)
+			.classRemove(this.classes.hide)
 			.append(this.dom.titleRow)
 			.append(this.dom.panes);
 
 		// WORKAROUND
 		this.s.panes.forEach(pane => pane.setListeners());
 
-		if ($('div.' + this.classes.container).length === 0) {
-			this.dom.container.prependTo(this.s.dt);
+		if (Dom.s('div.' + this.classes.container).length === 0) {
+			this.dom.container.prependTo(this.s.dt.table().node());
 		}
 	}
 
@@ -515,31 +595,35 @@ export default class SearchPanes {
 	 */
 	private _attachMessage(): void {
 		// Create a message to display on the screen
-		let message: string;
+		let message: string | null;
 
 		try {
-			message = this.s.dt.i18n('searchPanes.emptyPanes', this.c.i18n.emptyPanes);
-		}
-		catch (error) {
+			message = this.s.dt.i18n(
+				'searchPanes.emptyPanes',
+				this.c.i18n.emptyPanes
+			);
+		} catch (error) {
 			message = null;
 		}
 
-		// If the message is an empty string then searchPanes.emptyPanes is undefined,
-		// therefore the pane container should be removed from the display
+		// If the message is an empty string then searchPanes.emptyPanes is
+		// undefined, therefore the pane container should be removed from the
+		// display
 		if (message === null) {
-			this.dom.container.addClass(this.classes.hide);
-			this.dom.titleRow.removeClass(this.classes.hide);
+			this.dom.container.classAdd(this.classes.hide);
+			this.dom.titleRow.classRemove(this.classes.hide);
 			return;
 		}
 
 		// Otherwise display the message
-		this.dom.container.removeClass(this.classes.hide);
-		this.dom.titleRow.addClass(this.classes.hide);
+		this.dom.container.classRemove(this.classes.hide);
+		this.dom.titleRow.classAdd(this.classes.hide);
 		this.dom.emptyMessage.html(message).appendTo(this.dom.container);
 	}
 
 	/**
-	 * Attaches the panes to the document and displays a message or hides if there are none
+	 * Attaches the panes to the document and displays a message or hides if
+	 * there are none
 	 */
 	protected _attachPaneContainer(): void {
 		// If a pane is to be displayed then attach the normal pane output
@@ -550,12 +634,14 @@ export default class SearchPanes {
 			}
 		}
 
-		// Otherwise attach the custom message or remove the container from the display
+		// Otherwise attach the custom message or remove the container from the
+		// display
 		this._attachMessage();
 	}
 
 	/**
-	 * Checks which panes are collapsed and then performs relevant actions to the collapse/show all buttons
+	 * Checks which panes are collapsed and then performs relevant actions to
+	 * the collapse/show all buttons
 	 */
 	private _checkCollapse(): void {
 		let disableClose = true;
@@ -564,27 +650,37 @@ export default class SearchPanes {
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed) {
 				// If the pane is not collapsed
-				if (!pane.dom.collapseButton.hasClass(pane.classes.rotated)) {
+				if (!pane.dom.collapseButton.classHas(pane.classes.rotated)) {
 					// Enable the collapse all button
-					this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+					this.dom.collapseAll
+						.classRemove(this.classes.disabledButton)
+						.attrRemove('disabled');
 					disableClose = false;
 				}
 				else {
 					// Otherwise enable the show all button
-					this.dom.showAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+					this.dom.showAll
+						.classRemove(this.classes.disabledButton)
+						.attrRemove('disabled');
 					disableShow = false;
 				}
 			}
 		}
 
-		// If this flag is still true, no panes are open so the close button should be disabled
+		// If this flag is still true, no panes are open so the close button
+		// should be disabled
 		if (disableClose) {
-			this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+			this.dom.collapseAll
+				.classAdd(this.classes.disabledButton)
+				.attr('disabled', 'true');
 		}
 
-		// If this flag is still true, no panes are closed so the show button should be disabled
+		// If this flag is still true, no panes are closed so the show button
+		// should be disabled
 		if (disableShow) {
-			this.dom.showAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+			this.dom.showAll
+				.classAdd(this.classes.disabledButton)
+				.attr('disabled', 'true');
 		}
 	}
 
@@ -595,14 +691,16 @@ export default class SearchPanes {
 		// If a pane is to be displayed then attach the normal pane output
 		for (let pane of this.s.panes) {
 			if (pane.s.displayed === true) {
-				// Ensure that the empty message is removed if a pane is displayed
+				// Ensure that the empty message is removed if a pane is
+				// displayed
 				this.dom.emptyMessage.detach();
-				this.dom.titleRow.removeClass(this.classes.hide);
+				this.dom.titleRow.classRemove(this.classes.hide);
 				return;
 			}
 		}
 
-		// Otherwise attach the custom message or remove the container from the display
+		// Otherwise attach the custom message or remove the container from the
+		// display
 		this._attachMessage();
 	}
 
@@ -621,7 +719,7 @@ export default class SearchPanes {
 	 * @param name string representing the name of the pane
 	 * @returns SearchPane The pane which has that name
 	 */
-	private _findPane(name: string): SearchPane {
+	private _findPane(name: string): SearchPane | undefined {
 		for (let pane of this.s.panes) {
 			if (name === pane.s.name) {
 				return pane;
@@ -630,19 +728,24 @@ export default class SearchPanes {
 	}
 
 	/**
-	 * Gets the selection list from the previous state and stores it in the selectionList Property
+	 * Gets the selection list from the previous state and stores it in the
+	 * selectionList Property
 	 */
 	private _getState(): void {
 		let loadedFilter = this.s.dt.state.loaded();
 
-		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList) {
+		if (
+			loadedFilter &&
+			loadedFilter.searchPanes &&
+			loadedFilter.searchPanes.selectionList
+		) {
 			this.s.selectionList = loadedFilter.searchPanes.selectionList;
 		}
 	}
 
 	private _makeSelections(selectList) {
 		for (let selection of selectList) {
-			let pane: SearchPane;
+			let pane: SearchPane | null = null;
 
 			for (let p of this.s.panes) {
 				if (p.s.index === selection.column) {
@@ -651,15 +754,22 @@ export default class SearchPanes {
 				}
 			}
 			if (pane && pane.s.dtPane) {
-				for (let j = 0; j < pane.s.dtPane.rows().data().toArray().length; j++) {
+				for (
+					let j = 0;
+					j < pane.s.dtPane.rows().data().toArray().length;
+					j++
+				) {
 					if (
 						selection.rows.includes(
-							typeof pane.s.dtPane.row(j).data().filter === 'function' ?
-								pane.s.dtPane.cell(j, 0).data():
-								pane.s.dtPane.row(j).data().filter
+							typeof pane.s.dtPane.row(j).data().filter ===
+								'function'
+								? pane.s.dtPane.cell(j, 0).data()
+								: pane.s.dtPane.row(j).data().filter
 						)
 					) {
-						pane.s.dtPane.row(j).select();
+						// Still to figure out using typing of extensions
+						// together
+						(pane.s.dtPane.row(j) as any).select();
 					}
 				}
 				pane.updateTable();
@@ -668,29 +778,49 @@ export default class SearchPanes {
 	}
 
 	/**
-	 * Declares the instances of individual searchpanes dependant on the number of columns.
-	 * It is necessary to run this once preInit has completed otherwise no panes will be
-	 * created as the column count will be 0.
+	 * Declares the instances of individual searchpanes dependant on the number
+	 * of columns. It is necessary to run this once preInit has completed
+	 * otherwise no panes will be created as the column count will be 0.
 	 *
 	 * @param table the DataTable api for the parent table
 	 * @param paneSettings the settings passed into the constructor
 	 * @param opts the options passed into the constructor
 	 */
-	private _paneDeclare(table, paneSettings, opts: IDefaults): void {
+	private _paneDeclare(
+		table: Api,
+		paneSettings: Context,
+		opts: IConfig
+	): void {
 		// Create Panes
 		table
 			.columns(this.c.columns.length > 0 ? this.c.columns : undefined)
 			.eq(0)
 			.each(idx => {
-				this.s.panes.push(new this.s.paneClass(paneSettings, opts, idx, this.dom.panes));
+				this.s.panes.push(
+					new this.s.paneClass(
+						paneSettings,
+						opts,
+						idx,
+						this.dom.panes
+					)
+				);
 			});
 
-		// If there is any extra custom panes defined then create panes for them too
+		// If there is any extra custom panes defined then create panes for them
+		// too
 		let colCount = table.columns().eq(0).toArray().length;
 
 		for (let i = 0; i < this.c.panes.length; i++) {
 			let id = colCount + i;
-			this.s.panes.push(new this.s.paneClass(paneSettings, opts, id, this.dom.panes, this.c.panes[i]));
+			this.s.panes.push(
+				new this.s.paneClass(
+					paneSettings,
+					opts,
+					id,
+					this.dom.panes,
+					this.c.panes[i]
+				)
+			);
 		}
 
 		// If a custom ordering is being used
@@ -699,50 +829,43 @@ export default class SearchPanes {
 			this.s.panes = this.c.order.map(name => this._findPane(name));
 		}
 
-		// If this internal property is true then the DataTable has been initialised already
-		if (this.s.dt.settings()[0]._bInitComplete) {
+		this.s.dt.ready(() => {
 			this._startup(table);
-		}
-		else {
-			// Otherwise add the paneStartup function to the list of functions
-			// that are to be run when the table is initialised. This will garauntee that the
-			// panes are initialised before the init event and init Complete callback is fired
-			if (dataTable.versionCheck('2')) {
-				this.s.dt.settings()[0].aoInitComplete.push(() => this._startup(table));
-			}
-			else {
-				this.s.dt.settings()[0].aoInitComplete.push({
-                    			fn: () => this._startup(table)
-                		});
-			}
-		}
+		});
 	}
 
 	/**
-	 * Sets the listeners for the collapse and show all buttons
-	 * Also sets and performs checks on current panes to see if they are collapsed
+	 * Sets the listeners for the collapse and show all buttons. Also sets and
+	 * performs checks on current panes to see if they are collapsed
 	 */
 	private _setCollapseListener(): void {
-		this.dom.collapseAll
-			.off('click.dtsps')
-			.on('click.dtsps', () => {
-				this._collapseAll();
-				this.dom.collapseAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
-				this.dom.showAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
-				this.s.dt.state.save();
-			});
-		this.dom.showAll
-			.off('click.dtsps')
-			.on('click.dtsps', () => {
-				this._showAll();
-				this.dom.showAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
-				this.dom.collapseAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
-				this.s.dt.state.save();
-			});
+		this.dom.collapseAll.off('click.dtsps').on('click.dtsps', () => {
+			this._collapseAll();
+			this.dom.collapseAll
+				.classAdd(this.classes.disabledButton)
+				.attr('disabled', 'true');
+			this.dom.showAll
+				.classRemove(this.classes.disabledButton)
+				.attrRemove('disabled');
+			this.s.dt.state.save();
+		});
+		this.dom.showAll.off('click.dtsps').on('click.dtsps', () => {
+			this._showAll();
+			this.dom.showAll
+				.classAdd(this.classes.disabledButton)
+				.attr('disabled', 'true');
+			this.dom.collapseAll
+				.classRemove(this.classes.disabledButton)
+				.attrRemove('disabled');
+			this.s.dt.state.save();
+		});
 
 		for (let pane of this.s.panes) {
-			// We want to make the same check whenever there is a collapse/expand
-			pane.dom.topRow.off('collapse.dtsps').on('collapse.dtsps', () => this._checkCollapse());
+			// We want to make the same check whenever there is a collapse /
+			// expand
+			pane.dom.topRow
+				.off('collapse.dtsps')
+				.on('collapse.dtsps', () => this._checkCollapse());
 		}
 
 		this._checkCollapse();
@@ -758,22 +881,28 @@ export default class SearchPanes {
 	}
 
 	/**
-	 * Initialises the tables previous/preset selections and initialises callbacks for events
+	 * Initialises the tables previous/preset selections and initialises
+	 * callbacks for events
 	 *
 	 * @param table the parent table for which the searchPanes are being created
 	 */
-	private _startup(table): void {
+	private _startup(table: Api): void {
 		// Attach clear button and title bar to the document
 		this._attach();
 		this.dom.panes.empty();
 		var hostSettings = this.s.dt.settings()[0];
 
 		for (let pane of this.s.panes) {
-			pane.rebuildPane(Object.keys(this.s.serverData).length > 0 ? this.s.serverData : undefined);
+			pane.rebuildPane(
+				Object.keys(this.s.serverData).length > 0
+					? this.s.serverData
+					: undefined
+			);
 			this.dom.panes.append(pane.dom.container);
 		}
 
-		// If the layout is set to auto then the panes need to be resized to their best fit
+		// If the layout is set to auto then the panes need to be resized to
+		// their best fit
 		if (this.c.layout === 'auto') {
 			this.resizePanes();
 		}
@@ -781,7 +910,7 @@ export default class SearchPanes {
 		let loadedFilter = this.s.dt.state.loaded();
 
 		// Reset the paging if that has been saved in the state
-		if (!this.s.stateRead && loadedFilter) {
+		if (!this.s.stateRead && loadedFilter && loadedFilter.start) {
 			this.s.dt
 				.page(loadedFilter.start / this.s.dt.page.len())
 				.draw('page');
@@ -790,7 +919,8 @@ export default class SearchPanes {
 		this.s.stateRead = true;
 		this._checkMessage();
 
-		// When a draw is called on the DataTable, update all of the panes incase the data in the DataTable has changed
+		// When a draw is called on the DataTable, update all of the panes
+		// in case the data in the DataTable has changed
 		table.on('preDraw.dtsps', () => {
 			// Check that the panes are not updating to avoid infinite loops
 			// Also check that this draw is not due to paging
@@ -803,114 +933,144 @@ export default class SearchPanes {
 			this.s.paging = false;
 		});
 
-		$(window).on('resize.dtsps', dataTable.util.throttle(() => this.resizePanes()));
+		Dom.w.on(
+			'resize.dtsps',
+			util.throttle(() => this.resizePanes())
+		);
 
-		// Whenever a state save occurs store the selection list in the state object
-		this.s.dt.on('stateSaveParams.dtsps', (e, settings, data) => {
-			if (settings !== hostSettings) {
-				return;
-			}
-
-			if (data.searchPanes === undefined) {
-				data.searchPanes = {};
-			}
-			data.searchPanes.selectionList = this.s.selectionList;
-		});
-
-		this._stateLoadListener();
-
-		// Listener for paging on main table
-		table.off('page.dtsps page-nc.dtsps').on('page.dtsps page-nc.dtsps', (e, s) => {
-			this.s.paging = true;
-			// This is an indicator to any selection tracking classes that paging has occured
-			// It has to happen here so that we don't stack event listeners unnecessarily
-			// The value is only ever set back to false in the SearchPanesST class
-			// Equally it is never read in this class
-			this.s.pagingST = true;
-			this.s.page = this.s.dt.page();
-		});
-
-		if (this.s.dt.page.info().serverSide) {
-			table.off('preXhr.dtsps').on('preXhr.dtsps', (e, settings, data) => {
+		// Whenever a state save occurs store the selection list in the state
+		// object
+		this.s.dt.on(
+			'stateSaveParams.dtsps',
+			(e: Event, settings: Context, data: State) => {
 				if (settings !== hostSettings) {
 					return;
 				}
 
-				if (!data.searchPanes) {
+				if (data.searchPanes === undefined) {
 					data.searchPanes = {};
 				}
-				if (!data.searchPanes_null) {
-					data.searchPanes_null = {};
-				}
+				data.searchPanes.selectionList = this.s.selectionList;
+			}
+		);
 
-				// Count how many filters are being applied
-				let filterCount = 0;
+		this._stateLoadListener();
 
-				for (let pane of this.s.panes) {
-					let src = this.s.dt.column(pane.s.index).dataSrc();
-
-					if (!data.searchPanes[src]) {
-						data.searchPanes[src] = {};
-					}
-					if (!data.searchPanes_null[src]) {
-						data.searchPanes_null[src] = {};
-					}
-
-					if (pane.s.dtPane) {
-						let rowData = pane.s.dtPane.rows({ selected: true }).data().toArray();
-
-						for (let i = 0; i < rowData.length; i++) {
-							data.searchPanes[src][i] = rowData[i].filter;
-
-							if (!data.searchPanes[src][i]) {
-								data.searchPanes_null[src][i] = true;
-							}
-							else {
-								data.searchPanes_null[src][i] = false;
-							}
-
-							filterCount++;
-						}
-					}
-				}
-
-				// If there is a filter to be applied, then we need to read from the start of the result set
-				// and set the paging to 0. This matches the behaviour of client side processing
-				if (filterCount > 0) {
-					// If the number of filters has changed we need to read from the start of the
-					// result set and reset the paging
-					if (filterCount !== this.s.filterCount) {
-						data.start = 0;
-						this.s.page = 0;
-
-						this.s.dt.page(this.s.page);
-					}
-
-					this.s.filterCount = filterCount;
-				}
-
-				if (this.s.selectionList.length > 0) {
-					data.searchPanesLast = this.s.dt
-						.column(this.s.selectionList[this.s.selectionList.length - 1].column)
-						.dataSrc();
-				}
-
-				// Config options that will change how the querying is done
-				data.searchPanes_options = {
-					cascade: this.c.cascadePanes,
-					viewCount: this.c.viewCount,
-					viewTotal: this.c.viewTotal,
-				};
+		// Listener for paging on main table
+		table
+			.off('page.dtsps page-nc.dtsps')
+			.on('page.dtsps page-nc.dtsps', (e: Event, s: Context) => {
+				this.s.paging = true;
+				// This is an indicator to any selection tracking classes that
+				// paging has occurred. It has to happen here so that we don't
+				// stack event listeners unnecessarily. The value is only ever
+				// set back to false in the SearchPanesST class Equally it is
+				// never read in this class
+				this.s.pagingST = true;
+				this.s.page = this.s.dt.page();
 			});
+
+		if (this.s.dt.page.info().serverSide) {
+			table
+				.off('preXhr.dtsps')
+				.on(
+					'preXhr.dtsps',
+					(e: Event, settings: Context, data: AjaxData) => {
+						if (settings !== hostSettings) {
+							return;
+						}
+
+						if (!data.searchPanes) {
+							data.searchPanes = {};
+						}
+						if (!data.searchPanes_null) {
+							data.searchPanes_null = {};
+						}
+
+						// Count how many filters are being applied
+						let filterCount = 0;
+
+						for (let pane of this.s.panes) {
+							let src = this.s.dt
+								.column(pane.s.index)
+								.dataSrc()
+								.toString();
+
+							if (!data.searchPanes[src]) {
+								data.searchPanes[src] = {};
+							}
+							if (!data.searchPanes_null[src]) {
+								data.searchPanes_null[src] = {};
+							}
+
+							if (pane.s.dtPane) {
+								let rowData = pane.s.dtPane
+									.rows({ selected: true })
+									.data()
+									.toArray();
+
+								for (let i = 0; i < rowData.length; i++) {
+									data.searchPanes[src][i] =
+										rowData[i].filter;
+
+									if (!data.searchPanes[src][i]) {
+										data.searchPanes_null[src][i] = true;
+									}
+									else {
+										data.searchPanes_null[src][i] = false;
+									}
+
+									filterCount++;
+								}
+							}
+						}
+
+						// If there is a filter to be applied, then we need to read
+						// from the start of the result set and set the paging to 0.
+						// This matches the behaviour of client side processing
+						if (filterCount > 0) {
+							// If the number of filters has changed we need to read
+							// from the start of the result set and reset the paging
+							if (filterCount !== this.s.filterCount) {
+								data.start = 0;
+								this.s.page = 0;
+
+								this.s.dt.page(this.s.page);
+							}
+
+							this.s.filterCount = filterCount;
+						}
+
+						if (this.s.selectionList.length > 0) {
+							data.searchPanesLast = this.s.dt
+								.column(
+									this.s.selectionList[
+										this.s.selectionList.length - 1
+									].column
+								)
+								.dataSrc()
+								.toString();
+						}
+
+						// Config options that will change how the querying is done
+						data.searchPanes_options = {
+							cascade: this.c.cascadePanes,
+							viewCount: this.c.viewCount,
+							viewTotal: this.c.viewTotal
+						};
+					}
+				);
 		}
 		else {
-			table.on('preXhr.dtsps', () => this.s.panes.forEach(pane => pane.clearData()));
+			table.on('preXhr.dtsps', () =>
+				this.s.panes.forEach(pane => pane.clearData())
+			);
 		}
 
-		// If the data is reloaded from the server then it is possible that it has changed completely,
-		// so we need to rebuild the panes
-		this.s.dt.on('xhr.dtsps', (e, settings) => {
-			if (settings.nTable !== this.s.dt.table().node()) {
+		// If the data is reloaded from the server then it is possible that it
+		// has changed completely, so we need to rebuild the panes
+		this.s.dt.on('xhr.dtsps', (e: Event, settings: Context) => {
+			if (settings.table !== this.s.dt.table().node()) {
 				return;
 			}
 
@@ -927,13 +1087,13 @@ export default class SearchPanes {
 					this.dom.panes.empty();
 
 					for (let pane of this.s.panes) {
-						pane.clearData(); // Clears all of the bins and will mean that the data has to be re-read
-						// Pass a boolean to say whether this is the last choice made for maintaining selections
-						// when rebuilding
-						pane.rebuildPane(
-							undefined,
-							true
-						);
+						// Clears all of the bins and will mean that the data
+						// has to be re-read
+						pane.clearData();
+
+						// Pass a boolean to say whether this is the last choice
+						// made for maintaining selections when rebuilding
+						pane.rebuildPane(undefined, true);
 						this.dom.panes.append(pane.dom.container);
 					}
 
@@ -954,10 +1114,15 @@ export default class SearchPanes {
 			}
 		});
 
-		// PreSelect any selections which have been defined using the preSelect option
+		// PreSelect any selections which have been defined using the preSelect
+		// option
 		let selectList = this.c.preSelect;
 
-		if (loadedFilter && loadedFilter.searchPanes && loadedFilter.searchPanes.selectionList) {
+		if (
+			loadedFilter &&
+			loadedFilter.searchPanes &&
+			loadedFilter.searchPanes.selectionList
+		) {
 			selectList = loadedFilter.searchPanes.selectionList;
 		}
 
@@ -966,8 +1131,9 @@ export default class SearchPanes {
 		// Update the title bar to show how many filters have been selected
 		this._updateFilterCount();
 
-		// If the table is destroyed and restarted then clear the selections so that they do not persist.
-		table.on('destroy.dtsps', (e, settings) => {
+		// If the table is destroyed and restarted then clear the selections so
+		// that they do not persist.
+		table.on('destroy.dtsps', (e: Event, settings: Context) => {
 			if (settings !== hostSettings) {
 				return;
 			}
@@ -980,7 +1146,7 @@ export default class SearchPanes {
 			this.dom.showAll.off('.dtsps');
 			this.dom.clearAll.off('.dtsps');
 			this.dom.collapseAll.off('.dtsps');
-			$(table.table().node()).off('.dtsps');
+			Dom.s(table.table().node()).off('.dtsps');
 			this.dom.container.detach();
 			this.clearSelections();
 		});
@@ -989,7 +1155,8 @@ export default class SearchPanes {
 			this._setCollapseListener();
 		}
 
-		// When the clear All button has been pressed clear all of the selections in the panes
+		// When the clear All button has been pressed clear all of the
+		// selections in the panes
 		if (this.c.clear) {
 			this.dom.clearAll
 				.off('click.dtsps')
@@ -998,7 +1165,8 @@ export default class SearchPanes {
 
 		hostSettings._searchPanes = this;
 
-		// This state save is required so that state is maintained over multiple refreshes if no actions are made
+		// This state save is required so that state is maintained over multiple
+		// refreshes if no actions are made
 		this.s.dt.state.save();
 	}
 
@@ -1020,18 +1188,28 @@ export default class SearchPanes {
 			}
 		}
 
-		// Run the message through the internationalisation method to improve readability
-		this.dom.title.html(this.s.dt.i18n('searchPanes.title', this.c.i18n.title, filterCount));
+		// Run the message through the internationalisation method to improve
+		// readability
+		this.dom.title.html(
+			this.s.dt.i18n('searchPanes.title', this.c.i18n.title, filterCount)
+		);
 
-		if (this.c.filterChanged && typeof this.c.filterChanged === 'function') {
+		if (
+			this.c.filterChanged &&
+			typeof this.c.filterChanged === 'function'
+		) {
 			this.c.filterChanged.call(this.s.dt, filterCount);
 		}
 
 		if (filterCount === 0 && tableSearch === 0) {
-			this.dom.clearAll.addClass(this.classes.disabledButton).attr('disabled', 'true');
+			this.dom.clearAll
+				.classAdd(this.classes.disabledButton)
+				.attr('disabled', 'true');
 		}
 		else {
-			this.dom.clearAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
+			this.dom.clearAll
+				.classRemove(this.classes.disabledButton)
+				.attrRemove('disabled');
 		}
 	}
 }

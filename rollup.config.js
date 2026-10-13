@@ -1,13 +1,19 @@
-import resolve from '@rollup/plugin-node-resolve';
+import { dts } from 'rollup-plugin-dts';
 
 export default [
 	{
-		input: 'src/index.js',
-		moduleContext: () => 'window',
+		input: 'dist/dataTables.searchPanes.js',
 		output: {
-			file: process.env.OUT + '/js/dataTables.searchPanes.js',
-			format: 'iife'
+			file: 'dist/dataTables.searchPanes.js',
+			format: 'es'
 		},
-		plugins: [resolve()]
+		plugins: [],
+		external: ['datatables.net']
+	},
+	{
+		// Create a single .d.ts file
+		input: './types/types.d.ts',
+		output: [{ file: 'dist/types.d.ts', format: 'es' }],
+		plugins: [dts()]
 	}
 ];
