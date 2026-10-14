@@ -590,10 +590,6 @@ export default class SearchPanes {
 
 		// WORKAROUND
 		this.s.panes.forEach(pane => pane.setListeners());
-
-		if (Dom.s('div.' + this.classes.container).length === 0) {
-			this.dom.container.prependTo(this.s.dt.table().node());
-		}
 	}
 
 	/**

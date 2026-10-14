@@ -636,7 +636,7 @@ export default class SearchPane {
 			this.s.dtPane.clear().destroy();
 			prevEl = this.dom.container[0].previousElementSibling;
 			this.destroy();
-			this.s.dtPane = undefined as any; // todo
+			this.s.dtPane = null;
 			DataTable.ext.search.push(this.s.searchFunction);
 		}
 
