@@ -8,6 +8,7 @@ import DataTable, {
 	StateLoad,
 	util
 } from 'datatables.net';
+import './interface';
 import {
 	IClasses,
 	IConfig,
@@ -19,7 +20,7 @@ import {
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
-	public static version = '2.3.5';
+	public static version = '3.0.0';
 
 	public static classes = {
 		clear: 'dtsp-clear',
