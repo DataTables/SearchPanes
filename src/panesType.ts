@@ -2,6 +2,7 @@ import { Api, Dom } from 'datatables.net';
 import SearchPane from './SearchPane';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneViewTotal from './SearchPaneViewTotal';
+import { IConfigPaneItem } from './paneType';
 
 type DeepPartial<T> = T extends object
 	? {
@@ -24,12 +25,12 @@ export interface IClasses {
 	titleRow: string;
 }
 
-export interface IConfigPaneItem {
-	className: string;
-	dtOpts: {[keys: string]: any}; // All dtOpts
-	header: string;
-	options: IOption[];
-}
+// export interface IConfigPaneItem {
+// 	className: string;
+// 	dtOpts: Options;
+// 	header: string;
+// 	options: IOption[];
+// }
 
 export interface IDefaults {
 	cascadePanes: boolean;

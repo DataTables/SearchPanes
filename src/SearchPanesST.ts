@@ -1,5 +1,5 @@
 import { Context, StateLoad } from 'datatables.net';
-import { ISelectItem, ISVT } from './panesType';
+import { IConfig, ISelectItem, ISVT } from './panesType';
 import SearchPane from './SearchPane';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';
@@ -9,7 +9,7 @@ import SearchPaneViewTotal from './SearchPaneViewTotal';
 export default class SearchPanesST extends SearchPanes {
 	public s: ISVT;
 
-	public constructor(paneSettings, opts, fromPreInit = false) {
+	public constructor(hostCtx: Context, opts: IConfig, fromPreInit = false) {
 		let paneClass;
 
 		if (opts.cascadePanes && opts.viewTotal) {
@@ -22,7 +22,7 @@ export default class SearchPanesST extends SearchPanes {
 			paneClass = SearchPaneViewTotal;
 		}
 
-		super(paneSettings, opts, fromPreInit, paneClass);
+		super(hostCtx, opts, fromPreInit, paneClass);
 
 		let dt = this.s.dt;
 		let loadedFilter = dt.state.loaded();
@@ -61,7 +61,7 @@ export default class SearchPanesST extends SearchPanes {
 
 		// Set selection listeners for each pane
 		for (let pane of this.s.panes) {
-			if (pane.s.displayed) {
+			if (pane.s.displayed && pane.s.dtPane) {
 				pane.s.dtPane
 					.off('select.dtsp')
 					.on('select.dtsp', this._update(pane))
@@ -217,7 +217,7 @@ export default class SearchPanesST extends SearchPanes {
 			return;
 		}
 
-		if (paneIn !== undefined) {
+		if (paneIn !== undefined && paneIn.s.dtPane) {
 			if (this.s.dt.page.info().serverSide) {
 				paneIn._updateSelection(false);
 			}

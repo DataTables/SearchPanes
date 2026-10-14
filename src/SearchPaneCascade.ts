@@ -1,15 +1,23 @@
-import { util } from 'datatables.net';
+import { Context, Dom, util } from 'datatables.net';
+import { IConfig } from './panesType';
+import { IConfigPaneItem } from './paneType';
 import SearchPaneST from './SearchPaneST';
 
 export default class SearchPaneCascade extends SearchPaneST {
-	public constructor(paneSettings, opts, index, panesContainer, panes) {
+	public constructor(
+		hostCtx: Context,
+		opts: IConfig,
+		index: number,
+		panesContainer: Dom,
+		panes: IConfigPaneItem | null
+	) {
 		let override = {
 			i18n: {
 				count: '{shown}'
 			}
 		};
 		super(
-			paneSettings,
+			hostCtx,
 			util.object.assign(override, opts),
 			index,
 			panesContainer,
@@ -23,6 +31,10 @@ export default class SearchPaneCascade extends SearchPaneST {
 	 * This overrides the method in SearchPane
 	 */
 	public updateRows(): void {
+		if (!this.s.dtPane) {
+			return;
+		}
+
 		// Note the currently selected values in the pane and remove all of the
 		// rows
 		let selected = this.s.dtPane.rows({ selected: true }).data().toArray();
@@ -177,7 +189,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 			? this.s.customPaneSettings.options
 			: undefined;
 
-		if (options === undefined) {
+		if (options === undefined || !this.s.dtPane) {
 			return [];
 		}
 

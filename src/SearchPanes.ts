@@ -8,7 +8,7 @@ import DataTable, {
 	StateLoad,
 	util
 } from 'datatables.net';
-import { IClasses, IConfig, IDefaults, IDOM, IS } from './panesType';
+import { IClasses, IConfig, IDefaults, IDOM, IS, ISelectItem } from './panesType';
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
@@ -69,7 +69,7 @@ export default class SearchPanes {
 	public s: IS;
 
 	public constructor(
-		hostCtx: Api | Context,
+		hostCtx: Context,
 		opts: IConfig,
 		fromPreInit = false,
 		paneClass = SearchPane
@@ -743,7 +743,7 @@ export default class SearchPanes {
 		}
 	}
 
-	private _makeSelections(selectList) {
+	private _makeSelections(selectList: ISelectItem[]) {
 		for (let selection of selectList) {
 			let pane: SearchPane | null = null;
 
@@ -826,7 +826,9 @@ export default class SearchPanes {
 		// If a custom ordering is being used
 		if (this.c.order.length > 0) {
 			// Make a new Array of panes based upon the order
-			this.s.panes = this.c.order.map(name => this._findPane(name));
+			this.s.panes = this.c.order
+				.map(name => this._findPane(name))
+				.filter(p => !!p);
 		}
 
 		this.s.dt.ready(() => {

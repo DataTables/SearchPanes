@@ -1,42 +1,51 @@
-import { Context } from 'datatables.net';
-import { ISST } from './paneType';
+import { Context, Dom } from 'datatables.net';
+import { IConfig } from './panesType';
+import { IConfigPaneItem, ISST } from './paneType';
 import SearchPane from './SearchPane';
 
 export default class SearchPaneST extends SearchPane {
 	public s: ISST;
-	public constructor(paneSettings, opts, index, panesContainer, panes) {
-		super(paneSettings, opts, index, panesContainer, panes);
+
+	public constructor(
+		hostCtx: Context,
+		opts: IConfig,
+		index: number,
+		panesContainer: Dom,
+		panes: IConfigPaneItem | null
+	) {
+		super(hostCtx, opts, index, panesContainer, panes);
 	}
 
 	/**
-	 * When server-side processing is enabled, SP will remove rows and then readd them,
-	 * resulting in Select's reference to the last selected cell being lost.
-	 * This function is provided to update that reference.
+	 * When server-side processing is enabled, SP will remove rows and then
+	 * readd them, resulting in Select's reference to the last selected cell
+	 * being lost. This function is provided to update that reference.
 	 *
 	 * @returns Function
 	 */
 	public _emptyPane() {
 		let dt = this.s.dtPane;
-		let last = (dt as any).select.last();
-		let selectedIndex: number;
 
-		if (last && dt.row(last.row).any()) {
-			selectedIndex = dt.row(last.row).data().index;
-		}
+		if (dt) {
+			let last = (dt as any).select.last();
+			let selectedIndex: number;
 
-		dt.rows().remove();
-
-		return function () {
-			if (selectedIndex !== undefined) {
-				let idx = dt
-					.row((i, data) => data.index === selectedIndex)
-					.index();
-
-				(dt as any).select.last({ row: idx, column: 0 });
+			if (last && dt.row(last.row).any()) {
+				selectedIndex = dt.row(last.row).data().index;
 			}
-		};
 
-		dt.rows().remove();
+			dt.rows().remove();
+
+			return function () {
+				if (selectedIndex !== undefined) {
+					let idx = dt
+						.row((i, data) => data.index === selectedIndex)
+						.index();
+
+					(dt as any).select.last({ row: idx, column: 0 });
+				}
+			};
+		}
 
 		return () => {};
 	}
@@ -184,9 +193,14 @@ export default class SearchPaneST extends SearchPane {
 	 * SearchPaneCascade overrides this method
 	 */
 	public updateRows(): void {
+		if (!this.s.dtPane) {
+			return;
+		}
+
 		if (!this.s.dt.page.info().serverSide) {
 			// Get the latest count values from the table
 			this.s.rowData.binsShown = {};
+
 			for (let index of this.s.dt
 				.rows({ search: 'applied' })
 				.indexes()
@@ -249,8 +263,9 @@ export default class SearchPaneST extends SearchPane {
 	/**
 	 * Updates the server selection list where appropriate
 	 */
-	protected _updateSelection(): void {
+	public _updateSelection(): void {
 		if (
+			this.s.dtPane &&
 			this.s.dt.page.info().serverSide &&
 			!this.s.updating &&
 			!this.s.serverSelecting

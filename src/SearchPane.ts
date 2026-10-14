@@ -1,5 +1,13 @@
-import DataTable, { AjaxResponse, Api, Context, Dom, util } from 'datatables.net';
-import { IClasses, IDataArray, IDefaults, IDOM, IS } from './paneType';
+import DataTable, {
+	AjaxResponse,
+	Api,
+	Context,
+	Dom,
+	StateLoad,
+	util
+} from 'datatables.net';
+import { IConfig } from './panesType';
+import { IClasses, IConfigPaneItem, IDataArray, IDefaults, IDOM, IS } from './paneType';
 
 export default class SearchPane {
 	private static version = '2.1.2';
@@ -94,7 +102,7 @@ export default class SearchPane {
 	/**
 	 * Creates the panes, sets up the search function
 	 *
-	 * @param paneSettings The settings for the searchPanes
+	 * @param hostCtx The settings for the searchPanes
 	 * @param opts The options for the default features
 	 * @param index the index of the column for this pane
 	 * @param panesContainer The overall container for SearchPanes that this pane will be attached to
@@ -102,20 +110,21 @@ export default class SearchPane {
 	 * @returns {object} the pane that has been created, including the table and the index of the pane
 	 */
 	public constructor(
-		paneSettings,
-		opts,
-		index,
-		panesContainer,
-		panes = null
+		hostCtx: Context,
+		opts: IConfig,
+		index: number,
+		panesContainer: Dom,
+		panes: IConfigPaneItem | null = null
 	) {
-		let table = new DataTable.Api(paneSettings);
+		let table = new DataTable.Api(hostCtx);
 
 		this.classes = util.object.assignDeep({}, SearchPane.classes);
 
 		// Get options from user
-		this.c = util.object.assignDeep({}, SearchPane.defaults, opts, panes);
+		this.c = util.object.assignDeep({}, SearchPane.defaults, opts, panes || {});
 
-		if (opts && opts.hideCount && opts.viewCount === undefined) {
+		// Legacy
+		if (opts && (opts as any).hideCount && opts.viewCount === undefined) {
 			this.c.viewCount = !this.c.hideCount;
 		}
 
@@ -127,7 +136,7 @@ export default class SearchPane {
 			customPaneSettings: panes,
 			displayed: false,
 			dt: table,
-			dtPane: undefined,
+			dtPane: null,
 			firstSet: true,
 			index,
 			indexes: [],
@@ -272,7 +281,8 @@ export default class SearchPane {
 			this.dom.dtP.find('th').eq(0).text(title);
 		}
 		else {
-			title = this.s.customPaneSettings.header || 'Custom Pane';
+			title = this.s.customPaneSettings?.header || 'Custom Pane';
+
 			this.dom.dtP.find('th').eq(0).html(title);
 		}
 
@@ -376,7 +386,7 @@ export default class SearchPane {
 		type: string,
 		className?: string,
 		total?: number,
-		shown?: number
+		shown?: number | void
 	): any {
 		if (!total) {
 			total = this.s.rowData.bins[filter]
@@ -400,7 +410,7 @@ export default class SearchPane {
 			this.s.indexes.push({ filter, index });
 		}
 
-		return this.s.dtPane.row.add({
+		return this.s.dtPane!.row.add({
 			className,
 			display: display !== '' ? display : this.emptyMessage(),
 			filter,
@@ -477,7 +487,7 @@ export default class SearchPane {
 	public clearPane(): this {
 		// Deselect all rows which are selected and update the table and filter
 		// count.
-		(this.s.dtPane.rows({ selected: true }) as any).deselect();
+		(this.s.dtPane!.rows({ selected: true }) as any).deselect();
 		this.updateTable();
 
 		return this;
@@ -488,6 +498,7 @@ export default class SearchPane {
 	 */
 	public collapse(): void {
 		if (
+			!this.s.dtPane ||
 			!this.s.displayed ||
 			// If collapsing is disabled globally, and not enabled specifically
 			// for this column
@@ -531,15 +542,11 @@ export default class SearchPane {
 
 		this.dom.container.detach();
 
-		let searchIdx = DataTable.ext.search.indexOf(
-			this.s.searchFunction
-		);
+		let searchIdx = DataTable.ext.search.indexOf(this.s.searchFunction);
 
 		while (searchIdx !== -1) {
 			DataTable.ext.search.splice(searchIdx, 1);
-			searchIdx = DataTable.ext.search.indexOf(
-				this.s.searchFunction
-			);
+			searchIdx = DataTable.ext.search.indexOf(this.s.searchFunction);
 		}
 
 		// If the DataTables have been defined for the panes then also destroy
@@ -615,9 +622,9 @@ export default class SearchPane {
 			}
 
 			this.s.dtPane.clear().destroy();
-			prevEl = this.dom.container.prev();
+			prevEl = this.dom.container[0].previousElementSibling;
 			this.destroy();
-			this.s.dtPane = undefined;
+			this.s.dtPane = undefined as any; // todo
 			DataTable.ext.search.push(this.s.searchFunction);
 		}
 
@@ -695,6 +702,10 @@ export default class SearchPane {
 		// performed.
 		this.s.dtPane.off('deselect.dtsp').on('deselect.dtsp', () => {
 			this.s.deselectTimeout = setTimeout(() => {
+				if (!this.s.dtPane) {
+					return;
+				}
+
 				this._updateSelection(true);
 
 				if (
@@ -717,17 +728,17 @@ export default class SearchPane {
 			this.s.dt.on('stateSaveParams.dtsp', (e, settings, data) => {
 				// If the data being passed in is empty then state clear must
 				// have occurred so clear the panes state as well
-				if ($.isEmptyObject(data)) {
+				if (this.s.dtPane && Object.keys(data).length === 0) {
 					this.s.dtPane.state.clear();
 					return;
 				}
 
-				let bins: { [keys: string]: number };
+				let bins: { [keys: string]: number } = {};
 				let order;
 				let selected = [];
-				let collapsed: boolean;
-				let searchTerm: string | number | string[];
-				let arrayFilter: IDataArray[];
+				let collapsed: boolean = false;
+				let searchTerm: string | number | string[] = '';
+				let arrayFilter: IDataArray[] = [];
 
 				// Get all of the data needed for the state save from the pane
 				if (this.s.dtPane) {
@@ -788,6 +799,10 @@ export default class SearchPane {
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
 		this.dom.nameButton.off('click.dtsp').on('click.dtsp', () => {
+			if (! this.s.dtPane) {
+				return;
+			}
+
 			let currentOrder = this.s.dtPane.order()[0][1];
 			this.s.dtPane
 				.order([[0, currentOrder === 'asc' ? 'desc' : 'asc']])
@@ -800,8 +815,12 @@ export default class SearchPane {
 		// When the button to order by the number of entries in the column is
 		//  clicked then change the ordering to whatever it isn't currently
 		this.dom.countButton.off('click.dtsp').on('click.dtsp', () => {
+			if (! this.s.dtPane) {
+				return;
+			}
+
 			let currentOrder = this.s.dtPane.order()[0][1];
-			let dir = currentOrder === 'asc' ? 'desc' : 'asc';
+			let dir: 'asc' | 'desc' = currentOrder === 'asc' ? 'desc' : 'asc';
 
 			this.s.dtPane
 				.order([
@@ -818,6 +837,11 @@ export default class SearchPane {
 		//  clicked then change the ordering to whatever it isn't currently
 		this.dom.collapseButton.off('click.dtsp').on('click.dtsp', e => {
 			e.stopPropagation();
+
+			if (! this.s.dtPane) {
+				return;
+			}
+
 			let container = Dom.s(this.s.dtPane.table().container());
 
 			// Toggle the classes
@@ -865,12 +889,16 @@ export default class SearchPane {
 		// matching values. Doing it this way means that no button has to be
 		// clicked to trigger a search, it is done asynchronously
 		this.dom.searchBox.off('click.dtsp').on('input.dtsp', () => {
-			let searchval = this.dom.searchBox.val();
-			this.s.dtPane.search(searchval).draw();
+			if (! this.s.dtPane) {
+				return;
+			}
+
+			let searchVal = this.dom.searchBox.val();
+			this.s.dtPane.search(searchVal).draw();
 			if (
-				typeof searchval === 'string' &&
-				(searchval.length > 0 ||
-					(searchval.length === 0 &&
+				typeof searchVal === 'string' &&
+				(searchVal.length > 0 ||
+					(searchVal.length === 0 &&
 						this.s.dtPane.rows({ selected: true }).data().toArray()
 							.length > 0))
 			) {
@@ -969,7 +997,7 @@ export default class SearchPane {
 	 * Expands the pane from the collapsed state
 	 */
 	public show(): void {
-		if (!this.s.displayed) {
+		if (!this.s.displayed || !this.s.dtPane) {
 			return;
 		}
 
@@ -978,7 +1006,9 @@ export default class SearchPane {
 		this.dom.countButton.classRemove(this.classes.disabledButton);
 		this.dom.searchButton.classRemove(this.classes.disabledButton);
 		this.dom.collapseButton.classRemove(this.classes.rotated);
-		Dom.s(this.s.dtPane.table().container()).classRemove(this.classes.hidden);
+		Dom.s(this.s.dtPane.table().container()).classRemove(
+			this.classes.hidden
+		);
 
 		this.dom.topRow.trigger('collapse.dtsps');
 	}
@@ -1009,6 +1039,10 @@ export default class SearchPane {
 	 * rather than the filtered message when using viewTotal.
 	 */
 	public updateTable(): void {
+		if (! this.s.dtPane) {
+			return;
+		}
+
 		let selectedRows = this.s.dtPane
 			.rows({ selected: true })
 			.data()
@@ -1025,6 +1059,10 @@ export default class SearchPane {
 	 *   pane
 	 */
 	protected _getComparisonRows(): any[] {
+		if (! this.s.dtPane) {
+			return [];
+		}
+
 		// Find the appropriate options depending on whether this is a pane for
 		// a specific column or a custom pane
 		let options = this.s.colOpts.options
@@ -1110,7 +1148,7 @@ export default class SearchPane {
 	 * @returns undefined
 	 */
 	protected _getShown(filter: any): number | void {
-		; // no op
+		// no op
 	}
 
 	/**
@@ -1212,9 +1250,7 @@ export default class SearchPane {
 			scrollY: '200px',
 			scroller: haveScroller ? true : false,
 			select: true,
-			stateSave: this.s.dt.settings()[0].features.stateSave
-				? true
-				: false
+			stateSave: this.s.dt.settings()[0].features.stateSave ? true : false
 		};
 	}
 
@@ -1245,7 +1281,7 @@ export default class SearchPane {
 	): void {
 		// Retrieve the rendered data from the cell using the fastData function
 		// rather than the cell().render API method for optimisation
-		let fastData = settings.fastData
+		let fastData = settings.fastData;
 
 		if (typeof this.s.colOpts.orthogonal === 'string') {
 			let rendered = fastData(
@@ -1319,7 +1355,7 @@ export default class SearchPane {
 	 */
 	protected _reloadSelect(loadedFilter: { [keys: string]: any }): void {
 		// If the state was not saved don't selected any
-		if (loadedFilter === undefined) {
+		if (loadedFilter === undefined || !this.s.dtPane) {
 			return;
 		}
 
@@ -1368,6 +1404,10 @@ export default class SearchPane {
 	 */
 	public _updateSelection(notUpdating: boolean): void {
 		let run = () => {
+			if (! this.s.dtPane) {
+				return;
+			}
+
 			this.s.scrollTop = Dom.s(
 				this.s.dtPane.table().node()
 			).parent()[0].scrollTop;
@@ -1487,7 +1527,7 @@ export default class SearchPane {
 	private _buildPane(
 		selectedRows: any[] = [],
 		dataIn: AjaxResponse | null = null,
-		prevEl = null
+		prevEl: Element | null = null
 	): boolean {
 		// Aliases
 		this.s.selections = [];
@@ -1586,24 +1626,29 @@ export default class SearchPane {
 			this.s.displayed = true;
 		}
 
-		// If the variance is accceptable then display the search pane
+		// If the variance is acceptable then display the search pane
 		this._displayPane();
 
 		if (!this.s.listSet) {
 			// Here, when the state is loaded if the data object on the original
 			// table is empty, then a state.clear() must have occurred, so
 			// delete all of the panes tables state objects too.
-			this.dom.dtP.on('stateLoadParams.dtsp', (e, settings, data) => {
-				if ($.isEmptyObject(this.s.dt.state.loaded())) {
-					$.each(data, index => {
-						delete data[index];
-					});
+			this.dom.dtP.on(
+				'stateLoadParams.dtsp',
+				(e: Event, settings: Context, data: StateLoad) => {
+					if (
+						Object.keys(this.s.dt.state.loaded() || {}).length === 0
+					) {
+						Object.keys(data).forEach(key => {
+							delete (data as any)[key];
+						});
+					}
 				}
-			});
+			);
 		}
 
 		// Add the container to the document in its original location
-		if (prevEl !== null && this.dom.panesContainer.has(prevEl).length > 0) {
+		if (prevEl !== null && this.dom.panesContainer[0].contains(prevEl)) {
 			this.dom.container.insertAfter(prevEl);
 		}
 		else {
@@ -1628,15 +1673,19 @@ export default class SearchPane {
 		// We need to modify the layout default to null all entries, keeping in
 		// mind that the default might have been modified by the dev using DT,
 		// so it needs to be dynamic.
-		let cloned = util.object.assignDeep({}, DataTable.defaults.layout);
+		let cloned = util.object.assignDeep(
+			{},
+			DataTable.defaults.layout
+		) as any;
 
-		$.each(cloned, function (key, val) {
+		Object.keys(cloned).forEach(key => {
 			cloned[key] = null;
 		});
 
 		layout = { layout: cloned };
 
-		this.s.dtPane = new DataTable(this.dom.dtP[0], (
+		this.s.dtPane = new DataTable(
+			this.dom.dtP[0],
 			util.object.assignDeep(
 				this._getPaneConfig(),
 				this.c.dtOpts,
@@ -1654,7 +1703,7 @@ export default class SearchPane {
 					: {},
 				layout
 			)
-		));
+		);
 
 		this.dom.dtP.classAdd(this.classes.table);
 
@@ -1738,7 +1787,8 @@ export default class SearchPane {
 
 		// Display the pane
 		this.s.dtPane.draw();
-		this.s.dtPane.table().node().parentElement!.scrollTop = this.s.scrollTop;
+		this.s.dtPane.table().node().parentElement!.scrollTop =
+			this.s.scrollTop;
 		this.adjustTopRow();
 		this.setListeners();
 		this.s.listSet = true;
@@ -1962,19 +2012,20 @@ export default class SearchPane {
 		let columnOptions =
 			table.settings()[0].columns[this.s.index].searchPanes;
 
-		let colOpts = util.object.assignDeep(
+		let colOpts = util.object.assignDeep<IConfig>(
 			{},
 			SearchPane.defaults,
 			defaultMutator,
 			columnOptions
 		);
 
+		// Legacy support
 		if (
 			columnOptions &&
-			columnOptions.hideCount &&
+			(columnOptions as any).hideCount &&
 			columnOptions.viewCount === undefined
 		) {
-			colOpts.viewCount = !columnOptions.hideCount;
+			colOpts.viewCount = !(columnOptions as any).hideCount;
 		}
 
 		return colOpts;
@@ -2107,6 +2158,10 @@ export default class SearchPane {
 	 * Adds outline to the pane when a selection has been made
 	 */
 	private _searchExtras(): void {
+		if (! this.s.dtPane) {
+			return;
+		}
+
 		let updating = this.s.updating;
 		this.s.updating = true;
 		let filters = this.s.dtPane

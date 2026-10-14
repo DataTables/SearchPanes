@@ -1,4 +1,4 @@
-import { Api, Dom } from 'datatables.net';
+import { Api, Dom, Options } from 'datatables.net';
 
 export interface IClasses {
 	badgePill?: string;
@@ -45,7 +45,7 @@ export interface IClasses {
 
 export interface IConfigPaneItem {
 	className: string;
-	dtOpts: { [keys: string]: any }; // All dtOpts
+	dtOpts: Options;
 	header: string;
 	name: string;
 	options: IOption[];
@@ -160,11 +160,11 @@ export interface IRowDataST extends IRowData {
 export interface IS {
 	colExists: boolean;
 	colOpts: any;
-	customPaneSettings: IConfigPaneItem;
+	customPaneSettings: IConfigPaneItem | null;
 	deselectTimeout?: ReturnType<typeof setTimeout>;
 	displayed: boolean;
 	dt: Api;
-	dtPane: Api;
+	dtPane: Api | null;
 	firstSet: boolean;
 	index: number;
 	indexes: IIndexes[];

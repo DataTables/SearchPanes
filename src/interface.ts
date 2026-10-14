@@ -53,6 +53,13 @@ declare module 'datatables.net' {
 		_searchPanes: SearchPanes;
 	}
 
+	interface ColumnContext {
+		/**
+		 * SearchPanes instance
+		 */
+		searchPanes: IConfig;
+	}
+
 	interface Api<T> {
 		/**
 		 * SearchPanes methods container

@@ -162,8 +162,8 @@ function _init(settings: Context, options = null, fromPre = false) {
 
 	let searchPanes =
 		opts && (opts.cascadePanes || opts.viewTotal)
-			? new SearchPanesST(api, opts, fromPre)
-			: new SearchPanes(api, opts, fromPre);
+			? new SearchPanesST(settings, opts, fromPre)
+			: new SearchPanes(settings, opts, fromPre);
 	let node = searchPanes.getNode();
 
 	return node;

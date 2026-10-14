@@ -1,8 +1,16 @@
-import { util } from 'datatables.net';
+import { Context, Dom, util } from 'datatables.net';
+import { IConfig } from './panesType';
+import { IConfigPaneItem } from './paneType';
 import SearchPaneCascade from './SearchPaneCascade';
 
 export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
-	public constructor(paneSettings, opts, index, panesContainer, panes) {
+	public constructor(
+		ctxHost: Context,
+		opts: IConfig,
+		index: number,
+		panesContainer: Dom,
+		panes: IConfigPaneItem | null
+	) {
 		let override = {
 			i18n: {
 				count: '{total}',
@@ -11,7 +19,7 @@ export default class SearchPaneCascadeViewTotal extends SearchPaneCascade {
 		};
 
 		super(
-			paneSettings,
+			ctxHost,
 			util.object.assign(override, opts),
 			index,
 			panesContainer,
