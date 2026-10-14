@@ -125,6 +125,8 @@ export default class SearchPane {
 	) {
 		let table = new DataTable.Api(hostCtx);
 
+		DataTable.plus('__BUILD_DATE__');
+
 		this.classes = util.object.assignDeep({}, SearchPane.classes);
 
 		// Get options from user

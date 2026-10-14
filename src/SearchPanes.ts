@@ -98,6 +98,8 @@ export default class SearchPanes {
 			);
 		}
 
+		DataTable.plus('__BUILD_DATE__');
+
 		let table = new DataTable.Api(hostCtx);
 
 		this.classes = util.object.assignDeep({}, SearchPanes.classes);
