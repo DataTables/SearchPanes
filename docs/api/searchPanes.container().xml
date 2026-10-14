@@ -7,8 +7,8 @@
 	<type type="function">
 		<signature>searchPanes.container()</signature>
 		<description>Returns the node of the panes container.</description>
-		<returns type="jQuery">
-            jQuery instance that contains the container element for the searchPanes.
+		<returns type="DataTable.Dom">
+            `Dom` instance that contains the container element for the searchPanes.
         </returns>
 
 	</type>
@@ -16,8 +16,9 @@
 	<description>
 		This method provides the ability to return the node of the container that is storing all of the SearchPanes.
 
-		As it is a getter it does not take any arguments
+		As it is a getter it does not take any arguments.
 
+		Please note that prior to SearchPanes v3 this method would return a jQuery instance. As of SearchPanes v3 it will always return a `-type DataTable.Dom` instance.
 	</description>
 
 	<example title="Add a class to the searchPanes container:"><![CDATA[

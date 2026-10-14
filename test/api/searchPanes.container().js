@@ -14,8 +14,8 @@ describe('searchPanes - api - searchPanes.container()', function() {
 			});
 			expect(typeof table.searchPanes.container).toBe('function');
 		});
-		it('Returns a jQuery instance', function() {
-			expect(table.searchPanes.container() instanceof $).toBe(true);
+		it('Returns a Dom instance', function() {
+			expect(table.searchPanes.container() instanceof DataTable.Dom).toBe(true);
 		});
 	});
 
