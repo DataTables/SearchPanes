@@ -247,7 +247,7 @@ describe('searchPanes - integrations - stateSave', function() {
 		});
 
 		dt.html('basic');
-		it('Add searchPanes', async function(done) {
+		it('Add searchPanes', function(done) {
 			table = $('#example').DataTable({
 				dom: 'Pfrtip',
 				searchPanes: true,

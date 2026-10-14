@@ -34,6 +34,7 @@ describe('searchPanes - integrations - Buttons', function () {
 		});
 		it('... can close panes', async function() {
 			$('div.dt-button-background').click();
+			await dt.sleep(500); // Button hide is async
 
 			expect($('div.dt-button-collection').length).toBe(0);
 		});
