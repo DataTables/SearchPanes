@@ -242,11 +242,11 @@ export default class SearchPanes {
 
 		table.settings()[0]._searchPanes = this;
 
-		if (fromPreInit) {
+		if (this.s.dt.settings()[0].initDone || fromPreInit) {
 			this._paneDeclare(table, hostCtx, opts);
 		}
 		else {
-			this.s.dt.ready(() => {
+			table.one('preInit.dtsps', () => {
 				this._paneDeclare(table, hostCtx, opts);
 			});
 		}
@@ -834,9 +834,18 @@ export default class SearchPanes {
 				.filter(p => !!p);
 		}
 
-		this.s.dt.ready(() => {
+		if (this.s.dt.settings()[0].initDone) {
 			this._startup(table);
-		});
+		}
+		else {
+			// Otherwise add the paneStartup function to the list of functions
+			// that are to be run when the table is initialised. This will
+			// guarantee that the panes are initialised before the init event
+			// and init Complete callback is fired
+			this.s.dt.settings()[0].callbacks.init.push(() => {
+				this._startup(table);
+			});
+		}
 	}
 
 	/**
