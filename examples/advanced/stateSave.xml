@@ -3,22 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select"/>
-<js lib="//cdn.datatables.net/plug-ins/1.10.19/sorting/ip-address.js"/>
-<js>
-<![CDATA[
-
-$('#example').DataTable({
-	layout: {
-		top1: 'searchPanes'
-	},
-	stateSave: true
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -29,7 +14,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">StateSave</title>
 

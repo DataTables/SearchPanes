@@ -2,22 +2,7 @@
 <dt-example table-type="html" order="1">
 
 <css lib="datatables buttons searchpanes select"/>
-<js lib="jquery datatables buttons searchpanes select jszip pdfmake vfsfonts">
-<![CDATA[
-
-$('#example').DataTable({
-	layout: {
-		top1: 'searchPanes',
-		topStart: {
-			buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables buttons searchpanes select jszip pdfmake vfsfonts">
 <![CDATA[
 
 new DataTable('#example', {
@@ -30,7 +15,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="Buttons">Buttons integration</title>
 

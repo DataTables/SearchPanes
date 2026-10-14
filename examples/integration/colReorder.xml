@@ -3,20 +3,7 @@
 
 <css lib="datatables searchpanes select colreorder"/>
 
-<js lib="jquery datatables searchpanes select colreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	colReorder: true,
-	layout: {
-		top1: 'searchPanes'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select colreorder">
 <![CDATA[
 
 new DataTable('#example', {
@@ -27,7 +14,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">ColReorder Integration</title>
 

@@ -3,7 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 $('#example').DataTable({
@@ -22,26 +22,6 @@ $('#example').DataTable({
 
 ]]>
 </js>
-
-<js-vanilla>
-<![CDATA[
-
-$('#example').DataTable({
-	layout: {
-		top1: 'searchPanes'
-	},
-	columnDefs: [
-		{
-			searchPanes: {
-				collapse: false
-			},
-			targets: [3]
-		}
-	]
-});
-
-]]>
-</js-vanilla>
 
 <title lib="SearchPanes">Hide Collapsing Button on Specific Pane</title>
 

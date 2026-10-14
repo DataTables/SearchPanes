@@ -3,38 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	ajax: '../resources/options.json',
-	columns: [
-		{ data: 'users.first_name' },
-		{ data: 'users.last_name' },
-		{ data: 'users.phone' },
-		{ data: 'sites.name' }
-	],
-	columnDefs: [
-		{
-			searchPanes: {
-				show: true
-			},
-			targets: [0, 1, 2, 3]
-		}
-	],
-	layout: {
-		top1: {
-			searchPanes: {
-				viewTotal: true
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -63,7 +32,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Ajax Loaded SearchPanes Options</title>
 

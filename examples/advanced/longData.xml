@@ -3,26 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-// Modify the source table before initialisation
-$('#example td')
-	.eq(2)
-	.html(
-		'A really long string to demonstrate what happens when one of the cells has a long string in it'
-	);
-
-$('#example').DataTable({
-	layout: {
-		top: 'searchPanes'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 // Modify the source table before initialisation
@@ -36,7 +17,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Long Data in Panes</title>
 

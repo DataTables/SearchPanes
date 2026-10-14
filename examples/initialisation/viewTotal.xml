@@ -3,29 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	language: {
-		searchPanes: {
-			count: '{total} found',
-			countFiltered: '{shown} / {total}'
-		}
-	},
-	layout: {
-		top1: {
-			searchPanes: {
-				viewTotal: true
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -45,7 +23,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">View totals and subtotals</title>
 

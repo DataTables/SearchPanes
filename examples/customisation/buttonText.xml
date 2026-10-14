@@ -3,27 +3,7 @@
 
 <css lib="datatables searchpanes select buttons"/>
 
-<js lib="jquery datatables searchpanes select buttons">
-<![CDATA[
-
-$('#example').DataTable({
-	language: {
-		searchPanes: {
-			clearMessage: 'Obliterate Selections',
-			collapse: { 0: 'Search Options', _: 'Search Options (%d)' }
-		}
-	},
-	layout: {
-		topStart: {
-			buttons: ['searchPanes']
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select buttons">
 <![CDATA[
 
 new DataTable('#example', {
@@ -41,7 +21,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Button text</title>
 

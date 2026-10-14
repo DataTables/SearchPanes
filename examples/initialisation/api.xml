@@ -3,19 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-var table = $('#example').DataTable();
-new DataTable.SearchPanes(table, {});
-
-table.searchPanes.container().prependTo(table.table().container());
-table.searchPanes.resizePanes();
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 let table = new DataTable('#example');
@@ -25,7 +13,7 @@ table.searchPanes.container().prependTo(table.table().container());
 table.searchPanes.resizePanes();
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">API Initialisation</title>
 

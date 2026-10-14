@@ -3,31 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	layout: {
-		top1: {
-			searchPanes: {
-				layout: 'columns-6'
-			}
-		}
-	},
-	columnDefs: [
-		{
-			searchPanes: {
-				show: true
-			},
-			targets: [0, 1, 2, 3, 4, 5]
-		}
-	]
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -49,7 +25,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Change SearchPanes Layout</title>
 

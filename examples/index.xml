@@ -3,7 +3,7 @@
 
 <title lib="SearchPanes">SearchPanes for DataTables</title>
 
-<js lib="jquery" />
+<js lib="datatables" />
 <info><![CDATA[
 
 This is the searchPanes extension for DataTables. It allows results to be filtered based on the values of columns.

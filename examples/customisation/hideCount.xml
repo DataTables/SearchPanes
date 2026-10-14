@@ -3,7 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 $('#example').DataTable({
@@ -22,26 +22,6 @@ $('#example').DataTable({
 
 ]]>
 </js>
-
-<js-vanilla>
-<![CDATA[
-
-$('#example').DataTable({
-	columnDefs: [
-		{
-			searchPanes: {
-				viewCount: false
-			},
-			targets: [3]
-		}
-	],
-	layout: {
-		top1: 'searchPanes'
-	}
-});
-
-]]>
-</js-vanilla>
 
 <title lib="SearchPanes">Hide Count Column on Specific Pane</title>
 

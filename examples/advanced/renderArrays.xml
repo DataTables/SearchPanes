@@ -2,56 +2,7 @@
 <dt-example table-type="ajax" order="9">
 
 <css lib="datatables searchpanes select" />
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	ajax: '../resources/arrayData.json',
-	columns: [
-		{
-			data: 'users.first_name'
-		},
-		{
-			data: 'users.last_name'
-		},
-		{
-			data: 'sites.name'
-		},
-		{
-			data: 'permission',
-			render: {
-				_: '[, ].name',
-				sp: '[].name'
-			},
-			searchPanes: {
-				orthogonal: 'sp'
-			}
-		}
-	],
-	columnDefs: [
-		{
-			searchPanes: {
-				show: true
-			},
-			targets: [3]
-		}
-	],
-	initComplete: function () {
-		this.api().searchPanes.rebuildPane();
-	},
-	layout: {
-		top1: {
-			searchPanes: {
-				columns: [3]
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -98,7 +49,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Rendering Arrays</title>
 

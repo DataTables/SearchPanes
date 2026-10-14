@@ -77,22 +77,7 @@ html.dark div.dtsp-panesContainer {
 }
 </css>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-var table = $('#example').DataTable({
-	searchPanes: {
-		layout: 'columns-1'
-	},
-	pageLength: 25
-});
-
-$('div.dtsp-verticalPanes').append(table.searchPanes.container());
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 let table = new DataTable('#example', {
@@ -107,7 +92,7 @@ document
 	.appendChild(table.searchPanes.container().get(0));
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Panes Vertically Stacked next to DataTable</title>
 

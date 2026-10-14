@@ -7,53 +7,7 @@ div.myCustomClass{
 }
 </css>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	columnDefs: [
-		{
-			searchPanes: {
-				className: 'myCustomClass'
-			},
-			targets: [3]
-		}
-	],
-	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
-					{
-						header: 'Custom',
-						options: [
-							{
-								label: 'Accountants from Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-								}
-							}
-						],
-						dtOpts: {
-							layout: {
-								topStart: null,
-								topEnd: null,
-								bottomStart: null
-							},
-							paging: true,
-							order: [[1, 'desc']]
-						},
-						className: 'myCustomClass'
-					}
-				]
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -97,7 +51,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Custom Pane Class</title>
 

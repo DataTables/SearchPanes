@@ -3,7 +3,7 @@
 
 <title lib="SearchPanes">Custom filtering</title>
 
-<js lib="jquery" />
+<js lib="datatables" />
 <info><![CDATA[
 
 These examples demonstrate how custom panes can be added to the table.

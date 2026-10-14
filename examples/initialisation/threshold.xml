@@ -2,31 +2,7 @@
 <dt-example table-type="html" order="7">
 
 <css lib="datatables searchpanes select" />
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	columnDefs: [
-		{
-			searchPanes: {
-				threshold: 1
-			},
-			targets: [0]
-		}
-	],
-	layout: {
-		top1: {
-			searchPanes: {
-				threshold: 0.4
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -48,7 +24,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Uniqueness Threshold</title>
 

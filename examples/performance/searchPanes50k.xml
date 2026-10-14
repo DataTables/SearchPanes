@@ -3,28 +3,7 @@
 
 <css lib="datatables searchpanes select scroller"/>
 
-<js lib="jquery datatables searchpanes select scroller">
-<![CDATA[
-
-$('#example').DataTable({
-	ajax: '../../../../examples/ajax/data/data_50k.txt',
-	columns: [
-		{ data: 'name' },
-		{ data: 'position' },
-		{ data: 'office' },
-		{ data: 'extn' },
-		{ data: 'start_date' },
-		{ data: 'salary' }
-	],
-	layout: {
-		top1: 'searchPanes'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select scroller">
 <![CDATA[
 
 new DataTable('#example', {
@@ -43,7 +22,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">50k Rows</title>
 

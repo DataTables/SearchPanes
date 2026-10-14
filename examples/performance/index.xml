@@ -3,7 +3,7 @@
 
 <title lib="SearchPanes">Advanced SearchPanes</title>
 
-<js lib="jquery" />
+<js lib="datatables" />
 <info><![CDATA[
 
 This is the section to display how SearchPanes will perform with larger sets of Data.

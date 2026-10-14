@@ -3,36 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example tr:eq(0) td:eq(1)').html('&');
-$('#example tr:eq(0) td:eq(2)').html('&');
-$('#example tr:eq(1) td:eq(1)').html('<');
-$('#example tr:eq(1) td:eq(2)').html('<');
-$('#example tr:eq(2) td:eq(1)').html('>');
-$('#example tr:eq(2) td:eq(2)').html('>');
-$('#example tr:eq(3) td:eq(1)').html('€');
-$('#example tr:eq(3) td:eq(2)').html('€');
-
-$('#example').DataTable({
-	columnDefs: [
-		{
-			searchPanes: {
-				show: true
-			},
-			targets: [3]
-		}
-	],
-	layout: {
-		top1: 'searchPanes'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 var cells = document.querySelectorAll('#example tbody td');
@@ -61,7 +32,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Dealing with unusual characters</title>
 

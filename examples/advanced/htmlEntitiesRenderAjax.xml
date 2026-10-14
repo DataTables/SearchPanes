@@ -3,48 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select" />
-<js lib="//cdn.datatables.net/plug-ins/1.13.7/dataRender/ellipsis.js" />
-<js>
-<![CDATA[
-
-$('#example').DataTable({
-	ajax: '../resources/arrayDataEntities.json',
-	columns: [
-		{
-			data: 'users.first_name'
-		},
-		{
-			data: 'users.last_name'
-		},
-		{
-			data: 'sites.name',
-			searchPanes: {
-				show: true
-			},
-			render: DataTable.render.ellipsis(10)
-		},
-		{
-			data: 'permission',
-			render: {
-				_: '[, ].name',
-				sp: '[].name'
-			},
-			searchPanes: {
-				orthogonal: 'sp',
-				show: true
-			}
-		}
-	],
-	layout: {
-		top1: 'searchPanes'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -81,7 +40,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">HTML Entities from an Ajax Request with a Rendering Function</title>
 

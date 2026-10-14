@@ -2,62 +2,7 @@
 <dt-example table-type="ajax" order="8">
 
 <css lib="datatables searchpanes select" />
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	ajax: '../resources/objects.json',
-	columnDefs: [
-		{
-			searchPanes: {
-				show: true
-			},
-			targets: [5]
-		}
-	],
-	columns: [
-		{
-			data: null,
-			render: function (data, type, row) {
-				// Combine the first and last names into a single table field
-				return data.first_name + ' ' + data.last_name;
-			}
-		},
-		{ data: 'position' },
-		{ data: 'office' },
-		{ data: 'extn' },
-		{ data: 'start_date' },
-		{
-			data: 'salary',
-			render: function (data, type, row) {
-				if (type === 'sort' || type === 'type') {
-					return row.salary;
-				}
-				if (row.salary <= 200000) {
-					return 'Low';
-				}
-				else if (row.salary <= 800000) {
-					return 'Medium';
-				}
-				else {
-					return 'High';
-				}
-			}
-		}
-	],
-	layout: {
-		top1: {
-			searchPanes: {
-				columns: [5]
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -110,7 +55,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Using Render Function to Create Custom Options</title>
 

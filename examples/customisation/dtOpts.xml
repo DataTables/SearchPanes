@@ -11,46 +11,7 @@
     }
 </css>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	layout: {
-		top1: {
-			searchPanes: {
-				dtOpts: {
-					layout: {
-						bottom: {
-							paging: {
-								type: 'numbers'
-							}
-						}
-					},
-					paging: true,
-					searching: false
-				}
-			}
-		}
-	},
-	columnDefs: [
-		{
-			searchPanes: {
-				dtOpts: {
-					layout: {
-						bottom: 'info'
-					},
-					info: true
-				}
-			},
-			targets: [2]
-		}
-	]
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -87,7 +48,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 
 <title lib="SearchPanes">Pane customisation</title>

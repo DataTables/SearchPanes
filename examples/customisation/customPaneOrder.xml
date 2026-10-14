@@ -3,45 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	columnDefs: [
-		{
-			searchPanes: {
-				name: 'ageName'
-			},
-			targets: [3]
-		}
-	],
-	layout: {
-		top1: {
-			searchPanes: {
-				order: ['ageName', 'Custom Name', 'Position'],
-				panes: [
-					{
-						name: 'Custom Name',
-						header: 'Custom',
-						options: [
-							{
-								label: 'Accountants from Tokyo',
-								value: function (rowData, rowIdx) {
-									return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
-								}
-							}
-						]
-					}
-				]
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -77,7 +39,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Custom Pane Order</title>
 

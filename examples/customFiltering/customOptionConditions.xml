@@ -2,124 +2,7 @@
 <dt-example table-type="html-index" order="1">
 
 <css lib="datatables searchpanes select" />
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-var dt = $('#example').DataTable({
-	columnDefs: [
-		{
-			orderable: false,
-			render: DataTable.render.select(),
-			searchPanes: {
-				show: true,
-				options: [
-					{
-						label: 'Checked',
-						value: function (rowData, rowIdx) {
-							return this.row(rowIdx, { selected: true }).any();
-						}
-					},
-					{
-						label: 'Un-Checked',
-						value: function (rowData, rowIdx) {
-							return this.row(rowIdx, { selected: true }).any() === false;
-						}
-					}
-				]
-			},
-			targets: [0]
-		},
-		{
-			searchPanes: {
-				options: [
-					{
-						label: 'Under 20',
-						value: function (rowData, rowIdx) {
-							return rowData[4] < 20;
-						}
-					},
-					{
-						label: '20 to 30',
-						value: function (rowData, rowIdx) {
-							return rowData[4] <= 30 && rowData[4] >= 20;
-						}
-					},
-					{
-						label: '30 to 40',
-						value: function (rowData, rowIdx) {
-							return rowData[4] <= 40 && rowData[4] >= 30;
-						}
-					},
-					{
-						label: '40 to 50',
-						value: function (rowData, rowIdx) {
-							return rowData[4] <= 50 && rowData[4] >= 40;
-						}
-					},
-					{
-						label: '50 to 60',
-						value: function (rowData, rowIdx) {
-							return rowData[4] <= 60 && rowData[4] >= 50;
-						}
-					},
-					{
-						label: 'Over 60',
-						value: function (rowData, rowIdx) {
-							return rowData[4] > 60;
-						}
-					}
-				]
-			},
-			targets: [4]
-		},
-		{
-			searchPanes: {
-				options: [
-					{
-						label: 'Not Edinburgh',
-						value: function (rowData, rowIdx) {
-							return rowData[3] !== 'Edinburgh';
-						}
-					},
-					{
-						label: 'Not London',
-						value: function (rowData, rowIdx) {
-							return rowData[3] !== 'London';
-						}
-					}
-				],
-				combiner: 'and'
-			},
-			targets: [3]
-		}
-	],
-	layout: {
-		top1: {
-			searchPanes: {
-				viewTotal: true,
-				columns: [0, 3, 4]
-			}
-		}
-	},
-	select: {
-		style: 'os',
-		selector: 'td:first-child'
-	},
-	order: [[1, 'asc']]
-});
-
-dt.on('select.dt', () => {
-	dt.searchPanes.rebuildPane(0, true);
-});
-
-dt.on('deselect.dt', () => {
-	dt.searchPanes.rebuildPane(0, true);
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 var dt = new DataTable('#example', {
@@ -234,7 +117,7 @@ dt.on('deselect.dt', () => {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Custom Filtering Options</title>
 

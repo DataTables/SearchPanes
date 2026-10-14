@@ -3,47 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-$('#example').DataTable({
-	layout: {
-		top1: {
-			searchPanes: {
-				panes: [
-					{
-						header: 'Age Range',
-						options: [
-							{
-								label: 'Over 50',
-								value: function (rowData, rowIdx) {
-									return rowData[3] > 50;
-								}
-							},
-							{
-								label: 'Under 50',
-								value: function (rowData, rowIdx) {
-									return rowData[3] < 50;
-								}
-							}
-						]
-					}
-				],
-				preSelect: [
-					{
-						column: 6,
-						rows: ['Over 50']
-					}
-				]
-			}
-		}
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 new DataTable('#example', {
@@ -81,7 +41,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Custom Filtering Pane with PreSelections</title>
 

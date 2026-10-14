@@ -3,32 +3,7 @@
 
 <css lib="datatables searchpanes select"/>
 
-<js lib="jquery datatables searchpanes select">
-<![CDATA[
-
-var dt = $('#example').DataTable({
-	layout: {
-		top1: {
-			searchPanes: {
-				i18n: {
-					emptyMessage: '<i><b>EMPTY</b></i>'
-				}
-			}
-		}
-	}
-});
-
-dt.cell(2, 2).data('');
-dt.cell(4, 2).data('Edi');
-dt.cell(6, 2).data('');
-dt.cell(2, 3).data('');
-dt.searchPanes.rebuildPane(3);
-dt.searchPanes.rebuildPane(2);
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables searchpanes select">
 <![CDATA[
 
 var dt = new DataTable('#example', {
@@ -51,7 +26,7 @@ dt.searchPanes.rebuildPane(3);
 dt.searchPanes.rebuildPane(2);
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="SearchPanes">Table with empty cells</title>
 
