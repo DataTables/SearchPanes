@@ -17,11 +17,7 @@ declare module 'datatables.net' {
 		/**
 		 * SearchPanes extension options
 		 */
-		searchPanes?:
-			| boolean
-			| string[]
-			| IConfig
-			| IConfig[];
+		searchPanes?: boolean | string[] | IConfig | IConfig[];
 	}
 
 	interface Defaults {
@@ -39,11 +35,7 @@ declare module 'datatables.net' {
 	}
 
 	interface Feature {
-		searchPanes?:
-			| boolean
-			| string[]
-			| IConfig
-			| IConfig[];
+		searchPanes?: boolean | string[] | IConfig | IConfig[];
 	}
 
 	interface Context {
@@ -78,7 +70,9 @@ declare module 'datatables.net' {
 		/** @deprecated */
 		SearchPanesST: typeof SearchPanesST;
 
-		/** @deprecated */
+		/**
+		 * Individual SearchPane class
+		 */
 		SearchPane: typeof SearchPane;
 
 		/** @deprecated */
@@ -126,15 +120,15 @@ declare module 'datatables.net' {
 		searchPanes: {
 			[name: string]: {
 				[id: string]: string;
-			}
+			};
 		};
 
 		/** Null values */
 		searchPanes_null: {
 			[name: string]: {
 				[id: string]: boolean;
-			}
-		}
+			};
+		};
 
 		searchPanesLast?: string | number;
 
@@ -142,13 +136,13 @@ declare module 'datatables.net' {
 			cascade: boolean;
 			viewCount: boolean;
 			viewTotal: boolean;
-		}
+		};
 	}
 
 	export interface AjaxResponse {
 		searchPanes: {
 			options: any;
-		}
+		};
 	}
 
 	export interface State {

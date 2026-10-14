@@ -1,16 +1,17 @@
-/*! Bulma integration for DataTables' SearchPanes
- * © SpryMedia Ltd - datatables.net/license
+/*! SearchPanes Bulma styling for DataTables
+ * Copyright (c) SpryMedia Ltd - https://datatables.net/license/plus
  */
 
-declare var DataTable: any;
+import DataTable, { util } from 'datatables.net';
+import '../interface';
 
-$.extend(true, DataTable.SearchPane.classes, {
+util.object.assignDeep(DataTable.SearchPane.classes, {
 	disabledButton: 'is-disabled',
 	paneButton: 'button dtsp-paneButton is-white',
-	search: 'input search',
+	search: 'input search'
 });
 
-$.extend(true, DataTable.SearchPanes.classes, {
+util.object.assignDeep(DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll button',
 	collapseAll: 'dtsp-collapseAll button',
 	disabledButton: 'is-disabled',

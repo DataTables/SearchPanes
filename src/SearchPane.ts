@@ -7,12 +7,19 @@ import DataTable, {
 	util
 } from 'datatables.net';
 import { IConfig } from './panesType';
-import { IClasses, IConfigPaneItem, IDataArray, IDefaults, IDOM, IS } from './paneType';
+import {
+	IClasses,
+	IConfigPaneItem,
+	IDataArray,
+	IDefaults,
+	IDOM,
+	IS
+} from './paneType';
 
 export default class SearchPane {
-	private static version = '2.1.2';
+	public static version = '2.1.2';
 
-	private static classes = {
+	public static classes = {
 		bordered: 'dtsp-bordered',
 		buttonGroup: 'dtsp-buttonGroup',
 		buttonSub: 'dtsp-buttonSub',
@@ -50,7 +57,7 @@ export default class SearchPane {
 	};
 
 	// Define SearchPanes default options
-	private static defaults = {
+	public static defaults = {
 		clear: true,
 		collapse: true,
 		combiner: 'or',
@@ -121,7 +128,12 @@ export default class SearchPane {
 		this.classes = util.object.assignDeep({}, SearchPane.classes);
 
 		// Get options from user
-		this.c = util.object.assignDeep({}, SearchPane.defaults, opts, panes || {});
+		this.c = util.object.assignDeep(
+			{},
+			SearchPane.defaults,
+			opts,
+			panes || {}
+		);
 
 		// Legacy
 		if (opts && (opts as any).hideCount && opts.viewCount === undefined) {
@@ -799,7 +811,7 @@ export default class SearchPane {
 		// When the button to order by the name of the options is clicked then
 		//  change the ordering to whatever it isn't currently
 		this.dom.nameButton.off('click.dtsp').on('click.dtsp', () => {
-			if (! this.s.dtPane) {
+			if (!this.s.dtPane) {
 				return;
 			}
 
@@ -815,7 +827,7 @@ export default class SearchPane {
 		// When the button to order by the number of entries in the column is
 		//  clicked then change the ordering to whatever it isn't currently
 		this.dom.countButton.off('click.dtsp').on('click.dtsp', () => {
-			if (! this.s.dtPane) {
+			if (!this.s.dtPane) {
 				return;
 			}
 
@@ -838,7 +850,7 @@ export default class SearchPane {
 		this.dom.collapseButton.off('click.dtsp').on('click.dtsp', e => {
 			e.stopPropagation();
 
-			if (! this.s.dtPane) {
+			if (!this.s.dtPane) {
 				return;
 			}
 
@@ -889,7 +901,7 @@ export default class SearchPane {
 		// matching values. Doing it this way means that no button has to be
 		// clicked to trigger a search, it is done asynchronously
 		this.dom.searchBox.off('click.dtsp').on('input.dtsp', () => {
-			if (! this.s.dtPane) {
+			if (!this.s.dtPane) {
 				return;
 			}
 
@@ -1039,7 +1051,7 @@ export default class SearchPane {
 	 * rather than the filtered message when using viewTotal.
 	 */
 	public updateTable(): void {
-		if (! this.s.dtPane) {
+		if (!this.s.dtPane) {
 			return;
 		}
 
@@ -1059,7 +1071,7 @@ export default class SearchPane {
 	 *   pane
 	 */
 	protected _getComparisonRows(): any[] {
-		if (! this.s.dtPane) {
+		if (!this.s.dtPane) {
 			return [];
 		}
 
@@ -1404,7 +1416,7 @@ export default class SearchPane {
 	 */
 	public _updateSelection(notUpdating: boolean): void {
 		let run = () => {
-			if (! this.s.dtPane) {
+			if (!this.s.dtPane) {
 				return;
 			}
 
@@ -2135,7 +2147,7 @@ export default class SearchPane {
 	 * NOTE This is overridden when semantic ui styling in order to integrate
 	 * the search button into the text box.
 	 */
-	private _searchContSetup(): void {
+	public _searchContSetup(): void {
 		if (this.c.controls && this.s.colOpts.controls) {
 			this.dom.searchButton.appendTo(this.dom.searchLabelCont);
 		}
@@ -2158,7 +2170,7 @@ export default class SearchPane {
 	 * Adds outline to the pane when a selection has been made
 	 */
 	private _searchExtras(): void {
-		if (! this.s.dtPane) {
+		if (!this.s.dtPane) {
 			return;
 		}
 

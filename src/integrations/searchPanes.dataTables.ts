@@ -1,5 +1,3 @@
-/*! Bootstrap integration for DataTables' SearchPanes
- * © SpryMedia Ltd - datatables.net/license
+/*! SearchPanes default styling for DataTables
+ * Copyright (c) SpryMedia Ltd - https://datatables.net/license/plus
  */
-
-declare var DataTable: any;

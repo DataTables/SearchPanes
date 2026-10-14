@@ -8,13 +8,20 @@ import DataTable, {
 	StateLoad,
 	util
 } from 'datatables.net';
-import { IClasses, IConfig, IDefaults, IDOM, IS, ISelectItem } from './panesType';
+import {
+	IClasses,
+	IConfig,
+	IDefaults,
+	IDOM,
+	IS,
+	ISelectItem
+} from './panesType';
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
-	private static version = '2.3.5';
+	public static version = '2.3.5';
 
-	private static classes = {
+	public static classes = {
 		clear: 'dtsp-clear',
 		clearAll: 'dtsp-clearAll',
 		collapseAll: 'dtsp-collapseAll',
@@ -30,7 +37,7 @@ export default class SearchPanes {
 	};
 
 	// Define SearchPanes default options
-	private static defaults: IDefaults = {
+	public static defaults: IDefaults = {
 		cascadePanes: false,
 		clear: true,
 		collapse: true,

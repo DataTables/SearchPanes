@@ -1,10 +1,11 @@
-/*! Bootstrap integration for DataTables' SearchPanes
- * © SpryMedia Ltd - datatables.net/license
+/*! SearchPanes Bootstrap 4 styling for DataTables
+ * Copyright (c) SpryMedia Ltd - https://datatables.net/license/plus
  */
 
-declare var DataTable: any;
+import DataTable, { util } from 'datatables.net';
+import '../interface';
 
-$.extend(true, DataTable.SearchPane.classes, {
+util.object.assignDeep(DataTable.SearchPane.classes, {
 	buttonGroup: 'btn-group',
 	disabledButton: 'disabled',
 	narrow: 'col',
@@ -22,7 +23,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	topRow: 'dtsp-topRow'
 });
 
-$.extend(true, DataTable.SearchPanes.classes, {
+util.object.assignDeep(DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll btn btn-light',
 	collapseAll: 'dtsp-collapseAll btn btn-light',
 	container: 'dtsp-searchPanes',

@@ -1,16 +1,17 @@
-/*! Bootstrap integration for DataTables' SearchPanes
- * © SpryMedia Ltd - datatables.net/license
+/*! SearchPanes jQuery UI styling for DataTables
+ * Copyright (c) SpryMedia Ltd - https://datatables.net/license/plus
  */
 
-declare var DataTable: any;
+import DataTable, { util } from 'datatables.net';
+import '../interface';
 
-$.extend(true, DataTable.SearchPane.classes, {
+util.object.assignDeep(DataTable.SearchPane.classes, {
 	disabledButton: 'dtsp-paneInputButton dtsp-disabledButton',
 	paneButton: 'dtsp-paneButton ui-button',
 	topRow: 'dtsp-topRow ui-state-default'
 });
 
-$.extend(true, DataTable.SearchPanes.classes, {
+util.object.assignDeep(DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll ui-button',
 	collapseAll: 'dtsp-collapseAll ui-button',
 	container: 'dtsp-searchPanes',

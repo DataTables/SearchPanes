@@ -1,10 +1,11 @@
-/*! semantic ui integration for DataTables' SearchPanes
- * © SpryMedia Ltd - datatables.net/license
+/*! SearchPanes Fomantic UI styling for DataTables
+ * Copyright (c) SpryMedia Ltd - https://datatables.net/license/plus
  */
 
-declare var DataTable: any;
+import DataTable, { Dom, util } from 'datatables.net';
+import '../interface';
 
-$.extend(true, DataTable.SearchPane.classes, {
+util.object.assignDeep(DataTable.SearchPane.classes, {
 	buttonGroup: 'right floated ui buttons column',
 	disabledButton: 'disabled',
 	narrowSearch: 'dtsp-narrowSearch',
@@ -14,7 +15,7 @@ $.extend(true, DataTable.SearchPane.classes, {
 	topRow: 'row dtsp-topRow'
 });
 
-$.extend(true, DataTable.SearchPanes.classes, {
+util.object.assignDeep(DataTable.SearchPanes.classes, {
 	clearAll: 'dtsp-clearAll basic ui button',
 	collapseAll: 'dtsp-collapseAll basic ui button',
 	disabledButton: 'disabled',
@@ -22,6 +23,8 @@ $.extend(true, DataTable.SearchPanes.classes, {
 });
 
 // This override is required for the integrated search Icon in sematic ui
-DataTable.SearchPane.prototype._searchContSetup = function() {
-	$('<i class="' + this.classes.paneInputButton + '"></i>').appendTo(this.dom.searchCont);
+DataTable.SearchPane.prototype._searchContSetup = function () {
+	Dom.c('i')
+		.classAdd(this.classes.paneInputButton)
+		.appendTo(this.dom.searchCont);
 };
