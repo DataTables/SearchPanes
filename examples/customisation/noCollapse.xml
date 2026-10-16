@@ -6,9 +6,9 @@
 <js lib="datatables searchpanes select">
 <![CDATA[
 
-$('#example').DataTable({
+new DataTable('#example', {
 	layout: {
-		top1: 'searchPanes'
+		top: 'searchPanes'
 	},
 	columnDefs: [
 		{

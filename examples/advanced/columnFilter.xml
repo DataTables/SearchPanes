@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="html" table-class="display nowrap" order="5">
 
-<css lib="datatables searchpanes select"/>
+<css lib="datatables searchpanes select">
+	table.dataTable tfoot input {
+		width: 100%;
+	}
+</css>
 
 <js lib="datatables searchpanes select">
 <![CDATA[
@@ -15,8 +19,10 @@ new DataTable('#example', {
 				var title = column.footer().textContent;
 
 				// Create input element and add event listener
-				$('<input type="text" placeholder="Search ' + title + '" />')
-					.appendTo($(column.footer()).empty())
+				DataTable.Dom.c('input')
+					.attr('type', 'text')
+					.attr('placeholder', 'Search ' + title)
+					.appendTo(DataTable.Dom.s(column.footer()).empty())
 					.on('keyup change clear', function () {
 						if (column.search() !== this.value) {
 							column.search(this.value).draw();
@@ -25,7 +31,7 @@ new DataTable('#example', {
 			});
 	},
 	layout: {
-		top1: {
+		top: {
 			searchPanes: {
 				viewTotal: true
 			}
