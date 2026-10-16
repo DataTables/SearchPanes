@@ -6,7 +6,7 @@
 
 	<type type="function">
 		<signature>searchPanes.resizePanes()</signature>
-		<returns type="DataTables.Api">DataTables API instance.</returns>
+		<returns type="DataTable.Api">DataTable.Api instance.</returns>
 		<description>Resize all of the panes to fill the SearchPanes container appropriately</description>
 	</type>
 

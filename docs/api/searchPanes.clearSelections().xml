@@ -7,7 +7,7 @@
 	<type type="function">
 		<signature>searchPanes.clearSelections()</signature>
 		<description>Clears the selections in all of the panes.</description>
-		<returns type="DataTables.Api">DataTables API instance.</returns>
+		<returns type="DataTable.Api">DataTable.Api instance.</returns>
 	</type>
 
 	<description>

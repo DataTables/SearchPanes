@@ -14,7 +14,7 @@
 		<parameter type="integer" name="index">
             Index of pane to rebuild.
         </parameter>
-		<returns type="DataTables.Api">DataTables API instance</returns>
+		<returns type="DataTable.Api">DataTable.Api instance</returns>
 	</type>
 	<type type="function">
 		<signature>searchPanes.rebuildPane( index [, maintainSelect ] )</signature>
@@ -25,7 +25,7 @@
 		<parameter type="boolean" name="maintainSelect" default="false">
             Flag to decide whether to maintain the selections in the pane or not.
         </parameter>
-		<returns type="DataTables.Api">DataTables API instance</returns>
+		<returns type="DataTable.Api">DataTable.Api instance</returns>
 	</type>
 
 	<description>
