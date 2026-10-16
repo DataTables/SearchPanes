@@ -18,7 +18,8 @@
         "types": [],
         "noImplicitThis": false
     },
-    "files": [
-        "src/dataTables.searchPanes.ts"
+    "include": [
+        "src/dataTables.searchPanes.ts",
+        "src/integrations/searchPanes.*",
     ]
 }

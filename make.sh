@@ -19,6 +19,11 @@ DT_SRC=$(dirname $(dirname $(pwd)))
 DT_BUILT="${DT_SRC}/built/DataTables"
 . $DT_SRC/build/include.sh
 
+# Remove legacy
+if [ -d node_modules ]; then
+    rm -r node_modules
+fi
+
 # Copy CSS
 rsync -r css $OUT_DIR
 css_frameworks searchPanes $OUT_DIR/css

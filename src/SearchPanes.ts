@@ -20,7 +20,7 @@ import {
 import SearchPane from './SearchPane';
 
 export default class SearchPanes {
-	public static version = '3.0.0';
+	public static version = SearchPane.version;
 
 	public static classes = {
 		clear: 'dtsp-clear',

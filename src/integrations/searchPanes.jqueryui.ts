@@ -3,7 +3,6 @@
  */
 
 import DataTable, { util } from 'datatables.net';
-import '../interface';
 
 util.object.assignDeep(DataTable.SearchPane.classes, {
 	disabledButton: 'dtsp-paneInputButton dtsp-disabledButton',

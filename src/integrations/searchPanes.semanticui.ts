@@ -3,7 +3,6 @@
  */
 
 import DataTable, { Dom, util } from 'datatables.net';
-import '../interface';
 
 util.object.assignDeep(DataTable.SearchPane.classes, {
 	buttonGroup: 'right floated ui buttons column',
