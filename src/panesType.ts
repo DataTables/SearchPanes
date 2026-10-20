@@ -4,11 +4,13 @@ import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneViewTotal from './SearchPaneViewTotal';
 import { IConfigPaneItem } from './paneType';
 
-type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
+type DeepPartial<T> = T extends (...args: any[]) => any
+	? T
+	: T extends object
+		? {
+				[P in keyof T]?: DeepPartial<T[P]>;
+		  }
+		: T;
 
 export interface IClasses {
 	clear: string;
@@ -38,7 +40,7 @@ export interface IDefaults {
 	collapse: boolean;
 	columns: number[];
 	container: (dt: any) => any;
-	filterChanged?: (count: number) => any;
+	filterChanged?: (this: Api, count: number) => void;
 	i18n: {
 		clearMessage: string;
 		clearPane: string;
