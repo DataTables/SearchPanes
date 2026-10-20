@@ -105,8 +105,9 @@ export default class SearchPaneST extends SearchPane {
 			((this.s.colOpts.show === undefined &&
 			this.s.colOpts.threshold === null
 				? uniqueRatio > this.c.threshold
-				: uniqueRatio > this.s.colOpts.threshold) ||
-				(this.s.colOpts.show !== true && binLength <= 1))
+				: this.s.colOpts.threshold &&
+				  uniqueRatio > this.s.colOpts.threshold) ||
+				binLength <= 1)
 		) {
 			this.dom.container.classAdd(this.classes.hidden);
 			this.s.displayed = false;
@@ -292,7 +293,7 @@ export default class SearchPaneST extends SearchPane {
 		let orth =
 			typeof this.s.colOpts.orthogonal === 'string'
 				? this.s.colOpts.orthogonal
-				: this.s.colOpts.orthogonal.search;
+				: this.s.colOpts.orthogonal?.search!;
 
 		let filter = settings.fastData(rowIdx, this.s.index, orth);
 		let add = (f: string) => {

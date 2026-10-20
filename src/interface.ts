@@ -1,5 +1,6 @@
 import DataTables, { Dom, Order } from 'datatables.net';
 import { IConfig } from './panesType';
+import { SPColumnOptions } from './paneType';
 import SearchPane from './SearchPane';
 import SearchPaneCascade from './SearchPaneCascade';
 import SearchPaneCascadeViewTotal from './SearchPaneCascadeViewTotal';
@@ -18,6 +19,13 @@ declare module 'datatables.net' {
 		 * SearchPanes extension options
 		 */
 		searchPanes?: boolean | string[] | IConfig | IConfig[];
+	}
+
+	interface ColumnOptions {
+		/**
+		 * SearchPanes extension options
+		 */
+		searchPanes?: SPColumnOptions;
 	}
 
 	interface Defaults {

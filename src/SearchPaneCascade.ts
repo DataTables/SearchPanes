@@ -209,7 +209,10 @@ export default class SearchPaneCascade extends SearchPaneST {
 			let comparisonObj = {
 				className: comp.className,
 				display: insert,
-				filter: typeof comp.value === 'function' ? comp.value : [],
+				filter:
+					typeof comp.value === 'function'
+						? comp.value
+						: ([] as string[]),
 				shown: 0,
 				sort: insert,
 				total: 0,
@@ -245,7 +248,7 @@ export default class SearchPaneCascade extends SearchPaneST {
 				}
 
 				// Update the comparisonObj
-				if (typeof comparisonObj.filter !== 'function') {
+				if (comp.filter && typeof comparisonObj.filter !== 'function') {
 					comparisonObj.filter.push(comp.filter);
 				}
 			}

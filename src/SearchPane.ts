@@ -13,7 +13,8 @@ import {
 	IDataArray,
 	IDefaults,
 	IDOM,
-	IS
+	IS,
+	SPColumnOptions
 } from './paneType';
 
 export default class SearchPane {
@@ -57,7 +58,7 @@ export default class SearchPane {
 	};
 
 	// Define SearchPanes default options
-	public static defaults = {
+	public static defaults: IDefaults = {
 		clear: true,
 		collapse: true,
 		combiner: 'or',
@@ -66,7 +67,7 @@ export default class SearchPane {
 		},
 		controls: true,
 		dtOpts: {},
-		emptyMessage: null,
+		emptyMessage: '',
 		hideCount: false,
 		i18n: {
 			aria: {
@@ -78,19 +79,20 @@ export default class SearchPane {
 			},
 			clearPane: '&times;',
 			count: '{total}',
+			countFiltered: '',
 			emptyMessage: '<em>Empty</em>',
 			searchTitle: 'Search: {name}'
 		},
 		initCollapsed: false,
 		layout: 'auto',
-		name: undefined,
+		name: '',
 		orderable: true,
 		orthogonal: {
 			display: 'display',
 			filter: 'filter',
 			hideCount: false,
 			search: 'filter',
-			show: undefined,
+			show: false,
 			sort: 'sort',
 			threshold: 0.6,
 			type: 'type',
@@ -146,7 +148,7 @@ export default class SearchPane {
 
 		this.s = {
 			colExists: index < rowLength,
-			colOpts: undefined,
+			colOpts: {},
 			customPaneSettings: panes,
 			displayed: false,
 			dt: table,
@@ -334,7 +336,7 @@ export default class SearchPane {
 				// Get the current filtered data
 				filter = searchData[this.s.index];
 
-				if (this.s.colOpts.orthogonal.filter !== 'filter') {
+				if (this.s.colOpts.orthogonal?.filter !== 'filter') {
 					// get the filter value from the map
 					filter = this.s.rowData.filterMap.get(dataIndex);
 
@@ -584,10 +586,7 @@ export default class SearchPane {
 		}
 
 		// Override per column
-		if (
-			this.s.colOpts.emptyMessage !== false &&
-			this.s.colOpts.emptyMessage !== null
-		) {
+		if (this.s.colOpts.emptyMessage) {
 			def = this.s.colOpts.emptyMessage;
 		}
 
@@ -931,11 +930,11 @@ export default class SearchPane {
 			this.s.dt.state.save();
 		});
 
+		let colDtOpts = this.s.colOpts.dtOpts as any;
+
 		(this.s.dtPane as any).select.style(
-			this.s.colOpts.dtOpts &&
-				this.s.colOpts.dtOpts.select &&
-				this.s.colOpts.dtOpts.select.style
-				? this.s.colOpts.dtOpts.select.style
+			colDtOpts && colDtOpts.select && colDtOpts.select.style
+				? colDtOpts.select.style
 				: this.c.dtOpts &&
 				  this.c.dtOpts.select &&
 				  this.c.dtOpts.select.style
@@ -991,7 +990,8 @@ export default class SearchPane {
 			((this.s.colOpts.show === undefined &&
 			this.s.colOpts.threshold === null
 				? uniqueRatio > this.c.threshold
-				: uniqueRatio > this.s.colOpts.threshold) ||
+				: this.s.colOpts.threshold &&
+				  uniqueRatio > this.s.colOpts.threshold) ||
 				(this.s.colOpts.show !== true && binLength <= 1))
 		) {
 			this.dom.container.classAdd(this.classes.hidden);
@@ -1103,7 +1103,10 @@ export default class SearchPane {
 			let comparisonObj = {
 				className: comp.className,
 				display: insert,
-				filter: typeof comp.value === 'function' ? comp.value : [],
+				filter:
+					typeof comp.value === 'function'
+						? comp.value
+						: ([] as string[]),
 				sort: comp.order !== undefined ? comp.order : insert,
 				total: 0,
 				type: insert
@@ -1126,7 +1129,7 @@ export default class SearchPane {
 				}
 
 				// Update the comparisonObj
-				if (typeof comparisonObj.filter !== 'function') {
+				if (typeof comparisonObj.filter !== 'function' && comp.filter) {
 					comparisonObj.filter.push(comp.filter);
 				}
 			}
@@ -1318,7 +1321,7 @@ export default class SearchPane {
 			let filter = fastData(
 				rowIdx,
 				this.s.index,
-				this.s.colOpts.orthogonal.search
+				this.s.colOpts.orthogonal?.search || ''
 			);
 
 			// Null and empty string are to be considered the same value
@@ -1338,17 +1341,17 @@ export default class SearchPane {
 					fastData(
 						rowIdx,
 						this.s.index,
-						this.s.colOpts.orthogonal.display
+						this.s.colOpts.orthogonal?.display || ''
 					),
 					fastData(
 						rowIdx,
 						this.s.index,
-						this.s.colOpts.orthogonal.sort
+						this.s.colOpts.orthogonal?.sort || ''
 					),
 					fastData(
 						rowIdx,
 						this.s.index,
-						this.s.colOpts.orthogonal.type
+						this.s.colOpts.orthogonal?.type || ''
 					),
 					arrayFilter,
 					bins
@@ -1612,12 +1615,14 @@ export default class SearchPane {
 
 				// Don't show the pane if there isn't enough variance in the
 				//  data, or there is only 1 entry for that pane
+				let colOptsThreshold = this.s.colOpts.threshold;
+
 				if (
 					this.s.displayed === false &&
 					((this.s.colOpts.show === undefined &&
-					this.s.colOpts.threshold === null
+					colOptsThreshold === null
 						? uniqueRatio > this.c.threshold
-						: uniqueRatio > this.s.colOpts.threshold) ||
+						: colOptsThreshold && uniqueRatio > colOptsThreshold) ||
 						(this.s.colOpts.show !== true && binLength <= 1))
 				) {
 					this.dom.container.classAdd(this.classes.hidden);
@@ -1992,7 +1997,7 @@ export default class SearchPane {
 	 * @returns The options for the row extended to include the options
 	 *   from the user.
 	 */
-	private _getBonusOptions(): { [keys: string]: any } {
+	private _getBonusOptions(): SPColumnOptions {
 		// We need to reset the thresholds as if they have a value in colOpts
 		// then that value will be used
 		let defaultMutator = {
@@ -2013,7 +2018,7 @@ export default class SearchPane {
 	 * @returns The options for the row extended to include the options
 	 *   from the user.
 	 */
-	private _getOptions(): { [keys: string]: any } {
+	private _getOptions(): SPColumnOptions {
 		let table = this.s.dt;
 		// We need to reset the thresholds as if they have a value in colOpts
 		// then that value will be used
@@ -2026,7 +2031,7 @@ export default class SearchPane {
 		let columnOptions =
 			table.settings()[0].columns[this.s.index].searchPanes;
 
-		let colOpts = util.object.assignDeep<IConfig>(
+		let colOpts = util.object.assignDeep<SPColumnOptions>(
 			{},
 			SearchPane.defaults,
 			defaultMutator,
@@ -2157,7 +2162,8 @@ export default class SearchPane {
 		if (
 			!(
 				this.c.dtOpts.searching === false ||
-				this.s.colOpts.dtOpts.searching === false ||
+				(this.s.colOpts.dtOpts &&
+					this.s.colOpts.dtOpts.searching === false) ||
 				(this.s.customPaneSettings &&
 					this.s.customPaneSettings.dtOpts &&
 					this.s.customPaneSettings.dtOpts.searching !== undefined &&

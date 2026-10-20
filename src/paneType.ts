@@ -1,4 +1,4 @@
-import { Api, Dom, Options } from 'datatables.net';
+import { Api, Config, Dom, Options } from 'datatables.net';
 
 export interface IClasses {
 	badgePill?: string;
@@ -71,7 +71,7 @@ export interface IDefaults {
 	container: (dt: any) => HTMLElement; // Function?
 	controls: boolean;
 	dtOpts: { [keys: string]: any }; // All dtOpts
-	emptyMessage: string;
+	emptyMessage: string | null;
 	hideCount: boolean;
 	i18n: {
 		aria: {
@@ -121,8 +121,11 @@ export interface IIndexes {
 }
 
 export interface IOption {
+	className?: string;
+	filter?: string;
 	label: string;
-	values: (rowData: any, rowIdx: string) => boolean;
+	order?: string;
+	value: string | ((rowData: any, rowIdx: string) => boolean);
 }
 
 export interface IOrthogonal {
@@ -157,9 +160,30 @@ export interface IRowDataST extends IRowData {
 	totalOptions: number;
 }
 
+export interface SPColumnOptions {
+	className?: string;
+	collapse?: boolean;
+	combiner?: 'or' | 'and';
+	controls?: boolean;
+	info?: boolean;
+	dtOpts?: Config;
+	emptyMessage?: string;
+	header?: string;
+	hideCount?: boolean;
+	initCollapsed?: boolean;
+	name?: string;
+	options?: Array<IOption>;
+	orderable?: boolean;
+	orthogonal?: IOrthogonal;
+	preSelect?: string[];
+	show?: boolean;
+	threshold?: number;
+	viewCount?: boolean;
+}
+
 export interface IS {
 	colExists: boolean;
-	colOpts: any;
+	colOpts: SPColumnOptions;
 	customPaneSettings: IConfigPaneItem | null;
 	deselectTimeout?: ReturnType<typeof setTimeout>;
 	displayed: boolean;
