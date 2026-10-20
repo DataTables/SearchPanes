@@ -1211,9 +1211,8 @@ export default class SearchPane {
 						}
 
 						if (type === 'filter') {
-							return typeof data === 'string' &&
-								data.match(/<[^>]*>/) !== null
-								? data.replace(/<[^>]*>/g, '')
+							return typeof data === 'string'
+								? util.stripHtml(data)
 								: data;
 						}
 
@@ -1221,9 +1220,8 @@ export default class SearchPane {
 							'<div class="' +
 							this.classes.nameCont +
 							'"><span title="' +
-							(typeof data === 'string' &&
-							data.match(/<[^>]*>/) !== null
-								? data.replace(/<[^>]*>/g, '')
+							(typeof data === 'string'
+								? util.stripHtml(data)
 								: data) +
 							'" class="' +
 							this.classes.name +
@@ -1330,7 +1328,7 @@ export default class SearchPane {
 			}
 
 			if (typeof filter === 'string') {
-				filter = filter.replace(/<[^>]*>/g, '');
+				filter = util.stripHtml(filter);
 			}
 
 			this.s.rowData.filterMap.set(rowIdx, filter);
