@@ -1181,6 +1181,7 @@ export default class SearchPane {
 		langOpts.url = '';
 
 		return {
+			data: [],
 			columnDefs: [
 				{
 					className: 'dtsp-nameColumn',
