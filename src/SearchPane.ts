@@ -18,7 +18,7 @@ import {
 } from './paneType';
 
 export default class SearchPane {
-	public static version = '3.0.0';
+	public static version = '3.0.1';
 
 	public static classes = {
 		bordered: 'dtsp-bordered',
