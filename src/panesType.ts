@@ -61,6 +61,7 @@ export interface IDefaults {
 	order: string[];
 	panes: IConfigPaneItem[];
 	preSelect: ISelectItem[];
+	threshold: number;
 	viewCount: boolean;
 	viewTotal: boolean;
 }

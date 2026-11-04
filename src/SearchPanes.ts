@@ -67,6 +67,7 @@ export default class SearchPanes {
 		order: [],
 		panes: [],
 		preSelect: [],
+		threshold: SearchPane.defaults.threshold,
 		viewCount: true,
 		viewTotal: false
 	};
