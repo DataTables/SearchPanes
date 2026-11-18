@@ -76,10 +76,10 @@ DataTable.ext.buttons.searchPanes = {
 			setTimeout(() => {
 				_buttonSourced(dt, node, config);
 
-				this.popover(config._panes.getNode(), {
+				this.popover(config._panes.getNode(), util.object.assign({
 					align: 'container',
 					span: 'container'
-				});
+				}, config.popoverOptions));
 
 				config._panes.rebuild(undefined, true);
 

@@ -23,6 +23,9 @@
     <option name="delayInit" type="boolean" default="true" since="2.3.0">
         By default SearchPanes will not be initialised until the button to show it is pressed. While this helps spread the initial start up time, allowing a faster response for the end user at table start up time, there are cases where you might wish to have SearchPanes initialise immediately, such as if you are using a predefined SearchPane filter.
     </option>
+    <option name="popoverOptions" type="object" since="3.0.2">
+        Options to pass to the `-api button().popover()` options parameter for how the popover is displayed. Please see the documentation there for the details of the parameters available in this object.
+    </option>
 
 	<example title="Basic SearchPanes button initialisation"><![CDATA[
 new DataTable('#myTable', {
